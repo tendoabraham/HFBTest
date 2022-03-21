@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="?attr/customBackground"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+
+    <LinearLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <include layout="@layout/toolbar_layout" />
+    </LinearLayout>
+
+    <!--<ImageView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:scaleType="centerCrop"-->
+        <!--android:alpha="0.3"-->
+        <!--android:contentDescription="@string/app_name"-->
+        <!--android:layout_below="@+id/appBarLayout"-->
+        <!--android:src="@drawable/background"/>-->
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/appBarLayout">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/inactivity"
+                style="@style/Button_Yes"
+                android:onClick="setClicks"
+                android:text="@string/whenInactive"/>
+
+            <TextView
+                android:id="@+id/DisplayCLPBTN"
+                style="@style/Button_Yes"
+                android:onClick="DisplayCLPBTN"
+                android:text="@string/changeloginPin"/>
+
+            <LinearLayout
+                android:id="@+id/CLPLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:elevation="10dp"
+                android:background="@drawable/bckgrd_screen"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/Blue_Text_Center"
+                    android:text="@string/changeloginPin" />
+
+                <EditText
+                    android:id="@+id/ETOldLPin"
+                    style="@style/Edit_Text"
+                    android:longClickable="false"
+                    android:hint="@string/oldpin"
+                    android:inputType="numberPassword" />
+
+                <EditText
+                    android:id="@+id/ETNewLPin"
+                    style="@style/Edit_Text"
+                    android:longClickable="false"
+                    android:hint="@string/newPin"
+                    android:inputType="numberPassword" />
+
+                <EditText
+                    android:id="@+id/ETConfirmLPin"
+                    style="@style/Edit_Text"
+                    android:longClickable="false"
+                    android:hint="@string/confirmPin"
+                    android:inputType="numberPassword"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/Button_No"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:onClick="CLPCloseBTN"
+                        android:text="@string/cancel" />
+
+                    <TextView
+                        style="@style/Button_Yes"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:onClick="CLPChangeBTN"
+                        android:text="@string/change" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/DisplayCTPBTN"
+                style="@style/Button_Yes"
+                android:onClick="DisplayCTPBTN"
+                android:text="@string/changeTrxPin" />
+
+            <LinearLayout
+                android:id="@+id/CTPLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:elevation="10dp"
+                android:background="@drawable/bckgrd_screen"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/Blue_Text_Center"
+                    android:text="@string/changeTrxPin" />
+
+                <EditText
+                    android:id="@+id/ETOldTPin"
+                    style="@style/Edit_Text"
+                    android:longClickable="false"
+                    android:hint="@string/oldpin"
+                    android:inputType="numberPassword" />
+
+                <EditText
+                    android:id="@+id/ETNewTPin"
+                    style="@style/Edit_Text"
+                    android:longClickable="false"
+                    android:hint="@string/newPin"
+                    android:inputType="numberPassword" />
+
+                <EditText
+                    android:id="@+id/ETConfirmTPin"
+                    style="@style/Edit_Text"
+                    android:longClickable="false"
+                    android:hint="@string/confirmPin"
+                    android:inputType="numberPassword" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/Button_No"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:onClick="CTPCloseBTN"
+                        android:text="@string/cancel" />
+
+                    <TextView
+                        style="@style/Button_Yes"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:onClick="CTPChangeBTN"
+                        android:text="@string/change" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/DisplayThemes"
+                style="@style/Button_Yes"
+                android:onClick="displayTheme"
+                android:text="@string/changeTheme" />
+
+            <LinearLayout
+                android:id="@+id/fingerPrintStuff"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:orientation="vertical">
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:visibility="gone"
+                    android:id="@+id/fingerSwitch"
+                    style="@style/White_Text"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:padding="10dp"
+                    android:background="@drawable/bckgrd_button_yes"
+                    android:gravity="center_vertical"
+                    android:hint="@string/fingerLogCap"
+                    android:textColorHint="@color/white"
+                    android:textOff="@string/no"
+                    android:textOn="@string/yes"/>
+
+                <LinearLayout
+                    android:visibility="gone"
+                    android:id="@+id/pinCon"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/lCon"
+                        style="@style/Edit_Text"
+                        android:layout_weight="4"
+                        android:layout_width="0dp"
+                        android:layout_margin="5dp"
+                        android:longClickable="false"
+                        android:hint="@string/confirmGo"
+                        android:inputType="numberPassword"
+                        android:paddingTop="10dp"/>
+
+                    <TextView
+                        android:id="@+id/go"
+                        style="@style/Button_Yes"
+                        android:layout_weight="1.5"
+                        android:layout_width="0dp"
+                        android:onClick="setClicks"
+                        android:text="@string/confirm"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:visibility="gone"
+                    android:id="@+id/fingerInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:background="@null"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/fingerprint_icon"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:src="@drawable/ic_fp_40px"
+                        android:contentDescription="@string/description_fingerprint_icon"/>
+
+                    <TextView
+                        android:id="@+id/fingerprint_status"
+                        style="@style/Blue_Text_Center"
+                        android:padding="5dp"
+                        android:text="@string/fingerprint_description"
+                        android:textStyle="bold"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</RelativeLayout>
+

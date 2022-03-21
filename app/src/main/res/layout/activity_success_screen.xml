@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:gravity="center_vertical">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:alpha="0.35"
+        android:layout_marginBottom="-40dp"
+        android:src="@drawable/background"
+        android:contentDescription="@string/app_name"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        tools:ignore="UselessParent">
+
+        <ImageView
+            android:id="@+id/successImage"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_margin="10dp"
+            android:src="@drawable/success_tick"
+            tools:ignore="ContentDescription" />
+
+        <TextView
+            android:id="@+id/messageText"
+            style="@style/Blue_Text_Center"
+            android:background="@drawable/bckgrd_screen"
+            android:layout_margin="10dp"
+            android:padding="10dp"
+            android:textSize="17sp"
+            android:elevation="10dp"
+            android:gravity="center"
+            android:text="You have completed your transaction successfully. Click Ok to proceed to the Main Menu"
+            tools:ignore="HardcodedText"
+            tools:targetApi="lollipop" />
+
+        <TextView
+            android:id="@+id/okBTN"
+            style="@style/Button_Yes"
+            android:layout_width="140dp"
+            android:text="@android:string/ok" />
+
+    </LinearLayout>
+
+</RelativeLayout>

@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="?attr/customBackground"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:targetApi="lollipop"
+    tools:context=".main_Pages.Funds_Transfer_External">
+
+    <LinearLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <include layout="@layout/toolbar_layout" />
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_below="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:background="@drawable/bckgrd_screen"
+                android:elevation="10dp"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/Black_Text"
+                    android:text="@string/selectType" />
+
+                <RadioGroup
+                    android:id="@+id/radioGroupType"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/eft"
+                        style="@style/Black_Text"
+                        android:padding="10dp"
+                        android:layout_weight="1"
+                        android:text="@string/eft" />
+
+                    <RadioButton
+                        android:id="@+id/rtgs"
+                        style="@style/Black_Text"
+                        android:padding="10dp"
+                        android:layout_weight="1"
+                        android:text="@string/rtgs" />
+
+                </RadioGroup>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="10dp"
+                android:background="@drawable/bckgrd_screen"
+                android:elevation="10dp"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/Black_Text"
+                    android:text="@string/selectAccDebited" />
+
+                <Spinner
+                    android:id="@+id/accountNumber"
+                    style="@style/Spinner_Text" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="10dp"
+                android:background="@drawable/bckgrd_screen"
+                android:elevation="10dp"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/Black_Text"
+                    android:text="@string/enterAdd" />
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/ETAddress"
+                    style="@style/Edit_Text"
+                    android:hint="@string/poBox"
+                    android:inputType="textPostalAddress" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:background="@drawable/bckgrd_screen"
+                android:elevation="10dp"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_weight="6"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/Black_Text"
+                        android:text="@string/bankName"/>
+
+                    <Spinner
+                        android:id="@+id/bankName"
+                        style="@style/Spinner_Text"/>
+
+                </LinearLayout>
+
+                <ProgressBar
+                    android:id="@+id/load"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:visibility="gone"
+                android:id="@+id/branchNameIn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:background="@drawable/bckgrd_screen"
+                android:elevation="10dp"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/Black_Text"
+                    android:text="@string/branchName"/>
+
+                <Spinner
+                    android:id="@+id/branchName"
+                    style="@style/Spinner_Text" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="10dp"
+                android:background="@drawable/bckgrd_screen"
+                android:elevation="10dp"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/Black_Text"
+                    android:text="@string/enterBen" />
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/ETAccount"
+                    style="@style/Edit_Text"
+                    android:hint="@string/accountNumber"
+                    android:inputType="number" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="10dp"
+                android:background="@drawable/bckgrd_screen"
+                android:elevation="10dp"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/Black_Text"
+                    android:text="@string/enterBenName" />
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/ETBenName"
+                    style="@style/Edit_Text"
+                    android:hint="@string/accountName"
+                    android:inputType="textCapWords" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:visibility="gone"
+                android:id="@+id/BenInLay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="10dp"
+                android:background="@drawable/bckgrd_screen"
+                android:elevation="10dp"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/Black_Text"
+                    android:text="@string/enterBenAddress" />
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/ETBenAddress"
+                    style="@style/Edit_Text"
+                    android:hint="@string/poBox"
+                    android:inputType="textPostalAddress" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="10dp"
+                android:background="@drawable/bckgrd_screen"
+                android:elevation="10dp"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/Black_Text"
+                    android:text="@string/enterAmount" />
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/ETAmount"
+                    style="@style/Edit_Text"
+                    android:hint="@string/amountS"
+                    android:inputType="numberDecimal"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="10dp"
+                android:background="@drawable/bckgrd_screen"
+                android:elevation="10dp"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/Black_Text"
+                    android:text="@string/narration"/>
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/messaage"
+                    style="@style/Edit_Text"
+                    android:hint="@string/desc"
+                    android:inputType="textCapWords"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="10dp"
+                android:background="@drawable/bckgrd_screen"
+                android:elevation="10dp"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/Black_Text"
+                    android:text="@string/enterTPin" />
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/eTPin"
+                    style="@style/Edit_Text"
+                    android:longClickable="false"
+                    android:hint="@string/pin"
+                    android:inputType="numberPassword"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/sendFunds"
+                style="@style/Button_Yes"
+                android:onClick="fT"
+                android:text="@string/fundsTransfer"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</RelativeLayout>
+

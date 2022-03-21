@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="?attr/customBackground"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:targetApi="lollipop">
+
+    <LinearLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <include layout="@layout/toolbar_layout" />
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/appBarLayout">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="10dp"
+                android:elevation="10dp"
+                android:background="@drawable/bckgrd_screen"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/Black_Text"
+                    android:text="@string/selectAccDebited"/>
+
+                <Spinner
+                    android:id="@+id/accno"
+                    style="@style/Spinner_Text"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="10dp"
+                android:elevation="10dp"
+                android:background="@drawable/bckgrd_screen"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/Black_Text"
+                    android:text="@string/slctPrvdr" />
+
+                <Spinner
+                    android:id="@+id/serviceProvider"
+                    style="@style/Edit_Text" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/numChoice"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="10dp"
+                android:elevation="10dp"
+                android:background="@drawable/bckgrd_screen"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/Black_Text"
+                    android:text="@string/selectOption" />
+
+                <RadioGroup
+                    android:id="@+id/radioGroup"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/rMyAccount"
+                        style="@style/Black_Text"
+                        android:layout_weight="1"
+                        android:text="@string/ownNumber" />
+
+                    <RadioButton
+                        android:id="@+id/rOtherAccount"
+                        style="@style/Black_Text"
+                        android:layout_weight="1"
+                        android:text="@string/otherNumber" />
+
+                </RadioGroup>
+
+                <TextView
+                    android:id="@+id/myNumber"
+                    style="@style/Blue_Text_Center"/>
+
+                <LinearLayout
+                    android:id="@+id/otherNumLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/otherNum"
+                        style="@style/Edit_Text"
+                        android:layout_weight="1"
+                        android:hint="@string/phoneNum"
+                        android:inputType="phone"/>
+
+                    <ImageView
+                        android:id="@+id/contacts"
+                        style="@style/Edit_Text"
+                        android:background="@drawable/bckgrd_sections"
+                        android:layout_weight="2.4"
+                        android:src="@drawable/interphone"
+                        android:onClick="getContact"
+                        tools:ignore="ContentDescription"
+                        app:tint="@color/logo_orange" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/validateMTN"
+                    style="@style/Button_Yes"
+                    android:onClick="transferBTN"
+                    android:text="@string/validate" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/after"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/validateLayout"
+                    android:visibility="gone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bckgrd_screen"
+                    android:layout_margin="10dp"
+                    android:elevation="10dp"
+                    android:orientation="vertical">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/valRecycler"/>
+
+                    <TextView
+                        android:id="@+id/back"
+                        style="@style/Button_Yes"
+                        android:onClick="transferBTN"
+                        android:text="@string/back" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="10dp"
+                    android:elevation="10dp"
+                    android:background="@drawable/bckgrd_screen"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/Black_Text"
+                        android:text="@string/enterAmount" />
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/ETAmount"
+                        style="@style/Edit_Text"
+                        android:hint="@string/amount"
+                        android:inputType="numberDecimal"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="10dp"
+                    android:elevation="10dp"
+                    android:background="@drawable/bckgrd_screen"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/Black_Text"
+                        android:text="@string/enterTPin" />
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/ETPin"
+                        style="@style/Edit_Text"
+                        android:hint="@string/pin"
+                        android:inputType="numberPassword"/>
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/send"
+                    style="@style/Button_Yes"
+                    android:onClick="transferBTN"
+                    android:text="@string/sendMoney" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</RelativeLayout>

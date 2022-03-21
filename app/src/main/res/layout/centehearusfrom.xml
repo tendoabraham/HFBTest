@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/centehearusfrom"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:textStyle="normal"
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:gravity="left"
+            android:text="Mediums"
+            android:textColor="@color/dark_blue"
+            android:textSize="15sp" />
+
+        <com.google.android.material.chip.ChipGroup
+            android:visibility="gone"
+            android:id="@+id/mediums_chip"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            app:chipSpacing="10dp"
+            app:singleSelection="true"/>
+
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:id="@+id/RGroup">
+
+            <RadioButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:foregroundTint="@color/dark_blue"
+                android:text="Tv/Radio"
+                android:textSize="14sp"
+                android:layout_gravity="center_vertical"
+                android:id="@+id/tv"/>
+
+            <RadioButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:foregroundTint="@color/dark_blue"
+                android:text="Social Media"
+                android:layout_gravity="center_vertical"
+                android:textSize="14sp"
+                android:id="@+id/ss"/>
+
+            <RadioButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:foregroundTint="@color/dark_blue"
+                android:text="Bank Staff"
+                android:textSize="14sp"
+                android:layout_gravity="center_vertical"
+                android:id="@+id/bankstaff"/>
+
+            <RadioButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:foregroundTint="@color/dark_blue"
+                android:text="HFB Customer"
+                android:textSize="14sp"
+                android:layout_gravity="center_vertical"
+                android:id="@+id/HFBCustomer"/>
+
+            <RadioButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:foregroundTint="@color/dark_blue"
+                android:text="Agent"
+                android:textSize="14sp"
+                android:layout_gravity="center_vertical"
+                android:id="@+id/Agent"/>
+
+        </RadioGroup>
+
+        <TextView
+            android:textStyle="normal"
+            android:id="@+id/sstext"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:gravity="left"
+            android:visibility="gone"
+            android:text="Which platform did you find us at? *"
+            android:textColor="@color/dark_blue"
+            android:textSize="14sp" />
+
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            android:id="@+id/ssgroup">
+
+            <RadioButton
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:foregroundTint="@color/dark_blue"
+                android:text="Facebook"
+                android:id="@+id/FaceBook"/>
+
+            <RadioButton
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:foregroundTint="@color/dark_blue"
+                android:text="Twitter"
+                android:id="@+id/Twitter"/>
+
+            <RadioButton
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:foregroundTint="@color/dark_blue"
+                android:text="Instagram"
+                android:id="@+id/Instagram"/>
+
+        </RadioGroup>
+
+    </LinearLayout>
+
+</ScrollView>

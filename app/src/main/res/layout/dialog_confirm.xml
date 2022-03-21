@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:filterTouchesWhenObscured="true"
+    android:layout_width="300dp"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:background="@drawable/bckgrd_screen2"
+    android:elevation="15dp"
+    android:gravity="center_vertical"
+    android:orientation="vertical"
+    tools:targetApi="lollipop">
+
+    <TextView
+        android:id="@+id/dialog_title"
+        style="@style/Header_Text"
+        android:text="@string/pleaseConfirm"/>
+
+    <TextView
+        android:id="@+id/dialog_message"
+        style="@style/Blue_Text_Center"
+        android:padding="15dp"
+        android:text="@string/app_name"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/noBTN"
+            style="@style/Button_No"
+            android:layout_weight="1"
+            android:text="@string/cancel"/>
+
+        <TextView
+            android:id="@+id/yesBTN"
+            style="@style/Button_Yes"
+            android:layout_weight="1"
+            android:text="@string/yes"/>
+
+    </LinearLayout>
+
+</LinearLayout>

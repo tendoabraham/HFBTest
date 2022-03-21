@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#0033a0</color>
+    <color name="colorPrimaryDark">#16007a</color>
+
+    <color name="dark_blue">#16007A</color>
+    <color name="logo_blue">#0033A0</color>
+    <color name="top_blue">#0033A1</color>
+    <color name="icon_blue">#114A8F</color>
+    <color name="blue">#0e5093</color>
+    <color name="w_icon_blue">#135EAB</color>
+    <color name="lightest_blue">#89aeff</color>
+
+    <color name="green">#13982a</color>
+
+    <color name="dark_orange">#ba6218</color>
+    <color name="orange">#e1a100</color>
+    <color name="icon_orange">#FCB714</color>
+    <color name="logo_orange">#ffb700</color>
+    <color name="yellow">#FFFF00</color>
+    <color name="logo_red">#ed1b24</color>
+
+    <color name="white">#FFFFFF</color>
+    <color name="black">#2c2f2c</color>
+    <color name="dark_grey">#737171</color>
+    <color name="grey">#a8aca6</color>
+    <color name="light_grey">#d9d9d9</color>
+    <color name="light_grey2">#e8e8e8</color>
+    <color name="light_grey3">#85e8e8e8</color>
+
+    <color name="dim">#a5000000</color>
+    <color name="transparent">#00000000</color>
+
+</resources>

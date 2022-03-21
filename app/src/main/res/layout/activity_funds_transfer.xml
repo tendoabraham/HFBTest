@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="?attr/customBackground"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:targetApi="lollipop"
+    tools:context=".main_Pages.Funds_Transfer">
+
+    <LinearLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <include layout="@layout/toolbar_layout" />
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_below="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:ignore="Autofill"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="10dp"
+                android:background="@drawable/bckgrd_screen"
+                android:elevation="10dp"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/Black_Text"
+                    android:text="@string/selectAccDebited" />
+
+                <Spinner
+                    android:id="@+id/accountNumber"
+                    style="@style/Spinner_Text" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:background="@drawable/bckgrd_screen"
+                android:elevation="10dp"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/Black_Text"
+                    android:text="@string/selectTMto" />
+
+                <RadioGroup
+                    android:id="@+id/radioGroup"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/RBTNMyAccount"
+                        style="@style/Black_Text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/ownAcc" />
+
+                    <RadioButton
+                        android:id="@+id/RBTNOtherAccount"
+                        style="@style/Black_Text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/otherAcc" />
+
+                </RadioGroup>
+
+                <EditText
+                    android:id="@+id/ETAccount"
+                    style="@style/Edit_Text"
+                    android:hint="@string/account"
+                    android:inputType="number" />
+
+                <TextView
+                    android:id="@+id/validate"
+                    style="@style/Button_Yes"
+                    android:onClick="fT"
+                    android:text="@string/validate" />
+
+                <Spinner
+                    android:id="@+id/accountNumber2"
+                    style="@style/Spinner_Text" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/validateLayout"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:elevation="10dp"
+                android:background="@drawable/bckgrd_screen"
+                android:orientation="vertical"
+                tools:targetApi="lollipop">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/valRecycler"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/input"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/bckgrd_screen"
+                    android:elevation="10dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/Black_Text"
+                        android:text="@string/enterAmount" />
+
+                    <EditText
+                        android:id="@+id/ETAmount"
+                        style="@style/Edit_Text"
+                        android:hint="@string/amount"
+                        android:inputType="numberDecimal"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/bckgrd_screen"
+                    android:elevation="10dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/Black_Text"
+                        android:text="@string/narration"/>
+
+                    <EditText
+                        android:id="@+id/messaage"
+                        style="@style/Edit_Text"
+                        android:hint="@string/desc"
+                        android:inputType="textCapWords"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/bckgrd_screen"
+                    android:elevation="10dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/Black_Text"
+                        android:text="@string/enterTPin" />
+
+                    <EditText
+                        android:id="@+id/eTPin"
+                        style="@style/Edit_Text"
+                        android:longClickable="false"
+                        android:hint="@string/pin"
+                        android:inputType="numberPassword"/>
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/sendFunds"
+                    style="@style/Button_Yes"
+                    android:onClick="fT"
+                    android:text="@string/fundsTransfer"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</RelativeLayout>
+

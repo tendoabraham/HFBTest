@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths>
+    <external-path
+        name="my_images"
+        path="Android/data/com.elmahousingfinanceug_test/files/Pictures"/>
+    <external-path
+        name="external_files"
+        path="."/>
+    <external-cache-path
+        name="cache"
+        path="camera"/>
+</paths>

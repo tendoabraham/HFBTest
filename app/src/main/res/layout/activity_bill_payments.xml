@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="?attr/customBackground"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:targetApi="lollipop">
+
+    <LinearLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <include layout="@layout/toolbar_layout" />
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/appBarLayout">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:background="@drawable/bckgrd_screen"
+                android:elevation="10dp"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/Black_Text"
+                    android:text="@string/selectAccDebited" />
+
+                <Spinner
+                    android:id="@+id/accountNumber"
+                    style="@style/Spinner_Text" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/step1Layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:background="@drawable/bckgrd_screen"
+                android:elevation="10dp"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/Header_Text"
+                    android:text="@string/STEP_1_VALIDATION"/>
+
+                <Spinner
+                    android:id="@+id/area"
+                    style="@style/Spinner_Text"/>
+
+                <TextView
+                    android:id="@+id/TVDisplay"
+                    style="@style/Blue_Text"
+                    android:text="@string/enteryour" />
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/ETMeterAccNumber"
+                    style="@style/Edit_Text"
+                    android:inputType="text"
+                    android:hint="@string/meterNumber"/>
+
+                <TextView
+                    android:id="@+id/validate"
+                    style="@style/Button_Yes"
+                    android:onClick="payments"
+                    android:text="@string/validate" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/step2Layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:background="@drawable/bckgrd_screen"
+                android:elevation="10dp"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/Header_Text"
+                    android:text="@string/STEP_2_CONFIRMATION" />
+
+                <TextView
+                    style="@style/Blue_Text_Center"
+                    android:text="@string/confirmPayInfo" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/valRecycler"/>
+
+                <TextView
+                    android:id="@+id/tvAccName"
+                    style="@style/Orange_Text_Center"
+                    android:layout_width="match_parent"
+                    android:padding="10dp"
+                    android:textStyle="bold"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/backIn"
+                        style="@style/Button_No"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:onClick="payments"
+                        android:text="@string/back"/>
+
+                    <TextView
+                        android:id="@+id/okToPay"
+                        style="@style/Button_Yes"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:onClick="payments"
+                        android:text="@string/ok"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/step3Layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:background="@drawable/bckgrd_screen"
+                android:elevation="10dp"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/Header_Text"
+                    android:text="@string/STEP_3_PAYMENT" />
+
+                <TextView
+                    style="@style/Blue_Text"
+                    android:text="@string/EnterAmount" />
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/ETAmount"
+                    style="@style/Edit_Text"
+                    android:hint="@string/amount"
+                    android:inputType="numberDecimal"/>
+
+                <TextView
+                    style="@style/Blue_Text"
+                    android:text="@string/enterPIn" />
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/eTPin"
+                    style="@style/Edit_Text"
+                    android:longClickable="false"
+                    android:hint="@string/pin"
+                    android:inputType="numberPassword"/>
+
+                <TextView
+                    android:id="@+id/pay"
+                    style="@style/Button_Yes"
+                    android:onClick="payments"
+                    android:text="@string/pay"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</RelativeLayout>
+

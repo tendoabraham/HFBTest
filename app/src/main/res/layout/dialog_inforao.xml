@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:filterTouchesWhenObscured="true"
+    android:id="@+id/activity_main"
+    android:layout_width="300dp"
+    android:layout_gravity="center"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bckgrd_screen2"
+    android:elevation="15dp"
+    android:gravity="center_vertical"
+    android:orientation="vertical"
+    tools:targetApi="lollipop">
+
+    <TextView
+        android:id="@+id/dialog_title"
+        style="@style/Header_Text"
+        android:text="@string/alert"/>
+
+    <TextView
+        android:id="@+id/dialog_message"
+        style="@style/Blue_Text_Center"
+        android:padding="15dp"/>
+
+    <CheckBox
+        android:visibility="visible"
+        android:id="@+id/check"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="20dp"
+        android:buttonTint="@color/grey"
+        style="@style/Blue_Text_Center"
+        android:gravity="center"
+        android:minHeight="48dp"
+        android:text="@string/i_have_read_and_agree_with_the_nterms_and_conditions_of_use"
+        android:textAlignment="textEnd"
+        android:textColor="@color/blue"
+        android:textStyle="bold"
+        tools:ignore="RtlCompat" />
+
+    <TextView
+        android:id="@+id/dialog_BTN"
+        style="@style/Button_Yes"
+        android:text="@android:string/ok"/>
+
+</LinearLayout>

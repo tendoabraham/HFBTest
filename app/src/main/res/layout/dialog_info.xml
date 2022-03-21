@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:filterTouchesWhenObscured="true"
+    android:id="@+id/activity_main"
+    android:layout_width="300dp"
+    android:layout_gravity="center"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bckgrd_screen2"
+    android:elevation="15dp"
+    android:gravity="center_vertical"
+    android:orientation="vertical"
+    tools:targetApi="lollipop">
+
+    <TextView
+        android:id="@+id/dialog_title"
+        style="@style/Header_Text"
+        android:text="@string/alert"/>
+
+    <TextView
+        android:id="@+id/dialog_message"
+        style="@style/Blue_Text_Center"
+        android:padding="15dp"/>
+
+   
+
+    <TextView
+        android:id="@+id/dialog_BTN"
+        style="@style/Button_Yes"
+        android:text="@android:string/ok"/>
+
+</LinearLayout>

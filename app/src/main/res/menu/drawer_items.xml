@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+<group
+    android:checkableBehavior="single">
+
+    <item
+        android:id="@+id/myProfile"
+        android:visible="false"
+        android:icon="@drawable/userhfb"
+        android:title="@string/myProfile"/>
+
+    <item
+        android:id="@+id/prepaidCard"
+        android:icon="@drawable/ic_prepaid_card"
+        android:title="@string/prepaid_card"/>
+
+    <item
+        android:id="@+id/settings"
+        android:icon="@drawable/cogwheel"
+        android:title="@string/settings"/>
+
+    <item
+        android:id="@+id/contacUs"
+        android:icon="@drawable/contact_us"
+        android:title="@string/contactUs"/>
+
+    <item
+        android:id="@+id/agents"
+        android:icon="@drawable/withdraw"
+        android:title="@string/agents"/>
+
+    <item
+        android:id="@+id/branches"
+        android:icon="@drawable/compass"
+        android:title="@string/branches"/>
+
+    <item
+        android:id="@+id/atmLocations"
+        android:icon="@drawable/atm_machine"
+        android:title="@string/atmLocations"/>
+
+    <item
+        android:id="@+id/aboutUs"
+        android:icon="@drawable/information"
+        android:title="@string/aboutUs" />
+
+    <item
+        android:id="@+id/logOut"
+        android:icon="@drawable/exit"
+        android:title="@string/logOut" />
+</group>
+
+</menu>

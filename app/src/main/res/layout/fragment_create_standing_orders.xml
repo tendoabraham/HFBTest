@@ -1,0 +1,204 @@
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:filterTouchesWhenObscured="true"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:orientation="vertical"
+            tools:targetApi="lollipop">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="10dp"
+                android:elevation="10dp"
+                android:background="@drawable/bckgrd_screen"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/Black_Text"
+                    android:textAllCaps="false"
+                    android:text="@string/orderName2" />
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/orderName"
+                    style="@style/Edit_Text"
+                    android:hint="@string/orderName"
+                    android:inputType="textCapWords"
+                    android:textAllCaps="true" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="10dp"
+                android:elevation="10dp"
+                android:background="@drawable/bckgrd_screen"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/Black_Text"
+                    android:text="@string/enterAccCredited"/>
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/ETAccount"
+                    style="@style/Edit_Text"
+                    android:hint="@string/account"
+                    android:inputType="number"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="10dp"
+                android:elevation="10dp"
+                android:background="@drawable/bckgrd_screen"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/Black_Text"
+                    android:text="@string/enterAmount" />
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/ETAmount"
+                    style="@style/Edit_Text"
+                    android:hint="@string/amount"
+                    android:inputType="numberDecimal"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="10dp"
+                android:elevation="10dp"
+                android:background="@drawable/bckgrd_screen"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textView8"
+                    style="@style/Black_Text"
+                    android:text="@string/selectAccDebited" />
+
+                <Spinner
+                    android:id="@+id/accountNumber"
+                    style="@style/Spinner_Text" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="10dp"
+                android:elevation="10dp"
+                android:background="@drawable/bckgrd_screen"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/Black_Text"
+                    android:text="@string/startdate" />
+
+                <TextView
+                    android:id="@+id/startDate"
+                    style="@style/Spinner_Text"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="10dp"
+                android:elevation="10dp"
+                android:background="@drawable/bckgrd_screen"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/Black_Text"
+                    android:text="@string/endDate" />
+
+                <TextView
+                    android:id="@+id/endDate"
+                    style="@style/Spinner_Text" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="10dp"
+                android:elevation="10dp"
+                android:background="@drawable/bckgrd_screen"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/Black_Text"
+                    android:text="@string/frequency" />
+
+                <Spinner
+                    android:id="@+id/frequency"
+                    style="@style/Spinner_Text" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="10dp"
+                android:elevation="10dp"
+                android:background="@drawable/bckgrd_screen"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/Black_Text"
+                    android:text="@string/whentoexec" />
+
+                <Spinner
+                    android:id="@+id/timeofday"
+                    style="@style/Spinner_Text" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="10dp"
+                android:elevation="10dp"
+                android:background="@drawable/bckgrd_screen"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/Black_Text"
+                    android:text="@string/ifNoBalance" />
+
+                <Spinner
+                    android:id="@+id/ifNobalance"
+                    style="@style/Spinner_Text"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/create"
+                style="@style/Button_Yes"
+                android:text="@string/create" />
+
+        </LinearLayout>
+
+</ScrollView>

@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@color/w_icon_blue"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/transparent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:baselineAligned="false"
+                android:paddingTop="20dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="end|center"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="120dp"
+                        android:src="@drawable/hfb_white"
+                        android:contentDescription="@string/app_name" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/White_Text"
+                        android:layout_margin="0dp"
+                        android:layout_width="match_parent"
+                        android:textStyle="bold"
+                        android:textSize="30sp"
+                        android:text="@string/housing"/>
+
+                    <TextView
+                        style="@style/White_Text"
+                        android:layout_margin="0dp"
+                        android:layout_width="match_parent"
+                        android:textStyle="bold"
+                        android:textSize="30sp"
+                        android:text="@string/finance"/>
+
+                    <TextView
+                        style="@style/White_Text"
+                        android:layout_margin="0dp"
+                        android:layout_width="match_parent"
+                        android:textStyle="bold"
+                        android:textSize="30sp"
+                        android:text="@string/bank"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="15dp">
+
+                <TextView
+                    style="@style/White_Text_Center"
+                    android:padding="15dp"
+                    android:text="@string/enterAct"/>
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/eTKey"
+                    style="@style/Edit_Text"
+                    android:hint="@string/actKey"
+                    android:inputType="number"/>
+
+                <TextView
+                    android:id="@+id/verify"
+                    style="@style/Button_Yes"
+                    android:onClick="verification"
+                    android:text="@string/verify"/>
+
+                <TextView
+                    android:id="@+id/contactUs"
+                    style="@style/Button_Yes"
+                    android:onClick="verification"
+                    android:text="@string/contactUs"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</RelativeLayout>
