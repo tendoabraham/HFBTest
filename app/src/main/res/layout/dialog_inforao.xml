@@ -33,7 +33,7 @@
         style="@style/Blue_Text_Center"
         android:gravity="center"
         android:minHeight="48dp"
-        android:text="@string/i_have_read_and_agree_with_the_nterms_and_conditions_of_use"
+        android:text="@string/i_have_read_and_agree_with_the_terms_and_conditions_of_use"
         android:textAlignment="textEnd"
         android:textColor="@color/blue"
         android:textStyle="bold"

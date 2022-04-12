@@ -21,7 +21,7 @@
         android:required="true" />
 
     <application
-        android:name="com.elmahousingfinanceug_test.launch.App_Init"
+        android:name=".launch.App_Init"
         android:allowBackup="false"
         android:fullBackupContent="false"
         android:icon="@mipmap/ic_launcher"
@@ -32,6 +32,9 @@
         android:supportsRtl="true"
         android:windowSoftInputMode="adjustPan"
         tools:replace="android:icon">
+        <activity
+            android:name=".launch.rao.DepositOptionsActivity"
+            android:theme="@style/Theme_I" />
 
         <meta-data
             android:name="com.google.android.gms.version"
@@ -51,16 +54,16 @@
         </provider>
 
         <activity
-            android:name="com.elmahousingfinanceug_test.launch.Launch_Screen"
+            android:name=".launch.Launch_Screen"
             android:theme="@style/Theme_I">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
-            android:name="com.elmahousingfinanceug_test.launch.Login"
+            android:name=".launch.Login"
             android:theme="@style/Theme_I">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -72,73 +75,64 @@
             android:exported="true"
             android:permission="com.google.android.gms.auth.api.phone.permission.SEND">
             <intent-filter>
-                <action android:name="com.google.android.gms.auth.api.phone.SMS_RETRIEVED"/>
+                <action android:name="com.google.android.gms.auth.api.phone.SMS_RETRIEVED" />
             </intent-filter>
         </receiver>
 
         <activity
-            android:name="com.elmahousingfinanceug_test.launch.RecreateKey_Send"
-            android:theme="@style/Theme_I"/>
-
+            android:name=".launch.RecreateKey_Send"
+            android:theme="@style/Theme_I" />
         <activity
-            android:name="com.elmahousingfinanceug_test.launch.RecreateKey_Verify"
-            android:theme="@style/Theme_I"/>
-
+            android:name=".launch.RecreateKey_Verify"
+            android:theme="@style/Theme_I" />
         <activity
             android:name=".main_Pages.ZAtmBranch"
-            android:theme="@style/Theme_I"/>
-
+            android:theme="@style/Theme_I" />
         <activity
             android:name=".launch.rao.AccountOpenSplash"
-            android:theme="@style/Theme_I"/>
-
+            android:theme="@style/Theme_I" />
         <activity
             android:name=".launch.rao.AccountOpenZMain"
-            android:theme="@style/Theme_I"/>
-
+            android:theme="@style/Theme_I" />
+        
         <activity
             android:name=".launch.rao.AccountOpenZExistingCustomersMain"
-            android:theme="@style/Theme_I"/>
-
+            android:theme="@style/Theme_I" />
         <activity
             android:name=".launch.rao.ImagePickerActivity"
-            android:theme="@style/Theme_I"/>
-
+            android:theme="@style/Theme_I" />
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"
-            android:theme="@style/Theme_I"/>  <!-- uCrop cropping activity -->
-
+            android:theme="@style/Theme_I" /> <!-- uCrop cropping activity -->
         <activity
-            android:name="com.elmahousingfinanceug_test.main_Pages.Branches_Page"
-            android:screenOrientation="fullSensor"/>
-
+            android:name=".main_Pages.Branches_Page"
+            android:screenOrientation="fullSensor" />
         <activity
-            android:name="com.elmahousingfinanceug_test.main_Pages.ATM_Locations"
-            android:screenOrientation="fullSensor"/>
-
-        <activity android:name="com.elmahousingfinanceug_test.recursiveClasses.SuccessDialogPage"/>
-        <activity android:name="com.elmahousingfinanceug_test.recursiveClasses.BaseAct" />
-        <activity android:name="com.elmahousingfinanceug_test.main_Pages.Main_Menu" />
-        <activity android:name="com.elmahousingfinanceug_test.main_Pages.Balance_Enquiry" />
-        <activity android:name="com.elmahousingfinanceug_test.main_Pages.Bill_Pay_Options" />
-        <activity android:name="com.elmahousingfinanceug_test.main_Pages.Mini_Statement" />
-        <activity android:name="com.elmahousingfinanceug_test.main_Pages.Standing_Orders" />
-        <activity android:name="com.elmahousingfinanceug_test.main_Pages.Mobile_Money" />
-        <activity android:name="com.elmahousingfinanceug_test.main_Pages.Bank_Requests" />
-        <activity android:name="com.elmahousingfinanceug_test.main_Pages.Bill_Payments" />
-        <activity android:name="com.elmahousingfinanceug_test.main_Pages.Activity_Log" />
-        <activity android:name="com.elmahousingfinanceug_test.main_Pages.Settings" />
-        <activity android:name="com.elmahousingfinanceug_test.main_Pages.Profile" />
-        <activity android:name="com.elmahousingfinanceug_test.main_Pages.About_Us" />
-        <activity android:name="com.elmahousingfinanceug_test.main_Pages.Contact_Us" />
-        <activity android:name="com.elmahousingfinanceug_test.main_Pages.Airtime_Services" />
-        <activity android:name="com.elmahousingfinanceug_test.main_Pages.E_Statement" />
-        <activity android:name="com.elmahousingfinanceug_test.main_Pages.Funds_Transfer" />
-        <activity android:name="com.elmahousingfinanceug_test.main_Pages.Cheques" />
-        <activity android:name="com.elmahousingfinanceug_test.main_Pages.ThemePreference" />
-        <activity android:name="com.elmahousingfinanceug_test.main_Pages.School_Fees" />
-        <activity android:name="com.elmahousingfinanceug_test.main_Pages.Funds_Transfer_External" />
-        <activity android:name="com.elmahousingfinanceug_test.main_Pages.Mobile_Money_Two" />
+            android:name=".main_Pages.ATM_Locations"
+            android:screenOrientation="fullSensor" />
+        <activity android:name=".recursiveClasses.SuccessDialogPage" />
+        <activity android:name=".recursiveClasses.BaseAct" />
+        <activity android:name=".main_Pages.Main_Menu" />
+        <activity android:name=".main_Pages.Balance_Enquiry" />
+        <activity android:name=".main_Pages.Bill_Pay_Options" />
+        <activity android:name=".main_Pages.Mini_Statement" />
+        <activity android:name=".main_Pages.Standing_Orders" />
+        <activity android:name=".main_Pages.Mobile_Money" />
+        <activity android:name=".main_Pages.Bank_Requests" />
+        <activity android:name=".main_Pages.Bill_Payments" />
+        <activity android:name=".main_Pages.Activity_Log" />
+        <activity android:name=".main_Pages.Settings" />
+        <activity android:name=".main_Pages.Profile" />
+        <activity android:name=".main_Pages.About_Us" />
+        <activity android:name=".main_Pages.Contact_Us" />
+        <activity android:name=".main_Pages.Airtime_Services" />
+        <activity android:name=".main_Pages.E_Statement" />
+        <activity android:name=".main_Pages.Funds_Transfer" />
+        <activity android:name=".main_Pages.Cheques" />
+        <activity android:name=".main_Pages.ThemePreference" />
+        <activity android:name=".main_Pages.School_Fees" />
+        <activity android:name=".main_Pages.Funds_Transfer_External" />
+        <activity android:name=".main_Pages.Mobile_Money_Two" />
     </application>
 
 </manifest>

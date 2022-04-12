@@ -42,10 +42,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:foregroundTint="@color/dark_blue"
-                android:text="Tv/Radio"
+                android:text="Tv"
                 android:textSize="14sp"
                 android:layout_gravity="center_vertical"
                 android:id="@+id/tv"/>
+
+            <RadioButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:foregroundTint="@color/dark_blue"
+                android:text="Radio"
+                android:textSize="14sp"
+                android:layout_gravity="center_vertical"
+                android:id="@+id/rd"/>
 
             <RadioButton
                 android:layout_width="match_parent"
@@ -60,7 +69,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:foregroundTint="@color/dark_blue"
-                android:text="Bank Staff"
+                android:text="HFB Bank Staff"
                 android:textSize="14sp"
                 android:layout_gravity="center_vertical"
                 android:id="@+id/bankstaff"/>
@@ -69,12 +78,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:foregroundTint="@color/dark_blue"
-                android:text="HFB Customer"
+                android:text="Customer"
                 android:textSize="14sp"
                 android:layout_gravity="center_vertical"
                 android:id="@+id/HFBCustomer"/>
 
             <RadioButton
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:foregroundTint="@color/dark_blue"

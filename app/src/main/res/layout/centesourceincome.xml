@@ -7,8 +7,27 @@
 
     <LinearLayout
         android:id="@+id/centesourceincome"
+        android:visibility="visible"
         android:layout_width="match_parent"
-        android:orientation="vertical"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:textStyle="bold"
+            android:textColor="@color/colorPrimary"
+            android:text="Select Occupation Type"/>
+
+        <Spinner
+            android:id="@+id/employmentselect"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"/>
+
+    </LinearLayout>
+
+   
 
 </ScrollView>

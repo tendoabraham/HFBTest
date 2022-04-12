@@ -108,13 +108,7 @@ public class Launch_Screen extends AppCompatActivity {
             if(am.getIdleTime()==0) am.saveIdleTime("180000");
             if(am.getAppName().equals("")) am.saveAppName();
             if(am.getBankID().equals("")) am.saveBankID();
-            // TEST 2021              4594839890
-            //am.saveCustomerID("1485941693");
-            //am.saveUserPhone("256770944239");
-            //UserPhone = 256770944239
-            //L CustomerID = 1365006920
-            //am.saveCustomerID("1365006920");
-            //am.saveUserPhone("256770944239");
+            // TEST 2021              459483989
 //            am.saveCustomerID("4594839890");
 //            am.saveUserPhone("256700146817");
             

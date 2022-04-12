@@ -80,23 +80,24 @@
         <TextView
             style="@style/Orange_Text_Center"
             android:layout_margin="0dp"
+            android:text="@string/mbagilawa"
             android:textColor="@color/icon_orange"
             android:textSize="45sp"
             android:textStyle="bold"
-            android:text="@string/mbagilawa"/>
+            android:visibility="gone" />
 
         <TextView
             style="@style/Blue_Text_Center"
             android:layout_margin="0dp"
+            android:text="@string/account_opening"
             android:textColor="@color/w_icon_blue"
             android:textSize="28sp"
-            android:textStyle="bold"
-            android:text="@string/account_opening"/>
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/title"
             style="@style/Blue_Text_Center"
-            android:textSize="16sp"/>
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/submit"

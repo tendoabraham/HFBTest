@@ -69,7 +69,7 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:orientation="vertical">
-            <include layout="@layout/centecontacts"/>
+            <include layout="@layout/centecontactsex"/>
             <include layout="@layout/webview"/>
             <include layout="@layout/centeotp"/>
             <include layout="@layout/centeids"/>

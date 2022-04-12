@@ -1,0 +1,348 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" 
+    android:background="@color/dark_blue"
+    tools:context=".launch.rao.DepositOptionsActivity">
+    
+
+        <RelativeLayout
+            android:visibility="visible"
+            android:id="@+id/success_failed"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="30dp"
+            android:elevation="10dp"
+            android:orientation="vertical"
+            android:background="@drawable/cardback"
+            tools:targetApi="lollipop">
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="180dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="20dp"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="132dp"
+                        android:layout_height="132dp"
+                        android:src="@drawable/success"
+                        android:contentDescription="@string/app_name" />
+
+                    <TextView
+                        android:id="@+id/message"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="@string/registerd_n_successfully"
+                        android:textColor="@color/blue"
+                        android:textSize="30sp"/>
+
+                    <TextView
+                        android:id="@+id/show_response"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="@string/deposit_options"
+                        android:textColor="@color/blue"
+                        android:textSize="15sp"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:gravity="center"
+                            android:orientation="horizontal"
+                            android:baselineAligned="false">
+
+                            <LinearLayout
+                                android:id="@+id/a"
+                                android:layout_width="0dp"
+                                android:layout_height="100dp"
+                                android:layout_margin="10dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/bckgrd_sections_trans"
+                                android:gravity="center"
+                                android:orientation="vertical">
+
+                                <ImageView
+                                    android:layout_width="35dp"
+                                    android:layout_height="35dp"
+                                    android:layout_gravity="center_horizontal"
+                                    android:scaleType="fitCenter"
+                                    android:src="@drawable/wallet"/>
+
+                                <TextView
+                                    style="@style/Blue_Text_Center"
+                                    android:text="@string/wallet_deposit"/>
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/b"
+                                android:layout_width="0dp"
+                                android:layout_height="100dp"
+                                android:layout_margin="10dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/bckgrd_sections_trans"
+                                android:gravity="center"
+                                android:onClick="bills"
+                                android:orientation="vertical">
+
+                                <ImageView
+                                    android:layout_width="35dp"
+                                    android:layout_height="35dp"
+                                    android:layout_gravity="center_horizontal"
+                                    android:scaleType="fitCenter"
+                                    android:src="@drawable/atm_banknote"/>
+
+                                <TextView
+                                    style="@style/Blue_Text_Center"
+                                    android:text="@string/atm_deposit"/>
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/c"
+                                android:layout_width="0dp"
+                                android:layout_height="100dp"
+                                android:layout_margin="10dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/bckgrd_sections_trans"
+                                android:gravity="center"
+                                android:onClick="bills"
+                                android:orientation="vertical">
+
+                                <ImageView
+                                    android:layout_width="35dp"
+                                    android:layout_height="35dp"
+                                    android:layout_gravity="center_horizontal"
+                                    android:scaleType="fitCenter"
+                                    android:src="@drawable/hfb_agents" />
+
+                                <TextView
+                                    style="@style/Blue_Text_Center"
+                                    android:text="@string/bank_agents" />
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:orientation="horizontal"
+                            android:baselineAligned="false">
+
+                            <LinearLayout
+                                android:id="@+id/d"
+                                android:layout_width="0dp"
+                                android:layout_height="100dp"
+                                android:layout_margin="10dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/bckgrd_sections_trans"
+                                android:gravity="center"
+                                android:onClick="bills"
+                                android:orientation="vertical">
+
+                                <ImageView
+                                    android:layout_width="35dp"
+                                    android:layout_height="35dp"
+                                    android:layout_gravity="center_horizontal"
+                                    android:scaleType="fitCenter"
+                                    android:src="@drawable/telegrafic_transfer"/>
+
+                                <TextView
+                                    style="@style/Blue_Text_Center"
+                                    android:text="@string/telegraphic_transfer"/>
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/e"
+                                android:layout_width="0dp"
+                                android:layout_height="100dp"
+                                android:layout_margin="10dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/bckgrd_sections_trans"
+                                android:gravity="center"
+                                android:onClick="bills"
+                                android:orientation="vertical">
+
+                                <ImageView
+                                    android:layout_width="35dp"
+                                    android:layout_height="35dp"
+                                    android:layout_gravity="center_horizontal"
+                                    android:scaleType="fitCenter"
+                                    android:src="@drawable/wireless_transfer"/>
+
+                                <TextView
+                                    style="@style/Blue_Text_Center"
+                                    android:text="@string/wireless_transfer"/>
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/f"
+                                android:layout_width="0dp"
+                                android:layout_height="100dp"
+                                android:layout_margin="10dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/bckgrd_sections_trans"
+                                android:gravity="center"
+                                android:onClick="bills"
+                                android:orientation="vertical">
+
+                                <ImageView
+                                    android:layout_width="35dp"
+                                    android:layout_height="35dp"
+                                    android:layout_gravity="center_horizontal"
+                                    android:scaleType="fitCenter"
+                                    android:src="@drawable/western_union"/>
+
+                                <TextView
+                                    style="@style/Blue_Text_Center"
+                                    android:text="@string/western_union"/>
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:gravity="center"
+                            android:orientation="horizontal"
+                            android:baselineAligned="false">
+
+                            <LinearLayout
+                                android:id="@+id/g"
+                                android:layout_width="0dp"
+                                android:layout_height="100dp"
+                                android:layout_margin="10dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/bckgrd_sections_trans"
+                                android:gravity="center"
+                                android:onClick="bills"
+                                android:orientation="vertical">
+
+                                <ImageView
+                                    android:layout_width="35dp"
+                                    android:layout_height="35dp"
+                                    android:layout_gravity="center_horizontal"
+                                    android:scaleType="fitCenter"
+                                    android:src="@drawable/housing_finance_logo"
+                                    tools:ignore="ContentDescription" />
+
+                                <TextView
+                                    style="@style/Blue_Text_Center"
+                                    android:text="@string/hfb_bank"/>
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:visibility="invisible"
+                                android:id="@+id/h"
+                                android:layout_width="0dp"
+                                android:layout_height="100dp"
+                                android:layout_margin="10dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/bckgrd_sections"
+                                android:gravity="center"
+                                android:onClick="bills"
+                                android:orientation="vertical">
+
+                                <ImageView
+                                    android:layout_width="35dp"
+                                    android:layout_height="35dp"
+                                    android:layout_gravity="center_horizontal"
+                                    android:scaleType="fitCenter"
+                                    android:src="@drawable/nssf"/>
+
+                                <TextView
+                                    style="@style/White_Text_Center"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_margin="5dp"
+                                    android:text="@string/nssf" />
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:visibility="invisible"
+                                android:id="@+id/i"
+                                android:layout_width="0dp"
+                                android:layout_height="100dp"
+                                android:layout_margin="10dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/bckgrd_sections"
+                                android:gravity="center"
+                                android:onClick="bills"
+                                android:orientation="vertical">
+
+                                <ImageView
+                                    android:layout_width="35dp"
+                                    android:layout_height="35dp"
+                                    android:layout_gravity="center_horizontal"
+                                    android:scaleType="fitCenter"
+                                    android:src="@drawable/ura"/>
+
+                                <TextView
+                                    style="@style/White_Text_Center"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_margin="5dp"
+                                    android:text="@string/ura"/>
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+            </ScrollView>
+
+            <TextView
+                android:id="@+id/done"
+                android:layout_above="@+id/bottom_success"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_margin="10dp"
+                android:gravity="center"
+                android:background="@drawable/btn"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:text="@string/done"/>
+
+            <ImageView
+                android:id="@+id/bottom_success"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:layout_alignParentBottom="true"
+                android:src="@drawable/downback"
+                android:scaleType="fitXY"
+                android:contentDescription="@string/app_name" />
+
+        </RelativeLayout>
+
+    
+
+</androidx.constraintlayout.widget.ConstraintLayout>

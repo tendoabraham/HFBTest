@@ -271,7 +271,7 @@ public class ImagePickerActivity extends AppCompatActivity {
         }
         else
         {
-            Toast.makeText(context, "Cache not found to delete", Toast.LENGTH_LONG).show();
+//            Toast.makeText(context, "Cache not found to delete", Toast.LENGTH_SHORT).show();
             path = new File(context.getFilesDir(),"camera");
             if (path.exists() && path.isDirectory()) {
                 for (File child : path.listFiles()) {

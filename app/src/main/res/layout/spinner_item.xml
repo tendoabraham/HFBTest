@@ -7,4 +7,5 @@
     android:textColor="@color/dark_blue"
     android:textSize="15sp"
     android:gravity="start"
-    android:padding="5dp"/>
+    android:padding="5dp"
+    android:entries="@array/id_employment_type"/>

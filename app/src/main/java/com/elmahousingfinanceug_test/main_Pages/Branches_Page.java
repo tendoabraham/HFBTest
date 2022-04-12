@@ -285,6 +285,7 @@ public class Branches_Page extends BaseAct implements
                 @Override
                 public void onSlide(@NonNull View brRecyclerView, float slideOffset) {}
             });
+          
 
             String names = "Kampala Road~"+
                     "Namuwongo~"+

@@ -1,9 +1,11 @@
 package com.elmahousingfinanceug_test.launch.rao;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.DownloadManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -19,6 +21,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
+import android.os.Looper;
 import android.provider.MediaStore;
 import android.provider.Settings;
 import android.text.Editable;
@@ -30,7 +33,6 @@ import android.view.View;
 import android.view.Window;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -56,12 +58,15 @@ import androidx.appcompat.widget.AppCompatCheckBox;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.chaos.view.PinView;
 import com.elmahousingfinanceug_test.R;
-import com.elmahousingfinanceug_test.launch.Login;
 import com.elmahousingfinanceug_test.main_Pages.Contact_Us;
 import com.elmahousingfinanceug_test.recursiveClasses.AllMethods;
 import com.elmahousingfinanceug_test.recursiveClasses.ResponseListener;
@@ -73,6 +78,7 @@ import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
+import com.koushikdutta.ion.Ion;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -81,10 +87,15 @@ import org.json.JSONObject;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.regex.Pattern;
 
@@ -92,28 +103,30 @@ import id.zelory.compressor.Compressor;
 import mumayank.com.airlocationlibrary.AirLocation;
 
 public class AccountOpenZMain extends AppCompatActivity implements ResponseListener, View.OnClickListener {
-    TextView title, prev, next, otpcountdown, tv_resend_otp, show_response;
-    ProgressBar determinateBar,progressBar1;
+    TextView title, prev, next, otpcountdown, tv_resend_otp, show_response, textView2, textView3;
+    ProgressBar determinateBar, progressBar1;
     Bitmap bitmapImageFront, bitmapImageBack, bitmapImageSelfie;
     ViewFlipper flipper;
     WebView webView;
-    ImagePick front,backpick,selfie;
-    Spinner currselect, branchselect, political_spin, occupation_spin, proffession_status, regionselect, districtName,
-            countyName, subCountyName, parishName, villageName, eAName;
-    LinearLayout ccg,currencyLayout, centeidsdetails, centeparentinfo, centesourceincome, centenextofkin,
-            centecontacts, centeextras, centehearusfrom, new_Lay, existing_lay, aMr, bMrs, cMiss;
+    String  nationality = "", sex ,surName= "" , CardNumber= "",DateOfExpiry = "" , NIN = "", dob  = "" ,Name = "";
+    String status = "", message = "", fields = "", idNumberObject = "", fullName = "", issueDate = "", idSerial = "", birthdate = "";
+    ImagePick front, backpick, selfie, signature;
+    Spinner currselect, branchselect, employmentType, political_spin, occupation_spin, proffession_status, regionselect, districtName,
+            countyName, subCountyName, parishName, villageName, eAName, spinnerMulti, alternativeBank;
+    LinearLayout ccg, currencyLayout, centeidsdetails, centeparentinfo, centesourceincome, centenextofkin,
+            centecontacts, centeextras, centehearusfrom, new_Lay, existing_lay, aMr, bMrs, cMiss, alternativeDeposite;
     ScrollView pan_pin_in;
-    cicEditText staffPhoneNumber, accountNumber, name, sname, otherNames, nationalID, DOBEdit, FatherFirstName,
-            FatherMiddleName,FatherLastName,MotherFirstName,MotherMiddleName,MotherLastName, Address,YearsAtAddress,
-            PoliticallyExposed, IncomeperAnnum,EmploymentType,Occupation, PlaceofWork, NatureofBussiness,
+    cicEditText staffPhoneNumber, accountNumber, name, sname, otherNames, nationalID, nationalIDCardNo, DOBEdit, FatherFirstName, phoneregName, phoneregLastName,
+            FatherMiddleName, FatherLastName, MotherFirstName, MotherMiddleName, MotherLastName, Address, YearsAtAddress,
+            PoliticallyExposed, IncomeperAnnum, MonthlySalary, EmploymentType, Occupation, yearOfEmployment, PlaceofWork, NatureofBussiness,
             PeriodofEmployment, EmployerName, NatureofEmployment, NextofKinFirstName, NextofKinMiddleName,
             NextofKinLastName, NextofKinPhoneNumber, NextofKinAltPhoneNumber, NextofKinAddress, EmailAddress,
-            PhoneNumber, AlternatePhoneNumber, ActualAddress, country, city, zipCode, c4, c44, c45, c5;
+            PhoneNumber, AlternatePhoneNumber, ActualAddress, country, zipCode, c4, c44, c45, c5, alternativeAccountNumber, bankName, branchName, accountName, PhoneNumberMobile;
 
     EditText et_acc, et_pan, et_pin, et_phone;
-    RadioGroup addressPeriod, employPeriod, accountsGroup, radioGroup;
-    RadioButton yearsButtonM, monthsButtonM, yearsButtonE, monthsButtonE,  FaceBook, Twitter,
-            Instagram, tv, ss, bankstaff, HFBCustomer, Agent;
+    RadioGroup addressPeriod, employPeriod, accountsGroup, radioGroup, genderGroup, RGroupM, RGroupCon;
+    RadioButton yearsButtonM, monthsButtonM, yearsButtonE, monthsButtonE, FaceBook, Twitter,
+            Instagram, tv, rd, ss, bankstaff, HFBCustomer, Agent, male, female, mtn, airtel, yes, no;
     AppCompatCheckBox chkMobileBanking, chkPos, chkATM, chkChequeBook, chkInternetBanking, chkAgencyBanking, radiob;
     PinView otpPinView;
     HorizontalScrollView scrollAccounts;
@@ -122,18 +135,21 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
     RelativeLayout success_failed;
 
     private AllMethods am;
+    private  CustomJsonRequest customJsonRequest;  
 
     int REQUEST_IMAGE = 100, REQUEST_IMAGEX = 0, step_ = 0;
 
-    String encodedImageFront="", encodedImageBack="", encodedImageSelfie="", Usertitle="", CustomerCategory = "",
-            step0 = "Customer Type & Product",step1 = "How do we reach You ?", step2 = "Share with us your ID details", step3 = "Confirm these are your ID details",
-            step4 = "Next Of Kin",step5 = "Source of Income",
-            step6 = "Terms & Conditions",step7 = "How did you come to know about us ?", step8 = "Other services", step9 = "OTP Confirmation",
-            step10 = "Parent Information", raoOTP = "", currentTask = "", INFOFIELD1 = "", INFOFIELD2 = "", INFOFIELD3 = "",
-            INFOFIELD4 = "", INFOFIELD5 = "",token = "", payload = "", Device="", uri = "", extrauri="", new_request="",
-            selectedAccount="", selectedAccountID="", currName="",branchID="",termsUrl="",currencyURL, periodAddressString="", periodWorkString="",
-            StringPoliticallyExposed="",occupationIDString="",professionIDString="",regionIDString="", districtIDString="", countyIDString="",
-            subcountyIDString="", parishIdString="",villageIdString="" ,eAIdString="";
+    byte[] byteArray;
+
+    String encodedImageFront = "", encodedImageBack = "", encodedImageSelfie = "", encodedImageSignature = "", Usertitle = "", CustomerCategory = "",
+            step0 = "Customer Type & Product", step1 = "Personal details?", step2 = "Share with us your ID details", step3 = "Confirm these are your ID details",
+            step4 = "Next Of Kin", step5 = "Source of Income",
+            step6 = "Terms & Conditions", step7 = "Provide Alternative account number(Bank Account or Mobile Money)", step8 = "How did you come to know about us ?", step9 = "Other services", step10 = "OTP Confirmation",
+            step11 = "Parent Information", raoOTP = "", currentTask = "", INFOFIELD1 = "", INFOFIELD2 = "", INFOFIELD3 = "",
+            INFOFIELD4 = "", INFOFIELD5 = "", token = "", payload = "", Device = "", uri = "", extrauri = "", new_request = "",
+            selectedAccount = "", selectedAccountID = "", currName = "", branchID = "", termsUrl = "", currencyURL, periodAddressString = "", periodWorkString = "", gender = "", mobileMoneyProvider = "", ProductDescription = "",
+            StringPoliticallyExposed = "", occupationIDString = "", professionIDString = "", regionIDString = "", districtIDString = "", countyIDString = "",
+            subcountyIDString = "", parishIdString = "", villageIdString = "", eAIdString = "", userEmploymentType, maritalStatus, alternativeSecurityDeposit, processID = "";
 
     boolean done = false;
     private String[] FieldIDs, FieldValues;
@@ -145,9 +161,9 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
 
     JSONArray accountProducts = null, branches = null;
 
-    List <String>  accountIDs = new ArrayList<>(), accountNames = new ArrayList<>(), currencyNames = new ArrayList<>(),
-            listBranchIDs = new ArrayList<>(), listBranchNames = new ArrayList<>(), listUrls = new ArrayList<>(), listCurrencyUrls =new ArrayList<>(),
-            politicsIDs = new ArrayList<>(), politicsNames = new ArrayList<>(),
+    List<String> accountIDs = new ArrayList<>(), accountNames = new ArrayList<>(), currencyNames = new ArrayList<>(), productDescription = new ArrayList<>(),
+            listBranchIDs = new ArrayList<>(), listBranchNames = new ArrayList<>(), listUrls = new ArrayList<>(), listCurrencyUrls = new ArrayList<>(),
+            politicsIDs = new ArrayList<>(), politicsNames = new ArrayList<>(), employmentTypeDescription = new ArrayList<>(), maritalStatusList = new ArrayList<>(), alternativeAccounts = new ArrayList<>(),
             occupationIds = new ArrayList<>(), occupationNames = new ArrayList<>(), professionIds = new ArrayList<>(),
             professionNames = new ArrayList<>(), regionsIds = new ArrayList<>(), regionNames = new ArrayList<>(),
             districtIds = new ArrayList<>(), districtNames = new ArrayList<>(), countyIds = new ArrayList<>(),
@@ -155,7 +171,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
             parishIds = new ArrayList<>(), parishlistNames = new ArrayList<>(), villageIds = new ArrayList<>(),
             villagelistNames = new ArrayList<>(), eAIds = new ArrayList<>(), eAlistNames = new ArrayList<>();
 
-    private final static int REQUEST_ID_AIRLOCATION=1235;
+    private final static int REQUEST_ID_AIRLOCATION = 1235;
     private static final String DATE_PATTERN = "((19|20)\\d\\d)[/-](0?[1-9]|1[012])[/-](0?[1-9]|[12][0-9]|3[01])";
     public static final SimpleDateFormat BIRTHDAY_FORMAT_PARSER = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -165,7 +181,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
         try {
             BIRTHDAY_FORMAT_PARSER.parse(date);
             return true;
-        } catch (Exception e){
+        } catch (Exception e) {
             return false;
         }
     }
@@ -177,6 +193,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
 
         am = new AllMethods(this);
         am.disableScreenShot(this);
+        
 
         title = findViewById(R.id.title);
         customer_cat_ = findViewById(R.id.customer_cat_);
@@ -199,12 +216,16 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
         front = findViewById(R.id.front);
         backpick = findViewById(R.id.backpick);
         selfie = findViewById(R.id.selfie);
+        signature = findViewById(R.id.signature);
         show_response = findViewById(R.id.show_response);
 
         currselect = findViewById(R.id.currselect);
+        spinnerMulti = findViewById(R.id.spinnerMulti);
+        alternativeBank = findViewById(R.id.alternativeBank);
         branchselect = findViewById(R.id.branchselect);
+        employmentType = findViewById(R.id.employmentselect);
         determinateBar = findViewById(R.id.determinateBar);
-        progressBar1 = findViewById(R.id.progressBar1)   ;
+        progressBar1 = findViewById(R.id.progressBar1);
         prev = findViewById(R.id.prev);
         prev.setVisibility(View.INVISIBLE);
         webView = findViewById(R.id.webview);
@@ -224,8 +245,18 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
         Twitter = findViewById(R.id.Twitter);
         Instagram = findViewById(R.id.Instagram);
 
+
         radioGroup = findViewById(R.id.RGroup);
+        RGroupM = findViewById(R.id.RGroupM);
+        RGroupCon = findViewById(R.id.RGroupCon);
         tv = findViewById(R.id.tv);
+        rd = findViewById(R.id.rd);
+        mtn = findViewById(R.id.mtn);
+        airtel = findViewById(R.id.airtel);
+        yes = findViewById(R.id.yes);
+        no = findViewById(R.id.no);
+        textView2 = findViewById(R.id.textView2);
+        textView3 = findViewById(R.id.textView3);
         tv_resend_otp = findViewById(R.id.tv_resend_otp);
         ss = findViewById(R.id.ss);
         bankstaff = findViewById(R.id.bankstaff);
@@ -234,6 +265,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
 
         ccg = findViewById(R.id.ccg);
         centeidsdetails = findViewById(R.id.centeidsdetails);
+        alternativeDeposite = findViewById(R.id.alternativeDeposite);
         centeparentinfo = findViewById(R.id.centeparentinfo);
         centesourceincome = findViewById(R.id.centesourceincome);
         centenextofkin = findViewById(R.id.centenextofkin);
@@ -245,7 +277,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
         generateForms();
 
         //Condition hide new for existing customers
-        if (am.getCustomerID().length() <10) {
+        if (am.getCustomerID().length() < 10) {
             new_Lay.setVisibility(View.VISIBLE);
         } else {
             new_Lay.setVisibility(View.GONE);
@@ -253,15 +285,12 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
 
         title.setText(step0);
 
-        
-
-    
 
         branchselect.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if(position!=0) {
-                    branchID = listBranchIDs.get(position-1);
+                if (position != 0) {
+                    branchID = listBranchIDs.get(position - 1);
                 } else {
                     branchID = "";
                 }
@@ -278,6 +307,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
             }
+
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 raoOTP = charSequence.toString();
@@ -285,6 +315,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                     verify();
                 }
             }
+
             @Override
             public void afterTextChanged(Editable editable) {
 
@@ -292,8 +323,9 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
         });
 
         front.setLabel("National\nIdentity Card\n(Front)");
-        backpick.setLabel("Passport\nPhoto\n(Selfie)");
-        selfie.setLabel("Signature\nPhoto\nNO Thumb print allowed\nSignature should not be in Upper case");
+        backpick.setLabel("National\nIdentity Card\n(Back)");
+        selfie.setLabel("\"Passport\\nPhoto\\n(Selfie");
+        signature.setLabel("Signature\nPhoto\nNO Thumb print allowed\nSignature should not be in Upper case");
 
         airLocation = new AirLocation(this, true, true, new AirLocation.Callbacks() {
             @Override
@@ -303,24 +335,25 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                 getLocationAddress(location);
                 //new GetAddressFromLocation().execute(location);
             }
+
             @Override
             public void onFailed(@NonNull AirLocation.LocationFailedEnum locationFailedEnum) {
                 // do something
             }
         });
 
-        if(am.getUserPhone().length()>8 && am.getUserPhone().startsWith("256")) {
-           PhoneNumber.editText.setText(am.getUserPhone().replace("256",""));
+        if (am.getUserPhone().length() > 8 && am.getUserPhone().startsWith("256")) {
+            PhoneNumber.editText.setText(am.getUserPhone().replace("256", ""));
         }
 
-        if(am.getUserEmail().length()>3) {
+        if (am.getUserEmail().length() > 3) {
             EmailAddress.editText.setText(am.getUserEmail());
         }
 
-        if(am.getProceed()) {
+        if (am.getProceed()) {
             proceedFromWhereYouLeftOff();
         }
-        registerReceiver(populateProducts,new IntentFilter("populate"));
+        registerReceiver(populateProducts, new IntentFilter("populate"));
     }
 
     private final BroadcastReceiver populateProducts = new BroadcastReceiver() {
@@ -335,39 +368,42 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                 // ProductID|2024|ProductName|Save plus Account|CurrencyID|USD|Urls|https://www.housingfinance.co.ug/retail-banking/savings-account/save-plus-account/~
                 // ProductID|2024|ProductName|Save plus Account|CurrencyID|GBP|Urls|https://www.housingfinance.co.ug/retail-banking/savings-account/save-plus-account/~ProductID|2024|ProductName|Save plus Account|CurrencyID|EUR|Urls|https://www.housingfinance.co.ug/retail-banking/savings-account/save-plus-account/~ProductID|2024|ProductName|Easy Savings Account|CurrencyID|UGX|Urls|https://www.housingfinance.co.ug/retail-banking/savings-account/easy-savings-account/~ProductID|2024|ProductName|Easy Savings Account|CurrencyID|USD|Urls|https://www.housingfinance.co.ug/retail-banking/savings-account/easy-savings-account/~ProductID|2024|ProductName|Easy Savings Account|CurrencyID|GBP|Urls|https://www.housingfinance.co.ug/retail-banking/savings-account/easy-savings-account/~ProductID|2024|ProductName|Easy Savings Account|CurrencyID|EUR|Urls|https://www.housingfinance.co.ug/retail-banking/savings-account/easy-savings-account/~ProductID|2024|ProductName|U-Savers Account|CurrencyID|UGX|Urls|https://www.housingfinance.co.ug/retail-banking/savings-account/u-savers-account-student-account/~ProductID|2025|ProductName|Toto’s Treasure Account|CurrencyID|UGX|Urls|https://www.housingfinance.co.ug/retail-banking/savings-account/totos-treasure-account/~ProductID|2025|ProductName|Toto’s Treasure Account|CurrencyID|USD|Urls|https://www.housingfinance.co.ug/retail-banking/savings-account/totos-treasure-account/~ProductID|2025|ProductName|Toto’s Treasure Account|CurrencyID|GBP|Urls|https://www.housingfinance.co.ug/retail-banking/savings-account/totos-treasure-account/~ProductID|2025|ProductName|Toto’s Treasure Account|CurrencyID|EUR|Urls|https://www.housingfinance.co.ug/retail-banking/savings-account/totos-treasure-account/~ProductID|2030|ProductName|Salary Current Account|CurrencyID|UGX|Urls|https://www.housingfinance.co.ug/retail-banking/current-accounts/salary-current-account/~ProductID|2030|ProductName|Pearl Current Account|CurrencyID|UGX|Urls|https://www.housingfinance.co.ug/retail-banking/current-accounts/pearl-current-account/~ProductID|2030|ProductName|Pearl Current Account|CurrencyID|USD|Urls|https://www.housingfinance.co.ug/retail-banking/current-accounts/pearl-current-account/~ProductID|2030|ProductName|Pearl Current Account|CurrencyID|GBP|Urls|https://www.housingfinance.co.ug/retail-banking/current-accounts/pearl-current-account/~ProductID|2030|ProductName|Pearl Current Account|CurrencyID|EURO|Urls|https://www.housingfinance.co.ug/retail-banking/current-accounts/pearl-current-a
 
-                String [] Products = am.getSavedBundle().split("~");
+                String[] Products = am.getSavedBundle().split("~");
                 accountIDs.clear();
                 accountNames.clear();
                 listUrls.clear();
+                productDescription.clear();
                 accountsGroup.invalidate();
                 accountsGroup.removeAllViews();
-                if(smsBody.equals("New Customer")) {
+                if (smsBody.equals("New Customer")) {
                     for (String aProduct : Products) {
-                        String [] howLong = aProduct.split("\\|");
-                        String [] field_IDs = new String[howLong.length/2];
-                        String [] field_Values = new String[howLong.length/2];
-                        am.separate(aProduct,"|",field_IDs ,field_Values);
-                        if (!accountIDs.contains(am.FindInArray(field_IDs, field_Values,"ProductID"))
-                                && (am.FindInArray(field_IDs, field_Values,"ProductID").equals("EASY")
-                                || am.FindInArray(field_IDs, field_Values,"ProductID").equals("SPLUS")||am.FindInArray(field_IDs,field_Values,"ProductID").equals("PCASF"))) {
-                            accountIDs.add(am.FindInArray(field_IDs, field_Values,"ProductID"));
-                            accountNames.add(am.FindInArray(field_IDs, field_Values,"ProductName"));
-                            listUrls.add(am.FindInArray(field_IDs, field_Values,"TermsUrl"));
+                        String[] howLong = aProduct.split("\\|");
+                        String[] field_IDs = new String[howLong.length / 2];
+                        String[] field_Values = new String[howLong.length / 2];
+                        am.separate(aProduct, "|", field_IDs, field_Values);
+                        if (!accountIDs.contains(am.FindInArray(field_IDs, field_Values, "ProductID"))
+                                && (am.FindInArray(field_IDs, field_Values, "ProductID").equals("EASY")
+                                || am.FindInArray(field_IDs, field_Values, "ProductID").equals("SALCA") || am.FindInArray(field_IDs, field_Values, "ProductID").equals("PERC1"))) {
+                            accountIDs.add(am.FindInArray(field_IDs, field_Values, "ProductID"));
+                            accountNames.add(am.FindInArray(field_IDs, field_Values, "ProductName"));
+                            productDescription.add(am.FindInArray(field_IDs, field_Values, "ProductDescription"));
+                            listUrls.add(am.FindInArray(field_IDs, field_Values, "TermsUrl"));
                         }
-                        
+
                     }
-                } else{
-                   
+                } else {
+
                     for (String aProduct : Products) {
-                        String [] howLong = aProduct.split("\\|");
-                        String [] field_IDs = new String[howLong.length/2];
-                        String [] field_Values = new String[howLong.length/2];
-                        am.separate(aProduct,"|",field_IDs ,field_Values);
-                        if (!accountIDs.contains(am.FindInArray(field_IDs, field_Values,"ProductID"))) {
-                            accountIDs.add(am.FindInArray(field_IDs, field_Values,"ProductID"));
-                            accountNames.add(am.FindInArray(field_IDs, field_Values,"ProductName"));
-                            listUrls.add(am.FindInArray(field_IDs, field_Values,"TermsUrl"));
-                            
+                        String[] howLong = aProduct.split("\\|");
+                        String[] field_IDs = new String[howLong.length / 2];
+                        String[] field_Values = new String[howLong.length / 2];
+                        am.separate(aProduct, "|", field_IDs, field_Values);
+                        if (!accountIDs.contains(am.FindInArray(field_IDs, field_Values, "ProductID"))) {
+                            accountIDs.add(am.FindInArray(field_IDs, field_Values, "ProductID"));
+                            accountNames.add(am.FindInArray(field_IDs, field_Values, "ProductName"));
+                            productDescription.add(am.FindInArray(field_IDs, field_Values, "ProductDescription"));
+                            listUrls.add(am.FindInArray(field_IDs, field_Values, "TermsUrl"));
+
                         }
                     }
                 }
@@ -387,14 +423,14 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
             }*/
 
                 float density = getResources().getDisplayMetrics().density;
-                int margin = (int)(6*density);
-                RadioGroup.LayoutParams rp = new RadioGroup.LayoutParams((int)(115*density), RadioGroup.LayoutParams.MATCH_PARENT, 1);
+                int margin = (int) (6 * density);
+                RadioGroup.LayoutParams rp = new RadioGroup.LayoutParams((int) (115 * density), RadioGroup.LayoutParams.MATCH_PARENT, 1);
                 rp.setMargins(margin, margin, margin, margin);
                 for (String buttonItem : accountIDs) {
                     RadioButton radioButton = new RadioButton(AccountOpenZMain.this);
                     radioButton.setButtonDrawable(/*null*/ getResources().getDrawable(R.drawable.back_radio_button_tick));
                     radioButton.setBackground(getResources().getDrawable(R.drawable.back_radio_button_select));
-                    radioButton.setCompoundDrawablesWithIntrinsicBounds(null,getResources().getDrawable(R.drawable.online_rao),null,null);
+                    radioButton.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.online_rao), null, null);
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                         radioButton.setElevation(10f);
                     }
@@ -409,7 +445,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
 
                     int selectedIndex = group.getCheckedRadioButtonId();
 
-                    if(selectedIndex != -1) {
+                    if (selectedIndex != -1) {
                         int buttonId = group.getCheckedRadioButtonId();
                         RadioButton selectedButton = findViewById(buttonId);
                         selectedButton.toggle();
@@ -417,32 +453,28 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
 
                     selectedAccount = accountNames.get(checkedId);
                     selectedAccountID = accountIDs.get(checkedId);
+                    ProductDescription = productDescription.get(checkedId);
                     termsUrl = listUrls.get(checkedId);
-                    Log.e("URL",termsUrl)  ;
-                    
-                    
+                    Log.e("product description", ProductDescription);
+                    decriptionPopup();
 
-                    
 
                     currencyNames.clear();
                     listCurrencyUrls.clear();
-                    
+
 
                     try {
 
                         for (String aProduct : Products) {
-                            String [] howLong = aProduct.split("\\|");
-                            String [] field_IDs = new String[howLong.length/2];
-                            String [] field_Values = new String[howLong.length/2];
-                            am.separate(aProduct,"|",field_IDs ,field_Values);
-                            if (am.FindInArray(field_IDs, field_Values,"ProductID").matches(selectedAccountID)) {
-                                currencyNames.add(am.FindInArray(field_IDs, field_Values,"CurrencyID"));
-                                listCurrencyUrls.add(am.FindInArray(field_IDs,field_Values,"Urls")) ;
-                                
-                                
-                             
-                               
-                                
+                            String[] howLong = aProduct.split("\\|");
+                            String[] field_IDs = new String[howLong.length / 2];
+                            String[] field_Values = new String[howLong.length / 2];
+                            am.separate(aProduct, "|", field_IDs, field_Values);
+                            if (am.FindInArray(field_IDs, field_Values, "ProductID").matches(selectedAccountID)) {
+                                currencyNames.add(am.FindInArray(field_IDs, field_Values, "CurrencyID"));
+                                listCurrencyUrls.add(am.FindInArray(field_IDs, field_Values, "Urls"));
+
+
                             }
                         }
 
@@ -454,21 +486,21 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                         }
                     }*/
 
-                        currencyNames.add(0,"Select Currency");
-                        listCurrencyUrls.add(0,"Select Currency");
+                        currencyNames.add(0, "Select Currency");
+                        listCurrencyUrls.add(0, "Select Currency");
                         ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<>(AccountOpenZMain.this, android.R.layout.simple_spinner_item, currencyNames);
                         spinnerArrayAdapter.setDropDownViewResource(R.layout.spiner_item);
                         currselect.setAdapter(spinnerArrayAdapter);
                         currencyLayout.setVisibility(View.VISIBLE);
-                    
+
 
                         currselect.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                             @Override
                             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                                if(position!=0) {
+                                if (position != 0) {
                                     currName = currselect.getSelectedItem().toString().trim();
-                                    currencyURL = listCurrencyUrls.get(position)  ;
-                                    Log.e("CurrencyURL",currencyURL)  ;
+                                    currencyURL = listCurrencyUrls.get(position);
+                                    Log.e("CurrencyURL", currencyURL);
                                 } else {
                                     currName = "";
                                     currencyURL = "";
@@ -480,10 +512,9 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
 
                             }
                         });
-                        
-                        
 
-                        if(customer_cat_.getSelectedCategory().equals("")) {
+
+                        if (customer_cat_.getSelectedCategory().equals("")) {
                             ErrorAlert("Select customer type.");
                         }
 
@@ -492,12 +523,12 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                         staffPhoneNumber.setVisibility(View.VISIBLE);
                     } else  staffPhoneNumber.setVisibility(View.GONE);*/
 
-                        if (am.getCustomerID().length() <10) {
+                        if (am.getCustomerID().length() < 10) {
                             new_Lay.setVisibility(View.VISIBLE);
                             accountNumber.setVisibility(View.GONE);
                         } else {
                             new_Lay.setVisibility(View.GONE);
-                            if(customer_cat_.getSelectedCategory().equals("Existing Customer")){
+                            if (customer_cat_.getSelectedCategory().equals("Existing Customer")) {
                                 accountNumber.setVisibility(View.VISIBLE);
                             }
                         }
@@ -514,16 +545,16 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                 // BranchCode|13|BranchName|Fortportal~BranchCode|10|BranchName|Gardencity~
                 // BranchCode|14|BranchName|Gulu~BranchCode|99|BranchName|HeadOffice~BranchCode|16|BranchName|Jinja~BranchCode|06|BranchName|Kikuubo~BranchCode|11|BranchName|Kololo~BranchCode|12|BranchName|Lira~BranchCode|20|BranchName|Malaba~BranchCode|08|BranchName|Mbale~BranchCode|05|BranchName|Mbarara~BranchCode|18|BranchName|Najjanankumbi~BranchCode|02|BranchName|Nakasero~BranchCode|03|BranchName|Namuwongo~BranchCode|15|BranchName|Ndeeba~BranchCode|04|BranchName|Ntinda~BranchCode|09|BranchName|Ovino~BranchCode|19|BranchName|Tororo~
 
-                String [] Branches = am.getSavedBranch().split("~");
+                String[] Branches = am.getSavedBranch().split("~");
 
                 for (String aBranch : Branches) {
-                    String [] howLong = aBranch.split("\\|");
-                    String [] field_IDs = new String[howLong.length/2];
-                    String [] field_Values = new String[howLong.length/2];
-                    am.separate(aBranch,"|",field_IDs ,field_Values);
-                    if (!listBranchIDs.contains(am.FindInArray(field_IDs, field_Values,"BranchCode"))) {
-                        listBranchIDs.add(am.FindInArray(field_IDs, field_Values,"BranchCode"));
-                        listBranchNames.add(am.FindInArray(field_IDs, field_Values,"BranchName"));
+                    String[] howLong = aBranch.split("\\|");
+                    String[] field_IDs = new String[howLong.length / 2];
+                    String[] field_Values = new String[howLong.length / 2];
+                    am.separate(aBranch, "|", field_IDs, field_Values);
+                    if (!listBranchIDs.contains(am.FindInArray(field_IDs, field_Values, "BranchCode"))) {
+                        listBranchIDs.add(am.FindInArray(field_IDs, field_Values, "BranchCode"));
+                        listBranchNames.add(am.FindInArray(field_IDs, field_Values, "BranchName"));
                     }
                 }
 
@@ -535,16 +566,45 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                 }
             }*/
 
-                listBranchNames.add(0,"Select Branch");
+                listBranchNames.add(0, "Select Branch");
                 ArrayAdapter<String> spinnerArrayAdapterB = new ArrayAdapter<>(AccountOpenZMain.this, android.R.layout.simple_spinner_item, listBranchNames);
                 spinnerArrayAdapterB.setDropDownViewResource(R.layout.spiner_item);
                 branchselect.setAdapter(spinnerArrayAdapterB);
 
             } catch (Exception e) {
-                am.ToastMessageLong(AccountOpenZMain.this,getString(R.string.tryAgain));
+                am.ToastMessageLong(AccountOpenZMain.this, getString(R.string.tryAgain));
             }
         }
     };
+
+    private void decriptionPopup() {
+
+        final Dialog mDialog = new Dialog(AccountOpenZMain.this);
+        //noinspection ConstantConditions
+        mDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        mDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        mDialog.setContentView(R.layout.dialog_info_customised);
+        CheckBox check;
+        final TextView txtTitle = mDialog.findViewById(R.id.dialog_title),
+                txtMessage = mDialog.findViewById(R.id.dialog_message),
+                txtOk = mDialog.findViewById(R.id.dialog_btn);
+        txtOk.setText(R.string.proceed);
+        txtTitle.setText(selectedAccount);
+        txtMessage.setText(ProductDescription);
+        txtMessage.setOnClickListener(view1 -> {
+            try {
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(currencyURL)));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+
+        txtOk.setOnClickListener(v1 -> {
+            mDialog.dismiss();
+        });
+        mDialog.show();
+
+    }
 
     @Override
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
@@ -556,19 +616,23 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
         front.setOnClickListener(this);
         selfie.setOnClickListener(this);
         backpick.setOnClickListener(this);
+        signature.setOnClickListener(this);
         tv_resend_otp.setOnClickListener(this);
         findViewById(R.id.done).setOnClickListener(this);
     }
 
+    @SuppressLint("ResourceType")
     private void generateForms() {
+
+
         //Contact Details  field inputs
-        EmailAddress = new cicEditText(this, VAR.EMAIL,"Email Address "+getString(R.string.mandatory_field)," acb@domain.com");
-        PhoneNumber = new cicEditText(this, VAR.PHONENUMBER,"Phone Number "," 722222222");
-        AlternatePhoneNumber = new cicEditText(this, VAR.PHONENUMBER," Alternative Phone Number "," 7333333");
-        ActualAddress = new cicEditText(this, VAR.TEXT,"Current Address "," 123 Kampala");
-        city = new cicEditText(this, VAR.TEXT,"City"," Kampala");
-        country = new cicEditText(this, VAR.TEXT,"Country of residence"," Uganda");
-        zipCode = new cicEditText(this, VAR.TEXT,"Country code"," 256");
+        EmailAddress = new cicEditText(this, VAR.EMAIL, "Email Address " + getString(R.string.mandatory_field), " acb@domain.com");
+        PhoneNumber = new cicEditText(this, VAR.PHONENUMBER, "Phone Number ", " 722222222");
+        AlternatePhoneNumber = new cicEditText(this, VAR.PHONENUMBER, " Alternative Phone Number ", " 7333333");
+        ActualAddress = new cicEditText(this, VAR.TEXT, "Current Address ", " 123 Kampala");
+        country = new cicEditText(this, VAR.TEXT, "Country of residence", " Uganda");
+        zipCode = new cicEditText(this, VAR.TEXT, "Country code", " 256");
+
 
         centecontacts.addView(EmailAddress);
         centecontacts.addView(PhoneNumber);
@@ -590,9 +654,10 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
         }*/
 
         centecontacts.addView(country);
-        centecontacts.addView(zipCode);
-        centecontacts.addView(city);
+//        centecontacts.addView(zipCode);
+//        centecontacts.addView(city);
         centecontacts.addView(ActualAddress);
+
 
         country.setEnabled(false);
         zipCode.setEnabled(false);
@@ -602,9 +667,10 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
             }
+
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (PhoneNumber.editText.getText().length()>5) {
+                if (PhoneNumber.editText.getText().length() > 5) {
                     zipCode.setText(PhoneNumber.getCountryCode());
                     country.setText(PhoneNumber.citizenship.getSelectedItem().toString());
                 } else {
@@ -612,61 +678,103 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                     country.setText("");
                 }
             }
+
             @Override
             public void afterTextChanged(Editable s) {
 
             }
         });
 
-        //ID Details
-        name = new cicEditText(this, VAR.TEXT,"Given Name "," John");
-        sname = new cicEditText(this, VAR.TEXT,"Surname "," Mwanza");
-        otherNames = new cicEditText(this, VAR.TEXT,"Other Names "+getString(R.string.optional_field)," Mwanzo");
-        nationalID= new cicEditText(this, VAR.TEXT,"National ID "," CM1234568806LGB");
-        DOBEdit= new cicEditText(this, VAR.TEXT,"Date of Birth  YYYY-MM-DD ","  1990-12-31");
+        maritalStatusList.add(0, "Select MaritalStatus");
+        maritalStatusList.add("Married");
+        maritalStatusList.add("Single");
+        maritalStatusList.add("Divorced");
+        maritalStatusList.add("Separated");
+        maritalStatusList.add("Widowed/Widower");
+        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<>(AccountOpenZMain.this, android.R.layout.simple_spinner_item, maritalStatusList);
+        spinnerArrayAdapter.setDropDownViewResource(R.layout.spiner_item);
+        spinnerMulti.setAdapter(spinnerArrayAdapter);
+        spinnerMulti.setVisibility(View.VISIBLE);
+        spinnerMulti.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position != 0) {
+                    maritalStatus = spinnerMulti.getSelectedItem().toString().trim();
 
+                } else {
+                    maritalStatus = "";
+
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+
+        //ID Details
+        name = new cicEditText(this, VAR.TEXT, "Given Name ", " John");
+        sname = new cicEditText(this, VAR.TEXT, "Surname ", " Mwanza");
+        otherNames = new cicEditText(this, VAR.TEXT, "Other Names " + getString(R.string.optional_field), " Mwanzo");
+        nationalID = new cicEditText(this, VAR.TEXT, "National ID ", " CM1234568806LGB");
+        DOBEdit = new cicEditText(this, VAR.TEXT, "Date of Birth  YYYY-MM-DD ", "  1990-12-31");
+        nationalIDCardNo = new cicEditText(this, VAR.NUMBER, "Card No", "01041225");
         name.setEnabled(false);
         sname.setEnabled(false);
         nationalID.setEnabled(false);
         DOBEdit.setEnabled(false);
+        nationalIDCardNo.setEnabled(false);
 
         centeidsdetails.addView(name);
         centeidsdetails.addView(sname);
         centeidsdetails.addView(otherNames);
         centeidsdetails.addView(nationalID);
         centeidsdetails.addView(DOBEdit);
+        centeidsdetails.addView(nationalIDCardNo);
 
         //Next of kin details
-        NextofKinFirstName = new cicEditText(this, VAR.TEXT,"Next of Kin First Name "," John");
-        NextofKinMiddleName = new cicEditText(this, VAR.TEXT,"Next of Kin Middle Name "+getString(R.string.optional_field)," Kawaooya");
-        NextofKinLastName = new cicEditText(this, VAR.TEXT,"Next of Kin Last Name "," Kawaooya");
-        NextofKinPhoneNumber = new cicEditText(this, VAR.PHONENUMBER,"Next of Kin Phone Number "+getString(R.string.optional_field)," 72222222");
-        NextofKinAltPhoneNumber = new cicEditText(this, VAR.PHONENUMBER,"Next of Kin Alternate Phone Number "+getString(R.string.optional_field)," 7333333");
-        NextofKinAddress = new cicEditText(this, VAR.TEXT,"Next of Kin Adress "," 123 Kampala");
+        NextofKinFirstName = new cicEditText(this, VAR.TEXT, "Next of Kin First Name ", " John");
+        NextofKinMiddleName = new cicEditText(this, VAR.TEXT, "Next of Kin Middle Name " + getString(R.string.optional_field), " Kawaooya");
+        NextofKinLastName = new cicEditText(this, VAR.TEXT, "Next of Kin Last Name ", " Kawaooya");
+        NextofKinPhoneNumber = new cicEditText(this, VAR.PHONENUMBER, "Next of Kin Phone Number " + getString(R.string.optional_field), " 72222222");
+        NextofKinAltPhoneNumber = new cicEditText(this, VAR.PHONENUMBER, "Next of Kin Alternate Phone Number " + getString(R.string.optional_field), " 7333333");
+//        NextofKinAddress = new cicEditText(this, VAR.TEXT,"Next of Kin Adress "," 123 Kampala");
 
         centenextofkin.addView(NextofKinFirstName);
         centenextofkin.addView(NextofKinMiddleName);
         centenextofkin.addView(NextofKinLastName);
         centenextofkin.addView(NextofKinPhoneNumber);
         centenextofkin.addView(NextofKinAltPhoneNumber);
-        centenextofkin.addView(NextofKinAddress);
+//        centenextofkin.addView(NextofKinAddress);
 
         // occupation details
-        IncomeperAnnum = new cicEditText(this, VAR.AMOUNT,"Income per Annum ","");
-        EmploymentType = new cicEditText(this, VAR.TEXT,"Employment Type ","");
-        EmployerName = new cicEditText(this, VAR.TEXT,"Employer's Name "," NWSC");
-        Occupation = new cicEditText(this, VAR.TEXT,"Occupation "," Engineer");
-        PlaceofWork = new cicEditText(this, VAR.TEXT,"Place of Work ","");
-        NatureofBussiness = new cicEditText(this, VAR.TEXT,"Nature of Business/Activity Sector ","");
-        PeriodofEmployment = new cicEditText(this, VAR.AMOUNT,"Period of Employment "," 5");
+
+
+        IncomeperAnnum = new cicEditText(this, VAR.AMOUNT, "Annual income ", "");
+        NatureofBussiness = new cicEditText(this, VAR.TEXT, "Nature of Business/Activity Sector ", "");
+        NatureofEmployment = new cicEditText(this, VAR.TEXT, "Business Address ", " 123 Kampala");
+        PeriodofEmployment = new cicEditText(this, VAR.TEXT, "Kindly specify ", "Allowance");
+        EmploymentType = new cicEditText(this, VAR.TEXT, "Employment Type ", "");
+        MonthlySalary = new cicEditText(this, VAR.TEXT, "Annual salary", "UGH4000000");
+        EmployerName = new cicEditText(this, VAR.TEXT, "Employer's Name ", " NWSC");
+        Occupation = new cicEditText(this, VAR.TEXT, "Occupation ", " Engineer");
+        PlaceofWork = new cicEditText(this, VAR.TEXT, "Employer Address ", "");
+        yearOfEmployment = new cicEditText(this, VAR.NUMBER, "Period Of Employment ", "5");
+
 
         RadioGroup.LayoutParams rp = new RadioGroup.LayoutParams(RadioGroup.LayoutParams.MATCH_PARENT, RadioGroup.LayoutParams.MATCH_PARENT, 1);
         float density = getResources().getDisplayMetrics().density;
-        int margin = (int)(6*density);
+        int margin = (int) (6 * density);
         rp.setMargins(margin, margin, margin, margin);
 
         employPeriod = new RadioGroup(this);
         employPeriod.setOrientation(RadioGroup.HORIZONTAL);
+        genderGroup = new RadioGroup(this);
+        genderGroup.setOrientation(RadioGroup.HORIZONTAL);
+
+
         yearsButtonE = new RadioButton(AccountOpenZMain.this);
         yearsButtonE.setButtonDrawable(getResources().getDrawable(R.drawable.back_radio_button_tick));
         yearsButtonE.setBackground(getResources().getDrawable(R.drawable.back_radio_button_select));
@@ -691,20 +799,115 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
         monthsButtonE.setPadding(20, 20, 20, 20);
         employPeriod.addView(monthsButtonE, rp);
         employPeriod.setOnCheckedChangeListener((group, checkedId) -> {
-            if(yearsButtonE.isChecked()){
+            if (yearsButtonE.isChecked()) {
                 periodWorkString = " - Years";
             } else {
                 periodWorkString = " - Months";
             }
         });
         employPeriod.check(0);
+        male = new RadioButton(AccountOpenZMain.this);
+        male.setButtonDrawable(getResources().getDrawable(R.drawable.back_radio_button_tick));
+        male.setBackground(getResources().getDrawable(R.drawable.back_radio_button_select));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            male.setElevation(10f);
+        }
+        male.setText(getString(R.string.male));
+        male.setId(0);
+        male.setTextSize(14);
+        male.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
+        male.setPadding(20, 20, 20, 20);
+        genderGroup.addView(male, rp);
 
-        NatureofEmployment = new cicEditText(this, VAR.TEXT,"Nature of employment "," Contract");
+        female = new RadioButton(AccountOpenZMain.this);
+        female.setButtonDrawable(getResources().getDrawable(R.drawable.back_radio_button_tick));
+        female.setBackground(getResources().getDrawable(R.drawable.back_radio_button_select));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            female.setElevation(10f);
+        }
+        female.setText(getString(R.string.female));
+        female.setTextSize(14);
+        female.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
+        female.setPadding(20, 20, 20, 20);
+        genderGroup.addView(female, rp);
 
-        centesourceincome.addView(IncomeperAnnum);
-        centesourceincome.addView(EmploymentType);
-        centesourceincome.addView(EmployerName);
-        centesourceincome.addView(Occupation);
+        genderGroup.setOnCheckedChangeListener((group, checkedId) -> {
+            if (male.isChecked()) {
+                gender = " - Male";
+            } else {
+                gender = " - Female";
+            }
+        });
+        genderGroup.check(0);
+
+        centecontacts.addView(genderGroup);
+        employmentTypeDescription.add(0, "SelectIncomeType");
+        employmentTypeDescription.add("Self-employed/Business");
+        employmentTypeDescription.add("Employed/Salary");
+        employmentTypeDescription.add("Others");
+        ArrayAdapter<String> spinnerArrayAdapter1 = new ArrayAdapter<>(AccountOpenZMain.this, android.R.layout.simple_spinner_item, employmentTypeDescription);
+        spinnerArrayAdapter1.setDropDownViewResource(R.layout.spiner_item);
+        employmentType.setAdapter(spinnerArrayAdapter1);
+        employmentType.setVisibility(View.VISIBLE);
+
+        employmentType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position != 0) {
+                    userEmploymentType = employmentType.getSelectedItem().toString();
+                    if (userEmploymentType.equals("Self-employed/Business")) {
+                        centesourceincome.addView(IncomeperAnnum);
+                        centesourceincome.addView(NatureofEmployment);
+                        centesourceincome.addView(NatureofBussiness);
+                        centesourceincome.removeView(EmployerName);
+                        centesourceincome.removeView(Occupation);
+                        centesourceincome.removeView(PlaceofWork);
+                        centesourceincome.removeView(MonthlySalary);
+                        centesourceincome.removeView(PeriodofEmployment);
+                        centesourceincome.removeView(employPeriod);
+                        centesourceincome.removeView(yearOfEmployment);
+                    } else if (userEmploymentType.equals("Employed/Salary")) {
+                        centesourceincome.addView(EmployerName);
+                        centesourceincome.addView(PlaceofWork);
+                        centesourceincome.removeView(NatureofEmployment);
+                        centesourceincome.addView(MonthlySalary);
+                        centesourceincome.addView(Occupation);
+                        centesourceincome.addView(yearOfEmployment);
+                        centesourceincome.addView(employPeriod);
+                        centesourceincome.removeView(IncomeperAnnum);
+                        centesourceincome.removeView(PeriodofEmployment);
+                        centesourceincome.removeView(EmploymentType);
+                        centesourceincome.removeView(NatureofBussiness);
+
+
+                    } else {
+                        centesourceincome.removeView(IncomeperAnnum);
+                        centesourceincome.removeView(EmploymentType);
+                        centesourceincome.removeView(EmployerName);
+                        centesourceincome.removeView(Occupation);
+                        centesourceincome.removeView(PlaceofWork);
+                        centesourceincome.removeView(NatureofBussiness);
+                        centesourceincome.removeView(NatureofEmployment);
+                        centesourceincome.removeView(employPeriod);
+                        centesourceincome.removeView(MonthlySalary);
+                        centesourceincome.removeView(yearOfEmployment);
+                        centesourceincome.addView(PeriodofEmployment);
+                    }
+
+                    Log.e("userEmployee", userEmploymentType);
+                } else {
+                    userEmploymentType = "";
+
+                }
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                userEmploymentType = "";
+            }
+        });
+
 
         //Occupation Dropdowns
         /*EmploymentType.setVisibility(View.GONE);
@@ -713,57 +916,60 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
         occupation_spin = findViewById(R.id.occupation_spin);
         proffession_status = findViewById(R.id.proffession_status);*/
 
-        centesourceincome.addView(PlaceofWork);
-        centesourceincome.addView(NatureofBussiness);
-        centesourceincome.addView(PeriodofEmployment);
-        centesourceincome.addView(employPeriod);
-        centesourceincome.addView(NatureofEmployment);
 
         // hear us
-        final TextView sstext= findViewById(R.id.sstext);
-        c4 = new cicEditText(this, VAR.TEXT,"Bank Staff Name"," James Kabaku");
+        final TextView sstext = findViewById(R.id.sstext);
+        c4 = new cicEditText(this, VAR.TEXT, "HFB Staff Name", " James Kabaku");
         c4.setVisibility(View.GONE);
         centehearusfrom.addView(c4);
-        c44= new cicEditText(this, VAR.TEXT,"Bank Staff's Branch"," Kampala");
+        c44 = new cicEditText(this, VAR.TEXT, "Bank Staff's Branch", " Kampala");
         c44.setVisibility(View.GONE);
         centehearusfrom.addView(c44);
-        c45= new cicEditText(this, VAR.PHONENUMBER,"Customer phone number"," 733333333");
+        c45 = new cicEditText(this, VAR.PHONENUMBER, "Customer phone number", " 733333333");
         c45.setVisibility(View.GONE);
         centehearusfrom.addView(c45);
-        c5= new cicEditText(this, VAR.TEXT,"Current Location "," Kampala");
-        centehearusfrom.addView(c5);
+        c5 = new cicEditText(this, VAR.TEXT, "Current Location ", " Kampala");
+//        centehearusfrom.addView(c5);
 
 
         final RadioGroup ssgroup = findViewById(R.id.ssgroup);
         radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
-            if(checkedId == R.id.tv) {
+            if (checkedId == R.id.tv) {
                 ssgroup.setVisibility(View.GONE);
                 c4.setVisibility(View.VISIBLE);
                 sstext.setVisibility(View.GONE);
                 c4.setLabel("TV/Radio station");
                 c44.setVisibility(View.GONE);
                 c45.setVisibility(View.GONE);
-            } else if(checkedId == R.id.ss) {
+            } else if (checkedId == R.id.rd) {
+                ssgroup.setVisibility(View.GONE);
+                c4.setVisibility(View.VISIBLE);
+                sstext.setVisibility(View.GONE);
+                c4.setLabel("TV/Radio station");
+                c44.setVisibility(View.GONE);
+                c45.setVisibility(View.GONE);
+
+            } else if (checkedId == R.id.ss) {
                 ssgroup.setVisibility(View.VISIBLE);
                 sstext.setVisibility(View.VISIBLE);
                 c4.setVisibility(View.GONE);
                 c44.setVisibility(View.GONE);
                 c45.setVisibility(View.GONE);
-            } else if(checkedId == R.id.bankstaff){
+            } else if (checkedId == R.id.bankstaff) {
                 ssgroup.setVisibility(View.GONE);
                 sstext.setVisibility(View.GONE);
                 c4.setVisibility(View.VISIBLE);
                 c4.setLabel("Bank Staff Name");
                 c44.setVisibility(View.VISIBLE);
                 c45.setVisibility(View.GONE);
-            } else if(checkedId == R.id.HFBCustomer){
+            } else if (checkedId == R.id.HFBCustomer) {
                 ssgroup.setVisibility(View.GONE);
                 sstext.setVisibility(View.GONE);
                 c4.setVisibility(View.VISIBLE);
                 c4.setLabel("Customer Name");
                 c44.setVisibility(View.GONE);
                 c45.setVisibility(View.VISIBLE);
-            } else if(checkedId == R.id.Agent) {
+            } else if (checkedId == R.id.Agent) {
                 ssgroup.setVisibility(View.GONE);
                 sstext.setVisibility(View.GONE);
                 c4.setVisibility(View.VISIBLE);
@@ -773,17 +979,116 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
             }
         });
 
+
+        //Alternative bank dep detail
+
+        alternativeAccountNumber = new cicEditText(this, VAR.NUMBER, "Alternative Account Number " + getString(R.string.mandatory_field), "00011100000");
+        accountName = new cicEditText(this, VAR.TEXT, "Account Name " + getString(R.string.mandatory_field), "Saving plus");
+        bankName = new cicEditText(this, VAR.TEXT, "Bank Name" + getString(R.string.mandatory_field), "Housing Finance Bank");
+        branchName = new cicEditText(this, VAR.TEXT, "Branch Name" + getString(R.string.mandatory_field), " Uganda");
+        PhoneNumberMobile = new cicEditText(this, VAR.PHONENUMBER, "  Phone Number " + getString(R.string.mandatory_field), " 7333333");
+        phoneregName = new cicEditText(this, VAR.TEXT, "First Name" + getString(R.string.mandatory_field), "John");
+        phoneregLastName = new cicEditText(this, VAR.TEXT, "Last Name" + getString(R.string.mandatory_field), "Smith");
+
+
+        alternativeAccounts.add(0, "Select Alternative Accounts");
+        alternativeAccounts.add("Bank Account");
+        alternativeAccounts.add("Mobile Money");
+
+        ArrayAdapter<String> spinnerArrayAdapter2 = new ArrayAdapter<>(AccountOpenZMain.this, android.R.layout.simple_spinner_item, alternativeAccounts);
+        spinnerArrayAdapter2.setDropDownViewResource(R.layout.spiner_item);
+        alternativeBank.setAdapter(spinnerArrayAdapter2);
+        alternativeBank.setVisibility(View.VISIBLE);
+
+        alternativeBank.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position != 0) {
+                    alternativeSecurityDeposit = alternativeBank.getSelectedItem().toString();
+                    if (alternativeSecurityDeposit.equals("Bank Account")) {
+                        alternativeDeposite.addView(alternativeAccountNumber);
+                        alternativeDeposite.addView(accountName);
+                        alternativeDeposite.addView(bankName);
+                        alternativeDeposite.addView(branchName);
+                        alternativeDeposite.removeView(PhoneNumberMobile);
+                        alternativeDeposite.removeView(phoneregName);
+                        alternativeDeposite.removeView(phoneregLastName);
+                        textView2.setVisibility(View.GONE);
+                        RGroupM.setVisibility(View.GONE);
+                        textView3.setVisibility(View.GONE);
+                        RGroupCon.setVisibility(View.GONE);
+                    } else if (alternativeSecurityDeposit.equals("Mobile Money")) {
+                        alternativeDeposite.removeView(alternativeAccountNumber);
+                        alternativeDeposite.removeView(accountName);
+                        alternativeDeposite.removeView(bankName);
+                        alternativeDeposite.removeView(branchName);
+                        alternativeDeposite.addView(PhoneNumberMobile);
+                        textView2.setVisibility(View.VISIBLE);
+                        RGroupM.setVisibility(View.VISIBLE);
+                        textView3.setVisibility(View.VISIBLE);
+                        RGroupCon.setVisibility(View.VISIBLE);
+                        RGroupM.setOnCheckedChangeListener((group, checkedId) -> {
+                            if (airtel.isChecked()) {
+                                mobileMoneyProvider = "Airtel";
+                            } else {
+                                mobileMoneyProvider = "MTN";
+                            }
+                        });
+                        RGroupM.check(0);
+//                        alternativeDeposite.addView(phoneregName);
+//                        alternativeDeposite.addView(phoneregLastName);
+                        final RadioGroup mobile = findViewById(R.id.RGroupCon);
+                        mobile.setOnCheckedChangeListener((group, checkedId) -> {
+                            if (checkedId == R.id.yes) {
+                                alternativeDeposite.removeView(phoneregName);
+                                alternativeDeposite.removeView(phoneregLastName);
+                            } else if (checkedId == R.id.no) {
+                                alternativeDeposite.addView(phoneregName);
+                                alternativeDeposite.addView(phoneregLastName);
+                            }
+
+                        });
+
+                    } else {
+                        alternativeDeposite.removeView(alternativeAccountNumber);
+                        alternativeDeposite.removeView(accountName);
+                        alternativeDeposite.removeView(bankName);
+                        alternativeDeposite.removeView(branchName);
+                        alternativeDeposite.removeView(PhoneNumberMobile);
+                        alternativeDeposite.removeView(name);
+                        alternativeDeposite.removeView(sname);
+                        textView2.setVisibility(View.GONE);
+                        RGroupM.setVisibility(View.GONE);
+                        textView3.setVisibility(View.GONE);
+                        RGroupCon.setVisibility(View.GONE);
+                        alternativeDeposite.removeView(name);
+                        alternativeDeposite.removeView(sname);
+                    }
+                } else {
+                    alternativeSecurityDeposit = "";
+
+                }
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                alternativeSecurityDeposit = "";
+            }
+        });
+
+
         //Parents details
-        FatherFirstName= new cicEditText(this, VAR.TEXT,"Father's first name "," John");
-        FatherMiddleName = new cicEditText(this, VAR.TEXT,"Father's middle name "," Kawooya");
-        FatherLastName = new cicEditText(this, VAR.TEXT,"Father's last name "," Kawooya");
+        FatherFirstName = new cicEditText(this, VAR.TEXT, "Father's first name ", " John");
+        FatherMiddleName = new cicEditText(this, VAR.TEXT, "Father's middle name ", " Kawooya");
+        FatherLastName = new cicEditText(this, VAR.TEXT, "Father's last name ", " Kawooya");
 
-        MotherFirstName = new cicEditText(this, VAR.TEXT,"Mother's first name "," Mary");
-        MotherMiddleName = new cicEditText(this, VAR.TEXT,"Mother's middle name "," Kawooya");
-        MotherLastName = new cicEditText(this, VAR.TEXT,"Mother's last name "," Kawooya");
+        MotherFirstName = new cicEditText(this, VAR.TEXT, "Mother's first name ", " Mary");
+        MotherMiddleName = new cicEditText(this, VAR.TEXT, "Mother's middle name ", " Kawooya");
+        MotherLastName = new cicEditText(this, VAR.TEXT, "Mother's last name ", " Kawooya");
 
-        Address = new cicEditText(this, VAR.TEXT,"Home District "," Mwanza");
-        YearsAtAddress = new cicEditText(this, VAR.AMOUNT,"Duration of living at that Address "," 1");
+        Address = new cicEditText(this, VAR.TEXT, "Home District ", " Mwanza");
+        YearsAtAddress = new cicEditText(this, VAR.AMOUNT, "Duration of living at that Address ", " 1");
 
         addressPeriod = new RadioGroup(this);
         addressPeriod.setOrientation(RadioGroup.HORIZONTAL);
@@ -812,7 +1117,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
         monthsButtonM.setPadding(20, 20, 20, 20);
         addressPeriod.addView(monthsButtonM, rp);
         addressPeriod.setOnCheckedChangeListener((group, checkedId) -> {
-            if(yearsButtonM.isChecked()){
+            if (yearsButtonM.isChecked()) {
                 periodAddressString = " - Years";
             } else {
                 periodAddressString = " - Months";
@@ -820,7 +1125,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
         });
         addressPeriod.check(0);
 
-        PoliticallyExposed = new cicEditText(this, VAR.TEXT,"Politically Exposed "," Yes/No");
+        PoliticallyExposed = new cicEditText(this, VAR.TEXT, "Politically Exposed ", " Yes/No");
 
         centeparentinfo.addView(FatherFirstName);
         centeparentinfo.addView(FatherMiddleName);
@@ -839,14 +1144,14 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
         political_spin = findViewById(R.id.political_spin);*/
 
         //Existing HFB Account
-        accountNumber= new cicEditText(this, VAR.NUMBER,"Your Existing HFB Account Number" ," 01001216399");
-        accountNumber.setPadding(25,0,25,0);
+        accountNumber = new cicEditText(this, VAR.NUMBER, "Your Existing HFB Account Number", " 01001216399");
+        accountNumber.setPadding(25, 0, 25, 0);
         ccg.addView(accountNumber);
         accountNumber.setVisibility(View.GONE);
 
         //STAFF  Details
-        staffPhoneNumber =  new cicEditText(this, VAR.PHONENUMBER,"Bank Staff Phone Number "+getString(R.string.mandatory_field)," 7000000001");
-        staffPhoneNumber.setPadding(25,0,25,0);
+        staffPhoneNumber = new cicEditText(this, VAR.PHONENUMBER, "Bank Staff Phone Number " + getString(R.string.mandatory_field), " 7000000001");
+        staffPhoneNumber.setPadding(25, 0, 25, 0);
         ccg.addView(staffPhoneNumber);
         staffPhoneNumber.setVisibility(View.GONE);
     }
@@ -875,18 +1180,23 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                 break;
             case 1:
                 title.setText(step1);
+                prev.setVisibility(View.VISIBLE);
                 break;
             case 2:
                 title.setText(step2);
+                prev.setVisibility(View.VISIBLE);
                 break;
             case 3:
                 title.setText(step3);
+                prev.setVisibility(View.VISIBLE);
                 break;
             case 4:
                 title.setText(step4);
+                prev.setVisibility(View.VISIBLE);
                 break;
             case 5:
                 title.setText(step5);
+                prev.setVisibility(View.VISIBLE);
                 break;
             case 6:
                 title.setText(step6);
@@ -906,24 +1216,27 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                 break;
             case 9:
                 title.setText(step9);
+                next.setVisibility(View.VISIBLE);
+                break;
+            case 10:
+                title.setText(step10);
                 next.setVisibility(View.INVISIBLE);
                 break;
-            /*case 10:
-                title.setText(step10);
-                break;
-            case 11:
-            case 12:
-                title.setText(step11);
-                break;
-            case 13:
-                title.setText(step12);
-                startStimer();
-                break;*/
+//            case 11:
+//                title.setText(step11);
+//                break;
+//            case 12:
+//                title.setText(step11);
+//                break;
+//            case 13:
+//                title.setText(step12);
+//                startStimer();
+//                break;*/
         }
     }
 
     private void startStimer() {
-        if(cnt!=null) {
+        if (cnt != null) {
             cnt.cancel();
         }
         cnt = new CountDownTimer(60000, 1000) {
@@ -985,91 +1298,428 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
         startActivityForResult(intent, 101);
     }
 
-    //OCR request with ID image
-    private void submitImages() {
-        alertLoading("");
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://craftsiliconai.azurewebsites.net/IdImages.aspx",
-                response -> {
-                    removeDialogs();
-                    ImagePickerActivity.clearCache(AccountOpenZMain.this);
-                    if (response.contains("{")) {
-                        int spacesToIndentEachLevel = 2;
-                        String formattedJson = "";
-                        try {
-                            formattedJson = new JSONObject(response).toString(spacesToIndentEachLevel);
-                        } catch (Exception e) {
-                            formattedJson = response;
-                        }
+    //OCR request with ID image  
 
-                        try {
-                            JSONObject json = new JSONObject(Toa(formattedJson));
-                            ugandanID ug = new ugandanID(json);
 
-                            if (ug.isUgandanID()) {
-                                // TODO: 26/11/2021 added condirions to check empty
-                                String [] nameSplit = ug.getGivenNameNew().split(" ");
-                                if(nameSplit.length>1) {
-                                    if(nameSplit[0].isEmpty()) {
-                                        am.myDialog(AccountOpenZMain.this,getString(R.string.unrecognized_ID), getString(R.string.sure_clear));
-                                    } else {
-                                        name.setText(nameSplit[0]);
-                                        otherNames.setText(nameSplit[1]);
-                                        // TODO: 1/10/2022
-                                        otherNames.setEnabled(false);
-                                    }
-                                } else {
-                                    if(ug.getGivenNameNew().isEmpty()) {
-                                        am.myDialog(AccountOpenZMain.this,getString(R.string.unrecognized_ID), getString(R.string.sure_clear));
-                                    } else {
-                                        name.setText(ug.getGivenNameNew());
-                                    }
-                                }
+    ///ImageUpload
 
-                                if(ug.getNIN().isEmpty() || ug.getSurNameNew().isEmpty() || ug.getDOBNew().isEmpty()) {
-                                    am.myDialog(AccountOpenZMain.this,getString(R.string.unrecognized_ID), getString(R.string.sure_clear));
-                                } else {
-                                    sname.setText(ug.getSurNameNew());
-                                    nationalID.setText(ug.getNIN());
-                                    DOBEdit.setText(ug.getDOBNew());
+    String base_URL = "https://imageuploadv1.azurewebsites.net/api/ImageUpload_V1/?JSONData=";
+    String progressbar_title = "";
+    String progressbar_message = "";
+    String image_URL = "";
 
-                                    flipper.showNext();
-                                    step_++;
-                                    flipViewIt(step_);
-                                }
-                            } else {
-                                am.myDialog(AccountOpenZMain.this,getString(R.string.unrecognized_ID), getString(R.string.sure_clear));
-                            }
-                        } catch (Exception e) {
-                            am.myDialog(AccountOpenZMain.this,getString(R.string.alert), getString(R.string.sure_clear));
-                        }
+    private void uploadImage(byte[] byteArray, String document) { //IDFRONT
+
+        String url_string = "{" + "\"FormID\":\"LITTLEBUSINESS\"," +
+                "\"FileType\":\"jpg\"," +
+                "\"ModuleID\":\"" + document + "\"," +
+                "\"BankID\":\"LITTLE\"}";
+
+        try {
+            image_URL = base_URL + URLEncoder.encode(url_string, "UTF-8");
+
+            Log.d("encoded_url_string", image_URL);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+
+            Log.d("encoded_url_error", e.getMessage());
+        }
+
+
+        Log.d("image_url_front", image_URL);
+
+
+        int max = 100;
+
+        //showProgressBar(0, max);
+        //image_URL = base_URL + "%7B%22FormID%22%3A%22BANKIDFRONT%22%2C%22Key%22%3A%22PORTAL-FF7B-4CCA-B884-98346D5EC385%22%2C%22Country%22%3A%22"+preferenceHelper.getCountry()+"%22%2C%22FileType%22%3A%22jpg%22%2C%22MobileNumber%22%3A%22"+preferenceHelper.getDriverMobileNumber()+"%22%2C%22EMailID%22%3A%22"+preferenceHelper.getEmail()+"%22%2C%22ModuleID%22%3A%22CREATECUSTOMER%22%2C%22BankID%22%3A%22"+bank_id+"%22%7D";
+        Ion.with(AccountOpenZMain.this)
+                .load("POST", image_URL)
+                .uploadProgressHandler((uploaded, total) -> runOnUiThread(() -> {
+                    Log.d("mercedes_progress-1", uploaded + " of " + total);
+                    Double progress = (double) uploaded / (double) total;
+                    Log.d("mercedes_progress-2", progress + " / " + max);
+                    progress = progress * max;
+                    Log.d("mercedes_progress-3", progress + " / " + max);
+                    //showProgressBar(progress.intValue(), max);
+
+                    am.progressDialog("1");
+
+                }))
+                .setByteArrayBody(byteArray)
+                .asString()
+                .setCallback((e, result) -> {
+                    //{"Status":"091","Message":"Invalid Form Details 1.0","ImageURL":null}
+                    //dismisDialog();
+                    if (result != null) {
+                        //Upload Success
+                        Log.d("mercedes-result", "1" + result);
+
                     } else {
-                        am.myDialog(AccountOpenZMain.this,getString(R.string.alert), getString(R.string.tryAgain));
+                        //Upload Failed
+                        Log.d("mercedes-else", "2");
+                    }
+                    if (e != null) {
+                        Log.d("mercedes-error", "1" + e.getMessage());
                     }
 
-                },
-                error -> {
-                    removeDialogs();
-                    am.myDialog(AccountOpenZMain.this,getString(R.string.alert),getString(R.string.connectionError));
-                }) {
+
+                    //let me put it outside the result is null check so that when images fail they can still proceed
+                    try {
+                        removeDialogs();
+
+                        // {"Status":"000","Message":"Data Saved","ImageURL":"https://littleimages.blob.core.windows.net/documents/6F005297-5883-4EAE-A30F-5C9F058CF3E7"}
+
+                        Log.d("response_", result);
+                        JSONObject jsonObject = new JSONObject(result);
+                        String status = jsonObject.getString("Status");
+                        String message = jsonObject.getString("Message");
+
+                        if (status.equals("000")) {
+                            String imageURL = "";
+                            if (jsonObject.has("ImageURL")) {
+                                imageURL = jsonObject.getString("ImageURL");
+
+                                Log.d("response_idurl", result);
+                                validateImageSubmited(imageURL);
+
+//                                imgCheck.setVisibility(View.VISIBLE);
+//
+//                                BusinessDocumentsModel businessDocumentsModel = new BusinessDocumentsModel(imageURL, document);
+//                                lstDocumentsUrl.add(businessDocumentsModel);
+
+                            }
+
+                        } else if (status.equals("091")) {
+                            ErrorAlert(message);
+                        }
+
+                    } catch (Exception exception) {
+                        Log.d("mercedes-result", "signature-> " + exception.getMessage());
+
+                        am.progressDialog("0");
+
+                    }
+                });
+    }
+
+    private void validateImageSubmited(String imageURL) {
+
+        String base_URL2 = "https://imageai.azurewebsites.net/ReadDocument.aspx";
+
+        JSONObject jsonObject1 = new JSONObject();
+        try {
+            jsonObject1.put("RequestID", "SUBMITIMAGE");
+            jsonObject1.put("ImageID", "NATIONALID");
+            jsonObject1.put("ImageURL", imageURL);
+            jsonObject1.put("Country", "UGANDA");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+                    
+        JsonObjectRequest req = new JsonObjectRequest(Request.Method.POST, base_URL2, jsonObject1,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        am.progressDialog("1");
+//                        {"Status":"Accepted","Message":"Accepted","RequestID":"37236775-bf86-4240-a1db-8baafc33cbd1","ProcessID":"4C22913D-CDEA-480F-B4B1-2A1F703F110C"}
+                        try {
+                            JSONObject jsonObject = new JSONObject(response.toString());
+                            String status = jsonObject.getString("Status");
+                            String message = jsonObject.getString("Message");
+
+                            if (status.equals("Accepted")) {
+
+                                if (jsonObject.has("ProcessID")) {
+                                    processID = jsonObject.getString("ProcessID");
+                                    Log.d("response_ProcessID", processID);
+
+                                    final Handler handler = new Handler(Looper.getMainLooper());
+                                    handler.postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            //Do something after 100ms
+                                            submitImage(processID);
+                                        }
+                                    }, 10000);
+                                   
+
+//                                imgCheck.setVisibility(View.VISIBLE);
+//
+//                                BusinessDocumentsModel businessDocumentsModel = new BusinessDocumentsModel(imageURL, document);
+//                                lstDocumentsUrl.add(businessDocumentsModel);
+
+                                }
+
+                            } else if (status.equals("091")) {
+                                ErrorAlert(message);
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
             @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<>();
-                params.put("IDType", "");
-                params.put("IDNumber", "");
-                params.put("IDFront", "" + encodedImageFront);
-                params.put("IDBack", "" + encodedImageBack);
-                params.put("Selfie", "" + encodedImageSelfie);
-                params.put("UserID", "SC");
-                params.put("Password", "R00PK1RANI");
-                //IDFront,IDBack,Selfie
-                //contants.LogThis(params.toString());
-                return params;
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.e("Error: ", error.getMessage());
             }
+        });
+
+// add the request object to the queue to be executed
+        RequestQueue queue = Volley.newRequestQueue(AccountOpenZMain.this);
+        queue.add(req);
+        Log.d("IMAGEURL", req.toString());
+    }
+
+    private void submitImage(String processID) {
+       
+        String base_URL2 = "https://imageai.azurewebsites.net/ReadDocument.aspx";
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("RequestID", "GETRESULT");
+            jsonObject.put("ImageID", "NATIONALID");
+            jsonObject.put("ProcessID", processID);
+            jsonObject.put("Country", "UGANDA");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        am.progressDialog("1");
+        customJsonRequest = new CustomJsonRequest(Request.Method.POST, base_URL2, jsonObject, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                am.progressDialog("0");
+                Log.d("IMEFIKA",response.toString());
+//                :[{"Nationality":[{"text":"UGA","confidence":"0.995"}],"Sex":[{"text":"M","confidence":"0.989"}],"Surname":[{"text":"BIGIRWA","confidence":"0.995"}],"CardNumber":[{"text":"010394857","confidence":"0.995"}],"DateOfExpiry":[{"text":"06.06.2025","confidence":"0.995"}],"NIN":[{"text":"CM86004106Z49G","confidence":"0.983"}],"DateOfBirth":[{"text":"10.08.1986","confidence":"0.995"}],"Name":[{"text":"ISAAC","confidence":"0.978"}]}]}]
+                try {
+                    JSONObject jsonObject1 = response.getJSONObject(0);
+                    String status = jsonObject1.getString("Status");
+                    String message = jsonObject1.getString("Message");
+                    String fields = jsonObject1.getString("fields");
+
+                    JSONArray jsonArrayFields = new JSONArray(fields);
+                    for (int j = 0; j < jsonArrayFields.length(); j++) {
+                        JSONObject jsonFields = jsonArrayFields.getJSONObject(j);
+
+                        if (jsonFields.has("Nationality")){
+
+                            String genderArray = jsonFields.getString("Nationality");
+
+                            JSONArray jsonArrayGender = new JSONArray(genderArray);
+                            for (int k = 0; k < jsonArrayGender.length(); k++) {
+                                JSONObject jsonGender = jsonArrayGender.getJSONObject(k);
+
+                                if (jsonGender.has("text")){
+                                    nationality = jsonGender.getString("text");
+                                }
+                            }
+
+                        }
+
+                        if (jsonFields.has("Sex")){
+
+                            String idNumberArray = jsonFields.getString("Sex");
+
+                            JSONArray jsonArrayID = new JSONArray(idNumberArray);
+                            for (int l = 0; l < jsonArrayID.length(); l++) {
+
+                                JSONObject sex = jsonArrayID.getJSONObject(l);
+                               
+                            }
+
+                        }
+
+                        if (jsonFields.has("Surname")){
+
+                            String issueDateArray   =   jsonFields.getString("Surname");
+
+                            JSONArray jsonArrayIssueDate = new JSONArray(issueDateArray);
+                            for (int m = 0; m < jsonArrayIssueDate.length(); m++) {
+                                
+
+                                JSONObject jsonIssueDate = jsonArrayIssueDate.getJSONObject(m);
+                                if (jsonIssueDate.has("text")){
+                                    surName = jsonIssueDate.getString("text");
+                                }
+                            }
+
+                        }
+
+                        if (jsonFields.has("CardNumber")){
+
+                            String IdSerialArray = jsonFields.getString("CardNumber");
+
+                            JSONArray jsonArrayIDSerial = new JSONArray(IdSerialArray);
+                            for (int n = 0; n < jsonArrayIDSerial.length(); n++) {
+
+                                JSONObject jsonSerialNumber = jsonArrayIDSerial.getJSONObject(n);
+                                if (jsonSerialNumber.has("text")){
+                                    CardNumber = jsonSerialNumber.getString("text");
+                                }
+                            }
+
+
+                        }
+
+                        if (jsonFields.has("DateOfExpiry")){
+
+                            String idNumberArray = jsonFields.getString("DateOfExpiry");
+
+                            JSONArray jsonArrayID = new JSONArray(idNumberArray);
+                            for (int l = 0; l < jsonArrayID.length(); l++) {
+
+                                JSONObject jsonIDNumber = jsonArrayID.getJSONObject(l);
+                                if (jsonIDNumber.has("text")){
+                                    DateOfExpiry = jsonIDNumber.getString("text");
+                                }
+                            }
+                            
+
+                        }
+                        if (jsonFields.has("NIN")){
+
+                            String idNumberArray = jsonFields.getString("NIN");
+
+                            JSONArray jsonArrayID = new JSONArray(idNumberArray);
+                            for (int l = 0; l < jsonArrayID.length(); l++) {
+
+                                JSONObject jsonIDNumber = jsonArrayID.getJSONObject(l);
+                                if (jsonIDNumber.has("text")){
+                                    NIN = jsonIDNumber.getString("text");
+                                }
+                            }
+
+                        }
+
+                        if (jsonFields.has("DateOfBirth")){
+                            String birthDateArray = jsonFields.getString("DateOfBirth");
+
+                            JSONArray jsonArrayBirthDate = new JSONArray(birthDateArray);
+                            for (int q = 0; q < jsonArrayBirthDate.length(); q++) {
+
+                                JSONObject jsonBirthDateDate = jsonArrayBirthDate.getJSONObject(q);
+                                if (jsonBirthDateDate.has("text")){
+                                    birthdate = jsonBirthDateDate.getString("text");
+                                }
+                                SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
+                                SimpleDateFormat outFormat = new SimpleDateFormat("yyyy-MM-dd",Locale.getDefault());
+                                
+                                try {
+                                    Date date = sdf.parse(birthdate);
+                                    dob = outFormat.format(date); 
+                                } catch (ParseException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+
+                        }
+
+                        if (jsonFields.has("Name")){
+
+                            String idNumberArray = jsonFields.getString("Name");
+
+                            JSONArray jsonArrayID = new JSONArray(idNumberArray);
+                            for (int l = 0; l < jsonArrayID.length(); l++) {
+
+                                JSONObject jsonIDNumber = jsonArrayID.getJSONObject(l);
+                                if (jsonIDNumber.has("text")){
+                                    Name = jsonIDNumber.getString("text");
+                                }
+                            }
+
+                        }
+
+                    }
+
+
+                    
+
+
+
+//                           
+                    if(status.equals("000"))  {
+                        
+
+//                        String  nationality = getValues(fields,0,"Nationality");
+//                        String  sex = getValues(fields,1,"Sex");
+//                        Toast.makeText(AccountOpenZMain.this, "GENDER"+sex, Toast.LENGTH_SHORT).show();
+//                        String  surName = getValues(fields,2,"Surname");
+//                        String  CardNumber = getValues(fields,3,"CardNumber");
+//                        String  DateOfExpiry = getValues(fields,4,"DateOfExpiry");
+//                        String  NIN = getValues(fields,5,"NIN");
+//                        String  DateOfBirth = getValues(fields,6,"DateOfBirth");
+//                        String  Name = getValues(fields,7,"Name");
+                        sname.setText(surName);
+                        name.setText(Name);
+                        nationalID.setText(NIN);
+                        DOBEdit.setText(dob);
+                        nationalIDCardNo.setText(CardNumber);
+                        otherNames.setText(Name);
+                        flipper.showNext();
+                        step_++;
+//                                    niraValidation() ;
+                        flipViewIt(step_);
+//                        Toast.makeText(AccountOpenZMain.this, "NATIONAL" + nationality, Toast.LENGTH_SHORT).show();
+                    }   else{
+                        am.myDialog(AccountOpenZMain.this, getString(R.string.unrecognized_ID), getString(R.string.sure_clear)); 
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                
+            }
+        }){
+            
         };
-        stringRequest.setRetryPolicy(new DefaultRetryPolicy(1200000,
-                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        callServer(stringRequest);
+
+
+        MS.getInstance(AccountOpenZMain.this.getApplicationContext()).addToRequestQueue(customJsonRequest);
+
+       
+    }
+
+    private String getValues(String fields,int index, String fieldName) {
+        String text = "";
+        try {
+            JSONArray jsonArray = new JSONArray(fields);
+            JSONObject jsonObject1 = jsonArray.getJSONObject(index);
+            String nationality = jsonObject1.getString(fieldName);
+            JSONArray jsonArray2 = new JSONArray(nationality);
+            JSONObject jsonObject2 = jsonArray2.getJSONObject(0);
+            text = jsonObject2.getString("text");
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return text;
+    }
+
+
+
+    private void niraValidation() {
+        String surname  ;
+//        if(sname.getText().contains("")) {
+//           surname = sname.getText().replace(" ","-") ;
+//        } else{
+//            surname  = sname.getText().toString();
+//            
+//        }
+        new_request = "FORMID:M-:" +
+                "MERCHANTID:NIRA:" + "ACCOUNTID:" + nationalID.getText() + ":" +
+                "INFOFIELD1:" + surName + ":" +
+                "INFOFIELD2:" + Name + ":" +
+                "INFOFIELD3:" + DOBEdit.getText() + ":" +
+                "INFOFIELD4:" + nationalIDCardNo.getText() + ":" +
+                "ACTION:GETNAME:";
+        am.get(AccountOpenZMain.this, new_request, getString(R.string.loading), "NIRA");
+
+
     }
 
     public static String ConvertImageToBase64(Bitmap bitmap) {
@@ -1136,10 +1786,10 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
 
     private void alertLoading(String message) {
         am.progressDialog("1");
-   }
+    }
 
-    public void ErrorAlert(String Message){
-        am.myDialog(this,getString(R.string.alert),Message);
+    public void ErrorAlert(String Message) {
+        am.myDialog(this, getString(R.string.alert), Message);
     }
 
     private void callServer(StringRequest stringRequest) {
@@ -1148,19 +1798,25 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
 
     }
 
+    private void callServer2(JsonObjectRequest jsonObjectRequest) {
+
+        MS.getInstance(this).addToRequestQueue(jsonObjectRequest);
+
+    }
+
     public String Toa(String str) {
         str = str.substring(0, str.length() - 2);
         return str + "\"B-0\":\"RIGHT THUMB\"" + "}";
     }
 
-    private void getLocationAddress(Location location){
+    private void getLocationAddress(Location location) {
         String url = "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + location.getLatitude() + ","
                 + location.getLongitude() + "&key=AIzaSyDhZlL-z0dTCANCHwHSHbNQYnG96phvQ0c";
 
         RequestQueue queue = Volley.newRequestQueue(AccountOpenZMain.this);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 response -> {
-                    if(!TextUtils.isEmpty(response)) {
+                    if (!TextUtils.isEmpty(response)) {
                         //c5.setText(result);
                         String formatted_address = null;
                         try {
@@ -1191,7 +1847,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                     }
                 }, error -> {
 
-                });
+        });
         stringRequest.setRetryPolicy(new DefaultRetryPolicy(
                 60000,
                 0,
@@ -1213,11 +1869,11 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                 String theSms = i.getStringExtra("SMSbody");
                 String status = i.getStringExtra("STATUS");
                 assert status != null;
-                if("000".equals(status)) {
+                if ("000".equals(status)) {
                     assert theSms != null;
                     otpPinView.setText(theSms.trim());
                 } else {
-                    Toast.makeText(AccountOpenZMain.this,theSms,Toast.LENGTH_LONG).show();
+                    Toast.makeText(AccountOpenZMain.this, theSms, Toast.LENGTH_LONG).show();
                     unregisterReceiver(onBroadcastSMSReceived);
                 }
             } catch (Exception e) {
@@ -1243,22 +1899,38 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                     File mFile = new File(uri.getPath());
                     switch (REQUEST_IMAGEX) {
                         case 1:
+
+//                            Try something like this:
+//
+                            //Bitmap bmp = ;
+                            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                            bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                            byteArray = stream.toByteArray();
+
+//                            bmp.recycle()
                             front.setImage(bitmap);
                             bitmapImageFront = BitmapCompressionWithZ(this, mFile);
                             encodedImageFront = ConvertImageToBase64(bitmap);
-                            am.putSavedData("encodedImageFront",encodedImageFront);
+
+                            am.putSavedData("encodedImageFront", encodedImageFront);
                             break;
                         case 2:
                             selfie.setImage(bitmap);
                             bitmapImageSelfie = BitmapCompressionWithZ(this, mFile);
                             encodedImageSelfie = ConvertImageToBase64(bitmap);
-                            am.putSavedData("encodedImageSelfie",encodedImageSelfie);
+                            am.putSavedData("encodedImageSelfie", encodedImageSelfie);
                             break;
                         case 3:
                             backpick.setImage(bitmap);
-                            bitmapImageBack = BitmapCompressionWithZ(this,mFile);
+                            bitmapImageBack = BitmapCompressionWithZ(this, mFile);
                             encodedImageBack = ConvertImageToBase64(bitmap);
-                            am.putSavedData("encodedImageBack",encodedImageBack);
+                            am.putSavedData("encodedImageBack", encodedImageBack);
+                            break;
+                        case 4:
+                            signature.setImage(bitmap);
+                            bitmapImageBack = BitmapCompressionWithZ(this, mFile);
+                            encodedImageSignature = ConvertImageToBase64(bitmap);
+                            am.putSavedData("encodedImageSignature", encodedImageSignature);
                             break;
                         default:
                             selfie.setImage(bitmap);
@@ -1269,85 +1941,88 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                     e.printStackTrace();
                 }
             }
-        }
-        else if(requestCode == REQUEST_ID_AIRLOCATION) {
+        } else if (requestCode == REQUEST_ID_AIRLOCATION) {
             airLocation.onActivityResult(requestCode, resultCode, data);
         }
 
     }
 
     private void getCustomParam(String paramName, String task) {
-        am.get(this,"FORMID:O-GETCUSTOMPARAMS:" +
-                "PARAMETERNAME:" + paramName + ":"+
-                "BANKID:" + am.getBankID() + ":", getString(R.string.loading),task);
+        am.get(this, "FORMID:O-GETCUSTOMPARAMS:" +
+                "PARAMETERNAME:" + paramName + ":" +
+                "BANKID:" + am.getBankID() + ":", getString(R.string.loading), task);
 
     }
 
     private void checkCustomerExists(String checkNum, String nom) {
-        if (nom.equals("1")){
+        if (nom.equals("1")) {
             currentTask = "VerifyExisting";
         } else if (nom.equals("2")) {
             currentTask = "VerifyExistingAlt";
         } else {
             currentTask = "ValidateBankStaff";
         }
-        am.get(this,"FORMID:O-CheckCustomerExists:" +
+        am.get(this, "FORMID:O-CheckCustomerExists:" +
                 "CUSTOMERMOBILENUMBER:" + checkNum + ":" +
                 "PRODUCTID:" + selectedAccountID + ":" +
-                "BANKID:" + am.getBankID() + ":",getString(R.string.loading),currentTask);
+                "BANKID:" + am.getBankID() + ":", getString(R.string.loading), currentTask);
     }
 
     private void getPersonalDetailsExisting(String task) {
-        am.get(this,"FORMID:O-GetCustomerPersonalDetails:" +
-                "BANKID:" + am.getBankID() + ":",getString(R.string.loading),task);
+        am.get(this, "FORMID:O-GetCustomerPersonalDetails:" +
+                "BANKID:" + am.getBankID() + ":", getString(R.string.loading), task);
     }
 
-    private void validateExisting(String existingAccount){
+    private void validateExisting(String existingAccount) {
         am.get(this, "FORMID:M-:" +
                 // TODO: 2/2/2022 on Live
                 //"MERCHANTID:VALIDATEACCOUNTBANK:" +
                 "MERCHANTID:VALIDATEACCOUNT:" +
                 "ACCOUNTID:" + existingAccount + ":" +
-                "ACTION:GETNAME:",getString(R.string.validating),"VAL_EXIST");
+                "ACTION:GETNAME:", getString(R.string.validating), "VAL_EXIST");
     }
 
     private void cardDetailsExisting(String accNum, String cardNum, String auth, String checkNum) {
         currentTask = "cardDetailsExisting";
-        am.get(this,"FORMID:B-:MERCHANTID:SELFREG:" +
-                "BANKACCOUNTID:"+ accNum +":" +
-                "INFOFIELD1:"+ cardNum.replaceAll("\\s+", "") + ":" +
-                "INFOFIELD2:"+ auth + ":" +
-                "INFOFIELD3:"+ checkNum + ":" +
+        am.get(this, "FORMID:B-:MERCHANTID:SELFREG:" +
+                "BANKACCOUNTID:" + accNum + ":" +
+                "INFOFIELD1:" + cardNum.replaceAll("\\s+", "") + ":" +
+                "INFOFIELD2:" + auth + ":" +
+                "INFOFIELD3:" + checkNum + ":" +
                 //"INFOFIELD5:DEVICEMISMATCH:" +
-                "INFOFIELD6:"+ am.getIMEI()+ ":" +
-                "BANKID:"+ am.getBankID() + ":",getString(R.string.loading),currentTask);
+                "INFOFIELD6:" + am.getIMEI() + ":" +
+                "BANKID:" + am.getBankID() + ":", getString(R.string.loading), currentTask);
     }
 
     private void getPoliticalExposed() {
         currentTask = "FetchPolitics";
-        am.get(this,"FORMID:O-GetStaticData:" +
-                "SYSTEMCODE:" + "CSPEP" + ":"+
-                "BANKID:" + am.getBankID() + ":" ,getString(R.string.loading),currentTask);
+        am.get(this, "FORMID:O-GetStaticData:" +
+                "SYSTEMCODE:" + "CSPEP" + ":" +
+                "BANKID:" + am.getBankID() + ":", getString(R.string.loading), currentTask);
     }
 
     private void getAddressParam(String paramName, String task, String paramValue) {
         currentTask = task;
-        am.get(this,"FORMID:O-GETCUSTOMADDRESS:" +
-                "PARAMETERNAME:" + paramName + ":"+
-                "PARAMVALUE:" + paramValue + ":"+
-                "BANKID:" + am.getBankID() + ":" ,getString(R.string.loading),currentTask);
+        am.get(this, "FORMID:O-GETCUSTOMADDRESS:" +
+                "PARAMETERNAME:" + paramName + ":" +
+                "PARAMVALUE:" + paramValue + ":" +
+                "BANKID:" + am.getBankID() + ":", getString(R.string.loading), currentTask);
     }
 
-    public String RAO(){
+    public String RAO() {
+
         return (
+
                 "FORMID:M-:" +
-                        "MERCHANTID:SELFRAO:" + INFOFIELD1+":"+INFOFIELD2+":"+INFOFIELD3+":"+INFOFIELD4+":"+INFOFIELD5+":"+
-                        "INFOFIELD6:"+encodedImageFront+":"+
-                        "INFOFIELD7:"+encodedImageBack+":"+
-                        "INFOFIELD8:"+encodedImageSelfie+":"+
+                        "MERCHANTID:SELFRAO:" + INFOFIELD1 + ":" + INFOFIELD2 + ":" + INFOFIELD3 + ":" + INFOFIELD4 + ":" + INFOFIELD5 + ":" +
+                        "INFOFIELD6:" + encodedImageFront + ":" +
+                        "INFOFIELD7:" + encodedImageSelfie + ":" +
+                        "INFOFIELD8:" + encodedImageSignature + ":" +
+                        "INFOFIELD9:" + encodedImageBack + ":" +
                         "BANKACCOUNTID:" + am.getCustomerID() + ":" +
                         "ACTION:GETNAME:"
         );
+
     }
 
     private void createOTP() {
@@ -1355,18 +2030,18 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
             new Handler().postDelayed(() -> {
                 raoOTP = "";
                 String customerMobilenNumber = "";
-                if(selectedAccountID.equals("32219")){
+                if (selectedAccountID.equals("32219")) {
                     customerMobilenNumber = staffPhoneNumber.getCountryCode() + staffPhoneNumber.getText();
                 } else {
                     customerMobilenNumber = PhoneNumber.getCountryCode() + PhoneNumber.getText();
                 }
                 new_request = "FORMID:O-OTPCREATE:" +
                         "SERVICENAME:SELFRAO:" +
-                        "BANKID:"+am.getBankID()+ ":" +
+                        "BANKID:" + am.getBankID() + ":" +
                         "CUSTOMERMOBILENUMBER:" + customerMobilenNumber + ":" +
-                        "EMAILID:" + EmailAddress.getText()+ ":" ;
+                        "EMAILID:" + EmailAddress.getText() + ":";
 
-                am.get(AccountOpenZMain.this,new_request,getString(R.string.loading),currentTask);
+                am.get(AccountOpenZMain.this, new_request, getString(R.string.loading), currentTask);
                 /*if(PhoneNumber.getCountryCode().equals("256")){
                     otpPinView.setEnabled(false);
                 } else {
@@ -1374,39 +2049,39 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                 }*/
                 otpPinView.setEnabled(true);
                 otpPinView.requestFocus();
-            },300);
+            }, 300);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private void verify(){
-        if(cnt!=null) {
+    private void verify() {
+        if (cnt != null) {
             cnt.cancel();
         }
         currentTask = "VerifyOTP";
         String customerMobilenNumber = "";
-        if(selectedAccountID.equals("32219")){
+        if (selectedAccountID.equals("32219")) {
             customerMobilenNumber = staffPhoneNumber.getCountryCode() + staffPhoneNumber.getText();
         } else {
             customerMobilenNumber = PhoneNumber.getCountryCode() + PhoneNumber.getText();
         }
         new_request = "FORMID:O-OTPVERIFY:" +
                 "SERVICENAME:SELFRAO:" +
-                "BANKID:"+am.getBankID()+":" +
-                "CUSTOMERMOBILENUMBER:"+customerMobilenNumber+":" +
-                "OTPKEY:"+raoOTP + ":" +
-                "EMAILID:" + EmailAddress.getText()+":";
-        am.get(AccountOpenZMain.this,new_request,getString(R.string.loading),currentTask);
+                "BANKID:" + am.getBankID() + ":" +
+                "CUSTOMERMOBILENUMBER:" + customerMobilenNumber + ":" +
+                "OTPKEY:" + raoOTP + ":" +
+                "EMAILID:" + EmailAddress.getText() + ":";
+        am.get(AccountOpenZMain.this, new_request, getString(R.string.loading), currentTask);
     }
 
-    private void accountBranchChoice(){
+    private void accountBranchChoice() {
         final Dialog mDialog = new Dialog(AccountOpenZMain.this);
         //noinspection ConstantConditions
         mDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         mDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         mDialog.setContentView(R.layout.dialog_info);
-     
+
         final TextView txtTitle = mDialog.findViewById(R.id.dialog_title),
                 txtMessage = mDialog.findViewById(R.id.dialog_message),
                 txtOk = mDialog.findViewById(R.id.dialog_BTN);
@@ -1452,7 +2127,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
     }
 
     private void processDataPipe(String response) {
-        String [] howlong = response.split("\\|");
+        String[] howlong = response.split("\\|");
         String RequestDetails = response;
         FieldIDs = new String[howlong.length / 2];
         FieldValues = new String[howlong.length / 2];
@@ -1485,7 +2160,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
         try {
             unregisterReceiver(onBroadcastSMSReceived);
             unregisterReceiver(populateProducts);
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         super.onDestroy();
@@ -1501,7 +2176,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
         }
         if (TextUtils.isEmpty(Message)) {
             Message = getString(R.string.tryAgain);
-            Toast.makeText(AccountOpenZMain.this,Message,Toast.LENGTH_LONG).show();
+            Toast.makeText(AccountOpenZMain.this, Message, Toast.LENGTH_LONG).show();
         } else {
             switch (Status) {
                 case "000":
@@ -1536,7 +2211,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                             break;
                         }
                         case "FetchOccupation": {
-                            String [] regions = Message.split("~");
+                            String[] regions = Message.split("~");
                             for (String aRegion : regions) {
                                 processDataPipe(aRegion);
                                 occupationIds.add(am.FindInArray(FieldIDs, FieldValues, "CODE"));
@@ -1550,17 +2225,19 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                                     occupationIDString = occupationIds.get(position);
                                 }
+
                                 @Override
                                 public void onNothingSelected(AdapterView<?> parent) {
                                 }
                             });
                             new Handler().postDelayed(() -> {
-                                if(am.getCountry().equals("UGANDATEST")) getCustomParam("PROFFESSIONSTATUS","FetchProfession");
-                            },400);
+                                if (am.getCountry().equals("UGANDATEST"))
+                                    getCustomParam("PROFFESSIONSTATUS", "FetchProfession");
+                            }, 400);
                             break;
                         }
                         case "FetchProfession": {
-                            String [] regions = Message.split("~");
+                            String[] regions = Message.split("~");
                             for (String aRegion : regions) {
                                 processDataPipe(aRegion);
                                 professionIds.add(am.FindInArray(FieldIDs, FieldValues, "CODE"));
@@ -1574,6 +2251,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                                     professionIDString = professionIds.get(position);
                                 }
+
                                 @Override
                                 public void onNothingSelected(AdapterView<?> parent) {
                                 }
@@ -1585,8 +2263,8 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                                 //STATUS:OK:DATA:{"Satatus":"00","CenteAddressCodes":[{"Region":"NORTH"},{"Region":"EAST"},{"Region":"WEST"},{"Region":"CENTRAL"}]}
                                 JSONObject res = new JSONObject(response.replace("STATUS:OK:DATA:", ""));
                                 JSONArray addressRegionArray = res.getJSONArray("CenteAddressCodes");
-                                regionsIds.add(0,"Select One");
-                                regionNames.add(0,"Select One");
+                                regionsIds.add(0, "Select One");
+                                regionNames.add(0, "Select One");
                                 for (int i = 0; i < addressRegionArray.length(); i++) {
                                     JSONObject actor = addressRegionArray.getJSONObject(i);
                                     regionsIds.add(String.valueOf(i));
@@ -1610,12 +2288,13 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                                 @Override
                                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                                     regionIDString = regionsIds.get(position);
-                                    if(position!=0){
+                                    if (position != 0) {
                                         districtIds.clear();
                                         districtNames.clear();
-                                        getAddressParam("DISTRICTNAME","FetchDistrict", regionselect.getSelectedItem().toString().trim());
+                                        getAddressParam("DISTRICTNAME", "FetchDistrict", regionselect.getSelectedItem().toString().trim());
                                     }
                                 }
+
                                 @Override
                                 public void onNothingSelected(AdapterView<?> parent) {
                                 }
@@ -1627,11 +2306,11 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                                 //STATUS:OK:DATA:{"Satatus":"00","CenteAddressCodes":[{"DistrictName":"AGAGO"},{"DistrictName":"MOROTO"},{"DistrictName":"AMOLATAR"},{"DistrictName":"OTUKE"},{"DistrictName":"DOKOLO"},{"DistrictName":"NAKAPIRIPIRIT"},{"DistrictName":"AMUDAT"},{"DistrictName":"LUUKA"},{"DistrictName":"LIRA"},{"DistrictName":"NWOYA"},{"DistrictName":"PADER"},{"DistrictName":"LAMWO"},{"DistrictName":"KAABONG"},{"DistrictName":"AMURIA"},{"DistrictName":"KITGUM"},{"DistrictName":"KOLE"},{"DistrictName":"KOBOKO"},{"DistrictName":"ALEBTONG"},{"DistrictName":"ABIM"},{"DistrictName":"GULU"},{"DistrictName":"ARUA"},{"DistrictName":"OYAM"},{"DistrictName":"APAC"},{"DistrictName":"MARACHA"},{"DistrictName":"KOTIDO"},{"DistrictName":"ADJUMANI"},{"DistrictName":"NAPAK"},{"DistrictName":"ZOMBO"},{"DistrictName":"YUMBE"},{"DistrictName":"MOYO"},{"DistrictName":"AMURU"},{"DistrictName":"NEBBI"}]}
                                 JSONObject res = new JSONObject(response.replace("STATUS:OK:DATA:", ""));
                                 JSONArray addressRegionArray = res.getJSONArray("CenteAddressCodes");
-                                districtIds.add(0,"Select One");
-                                districtNames.add(0,"Select One");
+                                districtIds.add(0, "Select One");
+                                districtNames.add(0, "Select One");
                                 for (int i = 0; i < addressRegionArray.length(); i++) {
                                     JSONObject actor = addressRegionArray.getJSONObject(i);
-                                    if(!districtNames.contains(actor.getString("DistrictName"))){
+                                    if (!districtNames.contains(actor.getString("DistrictName"))) {
                                         districtIds.add(String.valueOf(i));
                                         districtNames.add(actor.getString("DistrictName"));
                                     }
@@ -1654,12 +2333,13 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                                 @Override
                                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                                     districtIDString = districtIds.get(position);
-                                    if(position!=0){
+                                    if (position != 0) {
                                         countyIds.clear();
                                         countylistNames.clear();
-                                        getAddressParam("COUNTYNAME","FetchCounty", districtName.getSelectedItem().toString().trim());
+                                        getAddressParam("COUNTYNAME", "FetchCounty", districtName.getSelectedItem().toString().trim());
                                     }
                                 }
+
                                 @Override
                                 public void onNothingSelected(AdapterView<?> parent) {
                                 }
@@ -1671,11 +2351,11 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                                 //STATUS:OK:DATA:{"Satatus":"00","CenteAddressCodes":[{"CountyName":"BUKOTO"},{"CountyName":"MASAKA MUNICIPALITY"}]}
                                 JSONObject res = new JSONObject(response.replace("STATUS:OK:DATA:", ""));
                                 JSONArray addressRegionArray = res.getJSONArray("CenteAddressCodes");
-                                countyIds.add(0,"Select One");
-                                countylistNames.add(0,"Select One");
+                                countyIds.add(0, "Select One");
+                                countylistNames.add(0, "Select One");
                                 for (int i = 0; i < addressRegionArray.length(); i++) {
                                     JSONObject actor = addressRegionArray.getJSONObject(i);
-                                    if(!countylistNames.contains(actor.getString("CountyName"))){
+                                    if (!countylistNames.contains(actor.getString("CountyName"))) {
                                         countyIds.add(String.valueOf(i));
                                         countylistNames.add(actor.getString("CountyName"));
                                     }
@@ -1698,12 +2378,13 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                                 @Override
                                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                                     countyIDString = countyIds.get(position);
-                                    if(position!=0){
+                                    if (position != 0) {
                                         subcountyIds.clear();
                                         subcountylistNames.clear();
-                                        getAddressParam("SUBCOUNTYNAME","FetchSubCounty", countyName.getSelectedItem().toString().trim());
+                                        getAddressParam("SUBCOUNTYNAME", "FetchSubCounty", countyName.getSelectedItem().toString().trim());
                                     }
                                 }
+
                                 @Override
                                 public void onNothingSelected(AdapterView<?> parent) {
                                 }
@@ -1715,11 +2396,11 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                                 //STATUS:OK:DATA:{"Satatus":"00","CenteAddressCodes":[{"CountyName":"BUKOTO"},{"CountyName":"MASAKA MUNICIPALITY"}]}
                                 JSONObject res = new JSONObject(response.replace("STATUS:OK:DATA:", ""));
                                 JSONArray addressRegionArray = res.getJSONArray("CenteAddressCodes");
-                                subcountyIds.add(0,"Select One");
-                                subcountylistNames.add(0,"Select One");
+                                subcountyIds.add(0, "Select One");
+                                subcountylistNames.add(0, "Select One");
                                 for (int i = 0; i < addressRegionArray.length(); i++) {
                                     JSONObject actor = addressRegionArray.getJSONObject(i);
-                                    if(!subcountylistNames.contains(actor.getString("SubCountyName"))){
+                                    if (!subcountylistNames.contains(actor.getString("SubCountyName"))) {
                                         subcountyIds.add(String.valueOf(i));
                                         subcountylistNames.add(actor.getString("SubCountyName"));
                                     }
@@ -1740,12 +2421,13 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                                 @Override
                                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                                     subcountyIDString = subcountyIds.get(position);
-                                    if(position!=0){
+                                    if (position != 0) {
                                         parishIds.clear();
                                         parishlistNames.clear();
-                                        getAddressParam("PARISHNAME","FetchParishName", subCountyName.getSelectedItem().toString().trim());
+                                        getAddressParam("PARISHNAME", "FetchParishName", subCountyName.getSelectedItem().toString().trim());
                                     }
                                 }
+
                                 @Override
                                 public void onNothingSelected(AdapterView<?> parent) {
                                 }
@@ -1757,11 +2439,11 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                                 //STATUS:OK:DATA:{"Satatus":"00","CenteAddressCodes":[{"ParishName":"KAMATURU"},{"ParishName":"NARISAE"},{"ParishName":"NATHINYONOIT"}]}
                                 JSONObject res = new JSONObject(response.replace("STATUS:OK:DATA:", ""));
                                 JSONArray addressRegionArray = res.getJSONArray("CenteAddressCodes");
-                                parishIds.add(0,"Select One");
-                                parishlistNames.add(0,"Select One");
+                                parishIds.add(0, "Select One");
+                                parishlistNames.add(0, "Select One");
                                 for (int i = 0; i < addressRegionArray.length(); i++) {
                                     JSONObject actor = addressRegionArray.getJSONObject(i);
-                                    if(!parishlistNames.contains(actor.getString("ParishName"))){
+                                    if (!parishlistNames.contains(actor.getString("ParishName"))) {
                                         parishIds.add(String.valueOf(i));
                                         parishlistNames.add(actor.getString("ParishName"));
                                     }
@@ -1782,12 +2464,13 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                                 @Override
                                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                                     parishIdString = parishIds.get(position);
-                                    if(position!=0){
+                                    if (position != 0) {
                                         villageIds.clear();
                                         villagelistNames.clear();
-                                        getAddressParam("VILLAGENAME","FetchVillageName", parishName.getSelectedItem().toString().trim());
+                                        getAddressParam("VILLAGENAME", "FetchVillageName", parishName.getSelectedItem().toString().trim());
                                     }
                                 }
+
                                 @Override
                                 public void onNothingSelected(AdapterView<?> parent) {
                                 }
@@ -1799,11 +2482,11 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                                 //STATUS:OK:DATA:{"Satatus":"00","CenteAddressCodes":[{"VillageName":"LOKWAMORU"},{"VillageName":"NANGAMIT"},{"VillageName":"NAOI"},{"VillageName":"NAOI SPECIAL AREA"}]}
                                 JSONObject res = new JSONObject(response.replace("STATUS:OK:DATA:", ""));
                                 JSONArray addressRegionArray = res.getJSONArray("CenteAddressCodes");
-                                villageIds.add(0,"Select One");
-                                villagelistNames.add(0,"Select One");
+                                villageIds.add(0, "Select One");
+                                villagelistNames.add(0, "Select One");
                                 for (int i = 0; i < addressRegionArray.length(); i++) {
                                     JSONObject actor = addressRegionArray.getJSONObject(i);
-                                    if(!villagelistNames.contains(actor.getString("VillageName"))){
+                                    if (!villagelistNames.contains(actor.getString("VillageName"))) {
                                         villageIds.add(String.valueOf(i));
                                         villagelistNames.add(actor.getString("VillageName"));
                                     }
@@ -1824,12 +2507,13 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                                 @Override
                                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                                     villageIdString = villageIds.get(position);
-                                    if(position!=0){
+                                    if (position != 0) {
                                         eAIds.clear();
                                         eAlistNames.clear();
-                                        getAddressParam("EANAME","FetchEaName", villageName.getSelectedItem().toString().trim());
+                                        getAddressParam("EANAME", "FetchEaName", villageName.getSelectedItem().toString().trim());
                                     }
                                 }
+
                                 @Override
                                 public void onNothingSelected(AdapterView<?> parent) {
                                 }
@@ -1841,11 +2525,11 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                                 //STATUS:OK:DATA:{"Satatus":"00","CenteAddressCodes":[{"AddressCode":"25134","EAName":"OLYERAI"}]}
                                 JSONObject res = new JSONObject(response.replace("STATUS:OK:DATA:", ""));
                                 JSONArray addressRegionArray = res.getJSONArray("CenteAddressCodes");
-                                eAIds.add(0,"Select One");
-                                eAlistNames.add(0,"Select One");
+                                eAIds.add(0, "Select One");
+                                eAlistNames.add(0, "Select One");
                                 for (int i = 0; i < addressRegionArray.length(); i++) {
                                     JSONObject actor = addressRegionArray.getJSONObject(i);
-                                    if(!eAIds.contains(actor.getString("AddressCode"))){
+                                    if (!eAIds.contains(actor.getString("AddressCode"))) {
                                         eAIds.add(actor.getString("AddressCode"));
                                         eAlistNames.add(actor.getString("EAName"));
                                     }
@@ -1865,22 +2549,36 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                             eAName.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                                 @Override
                                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                                    if(position!=0){
+                                    if (position != 0) {
                                         eAIdString = eAIds.get(position);
                                     } else {
                                         eAIdString = "";
                                     }
                                 }
+
                                 @Override
                                 public void onNothingSelected(AdapterView<?> parent) {
                                 }
                             });
                             break;
                         }
+
+                        case "NIRA":
+//                            STATUS:000:DATA:SURNAME|SHAFIQUE|GIVEN NAMES|KABALI|NIN|CM89105106DLMK|CARD NUMBER|010413271|DOB|7/11/1989 12 00 00 AM
+
+                            if (step_ == 3/*&& tv_resend_otp.getVisibility()==View.GONE*/) {
+//                                show_response.setText(Message);
+
+                                depositMethodes(Message);
+//                                step_++;
+//                                flipViewIt(step_);
+//                                flipper.showNext();
+//                                startStimer();
+                            }
                         case "RequestOTP":
-                            
-                          
-                            if (step_ == 7 /*&& tv_resend_otp.getVisibility()==View.GONE*/) {
+
+
+                            if (step_ == 8 /*&& tv_resend_otp.getVisibility()==View.GONE*/) {
                                 step_++;
                                 flipViewIt(step_);
                                 flipper.showNext();
@@ -1895,14 +2593,15 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                         case "VerifyOTP": {
                             currentTask = "RAO";
                             new_request = RAO();
-                            new Handler().postDelayed(() -> am.get(AccountOpenZMain.this,new_request,getString(R.string.loading),currentTask),400);
+                            new Handler().postDelayed(() -> am.get(AccountOpenZMain.this, new_request, getString(R.string.loading), "RAO"), 400);
+                            Log.e("TEST", new_request);
                             break;
                         }
                         case "VerifyExisting":
-                            am.myDialog(AccountOpenZMain.this,getString(R.string.alert), getString(R.string.exists));
+                            am.myDialog(AccountOpenZMain.this, getString(R.string.alert), getString(R.string.exists));
                             break;
                         case "VerifyExistingAlt":
-                            am.myDialog(AccountOpenZMain.this,getString(R.string.alert), getString(R.string.already_exists));
+                            am.myDialog(AccountOpenZMain.this, getString(R.string.alert), getString(R.string.already_exists));
                             break;
                         case "VAL_EXIST":
 
@@ -1942,7 +2641,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                             Toast.makeText(AccountOpenZMain.this, Message, Toast.LENGTH_LONG).show();
                             break;
                         case "VerifyExisting":
-                            new Handler().postDelayed(() -> checkCustomerExists(AlternatePhoneNumber.getCountryCode() + AlternatePhoneNumber.getText(),"2"),300);
+                            new Handler().postDelayed(() -> checkCustomerExists(AlternatePhoneNumber.getCountryCode() + AlternatePhoneNumber.getText(), "2"), 300);
                             break;
                         case "VerifyExistingAlt":
                             step_++;
@@ -1976,19 +2675,19 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
 
         yes.setOnClickListener(v -> {
             step_ = am.getSavedPreviousStep();
-            if(step_ >0){
+            if (step_ > 0) {
                 prev.setVisibility(View.VISIBLE);
             }
 
-            for(int i = 0; i< step_; i++) {
+            for (int i = 0; i < step_; i++) {
                 flipper.showNext();
             }
 
-            for(int i = 0; i<= step_; i++) {
+            for (int i = 0; i <= step_; i++) {
                 try {
                     switch (i) {
                         case 0:
-                            if(am.getCustomerCategory() == R.id.new_Lay) {
+                            if (am.getCustomerCategory() == R.id.new_Lay) {
                                 new_Lay.performClick();
                             } else {
                                 existing_lay.performClick();
@@ -1999,9 +2698,9 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                             scrollAccounts.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    if(am.getAccountTypePosition()>2 && am.getAccountTypePosition()<4) {
-                                        scrollAccounts.scrollTo(accountsGroup.getWidth()/2, 0);
-                                    } else if (am.getAccountTypePosition()>=4) {
+                                    if (am.getAccountTypePosition() > 2 && am.getAccountTypePosition() < 4) {
+                                        scrollAccounts.scrollTo(accountsGroup.getWidth() / 2, 0);
+                                    } else if (am.getAccountTypePosition() >= 4) {
                                         scrollAccounts.fullScroll(HorizontalScrollView.FOCUS_RIGHT);
                                     }
                                 }
@@ -2027,17 +2726,21 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                                     cMiss.performClick();
                                     break;
                             }
-                            if(!am.getSavedData("encodedImageFront").equals("")) {
+                            if (!am.getSavedData("encodedImageFront").equals("")) {
                                 encodedImageFront = am.getSavedData("encodedImageFront");
                                 Glide.with(AccountOpenZMain.this).load(Base64.decode(encodedImageFront, Base64.DEFAULT)).into(front.imageView);
                             }
-                            if(!am.getSavedData("encodedImageSelfie").equals("")) {
+                            if (!am.getSavedData("encodedImageSelfie").equals("")) {
                                 encodedImageSelfie = am.getSavedData("encodedImageSelfie");
                                 Glide.with(AccountOpenZMain.this).load(Base64.decode(encodedImageSelfie, Base64.DEFAULT)).into(selfie.imageView);
                             }
-                            if(!am.getSavedData("encodedImageBack").equals("")) {
+                            if (!am.getSavedData("encodedImageBack").equals("")) {
                                 encodedImageBack = am.getSavedData("encodedImageBack");
                                 Glide.with(AccountOpenZMain.this).load(Base64.decode(encodedImageBack, Base64.DEFAULT)).into(backpick.imageView);
+                            }
+                            if (!am.getSavedData("encodedImageSignature").equals("")) {
+                                encodedImageSignature = am.getSavedData("encodedImageSignature");
+                                Glide.with(AccountOpenZMain.this).load(Base64.decode(encodedImageSignature, Base64.DEFAULT)).into(signature.imageView);
                             }
                             break;
                         case 3:
@@ -2048,13 +2751,13 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                             NextofKinAltPhoneNumber.citizenship.setSelection(am.getAltNextofKinCountryPosition());
                             break;
                         case 5:
-                            if(am.getPeriodEmployment() == 0) {
+                            if (am.getPeriodEmployment() == 0) {
                                 yearsButtonE.setChecked(true);
                             } else {
                                 monthsButtonE.setChecked(true);
                             }
                             break;
-                    
+
                         case 6:
                             try {
                                 radioGroup.check(am.getMediumRadio());
@@ -2118,23 +2821,23 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
             Button no = dialog.findViewById(R.id.no);
 
             yes.setOnClickListener(v -> {
-                
-                if (step_ == 0){
+
+                if (step_ == 0) {
                     am.putSaveCustomerCategory(customer_cat_.getSelectedCatID());
                     am.putSaveSelectedBranchPosition(branchselect.getSelectedItemPosition());
                     am.putSaveSelectedCurrencyPosition(currselect.getSelectedItemPosition());
                     am.putBankStaffCountryPosition(staffPhoneNumber.citizenship.getSelectedItemPosition());
-                }else if(step_ ==1) {
+                } else if (step_ == 1) {
                     am.putSaveCustomerCountryPosition(PhoneNumber.citizenship.getSelectedItemPosition());
                     am.putSaveAlterCustomerCountryPosition(AlternatePhoneNumber.citizenship.getSelectedItemPosition());
-                } else if (step_ == 2){
+                } else if (step_ == 2) {
                     am.putSaveTitlePosition(singleTitle.getViewTitleID());
-                } else if (step_ == 3){
+                } else if (step_ == 3) {
                     am.putSaveNextofKinCountry(NextofKinPhoneNumber.citizenship.getSelectedItemPosition());
                     am.putSaveAltNextofKinCountry(NextofKinAltPhoneNumber.citizenship.getSelectedItemPosition());
-                } else if (step_ == 4){
+                } else if (step_ == 4) {
                     am.putSavePeriodEmployment(employPeriod.getCheckedRadioButtonId());
-                }  else if (step_ == 5){
+                } else if (step_ == 5) {
                     am.putMediumRadio(radioGroup.getCheckedRadioButtonId());
                 }
                 am.putSavedPreviousStep(step_);
@@ -2182,7 +2885,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                         am.putProceed(true);
                         am.putSavedPreviousStep(step_);
 
-                        if(step_ ==0){
+                        if (step_ == 0) {
                             am.putSaveCustomerCountryPosition(PhoneNumber.citizenship.getSelectedItemPosition());
                             am.putSaveAlterCustomerCountryPosition(AlternatePhoneNumber.citizenship.getSelectedItemPosition());
                         } else if (step_ == 1) {
@@ -2197,7 +2900,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                             am.putSaveSelectedBranchPosition(branchselect.getSelectedItemPosition());
                             am.putSaveSelectedCurrencyPosition(currselect.getSelectedItemPosition());
                             am.putBankStaffCountryPosition(staffPhoneNumber.citizenship.getSelectedItemPosition());
-                        }  else if (step_ == 6) {
+                        } else if (step_ == 6) {
                             am.putMediumRadio(radioGroup.getCheckedRadioButtonId());
                         }
 
@@ -2227,31 +2930,35 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                     step_--;
                     flipViewIt(step_);
                     flipper.showPrevious();
-                    if(step_ == 0) {
+                    if (step_ == 0) {
                         prev.setVisibility(View.INVISIBLE);
-                        if(pan_pin_in.getVisibility()==View.VISIBLE) {
+                        if (pan_pin_in.getVisibility() == View.VISIBLE) {
                             et_pin.setText("");
                             pan_pin_in.setVisibility(View.GONE);
                             webView.setVisibility(View.VISIBLE);
                             radiob.setVisibility(View.VISIBLE);
                         }
-                    } else if(step_ == 1) {
-                        if(pan_pin_in.getVisibility()==View.VISIBLE) {
+                    } else if (step_ == 1) {
+                        if (pan_pin_in.getVisibility() == View.VISIBLE) {
                             et_pin.setText("");
                             pan_pin_in.setVisibility(View.GONE);
                             webView.setVisibility(View.VISIBLE);
                             radiob.setVisibility(View.VISIBLE);
                         }
-                    } else if(step_ == 3) {
-                        occupationIds.clear();
-                        occupationNames.clear();
-                        professionIds.clear();
-                        professionNames.clear();
-                    } else if(step_ == 4) {
+                    }
+                    
+                    else if (step_ == 3) {
+                        name.setText("");
+                        sname.setText("");
+                        nationalID.setText("");
+                        nationalIDCardNo.setText("");
+                        DOBEdit.setText("");
+                        otherNames.setText("");
+                    } else if (step_ == 4) {
                         politicsIDs.clear();
                         politicsNames.clear();
                         StringPoliticallyExposed = "";
-                    } else if(step_ == 6) {
+                    } else if (step_ == 6) {
                         regionsIds.clear();
                         regionNames.clear();
                         districtIds.clear();
@@ -2270,75 +2977,73 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                 }
                 break;
             case R.id.next:
-                  if(step_ == 0){
-                CustomerCategory = customer_cat_.getSelectedCategory();
-                if(CustomerCategory.equals("")) {
-                    ErrorAlert("Select customer type.");
-                } else if(selectedAccount.equals("")) {
-                    ErrorAlert("Please select a preferred account");
-                } else if(currName.equals("")) {
-                    ErrorAlert("Please select a preferred currency");
-                } else if(branchID.equals("")) {
-                    ErrorAlert("Please select a preferred branch");
-                } else if(accountNumber.getVisibility()==View.VISIBLE && TextUtils.isEmpty(accountNumber.getText())) {
-                    accountNumber.editText.requestFocus();
-                    ErrorAlert("Existing HFB Account Number required");
-                } else if(/*selectedAccountID.equals("32219") &&*/ staffPhoneNumber.getVisibility()==View.VISIBLE && TextUtils.isEmpty(staffPhoneNumber.getText())) {
-                    ErrorAlert("Bank Staff Phone Number required");
-                } else {
-                    switch (CustomerCategory) {
-                        case "New Customer":
-                            accountNumber.editText.setText("");
-                            accountNumber.setVisibility(View.GONE);
-                            break;
-                        case "Existing Customer":
-                            accountNumber.setVisibility(View.VISIBLE);
-                            break;
-                    }
-                    am.putSaveCustomerCategory(customer_cat_.getSelectedCatID());
-                    am.putSaveSelectedBranchPosition(branchselect.getSelectedItemPosition());
-                    am.putSaveSelectedCurrencyPosition(currselect.getSelectedItemPosition());
-                    if(staffPhoneNumber.getVisibility()==View.VISIBLE) am.putBankStaffCountryPosition(staffPhoneNumber.citizenship.getSelectedItemPosition());
-
-                    if( staffPhoneNumber.getVisibility()==View.VISIBLE) {
-                        checkCustomerExists(staffPhoneNumber.getCountryCode() + staffPhoneNumber.getText(),"3");
-                    } else if(accountNumber.getVisibility()==View.VISIBLE && TextUtils.isEmpty(accountNumber.getText())) {
+                if (step_ == 0) {
+                    CustomerCategory = customer_cat_.getSelectedCategory();
+                    if (CustomerCategory.equals("")) {
+                        ErrorAlert("Select customer type.");
+                    } else if (selectedAccount.equals("")) {
+                        ErrorAlert("Please select a preferred account");
+                    } else if (currName.equals("")) {
+                        ErrorAlert("Please select a preferred currency");
+                    } else if (branchID.equals("")) {
+                        ErrorAlert("Please select a preferred branch");
+                    } else if (accountNumber.getVisibility() == View.VISIBLE && TextUtils.isEmpty(accountNumber.getText())) {
                         accountNumber.editText.requestFocus();
                         ErrorAlert("Existing HFB Account Number required");
-                    }  else {
+                    } else if (/*selectedAccountID.equals("32219") &&*/ staffPhoneNumber.getVisibility() == View.VISIBLE && TextUtils.isEmpty(staffPhoneNumber.getText())) {
+                        ErrorAlert("Bank Staff Phone Number required");
+                    } else {
                         switch (CustomerCategory) {
                             case "New Customer":
-                                termsConditopnChoiceNew();
+                                accountNumber.editText.setText("");
+                                accountNumber.setVisibility(View.GONE);
                                 break;
                             case "Existing Customer":
-//                                accountBranchChoice();
-                                termsConditopnChoice();
-                                //getPersonalDetailsExisting("GetCustomerPersonal");
-                                //0100121637
-                                //validateExisting(accountNumber.getText());
+                                accountNumber.setVisibility(View.VISIBLE);
                                 break;
                         }
+                        am.putSaveCustomerCategory(customer_cat_.getSelectedCatID());
+                        am.putSaveSelectedBranchPosition(branchselect.getSelectedItemPosition());
+                        am.putSaveSelectedCurrencyPosition(currselect.getSelectedItemPosition());
+                        if (staffPhoneNumber.getVisibility() == View.VISIBLE)
+                            am.putBankStaffCountryPosition(staffPhoneNumber.citizenship.getSelectedItemPosition());
+
+                        if (staffPhoneNumber.getVisibility() == View.VISIBLE) {
+                            checkCustomerExists(staffPhoneNumber.getCountryCode() + staffPhoneNumber.getText(), "3");
+                        } else if (accountNumber.getVisibility() == View.VISIBLE && TextUtils.isEmpty(accountNumber.getText())) {
+                            accountNumber.editText.requestFocus();
+                            ErrorAlert("Existing HFB Account Number required");
+                        } else {
+                            switch (CustomerCategory) {
+                                case "New Customer":
+                                    termsConditopnChoiceNew();
+                                    break;
+                                case "Existing Customer":
+//                                accountBranchChoice();
+                                    termsConditopnChoice();
+                                    //getPersonalDetailsExisting("GetCustomerPersonal");
+                                    //0100121637
+                                    //validateExisting(accountNumber.getText());
+                                    break;
+                            }
+                        }
                     }
-                }
-            }
-               else if(step_ == 1) {
-                    if(TextUtils.isEmpty(EmailAddress.getText())) {
+                } else if (step_ == 1) {
+                    if (TextUtils.isEmpty(EmailAddress.getText())) {
                         ErrorAlert("Email Address required");
-                    } else if(!TextUtils.isEmpty(EmailAddress.getText()) && !android.util.Patterns.EMAIL_ADDRESS.matcher(EmailAddress.getText()).matches()) {
+                    } else if (!TextUtils.isEmpty(EmailAddress.getText()) && !android.util.Patterns.EMAIL_ADDRESS.matcher(EmailAddress.getText()).matches()) {
                         ErrorAlert("Invalid Email address format");
-                    } else if(!selectedAccountID.equals("32219") && PhoneNumber.getText().length() < 5) {
+                    } else if (!selectedAccountID.equals("32219") && PhoneNumber.getText().length() < 5) {
                         ErrorAlert("Invalid phone number");
-                    } else if(!selectedAccountID.equals("32219") && !PhoneNumber.getCountryCode().equals("256") && TextUtils.isEmpty(EmailAddress.getText())) {
+                    } else if (!selectedAccountID.equals("32219") && !PhoneNumber.getCountryCode().equals("256") && TextUtils.isEmpty(EmailAddress.getText())) {
                         ErrorAlert("Email address required outside Uganda");
-                    }  /*else if(TextUtils.isEmpty(eAIdString)) {  //was for address drop downa
-                        ErrorAlert("EA Name required");}*/
-                    else if(TextUtils.isEmpty(city.getText())) {
-                        ErrorAlert("City required");
-                    } else if(TextUtils.isEmpty(ActualAddress.getText())) {
+                    } else if (maritalStatus.isEmpty()) {
+                        ErrorAlert("You need to select marital status");
+                    } else if (TextUtils.isEmpty(ActualAddress.getText())) {
                         ErrorAlert("Address required");
-                    } else if(ActualAddress.getText().length()>25) {
+                    } else if (ActualAddress.getText().length() > 25) {
                         ErrorAlert("Address length should not be above 25 characters");
-                    }  else {
+                    } else {
                         am.putSaveCustomerCountryPosition(PhoneNumber.citizenship.getSelectedItemPosition());
                         am.putSaveAlterCustomerCountryPosition(AlternatePhoneNumber.citizenship.getSelectedItemPosition());
                         step_++;
@@ -2346,67 +3051,74 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                         flipViewIt(step_);
                         flipper.showNext();
                     }
-                } else if(step_ == 2) {
+                } else if (step_ == 2) {
                     Usertitle = singleTitle.getSelectedTitle();
-                    if("32112".equals(selectedAccountID) && Usertitle.equals("Mr")){
-                        ErrorAlert(selectedAccount+" reserved for women");
-                    } else if(Usertitle.equals("Other") && singleTitle.otherEditText.getText().toString().trim().isEmpty()) {
+                    if ("32112".equals(selectedAccountID) && Usertitle.equals("Mr")) {
+                        ErrorAlert(selectedAccount + " reserved for women");
+                    } else if (Usertitle.equals("Other") && singleTitle.otherEditText.getText().toString().trim().isEmpty()) {
                         singleTitle.otherEditText.requestFocus();
                         ErrorAlert("Kindly specify your Title");
-                    } else if(TextUtils.isEmpty(encodedImageFront)){
+                    } else if (TextUtils.isEmpty(encodedImageFront)) {
                         ErrorAlert("National id card photo required");
-                    } else if(TextUtils.isEmpty(encodedImageBack)){
-                        ErrorAlert("Passport photo required");
-                    } else if(TextUtils.isEmpty(encodedImageSelfie)){
+                    } else if (TextUtils.isEmpty(encodedImageBack)) {
+                        ErrorAlert("National id card photo required");
+                    } else if (TextUtils.isEmpty(encodedImageSelfie)) {
+                        ErrorAlert("Selfie photo required");
+                    } else if (TextUtils.isEmpty(encodedImageSignature)) {
                         ErrorAlert("Signature photo required");
                     } else {
-                        if(Usertitle.equals("Other")) Usertitle = singleTitle.otherEditText.getText().toString().trim();
+                        if (Usertitle.equals("Other"))
+                            Usertitle = singleTitle.otherEditText.getText().toString().trim();
                         am.putSaveTitlePosition(singleTitle.getViewTitleID());
-                        submitImages();
+//                        submitImages();
+                        uploadImage(byteArray, "IDFRONT");
                     }
-                } else if(step_ == 3) {
-                    if(TextUtils.isEmpty(name.getText())) {
+                } else if (step_ == 3) {
+                    if (TextUtils.isEmpty(name.getText())) {
                         ErrorAlert("First name required");
-                    } else if(name.getText().length()>20) {
+                    } else if (name.getText().length() > 20) {
                         ErrorAlert("Invalid First name length max 20 characters");
-                    } else if(TextUtils.isEmpty(sname.getText())) {
+                    } else if (TextUtils.isEmpty(sname.getText())) {
                         ErrorAlert("Surname name required");
-                    } else if(sname.getText().length()>20) {
+                    } else if (sname.getText().length() > 20) {
                         ErrorAlert("Invalid Surname name length max 20 characters");
-                    } else if(TextUtils.isEmpty(nationalID.getText())) {
+                    } else if (TextUtils.isEmpty(nationalID.getText())) {
                         ErrorAlert("National ID required");
-                    } else if(TextUtils.isEmpty(DOBEdit.getText())) {
+                    } else if (TextUtils.isEmpty(DOBEdit.getText())) {
                         ErrorAlert("Date of Birth required");
-                    } else if(DOBEdit.getText().trim().contains(" ")) {
+                    } else if (DOBEdit.getText().trim().contains(" ")) {
                         ErrorAlert("Invalid Date of Birth format. YYYY-MM-DD required. Kindly capture again.");
-                    } else if(!DOBEdit.getText().contains("-")) {
+                    } else if (!DOBEdit.getText().contains("-")) {
                         ErrorAlert("Invalid Date of Birth format. YYYY-MM-DD required. Kindly capture again.");
                     } else if (!checkDateFormat(DOBEdit.getText())) {
                         ErrorAlert("Invalid Date of Birth format. YYYY-MM-DD required. Kindly capture again.");
                     } else if (!Pattern.compile(DATE_PATTERN).matcher(DOBEdit.getText()).matches()) {
                         ErrorAlert("Invalid Date of Birth format. YYYY-MM-DD required. Kindly capture again.");
+                    } else if (TextUtils.isEmpty(nationalIDCardNo.getText())) {
+                        ErrorAlert("Invalid Card Number.");
                     } else {
-                        step_++;
-                        flipViewIt(step_);
-                        flipper.showNext();
+//                        step_++;
+//                        flipViewIt(step_);
+//                        flipper.showNext();
+                        niraValidation();
                         //Was for political dropdown
                         /*if(politicsIDs.isEmpty()) {
                             if(am.getCountry().equals("UGANDATEST")) getPoliticalExposed();
                         }*/
                     }
-                } else if(step_ == 4) {
-                    if(TextUtils.isEmpty(NextofKinFirstName.getText())){
+                } else if (step_ == 4) {
+                    if (TextUtils.isEmpty(NextofKinFirstName.getText())) {
                         ErrorAlert("Next of Kin first name required");
-                    }
-                    else if(TextUtils.isEmpty(NextofKinLastName.getText())){
+                    } else if (TextUtils.isEmpty(NextofKinLastName.getText())) {
                         ErrorAlert("Next of Kin Last name required");
                     }
-                    else if(TextUtils.isEmpty(NextofKinPhoneNumber.getText())){
-                        ErrorAlert("Next of Kin phone number required");
-                    }
-                    else if(TextUtils.isEmpty(NextofKinAltPhoneNumber.getText())){
-                        ErrorAlert("Next of Kin alternate phone number required");
-                    } else {
+//                    else if(TextUtils.isEmpty(NextofKinPhoneNumber.getText())){
+//                        ErrorAlert("Next of Kin phone number required");
+//                    }
+//                    else if(TextUtils.isEmpty(NextofKinAltPhoneNumber.getText())){
+//                        ErrorAlert("Next of Kin alternate phone number required");
+//                    } 
+                    else {
                         am.putSaveNextofKinCountry(NextofKinPhoneNumber.citizenship.getSelectedItemPosition());
                         am.putSaveAltNextofKinCountry(NextofKinAltPhoneNumber.citizenship.getSelectedItemPosition());
                         step_++;
@@ -2421,39 +3133,48 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                         //Was for address drop down
                         /*if(regionsIds.isEmpty()){
                             if(am.getCountry().equals("UGANDATEST")) getAddressParam("REGION","FetchRegion", "");
+                            
+                              centesourceincome.addView(IncomeperAnnum);
+                        centesourceincome.addView(NatureofEmployment);
+                        centesourceincome.addView(NatureofBussiness);
+                        centesourceincome.removeView(EmployerName);
+                        centesourceincome.removeView(Occupation);
+                        centesourceincome.removeView(PlaceofWork);
+                        centesourceincome.removeView(MonthlySalary);
+                        centesourceincome.removeView(PeriodofEmployment);
+                        centesourceincome.removeView(employPeriod);
                         }*/
                     }
-                } else if(step_ == 5) {
-                    if(TextUtils.isEmpty(IncomeperAnnum.getText())){
-                        ErrorAlert("Income required");
-                    } else if(TextUtils.isEmpty(EmploymentType.getText())){
-                        ErrorAlert("Employment required");
-                    } else if(TextUtils.isEmpty(Occupation.getText())){
-                        ErrorAlert("Occupation required");
-                    }
-                    else if(TextUtils.isEmpty(PlaceofWork.getText())){
-                        ErrorAlert("Place of work required");
-                    }
-                    else if(TextUtils.isEmpty(NatureofBussiness.getText())){
-                        ErrorAlert("Nature of business required");
-                    }
-                    else if(TextUtils.isEmpty(PeriodofEmployment.getText())){
-                        ErrorAlert("Period of employment required");
-                    }
-                    else if(TextUtils.isEmpty(EmployerName.getText())){
-                        ErrorAlert("Employer name required");
-                    }
-                    else if(TextUtils.isEmpty(NatureofEmployment.getText())) {
-                        ErrorAlert("Nature of employment required");
+                } else if (step_ == 5) {
+                    if (userEmploymentType.equals("")) {
+                        ErrorAlert("You need to select a source of income");
+                    } else if (userEmploymentType.equals("Self-employed/Business") && TextUtils.isEmpty(IncomeperAnnum.getText())) {
+                        ErrorAlert("Income annually is required");
+                    } else if (userEmploymentType.equals("Self-employed/Business") && TextUtils.isEmpty(NatureofEmployment.getText())) {
+                        ErrorAlert("Business Address is required");
+                    } else if (userEmploymentType.equals("Employed/Salary") && TextUtils.isEmpty(EmployerName.getText())) {
+                        ErrorAlert(("EmployerName is required"));
+                    } else if (userEmploymentType.equals("Employed/Salary") && TextUtils.isEmpty(Occupation.getText())) {
+                        ErrorAlert("Occupation is required");
+                    } else if (userEmploymentType.equals("Employed/Salary") && TextUtils.isEmpty(PlaceofWork.getText())) {
+                        ErrorAlert("PlaceofWork is required");
+                    } else if (userEmploymentType.equals("Employed/Salary") && TextUtils.isEmpty(MonthlySalary.getText())) {
+                        ErrorAlert("Annual Income is required");
+                    } else if (userEmploymentType.equals("Employed/Salary") && TextUtils.isEmpty(yearOfEmployment.getText())) {
+                        ErrorAlert("Period Of Employment is required");
+                    } else if (userEmploymentType.equals("Others") && TextUtils.isEmpty(PeriodofEmployment.getText())) {
+                        ErrorAlert("Description is required");
+                    } else if (userEmploymentType.equals("Self-employed/Business") && TextUtils.isEmpty(NatureofBussiness.getText())) {
+                        ErrorAlert("Nature of Business is required");
                     } else {
                         am.putSavePeriodEmployment(employPeriod.getCheckedRadioButtonId());
                         step_++;
                         flipViewIt(step_);
                         flipper.showNext();
+
                     }
-                }
-               
-                else if(step_ == 6) {
+
+                } else if (step_ == 6) {
                     if (!radiob.isChecked()) {
                         ErrorAlert("Please accept terms and conditions to proceed");
                     } else {
@@ -2547,120 +3268,134 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                         flipViewIt(step_);
                         flipper.showNext();
                     }*//*
+                     alternativeDeposite.addView(alternativeAccountNumber);
+                        alternativeDeposite.addView(accountName);
+                        alternativeDeposite.addView(bankName);
+                        alternativeDeposite.addView(branchName);
+                        alternativeDeposite.removeView(AlternatePhoneNumber);
+                        alternativeDeposite.removeView(phoneregName);
+                        alternativeDeposite.removeView(phoneregLastName);
                 }*/
+                else if (step_ == 7) {
+                    if (alternativeSecurityDeposit.isEmpty()) {
+                        ErrorAlert("Select Alternative account");
+                    } else if (alternativeSecurityDeposit.equals("Bank Account") && TextUtils.isEmpty(alternativeAccountNumber.getText())) {
+                        ErrorAlert("AlternativeAccountNumber is required");
+                    } else if (alternativeSecurityDeposit.equals("Bank Account") && TextUtils.isEmpty(accountName.getText())) {
+                        ErrorAlert("AccountName is required");
+                    } else if (alternativeSecurityDeposit.equals("Bank Account") && TextUtils.isEmpty(bankName.getText())) {
+                        ErrorAlert("Bank name is required");
+                    } else if (alternativeSecurityDeposit.equals("Bank Account") && TextUtils.isEmpty(branchName.getText())) {
+                        ErrorAlert("Branch Name is required");
+                    } else if (alternativeSecurityDeposit.equals("Mobile Money") && RGroupM.getCheckedRadioButtonId() == -1) {
+                        ErrorAlert("You need to select Mobile money provider");
+                    } else if (alternativeSecurityDeposit.equals("Mobile Money") && RGroupCon.getCheckedRadioButtonId() == -1) {
+                        ErrorAlert("You need to let us kow if the number is registered to you");
+                    } else if (alternativeSecurityDeposit.equals("Mobile Money") && no.isChecked() && TextUtils.isEmpty(phoneregName.getText())) {
+                        ErrorAlert("Registered first name is required");
 
-                else if(step_ == 7) {
+                    } else if (alternativeSecurityDeposit.equals("Mobile Money") && no.isChecked() && TextUtils.isEmpty(phoneregName.getText())) {
+                        ErrorAlert("Registered last name is required");
+                    } else if (alternativeSecurityDeposit.equals("Mobile Money") && TextUtils.isEmpty(PhoneNumberMobile.getText())) {
+                        ErrorAlert("Mobile Number is required");
+                    } else {
+                        step_++;
+                        prev.setVisibility(View.VISIBLE);
+                        flipViewIt(step_);
+                        flipper.showNext();
+                    }
+                } else if (step_ == 8) {
                     CustomerCategory = customer_cat_.getSelectedCategory();
                     otpPinView.setEnabled(true);
-                    if(TextUtils.isEmpty(EmailAddress.getText())) {
+                    if (TextUtils.isEmpty(EmailAddress.getText())) {
                         ErrorAlert("Email Address required");
-                    } else if(!TextUtils.isEmpty(EmailAddress.getText()) && !android.util.Patterns.EMAIL_ADDRESS.matcher(EmailAddress.getText()).matches()) {
+                    } else if (!TextUtils.isEmpty(EmailAddress.getText()) && !android.util.Patterns.EMAIL_ADDRESS.matcher(EmailAddress.getText()).matches()) {
                         ErrorAlert("Invalid Email address format");
-                    } else if(/*!selectedAccountID.equals("32219") &&*/ PhoneNumber.getText().length() < 5) {
+                    } else if (/*!selectedAccountID.equals("32219") &&*/ PhoneNumber.getText().length() < 5) {
                         ErrorAlert("Invalid phone number");
-                    } else if(/*!selectedAccountID.equals("32219") &&*/ !PhoneNumber.getCountryCode().equals("256") && TextUtils.isEmpty(EmailAddress.getText())) {
+                    } else if (/*!selectedAccountID.equals("32219") &&*/ !PhoneNumber.getCountryCode().equals("256") && TextUtils.isEmpty(EmailAddress.getText())) {
                         ErrorAlert("Email address required outside Uganda");
                     }  /*else if(TextUtils.isEmpty(eAIdString)) {  //was for address dropdowna
                         ErrorAlert("EA Name required");}*/
-                    else if(TextUtils.isEmpty(city.getText())) {
-                        ErrorAlert("City required");
-                    } else if(TextUtils.isEmpty(ActualAddress.getText())) {
+//                    else if(TextUtils.isEmpty(maritalStatus.getText())) {
+//                        ErrorAlert("Marital Status required");
+//                    } 
+                    else if (TextUtils.isEmpty(ActualAddress.getText())) {
                         ErrorAlert("Address required");
-                    } else if(ActualAddress.getText().length()>25) {
+                    } else if (ActualAddress.getText().length() > 25) {
                         ErrorAlert("Address length should not be above 25 characters");
-                    } else if("32112".equals(selectedAccountID) && singleTitle.getSelectedTitle().equals("Mr")) {
-                        ErrorAlert(selectedAccount+" reserved for women");
-                    } else if(TextUtils.isEmpty(encodedImageFront)){
+                    } else if ("32112".equals(selectedAccountID) && singleTitle.getSelectedTitle().equals("Mr")) {
+                        ErrorAlert(selectedAccount + " reserved for women");
+                    } else if (TextUtils.isEmpty(encodedImageFront)) {
                         ErrorAlert("National id card photo required");
-                    } else if(TextUtils.isEmpty(encodedImageBack)){
+                    } else if (TextUtils.isEmpty(encodedImageBack)) {
                         ErrorAlert("Passport photo required");
-                    } else if(TextUtils.isEmpty(encodedImageSelfie)){
+                    } else if (TextUtils.isEmpty(encodedImageSelfie)) {
                         ErrorAlert("Signature photo required");
-                    } else if(TextUtils.isEmpty(name.getText())) {
+                    } else if (TextUtils.isEmpty(name.getText())) {
                         ErrorAlert("First name required");
-                    } else if(name.getText().length()>20) {
+                    } else if (name.getText().length() > 20) {
                         ErrorAlert("Invalid First name length max 20 characters");
-                    } else if(TextUtils.isEmpty(sname.getText())) {
+                    } else if (TextUtils.isEmpty(sname.getText())) {
                         ErrorAlert("Surname name required");
-                    } else if(sname.getText().length()>20) {
+                    } else if (sname.getText().length() > 20) {
                         ErrorAlert("Invalid Surname name length max 20 characters");
-                    } else if(TextUtils.isEmpty(nationalID.getText())) {
+                    } else if (TextUtils.isEmpty(nationalID.getText())) {
                         ErrorAlert("National ID required");
-                    } else if(TextUtils.isEmpty(DOBEdit.getText())) {
+                    } else if (TextUtils.isEmpty(DOBEdit.getText())) {
                         ErrorAlert("Date of Birth required");
-                    } else if(DOBEdit.getText().trim().contains(" ")) {
+                    } else if (DOBEdit.getText().trim().contains(" ")) {
                         ErrorAlert("Invalid Date of Birth format. YYYY-MM-DD required. Kindly capture again.");
-                    } else if(!DOBEdit.getText().contains("-")) {
+                    } else if (!DOBEdit.getText().contains("-")) {
                         ErrorAlert("Invalid Date of Birth format. YYYY-MM-DD required. Kindly capture again.");
                     } else if (!checkDateFormat(DOBEdit.getText())) {
                         ErrorAlert("Invalid Date of Birth format. YYYY-MM-DD required. Kindly capture again.");
                     } else if (!Pattern.compile(DATE_PATTERN).matcher(DOBEdit.getText()).matches()) {
                         ErrorAlert("Invalid Date of Birth format. YYYY-MM-DD required. Kindly capture again.");
-                    } else if(TextUtils.isEmpty(NextofKinFirstName.getText())){
+                    } else if (TextUtils.isEmpty(NextofKinFirstName.getText())) {
                         ErrorAlert("Next of Kin first name required");
-                    } else if(TextUtils.isEmpty(NextofKinLastName.getText())){
+                    } else if (TextUtils.isEmpty(NextofKinLastName.getText())) {
                         ErrorAlert("Next of Kin Last name required");
-                    } else if(TextUtils.isEmpty(NextofKinPhoneNumber.getText())){
-                        ErrorAlert("Next of Kin phone number required");
-                    } else if(TextUtils.isEmpty(NextofKinAltPhoneNumber.getText())){
-                        ErrorAlert("Next of Kin alternate phone number required");
-                    } else if(TextUtils.isEmpty(IncomeperAnnum.getText())){
-                        ErrorAlert("Income required");
-                    } else if(TextUtils.isEmpty(EmploymentType.getText())){
-                        ErrorAlert("Employment required");
-                    } else if(TextUtils.isEmpty(Occupation.getText())){
-                        ErrorAlert("Occupation required");
-                    } else if(TextUtils.isEmpty(PlaceofWork.getText())){
-                        ErrorAlert("Place of work required");
-                    } else if(TextUtils.isEmpty(NatureofBussiness.getText())){
-                        ErrorAlert("Nature of business required");
-                    } else if(TextUtils.isEmpty(PeriodofEmployment.getText())){
-                        ErrorAlert("Period of employment required");
-                    } else if(TextUtils.isEmpty(EmployerName.getText())){
-                        ErrorAlert("Employer name required");
-                    } else if(TextUtils.isEmpty(NatureofEmployment.getText())) {
-                        ErrorAlert("Nature of employment required");
-                    } else if(CustomerCategory.equals("")) {
+                    } else if (CustomerCategory.equals("")) {
                         ErrorAlert("Select customer type.");
-                    } else if(selectedAccount.equals("")) {
+                    } else if (selectedAccount.equals("")) {
                         ErrorAlert("Please select a preferred account");
-                    } else if(currName.equals("")) {
+                    } else if (currName.equals("")) {
                         ErrorAlert("Please select a preferred currency");
-                    } else if(branchID.equals("")) {
+                    } else if (branchID.equals("")) {
                         ErrorAlert("Please select a preferred branch");
-                    } else if(accountNumber.getVisibility()==View.VISIBLE && TextUtils.isEmpty(accountNumber.getText())) {
+                    } else if (accountNumber.getVisibility() == View.VISIBLE && TextUtils.isEmpty(accountNumber.getText())) {
                         ErrorAlert("Existing HFB Account Number required");
-                    } else if(/*selectedAccountID.equals("32219") &&*/ staffPhoneNumber.getVisibility()==View.VISIBLE && TextUtils.isEmpty(staffPhoneNumber.getText())) {
+                    } else if (/*selectedAccountID.equals("32219") &&*/ staffPhoneNumber.getVisibility() == View.VISIBLE && TextUtils.isEmpty(staffPhoneNumber.getText())) {
                         ErrorAlert("Bank Staff Phone Number required");
                     } else if (!radiob.isChecked()) {
                         ErrorAlert("Please accept terms and conditions to proceed");
-                    } else if(!tv.isChecked() && !ss.isChecked() && !bankstaff.isChecked() && !HFBCustomer.isChecked() && !Agent.isChecked()){
+                    } else if (!tv.isChecked() && !ss.isChecked() && !bankstaff.isChecked() && !HFBCustomer.isChecked() && !Agent.isChecked()) {
                         ErrorAlert("Recommended by required");
-                    } else if(tv.isChecked() && TextUtils.isEmpty(c4.getText())){
+                    } else if (tv.isChecked() && TextUtils.isEmpty(c4.getText())) {
                         ErrorAlert("TV/Radio station required");
-                    } else if(ss.isChecked() && !FaceBook.isChecked() && !Twitter.isChecked() && !Instagram.isChecked()){
+                    } else if (ss.isChecked() && !FaceBook.isChecked() && !Twitter.isChecked() && !Instagram.isChecked()) {
                         ErrorAlert("Social media platform required");
-                    } else if(bankstaff.isChecked() && TextUtils.isEmpty(c4.getText())){
+                    } else if (bankstaff.isChecked() && TextUtils.isEmpty(c4.getText())) {
                         ErrorAlert("Staff name required");
-                    } else if(bankstaff.isChecked() && TextUtils.isEmpty(c44.getText())){
+                    } else if (bankstaff.isChecked() && TextUtils.isEmpty(c44.getText())) {
                         ErrorAlert("Staff's branch required");
-                    } else if(HFBCustomer.isChecked() && TextUtils.isEmpty(c4.getText())){
+                    } else if (HFBCustomer.isChecked() && TextUtils.isEmpty(c4.getText())) {
                         ErrorAlert("Customer name required");
-                    } else if(HFBCustomer.isChecked() && TextUtils.isEmpty(c45.getText())){
+                    } else if (HFBCustomer.isChecked() && TextUtils.isEmpty(c45.getText())) {
                         ErrorAlert("Customer phone number required");
-                    } else if(Agent.isChecked() && TextUtils.isEmpty(c4.getText())){
+                    } else if (Agent.isChecked() && TextUtils.isEmpty(c4.getText())) {
                         ErrorAlert("Agent name and number required");
                     } /*else if(!selectedAccountID.equals("32219") && (!chkMobileBanking.isChecked() || !chkAgencyBanking.isChecked())){
                         ErrorAlert("Kindly check Mobile Banking and Agency Banking");
-                    }*/
-                    else {
+                    }*/ else {
 
                         am.putMediumRadio(radioGroup.getCheckedRadioButtonId());
 
                         RegisterNewListener();
 
                         String customerMobilenNumber = PhoneNumber.getCountryCode() + PhoneNumber.getText();
-                        String alternatePhone = AlternatePhoneNumber.getCountryCode()+ AlternatePhoneNumber.getText();
+                        String alternatePhone = AlternatePhoneNumber.getCountryCode() + AlternatePhoneNumber.getText();
 
                         String additional = "";
                         /*if(chkMobileBanking.isChecked()){
@@ -2704,65 +3439,101 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
 
                         String recommendation = "";
 
-                        if(ss.isChecked()){
+                        if (ss.isChecked()) {
                             recommendation = "Social Media";
                         }
-                        if(tv.isChecked()){
-                            recommendation = "TV/Radio-"+c4.getText();
+                        if (tv.isChecked()) {
+                            recommendation = "TV/Radio-" + c4.getText();
                         }
 
-                        if(bankstaff.isChecked()) {
-                            recommendation = "Bank Staff-"+c4.getText()+"-"+c44.getText();
+                        if (bankstaff.isChecked()) {
+                            recommendation = "Bank Staff-" + c4.getText() + "-" + c44.getText();
                         }
 
-                        if(HFBCustomer.isChecked()) {
-                            recommendation = "Cente Customer-"+c4.getText()+"-"+c45.getCountryCode()+c45.getText();
+                        if (HFBCustomer.isChecked()) {
+                            recommendation = "Cente Customer-" + c4.getText() + "-" + c45.getCountryCode() + c45.getText();
                         }
 
-                        if(Agent.isChecked()) {
-                            recommendation = "Agent-"+c4.getText();
+                        if (Agent.isChecked()) {
+                            recommendation = "Agent-" + c4.getText();
                         }
 
                         String gender = "M";
-                        if(Usertitle.equals("Mr")){
+                        if (Usertitle.equals("Mr")) {
                             gender = "M";
-                        }
-                        else if(Usertitle.equals("Mrs") || Usertitle.equals("Miss")){
+                        } else if (Usertitle.equals("Mrs") || Usertitle.equals("Miss")) {
                             gender = "F";
                         }
+//                        if (alternativeSecurityDeposit.equals("Bank Account")) {
+//                            alternativeDeposite.addView(alternativeAccountNumber);
+//                            alternativeDeposite.addView(accountName);
+//                            alternativeDeposite.addView(bankName);
+//                            alternativeDeposite.addView(branchName);
+//                            alternativeDeposite.removeView(PhoneNumberMobile);
+//                            alternativeDeposite.removeView(phoneregName);
+//                            alternativeDeposite.removeView(phoneregLastName);
+//                            textView2.setVisibility(View.GONE);
+//                            RGroupM.setVisibility(View.GONE);
+//                            textView3.setVisibility(View.GONE);
+//                            RGroupCon.setVisibility(View.GONE);
+//                        } else if(alternativeSecurityDeposit.equals("Mobile Money")) {
+//                            alternativeDeposite.removeView(alternativeAccountNumber);
+//                            alternativeDeposite.removeView(accountName);
+//                            alternativeDeposite.removeView(bankName);
+//                            alternativeDeposite.removeView(branchName);
+//                            alternativeDeposite.addView(PhoneNumberMobile);
+                        if (alternativeSecurityDeposit.equals("Bank Account")) {
+                            INFOFIELD1 = "INFOFIELD1:ACCOUNTID|" + accountNumber.getText() + "|CUSTOMER_CATEGORY|" + CustomerCategory + "|ACCOUNT_TYPE|" + selectedAccount + "|FIRST_NAME|" + name.getText() +
+                                    "|MIDDLE_NAME|" + otherNames.getText() + "|LAST_NAME|" + sname.getText() + "|DOB|" + DOBEdit.getText() + "|NATIONALID|" + nationalID.getText() +
+                                    "|PHONE_NUMBER|" + customerMobilenNumber + "|ALTERNATE_PHONE_NUMBER|" + alternatePhone + "|EMAIL_ADDRESS|" + EmailAddress.getText() + "|GENDER|" + gender + "|TITLE|" + Usertitle + "|CURRENCY|" + currName + "|BRANCH|" + branchID + "|PRODUCTID|" + selectedAccountID + "|ALTERNATE_ACCOUNT_NUMBER|" + alternativeAccountNumber.getText() + "|ALTERNATE_ACCOUNT_NAME|" + accountName.getText() + "|ALTERNATE_BANKNAME|" + bankName.getText() + "|ALTERNATE_BRANCHNAME|" + branchName.getText() + "|MOBILE_MONEY_PROVIDER|" + "N/A" + "|MOBILE_MONEY_PHONE_OWNER|" + "N/A" + "|MOBILE_MONEY_PHONE_NUMBER|" + "N/A";
+                        } else if (alternativeSecurityDeposit.equals("Mobile Money") && no.isChecked()) {
+                            INFOFIELD1 = "INFOFIELD1:ACCOUNTID|" + accountNumber.getText() + "|CUSTOMER_CATEGORY|" + CustomerCategory + "|ACCOUNT_TYPE|" + selectedAccount + "|FIRST_NAME|" + name.getText() +
+                                    "|MIDDLE_NAME|" + otherNames.getText() + "|LAST_NAME|" + sname.getText() + "|DOB|" + DOBEdit.getText() + "|NATIONALID|" + nationalID.getText() +
+                                    "|PHONE_NUMBER|" + customerMobilenNumber + "|ALTERNATE_PHONE_NUMBER|" + alternatePhone + "|EMAIL_ADDRESS|" + EmailAddress.getText() + "|GENDER|" + gender + "|TITLE|" + Usertitle + "|CURRENCY|" + currName + "|BRANCH|" + branchID + "|PRODUCTID|" + selectedAccountID + "|ALTERNATE_ACCOUNT_NUMBER|" + "N/A" + "|ALTERNATE_ACCOUNT_NAME|" + "N/A" + "|ALTERNATE_BANKNAME|" + "N/A" + "|ALTERNATE_BRANCHNAME|" + "N/A" + "|MOBILE_MONEY_PROVIDER|" + mobileMoneyProvider + "|MOBILE_MONEY_PHONE_OWNER|" + phoneregName.getText() + "" + phoneregLastName.getText() + "|MOBILE_MONEY_PHONE_NUMBER|" + PhoneNumberMobile.getText();
+                        } else {
+                            INFOFIELD1 = "INFOFIELD1:ACCOUNTID|" + accountNumber.getText() + "|CUSTOMER_CATEGORY|" + CustomerCategory + "|ACCOUNT_TYPE|" + selectedAccount + "|FIRST_NAME|" + name.getText() +
+                                    "|MIDDLE_NAME|" + otherNames.getText() + "|LAST_NAME|" + sname.getText() + "|DOB|" + DOBEdit.getText() + "|NATIONALID|" + nationalID.getText() +
+                                    "|PHONE_NUMBER|" + customerMobilenNumber + "|ALTERNATE_PHONE_NUMBER|" + alternatePhone + "|EMAIL_ADDRESS|" + EmailAddress.getText() + "|GENDER|" + gender + "|TITLE|" + Usertitle + "|CURRENCY|" + currName + "|BRANCH|" + branchID + "|PRODUCTID|" + selectedAccountID + "|ALTERNATE_ACCOUNT_NUMBER|" + "N/A" + "|ALTERNATE_ACCOUNT_NAME|" + "N/A" + "|ALTERNATE_BANKNAME|" + "N/A" + "|ALTERNATE_BRANCHNAME|" + "N/A" + "|MOBILE_MONEY_PROVIDER|" + mobileMoneyProvider + "|MOBILE_MONEY_PHONE_OWNER|" + "N/A" + "|MOBILE_MONEY_PHONE_NUMBER|" + PhoneNumberMobile.getText();
+                        }
 
-
-                        INFOFIELD1 = "INFOFIELD1:ACCOUNTID|"+ accountNumber.getText() +"|CUSTOMER_CATEGORY|"+CustomerCategory+"|ACCOUNT_TYPE|"+selectedAccount+"|FIRST_NAME|"+ name.getText() +
-                                "|MIDDLE_NAME|"+ otherNames.getText() +"|LAST_NAME|"+ sname.getText() +"|DOB|"+DOBEdit.getText()+"|NATIONALID|"+ nationalID.getText() +
-                                "|PHONE_NUMBER|"+customerMobilenNumber+"|ALTERNATE_PHONE_NUMBER|"+alternatePhone+"|EMAIL_ADDRESS|"+ EmailAddress.getText() +"|GENDER|"+gender+"|TITLE|"+Usertitle+"|CURRENCY|"+currName+"|BRANCH|"+branchID+"|PRODUCTID|"+selectedAccountID;
+//                        INFOFIELD1 = "INFOFIELD1:ACCOUNTID|"+ accountNumber.getText() +"|CUSTOMER_CATEGORY|"+CustomerCategory+"|ACCOUNT_TYPE|"+selectedAccount+"|FIRST_NAME|"+ name.getText() +
+//                                "|MIDDLE_NAME|"+ otherNames.getText() +"|LAST_NAME|"+ sname.getText() +"|DOB|"+DOBEdit.getText()+"|NATIONALID|"+ nationalID.getText() +
+//                                "|PHONE_NUMBER|"+customerMobilenNumber+"|ALTERNATE_PHONE_NUMBER|"+alternatePhone+"|EMAIL_ADDRESS|"+ EmailAddress.getText() +"|GENDER|"+gender+"|TITLE|"+Usertitle+"|CURRENCY|"+currName+"|BRANCH|"+branchID+"|PRODUCTID|"+selectedAccountID;
+////                                "|PHONE_NUMBER|"+customerMobilenNumber+"|ALTERNATE_PHONE_NUMBER|"+alternatePhone+"|EMAIL_ADDRESS|"+ EmailAddress.getText() +"|GENDER|"+gender+"|TITLE|"+Usertitle+"|CURRENCY|"+currName+"|BRANCH|"+branchID+"|PRODUCTID|"+selectedAccountID+"|MARITALSTATUS|"+maritalStatus;
 
                         /*if(am.getCountry().equals("UGANDATEST")){
                             INFOFIELD2 = "INFOFIELD2:FATHER_FIRST_NAME|"+ FatherFirstName.getText() +"|FATHER_MIDDLE_NAME|"+ FatherMiddleName.getText() +"|FATHER_LAST_NAME|"+ FatherLastName.getText() +"|MOTHER_FIRST_NAME|"+ MotherFirstName.getText() +"|MOTHER_MIDDLE_NAME|"+ MotherMiddleName.getText() +"|MOTHER_LAST_NAME|"+ MotherLastName.getText() +"|ADDRESSCODE|"+ eAIdString ;
                         }*/
-                        INFOFIELD2 = "INFOFIELD2:FATHER_FIRST_NAME|"+ FatherFirstName.getText() +"|FATHER_MIDDLE_NAME|"+ FatherMiddleName.getText() +"|FATHER_LAST_NAME|"+ FatherLastName.getText() +"|MOTHER_FIRST_NAME|"+ MotherFirstName.getText() +"|MOTHER_MIDDLE_NAME|"+ MotherMiddleName.getText() +"|MOTHER_LAST_NAME|"+ MotherLastName.getText();
+                        INFOFIELD2 = "INFOFIELD2:FATHER_FIRST_NAME|" + FatherFirstName.getText() + "|FATHER_MIDDLE_NAME|" + FatherMiddleName.getText() + "|FATHER_LAST_NAME|" + FatherLastName.getText() + "|MOTHER_FIRST_NAME|" + MotherFirstName.getText() + "|MOTHER_MIDDLE_NAME|" + MotherMiddleName.getText() + "|MOTHER_LAST_NAME|" + MotherLastName.getText();
 
 
                         /*if(am.getCountry().equals("UGANDATEST")){
                             INFOFIELD3 = "INFOFIELD3:CURRENT_LOCATION|"+ c5.getText() +"|ADDRESS|"+ ActualAddress.getText() +"|HOME_DISTRICT|"+ Address.getText() +"|YEARS_AT_ADDRESS|"+ YearsAtAddress.getText().concat(periodAddressString)+"|POLITICALLY_EXPOSED|"+StringPoliticallyExposed+"|CITY|"+city.getText()+"|ZIPCODE|"+zipCode.getText();
                         }*/
-                        INFOFIELD3 = "INFOFIELD3:CURRENT_LOCATION|"+ c5.getText() +"|ADDRESS|"+ ActualAddress.getText() +"|HOME_DISTRICT|"+ Address.getText() +"|YEARS_AT_ADDRESS|"+ YearsAtAddress.getText().concat(periodAddressString)+"|POLITICALLY_EXPOSED|"+PoliticallyExposed.getText()+"|CITY|"+city.getText()+"|ZIPCODE|"+zipCode.getText();
+                        INFOFIELD3 = "INFOFIELD3:CURRENT_LOCATION|" + c5.getText() + "|ADDRESS|" + ActualAddress.getText() + "|HOME_DISTRICT|" + Address.getText() + "|YEARS_AT_ADDRESS|" + YearsAtAddress.getText().concat(periodAddressString) + "|POLITICALLY_EXPOSED|" + PoliticallyExposed.getText() + "|MARITALSTATUS|" + maritalStatus + "|ZIPCODE|" + zipCode.getText();
 
                         /*if(am.getCountry().equals("UGANDATEST")){
                             INFOFIELD4 = "INFOFIELD4:INCOME_PER_ANUM|"+ IncomeperAnnum.getText() +"|EMPLOYMENT_TYPE|"+ professionIDString +"|OCCUPATION|"+ occupationIDString +"|PLACE_OF_WORK|"+ PlaceofWork.getText() +"|NATURE_OF_BUSINESS_SECTOR|"+ NatureofBussiness.getText() +"|PERIOD_OF_EMPLOYMENT|"+ PeriodofEmployment.getText().concat(periodWorkString) +"|EMPLOYER_NAME|"+ EmployerName.getText() +"|NATURE|"+ NatureofEmployment.getText();
                         }*/
-                        INFOFIELD4 = "INFOFIELD4:INCOME_PER_ANUM|"+ IncomeperAnnum.getText() +"|EMPLOYMENT_TYPE|"+ EmploymentType.getText() +"|OCCUPATION|"+ Occupation.getText() +"|PLACE_OF_WORK|"+ PlaceofWork.getText() +"|NATURE_OF_BUSINESS_SECTOR|"+ NatureofBussiness.getText() +"|PERIOD_OF_EMPLOYMENT|"+ PeriodofEmployment.getText().concat(periodWorkString) +"|EMPLOYER_NAME|"+ EmployerName.getText() +"|NATURE|"+ NatureofEmployment.getText();
 
-                        INFOFIELD5 = "INFOFIELD5:NEXT_OF_KIN_FIRST_NAME|"+ NextofKinFirstName.getText() +"|NEXT_OF_KIN_MIDDLE_NAME|"+ NextofKinMiddleName.getText() +"|NEXT_OF_KIN_LAST_NAME|"+ NextofKinLastName.getText() +"|NEXT_OF_KIN_PHONE_NUMBER|"+NextofKinPhoneNumber.getCountryCode()+NextofKinPhoneNumber.getText()+"|NEXT_OF_KIN_ALTERNATE_PHONE_NUMBER|"+NextofKinAltPhoneNumber.getCountryCode()+ NextofKinAltPhoneNumber.getText() +"|NEXT_OF_KIN_ADDRESS|"+ NextofKinAddress.getText() +"|OTHER_SERVICES_REQUIRED|"+additional+"|RECOMMENDED_BY|"+recommendation;
+                        if (employmentType.getSelectedItem().equals("Self-employed/Business")) {
+                            INFOFIELD4 = "INFOFIELD4:INCOME_PER_ANUM|" + IncomeperAnnum.getText().toString() + "|EMPLOYMENT_TYPE|" + userEmploymentType + "|OCCUPATION|" + "N/A" + "|PLACE_OF_WORK|" + "N/A" + "|NATURE_OF_BUSINESS_SECTOR|" + NatureofBussiness.getText().toString() + "|PERIOD_OF_EMPLOYMENT|" + "N/A" + "|EMPLOYER_NAME|" + "N/A" + "|NATURE|" + "N/A" + "|BUSINESS_ADDRESS|" + NatureofEmployment.getText().toString();
+                        } else if (employmentType.getSelectedItem().equals("Employed/Salary")) {
+                            INFOFIELD4 = "INFOFIELD4:INCOME_PER_ANUM|" + MonthlySalary.getText().toString() + "|EMPLOYMENT_TYPE|" + userEmploymentType + "|OCCUPATION|" + Occupation.getText().toString() + "|PLACE_OF_WORK|" + PlaceofWork.getText().toString() + "|NATURE_OF_BUSINESS_SECTOR|" + NatureofBussiness.getText().toString() + "|PERIOD_OF_EMPLOYMENT|" + yearOfEmployment.getText().concat(periodWorkString) + "|EMPLOYER_NAME|" + EmployerName.getText().toString() + "|NATURE|" + "N/A" + "|BUSINESS_ADDRESS|" + PlaceofWork.getText().toString();
+                        } else {
+                            INFOFIELD4 = "INFOFIELD4:INCOME_PER_ANUM|" + "N/A" + "|EMPLOYMENT_TYPE|" + userEmploymentType + "|OCCUPATION|" + "N/A" + "|PLACE_OF_WORK|" + "N/A" + "|NATURE_OF_BUSINESS_SECTOR|" + "N/A" + "|PERIOD_OF_EMPLOYMENT|" + "N/A" + "|EMPLOYER_NAME|" + "N/A" + "|NATURE|" + PeriodofEmployment.getText().toString() + "|BUSINESS_ADDRESS|" + "N/A";
+                        }
+
+                        INFOFIELD5 = "INFOFIELD5:NEXT_OF_KIN_FIRST_NAME|" + NextofKinFirstName.getText() + "|NEXT_OF_KIN_MIDDLE_NAME|" + NextofKinMiddleName.getText() + "|NEXT_OF_KIN_LAST_NAME|" + NextofKinLastName.getText() + "|NEXT_OF_KIN_PHONE_NUMBER|" + NextofKinPhoneNumber.getCountryCode() + NextofKinPhoneNumber.getText() + "|NEXT_OF_KIN_ALTERNATE_PHONE_NUMBER|" + NextofKinAltPhoneNumber.getCountryCode() + NextofKinAltPhoneNumber.getText() + "|NEXT_OF_KIN_ADDRESS|" + "null" + "|OTHER_SERVICES_REQUIRED|" + additional + "|RECOMMENDED_BY|" + recommendation;
 
                         currentTask = "RequestOTP";
                         createOTP();
 
                     }
-                }
-                else if(step_ == 8){
-                    if(TextUtils.isEmpty(raoOTP)){
+                } else if (step_ == 9) {
+                    if (TextUtils.isEmpty(raoOTP)) {
                         ErrorAlert("One time password required");
-                    } else if(raoOTP.length() < 6){
+                    } else if (raoOTP.length() < 6) {
                         ErrorAlert("Otp can not be less than 6 digits");
                     } else {
                         verify();
@@ -2774,7 +3545,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                 break;
             case R.id.front:
                 Dexter.withActivity(AccountOpenZMain.this)
-                        .withPermissions(Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                        .withPermissions(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                         .withListener(new MultiplePermissionsListener() {
                             @Override
                             public void onPermissionsChecked(MultiplePermissionsReport report) {
@@ -2786,6 +3557,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                                     showSettingsDialog();
                                 }
                             }
+
                             @Override
                             public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token) {
                                 token.continuePermissionRequest();
@@ -2806,6 +3578,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                                     showSettingsDialog();
                                 }
                             }
+
                             @Override
                             public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token) {
                                 token.continuePermissionRequest();
@@ -2826,6 +3599,28 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                                     showSettingsDialog();
                                 }
                             }
+
+                            @Override
+                            public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token) {
+                                token.continuePermissionRequest();
+                            }
+                        }).check();
+                break;
+            case R.id.signature:
+                Dexter.withActivity(AccountOpenZMain.this)
+                        .withPermissions(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                        .withListener(new MultiplePermissionsListener() {
+                            @Override
+                            public void onPermissionsChecked(MultiplePermissionsReport report) {
+                                REQUEST_IMAGEX = 4;
+                                if (report.areAllPermissionsGranted()) {
+                                    showImagePickerOptions();
+                                }
+                                if (report.isAnyPermissionPermanentlyDenied()) {
+                                    showSettingsDialog();
+                                }
+                            }
+
                             @Override
                             public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token) {
                                 token.continuePermissionRequest();
@@ -2844,10 +3639,65 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                 break;
             case R.id.done:
                 am.putProceed(false);
+//                popupDeposit() ;
                 finish();
+                startActivity(new Intent(this, DepositOptionsActivity.class));
+
+
                 break;
 
         }
+
+    }
+
+//    private void popupDeposit() {
+//        final Dialog mDialog = new Dialog(AccountOpenZMain.this);
+//        //noinspection ConstantConditions
+//        mDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+//        mDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+//        mDialog.setContentView(R.layout.deposit_options);
+//        CheckBox check;
+//        final TextView txtTitle = mDialog.findViewById(R.id.message),
+//                txtMessage = mDialog.findViewById(R.id.show_response),
+//                txtOk = mDialog.findViewById(R.id.done);
+//        check = mDialog.findViewById(R.id.check) ;
+//        txtTitle.setText(R.string.registerd_n_successfully);
+//        txtMessage.setText(R.string.deposit_options);
+//
+//        txtOk.setOnClickListener(v1 -> {
+//            finish();
+//            mDialog.dismiss();
+//
+//
+//        });
+//        mDialog.show();
+//        
+//    }
+
+    private void depositMethodes(String message) {
+
+        final Dialog mDialog = new Dialog(AccountOpenZMain.this);
+        //noinspection ConstantConditions
+        mDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        mDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        mDialog.setContentView(R.layout.dialog_info);
+        CheckBox check;
+        final TextView txtTitle = mDialog.findViewById(R.id.dialog_title),
+                txtMessage = mDialog.findViewById(R.id.dialog_message),
+                txtOk = mDialog.findViewById(R.id.dialog_BTN);
+        check = mDialog.findViewById(R.id.check);
+        txtTitle.setText(R.string.ok);
+        txtMessage.setText(message);
+
+        txtOk.setOnClickListener(v1 -> {
+            step_++;
+            flipViewIt(step_);
+            flipper.showNext();
+            mDialog.dismiss();
+
+
+        });
+        mDialog.show();
 
     }
 
@@ -2861,10 +3711,10 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
         final TextView txtTitle = mDialog.findViewById(R.id.dialog_title),
                 txtMessage = mDialog.findViewById(R.id.dialog_message),
                 txtOk = mDialog.findViewById(R.id.dialog_BTN);
-        check = mDialog.findViewById(R.id.check) ;
+        check = mDialog.findViewById(R.id.check);
         txtTitle.setText(selectedAccount);
-        txtMessage.setText(String.format("Currency   %s\n\nBranch   %s\n\nProductURL %s", currName, branchselect.getSelectedItem().toString().trim(),Uri.parse(currencyURL)));
-        txtMessage.setOnClickListener(view1-> {
+        txtMessage.setText(String.format("Currency   %s\n\nBranch   %s\n\nProductURL %s", currName, branchselect.getSelectedItem().toString().trim(), Uri.parse(currencyURL)));
+        txtMessage.setOnClickListener(view1 -> {
             try {
                 startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(currencyURL)));
             } catch (Exception e) {
@@ -2873,19 +3723,19 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
         });
 
         txtOk.setOnClickListener(v1 -> {
-            if(!check.isChecked())  {
+            if (!check.isChecked()) {
                 check.setError("You need to accept terms and conditions");
-                Toast.makeText(this,"Terms Can not be unchecked", Toast.LENGTH_SHORT).show();
-            } else{
+                Toast.makeText(this, "Terms Can not be unchecked", Toast.LENGTH_SHORT).show();
+            } else {
                 flipper.showNext();
                 step_++;
                 flipViewIt(step_);
                 mDialog.dismiss();
-                
+
             }
         });
         mDialog.show();
-        
+
     }
 
     private void termsConditopnChoice() {
@@ -2898,43 +3748,42 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
         CheckBox check;
         final TextView txtTitle = mDialog.findViewById(R.id.dialog_title),
                 txtMessage = mDialog.findViewById(R.id.dialog_message),
-                txtOk = mDialog.findViewById(R.id.dialog_BTN); 
-        check = mDialog.findViewById(R.id.check) ;
+                txtOk = mDialog.findViewById(R.id.dialog_BTN);
+        check = mDialog.findViewById(R.id.check);
         txtTitle.setText(selectedAccount);
-        txtMessage.setText(String.format("Currency   %s\n\nBranch   %s\n\nProductURL %s", currName, branchselect.getSelectedItem().toString().trim(),Uri.parse(currencyURL)));
-        txtMessage.setOnClickListener(view1-> {
+        txtMessage.setText(String.format("Currency   %s\n\nBranch   %s\n\nProductURL %s", currName, branchselect.getSelectedItem().toString().trim(), Uri.parse(currencyURL)));
+        txtMessage.setOnClickListener(view1 -> {
             try {
                 startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(currencyURL)));
             } catch (Exception e) {
                 e.printStackTrace();
             }
         });
-        
-            txtOk.setOnClickListener(v1 -> {
-                if(!check.isChecked())  {
-                    check.setError("You need to accept terms and conditions");
-                    Toast.makeText(this,"Terms Can not be unchecked", Toast.LENGTH_SHORT).show();
-                } else{
+
+        txtOk.setOnClickListener(v1 -> {
+            if (!check.isChecked()) {
+                check.setError("You need to accept terms and conditions");
+                Toast.makeText(this, "Terms Can not be unchecked", Toast.LENGTH_SHORT).show();
+            } else {
 //                    step_++;
-                    flipViewIt(step_);
-                    finish();
-                    startActivity(new Intent(this, AccountOpenZExistingCustomersMain.class)
-                            .putExtra("accNo",accountNumber.getText().toString())
-                    .putExtra("productID",selectedAccountID)
-                    .putExtra("productName",selectedAccount)
-                            .putExtra("termsURL",termsUrl)
-                            .putExtra("currencyURL",currencyURL).putExtra("currency",currName).putExtra("branch",branchID));
+                flipViewIt(step_);
+                finish();
+                startActivity(new Intent(this, AccountOpenZExistingCustomersMain.class)
+                        .putExtra("accNo", accountNumber.getText().toString())
+                        .putExtra("productID", selectedAccountID)
+                        .putExtra("productName", selectedAccount)
+                        .putExtra("termsURL", termsUrl)
+                        .putExtra("currencyURL", currencyURL).putExtra("currency", currName).putExtra("branch", branchID));
 //                    selectedAccount = accountNames.get(checkedId);
 //                    selectedAccountID = accountIDs.get(checkedId);
 //                    termsUrl = listUrls.get(checkedId);
-                    
-                  
-                    
-                    mDialog.dismiss();
-                }
-            });
+
+
+                mDialog.dismiss();
+            }
+        });
         mDialog.show();
-        
+
     }
 
     class WebViewClient extends android.webkit.WebViewClient {

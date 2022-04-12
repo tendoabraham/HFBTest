@@ -1302,6 +1302,7 @@ public class AllMethods {
                                     if(step.contains("RAO")) {
                                         //Use ExtraUri to fetch and Post large data chunks
                                         RAOApiCall(finalShe, extrauri, machine, responseListener, token, step);
+                                        LogThis("AGNESRAO"+ "AKIFIKA");
                                     } else {
                                         connect(finalShe, uri, machine, responseListener, token, step);
                                     }
@@ -1397,6 +1398,7 @@ public class AllMethods {
                 .getAsJSONObject(new JSONObjectRequestListener() {
                     @Override
                     public void onResponse(JSONObject response) {
+                        LogThis("RESPOSERAO"+response.toString());
                         try {
                             progressDialog("0");
                             String rao_response = response.getString("Response");
@@ -1484,5 +1486,7 @@ public class AllMethods {
                     }
                 });
     }
+    
+    
 
 }

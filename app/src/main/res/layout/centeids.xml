@@ -61,17 +61,22 @@
                     android:id="@+id/backpick"
                     android:layout_width="120dp"
                     android:layout_height="170dp"
+                    android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp" />
 
                 <com.elmahousingfinanceug_test.launch.rao.ImagePick
                     android:id="@+id/selfie"
                     android:layout_width="120dp"
-                    android:layout_height="170dp"/>
+                    android:layout_height="170dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"/>
 
                 <com.elmahousingfinanceug_test.launch.rao.ImagePick
-                    android:layout_width="150dp"
+                    android:id="@+id/signature"
+                    android:layout_width="120dp"
                     android:layout_height="170dp"
-                    android:visibility="invisible"/>
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"/>
 
             </LinearLayout>
 

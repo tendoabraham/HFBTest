@@ -34,6 +34,7 @@ import android.webkit.WebViewClient;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
@@ -93,27 +94,27 @@ import mumayank.com.airlocationlibrary.AirLocation;
 
 public class AccountOpenZExistingCustomersMain extends AppCompatActivity implements ResponseListener, View.OnClickListener {
     TextView title, prev, next, otpcountdown, tv_resend_otp, show_response;
-    ProgressBar determinateBar,progressBar1;
-    String AccoutNo,ProductID ,ProductAccout ,CurrencyURL ,TermsURL ,Currency,BranchID ;
+    ProgressBar determinateBar, progressBar1;
+    String AccoutNo, ProductID, ProductAccout, CurrencyURL, TermsURL, Currency, BranchID;
     Bitmap bitmapImageFront, bitmapImageBack, bitmapImageSelfie;
     ViewFlipper flipper;
     WebView webView;
-    ImagePick front,backpick,selfie;
+    ImagePick front, backpick, selfie;
     Spinner currselect, branchselect, political_spin, occupation_spin, proffession_status, regionselect, districtName,
             countyName, subCountyName, parishName, villageName, eAName;
-    LinearLayout ccg,currencyLayout, centeidsdetails, centeparentinfo, centesourceincome, centenextofkin,
+    LinearLayout ccg, currencyLayout, centeidsdetails, centeparentinfo, centesourceincome, centenextofkin,
             centecontacts, centeextras, centehearusfrom, new_Lay, existing_lay, aMr, bMrs, cMiss;
     ScrollView pan_pin_in;
     cicEditText staffPhoneNumber, accountNumber, name, sname, otherNames, nationalID, DOBEdit, FatherFirstName,
-            FatherMiddleName,FatherLastName,MotherFirstName,MotherMiddleName,MotherLastName, Address,YearsAtAddress,
-            PoliticallyExposed, IncomeperAnnum,EmploymentType,Occupation, PlaceofWork, NatureofBussiness,
+            FatherMiddleName, FatherLastName, MotherFirstName, MotherMiddleName, MotherLastName, Address, YearsAtAddress,
+            PoliticallyExposed, IncomeperAnnum, EmploymentType, Occupation, PlaceofWork, NatureofBussiness,
             PeriodofEmployment, EmployerName, NatureofEmployment, NextofKinFirstName, NextofKinMiddleName,
             NextofKinLastName, NextofKinPhoneNumber, NextofKinAltPhoneNumber, NextofKinAddress, EmailAddress,
             PhoneNumber, AlternatePhoneNumber, ActualAddress, country, city, zipCode, c4, c44, c45, c5;
 
     EditText et_acc, et_pan, et_pin, et_phone;
     RadioGroup addressPeriod, employPeriod, accountsGroup, radioGroup;
-    RadioButton yearsButtonM, monthsButtonM, yearsButtonE, monthsButtonE,  FaceBook, Twitter,
+    RadioButton yearsButtonM, monthsButtonM, yearsButtonE, monthsButtonE, FaceBook, Twitter,
             Instagram, tv, ss, bankstaff, HFBCustomer, Agent;
     AppCompatCheckBox chkMobileBanking, chkPos, chkATM, chkChequeBook, chkInternetBanking, chkAgencyBanking, radiob;
     PinView otpPinView;
@@ -121,18 +122,18 @@ public class AccountOpenZExistingCustomersMain extends AppCompatActivity impleme
     CustomerCat customer_cat_;
     joeSingleChoice singleTitle;
     RelativeLayout success_failed;
-   
+
 
     private AllMethods am;
 
     int REQUEST_IMAGE = 100, REQUEST_IMAGEX = 0, step_ = 0;
 
-    String encodedImageFront="", encodedImageBack="", encodedImageSelfie="", Usertitle="", CustomerCategory = "",
-            step0 = "How do we reach You ?",step1 = "Terms & Conditions", step2 = "OTP Confirmation", raoOTP = "", currentTask = "", INFOFIELD1 = "", INFOFIELD2 = "", INFOFIELD3 = "",
-            INFOFIELD4 = "", INFOFIELD5 = "",token = "", payload = "", Device="", uri = "", extrauri="", new_request="",
-            selectedAccount="", selectedAccountID="", currName="",branchID="",termsUrl="", periodAddressString="", periodWorkString="",
-            StringPoliticallyExposed="",occupationIDString="",professionIDString="",regionIDString="", districtIDString="", countyIDString="",
-            subcountyIDString="", parishIdString="",villageIdString="" ,eAIdString="";
+    String encodedImageFront = "", encodedImageBack = "", encodedImageSelfie = "", Usertitle = "", CustomerCategory = "",
+            step0 = "Personal details?", step1 = "Terms & Conditions", step2 = "Other services", step3 = "OTP Confirmation", raoOTP = "", currentTask = "", INFOFIELD1 = "", INFOFIELD2 = "", INFOFIELD3 = "",
+            INFOFIELD4 = "", INFOFIELD5 = "", token = "", payload = "", Device = "", uri = "", extrauri = "", new_request = "",
+            selectedAccount = "", selectedAccountID = "", currName = "", branchID = "", termsUrl = "", periodAddressString = "", periodWorkString = "",
+            StringPoliticallyExposed = "", occupationIDString = "", professionIDString = "", regionIDString = "", districtIDString = "", countyIDString = "",
+            subcountyIDString = "", parishIdString = "", villageIdString = "", eAIdString = "";
 
     boolean done = false;
     private String[] FieldIDs, FieldValues;
@@ -144,7 +145,7 @@ public class AccountOpenZExistingCustomersMain extends AppCompatActivity impleme
 
     JSONArray accountProducts = null, branches = null;
 
-    List <String>  accountIDs = new ArrayList<>(), accountNames = new ArrayList<>(), currencyNames = new ArrayList<>(),
+    List<String> accountIDs = new ArrayList<>(), accountNames = new ArrayList<>(), currencyNames = new ArrayList<>(),
             listBranchIDs = new ArrayList<>(), listBranchNames = new ArrayList<>(), listUrls = new ArrayList<>(),
             politicsIDs = new ArrayList<>(), politicsNames = new ArrayList<>(),
             occupationIds = new ArrayList<>(), occupationNames = new ArrayList<>(), professionIds = new ArrayList<>(),
@@ -154,7 +155,7 @@ public class AccountOpenZExistingCustomersMain extends AppCompatActivity impleme
             parishIds = new ArrayList<>(), parishlistNames = new ArrayList<>(), villageIds = new ArrayList<>(),
             villagelistNames = new ArrayList<>(), eAIds = new ArrayList<>(), eAlistNames = new ArrayList<>();
 
-    private final static int REQUEST_ID_AIRLOCATION=1235;
+    private final static int REQUEST_ID_AIRLOCATION = 1235;
     private static final String DATE_PATTERN = "((19|20)\\d\\d)[/-](0?[1-9]|1[012])[/-](0?[1-9]|[12][0-9]|3[01])";
     public static final SimpleDateFormat BIRTHDAY_FORMAT_PARSER = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -164,7 +165,7 @@ public class AccountOpenZExistingCustomersMain extends AppCompatActivity impleme
         try {
             BIRTHDAY_FORMAT_PARSER.parse(date);
             return true;
-        } catch (Exception e){
+        } catch (Exception e) {
             return false;
         }
     }
@@ -177,18 +178,17 @@ public class AccountOpenZExistingCustomersMain extends AppCompatActivity impleme
         am = new AllMethods(this);
         am.disableScreenShot(this);
         Intent intent = getIntent();
-         AccoutNo = intent.getStringExtra("accNo");
-         ProductID = intent.getStringExtra("productID") ;
-         ProductAccout = intent.getStringExtra("productName");
-         CurrencyURL = intent.getStringExtra("currencyURL") ;
-         TermsURL = intent.getStringExtra("termsURL") ;
-         Currency = intent.getStringExtra("currency") ;
-         BranchID =intent.getStringExtra("branch") ;
-        
-       
+        AccoutNo = intent.getStringExtra("accNo");
+        ProductID = intent.getStringExtra("productID");
+        ProductAccout = intent.getStringExtra("productName");
+        CurrencyURL = intent.getStringExtra("currencyURL");
+        TermsURL = intent.getStringExtra("termsURL");
+        Currency = intent.getStringExtra("currency");
+        BranchID = intent.getStringExtra("branch");
+
 
         title = findViewById(R.id.title);
-        progressBar1=findViewById(R.id.progressBar1);
+        progressBar1 = findViewById(R.id.progressBar1);
         customer_cat_ = findViewById(R.id.customer_cat_);
         new_Lay = findViewById(R.id.new_Lay);
         existing_lay = findViewById(R.id.existing_lay);
@@ -249,7 +249,7 @@ public class AccountOpenZExistingCustomersMain extends AppCompatActivity impleme
         centecontacts = findViewById(R.id.centecontacts);
         centeextras = findViewById(R.id.centeextras);
         centehearusfrom = findViewById(R.id.centehearusfrom);
-       
+
 
         //Create Fields for user input
         generateForms();
@@ -263,7 +263,6 @@ public class AccountOpenZExistingCustomersMain extends AppCompatActivity impleme
 
         title.setText(step0);
 
-        
 
 //        currselect.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 //            @Override
@@ -302,6 +301,7 @@ public class AccountOpenZExistingCustomersMain extends AppCompatActivity impleme
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
             }
+
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 raoOTP = charSequence.toString();
@@ -309,6 +309,7 @@ public class AccountOpenZExistingCustomersMain extends AppCompatActivity impleme
                     verify();
                 }
             }
+
             @Override
             public void afterTextChanged(Editable editable) {
 
@@ -327,24 +328,25 @@ public class AccountOpenZExistingCustomersMain extends AppCompatActivity impleme
                 getLocationAddress(location);
                 //new GetAddressFromLocation().execute(location);
             }
+
             @Override
             public void onFailed(@NonNull AirLocation.LocationFailedEnum locationFailedEnum) {
                 // do something
             }
         });
 
-        if(am.getUserPhone().length()>8 && am.getUserPhone().startsWith("256")) {
-           PhoneNumber.editText.setText(am.getUserPhone().replace("256",""));
+        if (am.getUserPhone().length() > 8 && am.getUserPhone().startsWith("256")) {
+            PhoneNumber.editText.setText(am.getUserPhone().replace("256", ""));
         }
 
-        if(am.getUserEmail().length()>3) {
+        if (am.getUserEmail().length() > 3) {
             EmailAddress.editText.setText(am.getUserEmail());
         }
 
-        if(am.getProceed()) {
+        if (am.getProceed()) {
             proceedFromWhereYouLeftOff();
         }
-        registerReceiver(populateProducts,new IntentFilter("populate"));
+        registerReceiver(populateProducts, new IntentFilter("populate"));
     }
 
     private final BroadcastReceiver populateProducts = new BroadcastReceiver() {
@@ -359,38 +361,38 @@ public class AccountOpenZExistingCustomersMain extends AppCompatActivity impleme
                 // ProductID|2024|ProductName|Save plus Account|CurrencyID|USD|Urls|https://www.housingfinance.co.ug/retail-banking/savings-account/save-plus-account/~
                 // ProductID|2024|ProductName|Save plus Account|CurrencyID|GBP|Urls|https://www.housingfinance.co.ug/retail-banking/savings-account/save-plus-account/~ProductID|2024|ProductName|Save plus Account|CurrencyID|EUR|Urls|https://www.housingfinance.co.ug/retail-banking/savings-account/save-plus-account/~ProductID|2024|ProductName|Easy Savings Account|CurrencyID|UGX|Urls|https://www.housingfinance.co.ug/retail-banking/savings-account/easy-savings-account/~ProductID|2024|ProductName|Easy Savings Account|CurrencyID|USD|Urls|https://www.housingfinance.co.ug/retail-banking/savings-account/easy-savings-account/~ProductID|2024|ProductName|Easy Savings Account|CurrencyID|GBP|Urls|https://www.housingfinance.co.ug/retail-banking/savings-account/easy-savings-account/~ProductID|2024|ProductName|Easy Savings Account|CurrencyID|EUR|Urls|https://www.housingfinance.co.ug/retail-banking/savings-account/easy-savings-account/~ProductID|2024|ProductName|U-Savers Account|CurrencyID|UGX|Urls|https://www.housingfinance.co.ug/retail-banking/savings-account/u-savers-account-student-account/~ProductID|2025|ProductName|Toto’s Treasure Account|CurrencyID|UGX|Urls|https://www.housingfinance.co.ug/retail-banking/savings-account/totos-treasure-account/~ProductID|2025|ProductName|Toto’s Treasure Account|CurrencyID|USD|Urls|https://www.housingfinance.co.ug/retail-banking/savings-account/totos-treasure-account/~ProductID|2025|ProductName|Toto’s Treasure Account|CurrencyID|GBP|Urls|https://www.housingfinance.co.ug/retail-banking/savings-account/totos-treasure-account/~ProductID|2025|ProductName|Toto’s Treasure Account|CurrencyID|EUR|Urls|https://www.housingfinance.co.ug/retail-banking/savings-account/totos-treasure-account/~ProductID|2030|ProductName|Salary Current Account|CurrencyID|UGX|Urls|https://www.housingfinance.co.ug/retail-banking/current-accounts/salary-current-account/~ProductID|2030|ProductName|Pearl Current Account|CurrencyID|UGX|Urls|https://www.housingfinance.co.ug/retail-banking/current-accounts/pearl-current-account/~ProductID|2030|ProductName|Pearl Current Account|CurrencyID|USD|Urls|https://www.housingfinance.co.ug/retail-banking/current-accounts/pearl-current-account/~ProductID|2030|ProductName|Pearl Current Account|CurrencyID|GBP|Urls|https://www.housingfinance.co.ug/retail-banking/current-accounts/pearl-current-account/~ProductID|2030|ProductName|Pearl Current Account|CurrencyID|EURO|Urls|https://www.housingfinance.co.ug/retail-banking/current-accounts/pearl-current-a
 
-                String [] Products = am.getSavedBundle().split("~");
+                String[] Products = am.getSavedBundle().split("~");
                 accountIDs.clear();
                 accountNames.clear();
                 listUrls.clear();
                 accountsGroup.invalidate();
                 accountsGroup.removeAllViews();
-                if(smsBody.equals("New Customer")) {
+                if (smsBody.equals("New Customer")) {
                     for (String aProduct : Products) {
-                        String [] howLong = aProduct.split("\\|");
-                        String [] field_IDs = new String[howLong.length/2];
-                        String [] field_Values = new String[howLong.length/2];
-                        am.separate(aProduct,"|",field_IDs ,field_Values);
-                        if (!accountIDs.contains(am.FindInArray(field_IDs, field_Values,"ProductID")) 
-                                && (am.FindInArray(field_IDs, field_Values,"ProductID").equals("EASY")
-                                || am.FindInArray(field_IDs, field_Values,"ProductID").equals("SPLUS"))) {
-                            accountIDs.add(am.FindInArray(field_IDs, field_Values,"ProductID"));
-                            accountNames.add(am.FindInArray(field_IDs, field_Values,"ProductName"));
-                            listUrls.add(am.FindInArray(field_IDs, field_Values,"Urls"));
+                        String[] howLong = aProduct.split("\\|");
+                        String[] field_IDs = new String[howLong.length / 2];
+                        String[] field_Values = new String[howLong.length / 2];
+                        am.separate(aProduct, "|", field_IDs, field_Values);
+                        if (!accountIDs.contains(am.FindInArray(field_IDs, field_Values, "ProductID"))
+                                && (am.FindInArray(field_IDs, field_Values, "ProductID").equals("EASY")
+                                || am.FindInArray(field_IDs, field_Values, "ProductID").equals("SPLUS"))) {
+                            accountIDs.add(am.FindInArray(field_IDs, field_Values, "ProductID"));
+                            accountNames.add(am.FindInArray(field_IDs, field_Values, "ProductName"));
+                            listUrls.add(am.FindInArray(field_IDs, field_Values, "Urls"));
                         }
-                        
+
                     }
-                } else{
-                   
+                } else {
+
                     for (String aProduct : Products) {
-                        String [] howLong = aProduct.split("\\|");
-                        String [] field_IDs = new String[howLong.length/2];
-                        String [] field_Values = new String[howLong.length/2];
-                        am.separate(aProduct,"|",field_IDs ,field_Values);
-                        if (!accountIDs.contains(am.FindInArray(field_IDs, field_Values,"ProductID"))) {
-                            accountIDs.add(am.FindInArray(field_IDs, field_Values,"ProductID"));
-                            accountNames.add(am.FindInArray(field_IDs, field_Values,"ProductName"));
-                            listUrls.add(am.FindInArray(field_IDs, field_Values,"Urls"));
+                        String[] howLong = aProduct.split("\\|");
+                        String[] field_IDs = new String[howLong.length / 2];
+                        String[] field_Values = new String[howLong.length / 2];
+                        am.separate(aProduct, "|", field_IDs, field_Values);
+                        if (!accountIDs.contains(am.FindInArray(field_IDs, field_Values, "ProductID"))) {
+                            accountIDs.add(am.FindInArray(field_IDs, field_Values, "ProductID"));
+                            accountNames.add(am.FindInArray(field_IDs, field_Values, "ProductName"));
+                            listUrls.add(am.FindInArray(field_IDs, field_Values, "Urls"));
                         }
                     }
                 }
@@ -410,14 +412,14 @@ public class AccountOpenZExistingCustomersMain extends AppCompatActivity impleme
             }*/
 
                 float density = getResources().getDisplayMetrics().density;
-                int margin = (int)(6*density);
-                RadioGroup.LayoutParams rp = new RadioGroup.LayoutParams((int)(115*density), RadioGroup.LayoutParams.MATCH_PARENT, 1);
+                int margin = (int) (6 * density);
+                RadioGroup.LayoutParams rp = new RadioGroup.LayoutParams((int) (115 * density), RadioGroup.LayoutParams.MATCH_PARENT, 1);
                 rp.setMargins(margin, margin, margin, margin);
                 for (String buttonItem : accountIDs) {
                     RadioButton radioButton = new RadioButton(AccountOpenZExistingCustomersMain.this);
                     radioButton.setButtonDrawable(/*null*/ getResources().getDrawable(R.drawable.back_radio_button_tick));
                     radioButton.setBackground(getResources().getDrawable(R.drawable.back_radio_button_select));
-                    radioButton.setCompoundDrawablesWithIntrinsicBounds(null,getResources().getDrawable(R.drawable.online_rao),null,null);
+                    radioButton.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.online_rao), null, null);
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                         radioButton.setElevation(10f);
                     }
@@ -432,16 +434,16 @@ public class AccountOpenZExistingCustomersMain extends AppCompatActivity impleme
 
                     int selectedIndex = group.getCheckedRadioButtonId();
 
-                    if(selectedIndex != -1) {
+                    if (selectedIndex != -1) {
                         int buttonId = group.getCheckedRadioButtonId();
                         RadioButton selectedButton = findViewById(buttonId);
                         selectedButton.toggle();
                     }
 
                     selectedAccount = ProductAccout;
-                    selectedAccountID =  ProductID;
+                    selectedAccountID = ProductID;
                     termsUrl = TermsURL;
-                    Log.e("URLTE",TermsURL) ;
+                    Log.e("URLTE", TermsURL);
 
 //                    webView.loadUrl(termsUrl);
 //                    webView.setOnClickListener(view1-> {
@@ -457,12 +459,12 @@ public class AccountOpenZExistingCustomersMain extends AppCompatActivity impleme
                     try {
 
                         for (String aProduct : Products) {
-                            String [] howLong = aProduct.split("\\|");
-                            String [] field_IDs = new String[howLong.length/2];
-                            String [] field_Values = new String[howLong.length/2];
-                            am.separate(aProduct,"|",field_IDs ,field_Values);
-                            if (am.FindInArray(field_IDs, field_Values,"ProductID").matches(selectedAccountID)) {
-                                currencyNames.add(am.FindInArray(field_IDs, field_Values,"CurrencyID"));
+                            String[] howLong = aProduct.split("\\|");
+                            String[] field_IDs = new String[howLong.length / 2];
+                            String[] field_Values = new String[howLong.length / 2];
+                            am.separate(aProduct, "|", field_IDs, field_Values);
+                            if (am.FindInArray(field_IDs, field_Values, "ProductID").matches(selectedAccountID)) {
+                                currencyNames.add(am.FindInArray(field_IDs, field_Values, "CurrencyID"));
                             }
                         }
 
@@ -474,13 +476,13 @@ public class AccountOpenZExistingCustomersMain extends AppCompatActivity impleme
                         }
                     }*/
 
-                        currencyNames.add(0,"Select Currency");
+                        currencyNames.add(0, "Select Currency");
                         ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<>(AccountOpenZExistingCustomersMain.this, android.R.layout.simple_spinner_item, currencyNames);
                         spinnerArrayAdapter.setDropDownViewResource(R.layout.spiner_item);
                         currselect.setAdapter(spinnerArrayAdapter);
                         currencyLayout.setVisibility(View.VISIBLE);
 
-                        if(customer_cat_.getSelectedCategory().equals("")) {
+                        if (customer_cat_.getSelectedCategory().equals("")) {
                             ErrorAlert("Select customer type.");
                         }
 
@@ -489,12 +491,12 @@ public class AccountOpenZExistingCustomersMain extends AppCompatActivity impleme
                         staffPhoneNumber.setVisibility(View.VISIBLE);
                     } else  staffPhoneNumber.setVisibility(View.GONE);*/
 
-                        if (am.getCustomerID().length() <10) {
+                        if (am.getCustomerID().length() < 10) {
                             new_Lay.setVisibility(View.VISIBLE);
                             accountNumber.setVisibility(View.GONE);
                         } else {
                             new_Lay.setVisibility(View.GONE);
-                            if(customer_cat_.getSelectedCategory().equals("Existing Customer")){
+                            if (customer_cat_.getSelectedCategory().equals("Existing Customer")) {
                                 accountNumber.setVisibility(View.VISIBLE);
                             }
                         }
@@ -511,16 +513,16 @@ public class AccountOpenZExistingCustomersMain extends AppCompatActivity impleme
                 // BranchCode|13|BranchName|Fortportal~BranchCode|10|BranchName|Gardencity~
                 // BranchCode|14|BranchName|Gulu~BranchCode|99|BranchName|HeadOffice~BranchCode|16|BranchName|Jinja~BranchCode|06|BranchName|Kikuubo~BranchCode|11|BranchName|Kololo~BranchCode|12|BranchName|Lira~BranchCode|20|BranchName|Malaba~BranchCode|08|BranchName|Mbale~BranchCode|05|BranchName|Mbarara~BranchCode|18|BranchName|Najjanankumbi~BranchCode|02|BranchName|Nakasero~BranchCode|03|BranchName|Namuwongo~BranchCode|15|BranchName|Ndeeba~BranchCode|04|BranchName|Ntinda~BranchCode|09|BranchName|Ovino~BranchCode|19|BranchName|Tororo~
 
-                String [] Branches = am.getSavedBranch().split("~");
+                String[] Branches = am.getSavedBranch().split("~");
 
                 for (String aBranch : Branches) {
-                    String [] howLong = aBranch.split("\\|");
-                    String [] field_IDs = new String[howLong.length/2];
-                    String [] field_Values = new String[howLong.length/2];
-                    am.separate(aBranch,"|",field_IDs ,field_Values);
-                    if (!listBranchIDs.contains(am.FindInArray(field_IDs, field_Values,"BranchCode"))) {
-                        listBranchIDs.add(am.FindInArray(field_IDs, field_Values,"BranchCode"));
-                        listBranchNames.add(am.FindInArray(field_IDs, field_Values,"BranchName"));
+                    String[] howLong = aBranch.split("\\|");
+                    String[] field_IDs = new String[howLong.length / 2];
+                    String[] field_Values = new String[howLong.length / 2];
+                    am.separate(aBranch, "|", field_IDs, field_Values);
+                    if (!listBranchIDs.contains(am.FindInArray(field_IDs, field_Values, "BranchCode"))) {
+                        listBranchIDs.add(am.FindInArray(field_IDs, field_Values, "BranchCode"));
+                        listBranchNames.add(am.FindInArray(field_IDs, field_Values, "BranchName"));
                     }
                 }
 
@@ -532,13 +534,13 @@ public class AccountOpenZExistingCustomersMain extends AppCompatActivity impleme
                 }
             }*/
 
-                listBranchNames.add(0,"Select Branch");
+                listBranchNames.add(0, "Select Branch");
                 ArrayAdapter<String> spinnerArrayAdapterB = new ArrayAdapter<>(AccountOpenZExistingCustomersMain.this, android.R.layout.simple_spinner_item, listBranchNames);
                 spinnerArrayAdapterB.setDropDownViewResource(R.layout.spiner_item);
                 branchselect.setAdapter(spinnerArrayAdapterB);
 
             } catch (Exception e) {
-                am.ToastMessageLong(AccountOpenZExistingCustomersMain.this,getString(R.string.tryAgain));
+                am.ToastMessageLong(AccountOpenZExistingCustomersMain.this, getString(R.string.tryAgain));
             }
         }
     };
@@ -559,15 +561,15 @@ public class AccountOpenZExistingCustomersMain extends AppCompatActivity impleme
 
     private void generateForms() {
         //Contact Details  field inputs
-        EmailAddress = new cicEditText(this, VAR.EMAIL,"Email Address "+getString(R.string.mandatory_field)," acb@domain.com");
-        PhoneNumber = new cicEditText(this, VAR.PHONENUMBER,"Phone Number "," 722222222");
-        AlternatePhoneNumber = new cicEditText(this, VAR.PHONENUMBER," Alternative Phone Number "," 7333333");
-        ActualAddress = new cicEditText(this, VAR.TEXT,"Current Address "," 123 Kampala");
-        city = new cicEditText(this, VAR.TEXT,"City"," Kampala");
-        country = new cicEditText(this, VAR.TEXT,"Country of residence"," Uganda");
-        zipCode = new cicEditText(this, VAR.TEXT,"Country code"," 256");
+        EmailAddress = new cicEditText(this, VAR.EMAIL, "Email Address " + getString(R.string.mandatory_field), " acb@domain.com");
+        PhoneNumber = new cicEditText(this, VAR.PHONENUMBER, "Phone Number ", " 722222222");
+        AlternatePhoneNumber = new cicEditText(this, VAR.PHONENUMBER, " Alternative Phone Number ", " 7333333");
+        ActualAddress = new cicEditText(this, VAR.TEXT, "Current Address ", " 123 Kampala");
+        city = new cicEditText(this, VAR.TEXT, "City", " Kampala");
+        country = new cicEditText(this, VAR.TEXT, "Name", " John Smith");
+        zipCode = new cicEditText(this, VAR.TEXT, "Country code", " 256");
 
-        centecontacts.addView(EmailAddress);
+//        centecontacts.addView(EmailAddress);
         centecontacts.addView(PhoneNumber);
         centecontacts.addView(AlternatePhoneNumber);
 
@@ -587,11 +589,11 @@ public class AccountOpenZExistingCustomersMain extends AppCompatActivity impleme
         }*/
 
         centecontacts.addView(country);
-        centecontacts.addView(zipCode);
-        centecontacts.addView(city);
-        centecontacts.addView(ActualAddress);
+//        centecontacts.addView(zipCode);
+//        centecontacts.addView(city);
+//        centecontacts.addView(ActualAddress);
 
-        country.setEnabled(false);
+        country.setEnabled(true);
         zipCode.setEnabled(false);
 
         PhoneNumber.editText.addTextChangedListener(new TextWatcher() {
@@ -599,16 +601,18 @@ public class AccountOpenZExistingCustomersMain extends AppCompatActivity impleme
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
             }
+
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (PhoneNumber.editText.getText().length()>5) {
+                if (PhoneNumber.editText.getText().length() > 5) {
                     zipCode.setText(PhoneNumber.getCountryCode());
-                    country.setText(PhoneNumber.citizenship.getSelectedItem().toString());
+
                 } else {
                     zipCode.setText("");
                     country.setText("");
                 }
             }
+
             @Override
             public void afterTextChanged(Editable s) {
 
@@ -616,11 +620,11 @@ public class AccountOpenZExistingCustomersMain extends AppCompatActivity impleme
         });
 
         //ID Details
-        name = new cicEditText(this, VAR.TEXT,"Given Name "," John");
-        sname = new cicEditText(this, VAR.TEXT,"Surname "," Mwanza");
-        otherNames = new cicEditText(this, VAR.TEXT,"Other Names "+getString(R.string.optional_field)," Mwanzo");
-        nationalID= new cicEditText(this, VAR.TEXT,"National ID "," CM1234568806LGB");
-        DOBEdit= new cicEditText(this, VAR.TEXT,"Date of Birth  YYYY-MM-DD ","  1990-12-31");
+        name = new cicEditText(this, VAR.TEXT, "Given Name ", " John");
+        sname = new cicEditText(this, VAR.TEXT, "Surname ", " Mwanza");
+        otherNames = new cicEditText(this, VAR.TEXT, "Other Names " + getString(R.string.optional_field), " Mwanzo");
+        nationalID = new cicEditText(this, VAR.TEXT, "National ID ", " CM1234568806LGB");
+        DOBEdit = new cicEditText(this, VAR.TEXT, "Date of Birth  YYYY-MM-DD ", "  1990-12-31");
 
         name.setEnabled(false);
         sname.setEnabled(false);
@@ -634,12 +638,12 @@ public class AccountOpenZExistingCustomersMain extends AppCompatActivity impleme
         centeidsdetails.addView(DOBEdit);
 
         //Next of kin details
-        NextofKinFirstName = new cicEditText(this, VAR.TEXT,"Next of Kin First Name "," John");
-        NextofKinMiddleName = new cicEditText(this, VAR.TEXT,"Next of Kin Middle Name "+getString(R.string.optional_field)," Kawaooya");
-        NextofKinLastName = new cicEditText(this, VAR.TEXT,"Next of Kin Last Name "," Kawaooya");
-        NextofKinPhoneNumber = new cicEditText(this, VAR.PHONENUMBER,"Next of Kin Phone Number "+getString(R.string.optional_field)," 72222222");
-        NextofKinAltPhoneNumber = new cicEditText(this, VAR.PHONENUMBER,"Next of Kin Alternate Phone Number "+getString(R.string.optional_field)," 7333333");
-        NextofKinAddress = new cicEditText(this, VAR.TEXT,"Next of Kin Adress "," 123 Kampala");
+        NextofKinFirstName = new cicEditText(this, VAR.TEXT, "Next of Kin First Name ", " John");
+        NextofKinMiddleName = new cicEditText(this, VAR.TEXT, "Next of Kin Middle Name " + getString(R.string.optional_field), " Kawaooya");
+        NextofKinLastName = new cicEditText(this, VAR.TEXT, "Next of Kin Last Name ", " Kawaooya");
+        NextofKinPhoneNumber = new cicEditText(this, VAR.PHONENUMBER, "Next of Kin Phone Number " + getString(R.string.optional_field), " 72222222");
+        NextofKinAltPhoneNumber = new cicEditText(this, VAR.PHONENUMBER, "Next of Kin Alternate Phone Number " + getString(R.string.optional_field), " 7333333");
+        NextofKinAddress = new cicEditText(this, VAR.TEXT, "Next of Kin Adress ", " 123 Kampala");
 
         centenextofkin.addView(NextofKinFirstName);
         centenextofkin.addView(NextofKinMiddleName);
@@ -649,17 +653,17 @@ public class AccountOpenZExistingCustomersMain extends AppCompatActivity impleme
         centenextofkin.addView(NextofKinAddress);
 
         // occupation details
-        IncomeperAnnum = new cicEditText(this, VAR.AMOUNT,"Income per Annum ","");
-        EmploymentType = new cicEditText(this, VAR.TEXT,"Employment Type ","");
-        EmployerName = new cicEditText(this, VAR.TEXT,"Employer's Name "," NWSC");
-        Occupation = new cicEditText(this, VAR.TEXT,"Occupation "," Engineer");
-        PlaceofWork = new cicEditText(this, VAR.TEXT,"Place of Work ","");
-        NatureofBussiness = new cicEditText(this, VAR.TEXT,"Nature of Business/Activity Sector ","");
-        PeriodofEmployment = new cicEditText(this, VAR.AMOUNT,"Period of Employment "," 5");
+        IncomeperAnnum = new cicEditText(this, VAR.AMOUNT, "Income per Annum ", "");
+        EmploymentType = new cicEditText(this, VAR.TEXT, "Employment Type ", "");
+        EmployerName = new cicEditText(this, VAR.TEXT, "Employer's Name ", " NWSC");
+        Occupation = new cicEditText(this, VAR.TEXT, "Occupation ", " Engineer");
+        PlaceofWork = new cicEditText(this, VAR.TEXT, "Place of Work ", "");
+        NatureofBussiness = new cicEditText(this, VAR.TEXT, "Nature of Business/Activity Sector ", "");
+        PeriodofEmployment = new cicEditText(this, VAR.AMOUNT, "Period of Employment ", " 5");
 
         RadioGroup.LayoutParams rp = new RadioGroup.LayoutParams(RadioGroup.LayoutParams.MATCH_PARENT, RadioGroup.LayoutParams.MATCH_PARENT, 1);
         float density = getResources().getDisplayMetrics().density;
-        int margin = (int)(6*density);
+        int margin = (int) (6 * density);
         rp.setMargins(margin, margin, margin, margin);
 
         employPeriod = new RadioGroup(this);
@@ -688,7 +692,7 @@ public class AccountOpenZExistingCustomersMain extends AppCompatActivity impleme
         monthsButtonE.setPadding(20, 20, 20, 20);
         employPeriod.addView(monthsButtonE, rp);
         employPeriod.setOnCheckedChangeListener((group, checkedId) -> {
-            if(yearsButtonE.isChecked()){
+            if (yearsButtonE.isChecked()) {
                 periodWorkString = " - Years";
             } else {
                 periodWorkString = " - Months";
@@ -696,7 +700,7 @@ public class AccountOpenZExistingCustomersMain extends AppCompatActivity impleme
         });
         employPeriod.check(0);
 
-        NatureofEmployment = new cicEditText(this, VAR.TEXT,"Nature of employment "," Contract");
+        NatureofEmployment = new cicEditText(this, VAR.TEXT, "Nature of employment ", " Contract");
 
         centesourceincome.addView(IncomeperAnnum);
         centesourceincome.addView(EmploymentType);
@@ -717,50 +721,50 @@ public class AccountOpenZExistingCustomersMain extends AppCompatActivity impleme
         centesourceincome.addView(NatureofEmployment);
 
         // hear us
-        final TextView sstext= findViewById(R.id.sstext);
-        c4 = new cicEditText(this, VAR.TEXT,"Bank Staff Name"," James Kabaku");
+        final TextView sstext = findViewById(R.id.sstext);
+        c4 = new cicEditText(this, VAR.TEXT, "Bank Staff Name", " James Kabaku");
         c4.setVisibility(View.GONE);
         centehearusfrom.addView(c4);
-        c44= new cicEditText(this, VAR.TEXT,"Bank Staff's Branch"," Kampala");
+        c44 = new cicEditText(this, VAR.TEXT, "Bank Staff's Branch", " Kampala");
         c44.setVisibility(View.GONE);
         centehearusfrom.addView(c44);
-        c45= new cicEditText(this, VAR.PHONENUMBER,"Customer phone number"," 733333333");
+        c45 = new cicEditText(this, VAR.PHONENUMBER, "Customer phone number", " 733333333");
         c45.setVisibility(View.GONE);
         centehearusfrom.addView(c45);
-        c5= new cicEditText(this, VAR.TEXT,"Current Location "," Kampala");
+        c5 = new cicEditText(this, VAR.TEXT, "Current Location ", " Kampala");
         centehearusfrom.addView(c5);
 
 
         final RadioGroup ssgroup = findViewById(R.id.ssgroup);
         radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
-            if(checkedId == R.id.tv) {
+            if (checkedId == R.id.tv) {
                 ssgroup.setVisibility(View.GONE);
                 c4.setVisibility(View.VISIBLE);
                 sstext.setVisibility(View.GONE);
                 c4.setLabel("TV/Radio station");
                 c44.setVisibility(View.GONE);
                 c45.setVisibility(View.GONE);
-            } else if(checkedId == R.id.ss) {
+            } else if (checkedId == R.id.ss) {
                 ssgroup.setVisibility(View.VISIBLE);
                 sstext.setVisibility(View.VISIBLE);
                 c4.setVisibility(View.GONE);
                 c44.setVisibility(View.GONE);
                 c45.setVisibility(View.GONE);
-            } else if(checkedId == R.id.bankstaff){
+            } else if (checkedId == R.id.bankstaff) {
                 ssgroup.setVisibility(View.GONE);
                 sstext.setVisibility(View.GONE);
                 c4.setVisibility(View.VISIBLE);
                 c4.setLabel("Bank Staff Name");
                 c44.setVisibility(View.VISIBLE);
                 c45.setVisibility(View.GONE);
-            } else if(checkedId == R.id.HFBCustomer){
+            } else if (checkedId == R.id.HFBCustomer) {
                 ssgroup.setVisibility(View.GONE);
                 sstext.setVisibility(View.GONE);
                 c4.setVisibility(View.VISIBLE);
                 c4.setLabel("Customer Name");
                 c44.setVisibility(View.GONE);
                 c45.setVisibility(View.VISIBLE);
-            } else if(checkedId == R.id.Agent) {
+            } else if (checkedId == R.id.Agent) {
                 ssgroup.setVisibility(View.GONE);
                 sstext.setVisibility(View.GONE);
                 c4.setVisibility(View.VISIBLE);
@@ -771,16 +775,16 @@ public class AccountOpenZExistingCustomersMain extends AppCompatActivity impleme
         });
 
         //Parents details
-        FatherFirstName= new cicEditText(this, VAR.TEXT,"Father's first name "," John");
-        FatherMiddleName = new cicEditText(this, VAR.TEXT,"Father's middle name "," Kawooya");
-        FatherLastName = new cicEditText(this, VAR.TEXT,"Father's last name "," Kawooya");
+        FatherFirstName = new cicEditText(this, VAR.TEXT, "Father's first name ", " John");
+        FatherMiddleName = new cicEditText(this, VAR.TEXT, "Father's middle name ", " Kawooya");
+        FatherLastName = new cicEditText(this, VAR.TEXT, "Father's last name ", " Kawooya");
 
-        MotherFirstName = new cicEditText(this, VAR.TEXT,"Mother's first name "," Mary");
-        MotherMiddleName = new cicEditText(this, VAR.TEXT,"Mother's middle name "," Kawooya");
-        MotherLastName = new cicEditText(this, VAR.TEXT,"Mother's last name "," Kawooya");
+        MotherFirstName = new cicEditText(this, VAR.TEXT, "Mother's first name ", " Mary");
+        MotherMiddleName = new cicEditText(this, VAR.TEXT, "Mother's middle name ", " Kawooya");
+        MotherLastName = new cicEditText(this, VAR.TEXT, "Mother's last name ", " Kawooya");
 
-        Address = new cicEditText(this, VAR.TEXT,"Home District "," Mwanza");
-        YearsAtAddress = new cicEditText(this, VAR.AMOUNT,"Duration of living at that Address "," 1");
+        Address = new cicEditText(this, VAR.TEXT, "Home District ", " Mwanza");
+        YearsAtAddress = new cicEditText(this, VAR.AMOUNT, "Duration of living at that Address ", " 1");
 
         addressPeriod = new RadioGroup(this);
         addressPeriod.setOrientation(RadioGroup.HORIZONTAL);
@@ -809,7 +813,7 @@ public class AccountOpenZExistingCustomersMain extends AppCompatActivity impleme
         monthsButtonM.setPadding(20, 20, 20, 20);
         addressPeriod.addView(monthsButtonM, rp);
         addressPeriod.setOnCheckedChangeListener((group, checkedId) -> {
-            if(yearsButtonM.isChecked()){
+            if (yearsButtonM.isChecked()) {
                 periodAddressString = " - Years";
             } else {
                 periodAddressString = " - Months";
@@ -817,7 +821,7 @@ public class AccountOpenZExistingCustomersMain extends AppCompatActivity impleme
         });
         addressPeriod.check(0);
 
-        PoliticallyExposed = new cicEditText(this, VAR.TEXT,"Politically Exposed "," Yes/No");
+        PoliticallyExposed = new cicEditText(this, VAR.TEXT, "Politically Exposed ", " Yes/No");
 
         centeparentinfo.addView(FatherFirstName);
         centeparentinfo.addView(FatherMiddleName);
@@ -879,17 +883,21 @@ public class AccountOpenZExistingCustomersMain extends AppCompatActivity impleme
                 webView.loadUrl(TermsURL);
                 webView.setVerticalScrollBarEnabled(true);
                 webView.setHorizontalScrollBarEnabled(true);
+
                 break;
             case 2:
                 title.setText(step2);
+                otpPinView.setEnabled(true);
                 break;
-           
-         
+            case 3:
+                title.setText(step3);
+                next.setVisibility(View.INVISIBLE);
+                break;
         }
     }
 
     private void startStimer() {
-        if(cnt!=null) {
+        if (cnt != null) {
             cnt.cancel();
         }
         cnt = new CountDownTimer(60000, 1000) {
@@ -973,10 +981,10 @@ public class AccountOpenZExistingCustomersMain extends AppCompatActivity impleme
 
                             if (ug.isUgandanID()) {
                                 // TODO: 26/11/2021 added condirions to check empty
-                                String [] nameSplit = ug.getGivenNameNew().split(" ");
-                                if(nameSplit.length>1) {
-                                    if(nameSplit[0].isEmpty()) {
-                                        am.myDialog(AccountOpenZExistingCustomersMain.this,getString(R.string.unrecognized_ID), getString(R.string.sure_clear));
+                                String[] nameSplit = ug.getGivenNameNew().split(" ");
+                                if (nameSplit.length > 1) {
+                                    if (nameSplit[0].isEmpty()) {
+                                        am.myDialog(AccountOpenZExistingCustomersMain.this, getString(R.string.unrecognized_ID), getString(R.string.sure_clear));
                                     } else {
                                         name.setText(nameSplit[0]);
                                         otherNames.setText(nameSplit[1]);
@@ -984,38 +992,40 @@ public class AccountOpenZExistingCustomersMain extends AppCompatActivity impleme
                                         otherNames.setEnabled(false);
                                     }
                                 } else {
-                                    if(ug.getGivenNameNew().isEmpty()) {
-                                        am.myDialog(AccountOpenZExistingCustomersMain.this,getString(R.string.unrecognized_ID), getString(R.string.sure_clear));
+                                    if (ug.getGivenNameNew().isEmpty()) {
+                                        am.myDialog(AccountOpenZExistingCustomersMain.this, getString(R.string.unrecognized_ID), getString(R.string.sure_clear));
                                     } else {
                                         name.setText(ug.getGivenNameNew());
                                     }
                                 }
 
-                                if(ug.getNIN().isEmpty() || ug.getSurNameNew().isEmpty() || ug.getDOBNew().isEmpty()) {
-                                    am.myDialog(AccountOpenZExistingCustomersMain.this,getString(R.string.unrecognized_ID), getString(R.string.sure_clear));
+                                if (ug.getNIN().isEmpty() || ug.getSurNameNew().isEmpty() || ug.getDOBNew().isEmpty()) {
+                                    am.myDialog(AccountOpenZExistingCustomersMain.this, getString(R.string.unrecognized_ID), getString(R.string.sure_clear));
                                 } else {
-                                    sname.setText(ug.getSurNameNew());
+                                    sname.setText(ug.GetSurName());
+                                    
                                     nationalID.setText(ug.getNIN());
                                     DOBEdit.setText(ug.getDOBNew());
+                                    otherNames.setText(ug.getGivenName());
 
                                     flipper.showNext();
                                     step_++;
                                     flipViewIt(step_);
                                 }
                             } else {
-                                am.myDialog(AccountOpenZExistingCustomersMain.this,getString(R.string.unrecognized_ID), getString(R.string.sure_clear));
+                                am.myDialog(AccountOpenZExistingCustomersMain.this, getString(R.string.unrecognized_ID), getString(R.string.sure_clear));
                             }
                         } catch (Exception e) {
-                            am.myDialog(AccountOpenZExistingCustomersMain.this,getString(R.string.alert), getString(R.string.sure_clear));
+                            am.myDialog(AccountOpenZExistingCustomersMain.this, getString(R.string.alert), getString(R.string.sure_clear));
                         }
                     } else {
-                        am.myDialog(AccountOpenZExistingCustomersMain.this,getString(R.string.alert), getString(R.string.tryAgain));
+                        am.myDialog(AccountOpenZExistingCustomersMain.this, getString(R.string.alert), getString(R.string.tryAgain));
                     }
 
                 },
                 error -> {
                     removeDialogs();
-                    am.myDialog(AccountOpenZExistingCustomersMain.this,getString(R.string.alert),getString(R.string.connectionError));
+                    am.myDialog(AccountOpenZExistingCustomersMain.this, getString(R.string.alert), getString(R.string.connectionError));
                 }) {
             @Override
             protected Map<String, String> getParams() {
@@ -1102,10 +1112,10 @@ public class AccountOpenZExistingCustomersMain extends AppCompatActivity impleme
 
     private void alertLoading(String message) {
         am.progressDialog("1");
-   }
+    }
 
-    public void ErrorAlert(String Message){
-        am.myDialog(this,getString(R.string.alert),Message);
+    public void ErrorAlert(String Message) {
+        am.myDialog(this, getString(R.string.alert), Message);
     }
 
     private void callServer(StringRequest stringRequest) {
@@ -1119,14 +1129,14 @@ public class AccountOpenZExistingCustomersMain extends AppCompatActivity impleme
         return str + "\"B-0\":\"RIGHT THUMB\"" + "}";
     }
 
-    private void getLocationAddress(Location location){
+    private void getLocationAddress(Location location) {
         String url = "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + location.getLatitude() + ","
                 + location.getLongitude() + "&key=AIzaSyDhZlL-z0dTCANCHwHSHbNQYnG96phvQ0c";
 
         RequestQueue queue = Volley.newRequestQueue(AccountOpenZExistingCustomersMain.this);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 response -> {
-                    if(!TextUtils.isEmpty(response)) {
+                    if (!TextUtils.isEmpty(response)) {
                         //c5.setText(result);
                         String formatted_address = null;
                         try {
@@ -1157,7 +1167,7 @@ public class AccountOpenZExistingCustomersMain extends AppCompatActivity impleme
                     }
                 }, error -> {
 
-                });
+        });
         stringRequest.setRetryPolicy(new DefaultRetryPolicy(
                 60000,
                 0,
@@ -1179,11 +1189,11 @@ public class AccountOpenZExistingCustomersMain extends AppCompatActivity impleme
                 String theSms = i.getStringExtra("SMSbody");
                 String status = i.getStringExtra("STATUS");
                 assert status != null;
-                if("000".equals(status)) {
+                if ("000".equals(status)) {
                     assert theSms != null;
                     otpPinView.setText(theSms.trim());
                 } else {
-                    Toast.makeText(AccountOpenZExistingCustomersMain.this,theSms,Toast.LENGTH_LONG).show();
+                    Toast.makeText(AccountOpenZExistingCustomersMain.this, theSms, Toast.LENGTH_LONG).show();
                     unregisterReceiver(onBroadcastSMSReceived);
                 }
             } catch (Exception e) {
@@ -1212,19 +1222,19 @@ public class AccountOpenZExistingCustomersMain extends AppCompatActivity impleme
                             front.setImage(bitmap);
                             bitmapImageFront = BitmapCompressionWithZ(this, mFile);
                             encodedImageFront = ConvertImageToBase64(bitmap);
-                            am.putSavedData("encodedImageFront",encodedImageFront);
+                            am.putSavedData("encodedImageFront", encodedImageFront);
                             break;
                         case 2:
                             selfie.setImage(bitmap);
                             bitmapImageSelfie = BitmapCompressionWithZ(this, mFile);
                             encodedImageSelfie = ConvertImageToBase64(bitmap);
-                            am.putSavedData("encodedImageSelfie",encodedImageSelfie);
+                            am.putSavedData("encodedImageSelfie", encodedImageSelfie);
                             break;
                         case 3:
                             backpick.setImage(bitmap);
-                            bitmapImageBack = BitmapCompressionWithZ(this,mFile);
+                            bitmapImageBack = BitmapCompressionWithZ(this, mFile);
                             encodedImageBack = ConvertImageToBase64(bitmap);
-                            am.putSavedData("encodedImageBack",encodedImageBack);
+                            am.putSavedData("encodedImageBack", encodedImageBack);
                             break;
                         default:
                             selfie.setImage(bitmap);
@@ -1235,82 +1245,82 @@ public class AccountOpenZExistingCustomersMain extends AppCompatActivity impleme
                     e.printStackTrace();
                 }
             }
-        }
-        else if(requestCode == REQUEST_ID_AIRLOCATION) {
+        } else if (requestCode == REQUEST_ID_AIRLOCATION) {
             airLocation.onActivityResult(requestCode, resultCode, data);
         }
 
     }
 
     private void getCustomParam(String paramName, String task) {
-        am.get(this,"FORMID:O-GETCUSTOMPARAMS:" +
-                "PARAMETERNAME:" + paramName + ":"+
-                "BANKID:" + am.getBankID() + ":", getString(R.string.loading),task);
+        am.get(this, "FORMID:O-GETCUSTOMPARAMS:" +
+                "PARAMETERNAME:" + paramName + ":" +
+                "BANKID:" + am.getBankID() + ":", getString(R.string.loading), task);
 
     }
 
     private void checkCustomerExists(String checkNum, String nom) {
-        if (nom.equals("1")){
+        if (nom.equals("1")) {
             currentTask = "VerifyExisting";
         } else if (nom.equals("2")) {
             currentTask = "VerifyExistingAlt";
         } else {
             currentTask = "ValidateBankStaff";
         }
-        am.get(this,"FORMID:O-CheckCustomerExists:" +
+        am.get(this, "FORMID:O-CheckCustomerExists:" +
                 "CUSTOMERMOBILENUMBER:" + checkNum + ":" +
                 "PRODUCTID:" + selectedAccountID + ":" +
-                "BANKID:" + am.getBankID() + ":",getString(R.string.loading),currentTask);
+                "BANKID:" + am.getBankID() + ":", getString(R.string.loading), currentTask);
     }
 
     private void getPersonalDetailsExisting(String task) {
-        am.get(this,"FORMID:O-GetCustomerPersonalDetails:" +
-                "BANKID:" + am.getBankID() + ":",getString(R.string.loading),task);
+        am.get(this, "FORMID:O-GetCustomerPersonalDetails:" +
+                "BANKID:" + am.getBankID() + ":", getString(R.string.loading), task);
     }
 
-    private void validateExisting(String existingAccount){
+    private void validateExisting(String existingAccount) {
         am.get(this, "FORMID:M-:" +
                 // TODO: 2/2/2022 on Live
                 //"MERCHANTID:VALIDATEACCOUNTBANK:" +
                 "MERCHANTID:VALIDATEACCOUNT:" +
                 "ACCOUNTID:" + existingAccount + ":" +
-                "ACTION:GETNAME:",getString(R.string.validating),"VAL_EXIST");
+                "ACTION:GETNAME:", getString(R.string.validating), "VAL_EXIST");
     }
 
     private void cardDetailsExisting(String accNum, String cardNum, String auth, String checkNum) {
         currentTask = "cardDetailsExisting";
-        am.get(this,"FORMID:B-:MERCHANTID:SELFREG:" +
-                "BANKACCOUNTID:"+ accNum +":" +
-                "INFOFIELD1:"+ cardNum.replaceAll("\\s+", "") + ":" +
-                "INFOFIELD2:"+ auth + ":" +
-                "INFOFIELD3:"+ checkNum + ":" +
+        am.get(this, "FORMID:B-:MERCHANTID:SELFREG:" +
+                "BANKACCOUNTID:" + accNum + ":" +
+                "INFOFIELD1:" + cardNum.replaceAll("\\s+", "") + ":" +
+                "INFOFIELD2:" + auth + ":" +
+                "INFOFIELD3:" + checkNum + ":" +
                 //"INFOFIELD5:DEVICEMISMATCH:" +
-                "INFOFIELD6:"+ am.getIMEI()+ ":" +
-                "BANKID:"+ am.getBankID() + ":",getString(R.string.loading),currentTask);
+                "INFOFIELD6:" + am.getIMEI() + ":" +
+                "BANKID:" + am.getBankID() + ":", getString(R.string.loading), currentTask);
     }
 
     private void getPoliticalExposed() {
         currentTask = "FetchPolitics";
-        am.get(this,"FORMID:O-GetStaticData:" +
-                "SYSTEMCODE:" + "CSPEP" + ":"+
-                "BANKID:" + am.getBankID() + ":" ,getString(R.string.loading),currentTask);
+        am.get(this, "FORMID:O-GetStaticData:" +
+                "SYSTEMCODE:" + "CSPEP" + ":" +
+                "BANKID:" + am.getBankID() + ":", getString(R.string.loading), currentTask);
     }
 
     private void getAddressParam(String paramName, String task, String paramValue) {
         currentTask = task;
-        am.get(this,"FORMID:O-GETCUSTOMADDRESS:" +
-                "PARAMETERNAME:" + paramName + ":"+
-                "PARAMVALUE:" + paramValue + ":"+
-                "BANKID:" + am.getBankID() + ":" ,getString(R.string.loading),currentTask);
+        am.get(this, "FORMID:O-GETCUSTOMADDRESS:" +
+                "PARAMETERNAME:" + paramName + ":" +
+                "PARAMVALUE:" + paramValue + ":" +
+                "BANKID:" + am.getBankID() + ":", getString(R.string.loading), currentTask);
     }
 
-    public String RAO(){
+    public String RAO() {
         return (
                 "FORMID:M-:" +
-                        "MERCHANTID:SELFRAO:" + INFOFIELD1+":"+INFOFIELD2+":"+INFOFIELD3+":"+INFOFIELD4+":"+INFOFIELD5+":"+
-                        "INFOFIELD6:"+encodedImageFront+":"+
-                        "INFOFIELD7:"+encodedImageBack+":"+
-                        "INFOFIELD8:"+encodedImageSelfie+":"+
+                        "MERCHANTID:SELFRAO:" + INFOFIELD1 + ":" + INFOFIELD2 + ":" + INFOFIELD3 + ":" + INFOFIELD4 + ":" + INFOFIELD5 + ":" +
+                        "INFOFIELD6:" + "N/A" + ":" +
+                        "INFOFIELD7:" + "N/A" + ":" +
+                        "INFOFIELD8:" + "N/A" + ":" +
+                        "INFOFIELD9:" + "N/A" + ":" +
                         "BANKACCOUNTID:" + am.getCustomerID() + ":" +
                         "ACTION:GETNAME:"
         );
@@ -1321,18 +1331,18 @@ public class AccountOpenZExistingCustomersMain extends AppCompatActivity impleme
             new Handler().postDelayed(() -> {
                 raoOTP = "";
                 String customerMobilenNumber = "";
-                if(selectedAccountID.equals("32219")){
+                if (selectedAccountID.equals("32219")) {
                     customerMobilenNumber = staffPhoneNumber.getCountryCode() + staffPhoneNumber.getText();
                 } else {
                     customerMobilenNumber = PhoneNumber.getCountryCode() + PhoneNumber.getText();
                 }
                 new_request = "FORMID:O-OTPCREATE:" +
                         "SERVICENAME:SELFRAO:" +
-                        "BANKID:"+am.getBankID()+ ":" +
+                        "BANKID:" + am.getBankID() + ":" +
                         "CUSTOMERMOBILENUMBER:" + customerMobilenNumber + ":" +
-                        "EMAILID:" + EmailAddress.getText()+ ":" ;
+                        "EMAILID:" + "test@test.com" + ":";
 
-                am.get(AccountOpenZExistingCustomersMain.this,new_request,getString(R.string.loading),currentTask);
+                am.get(AccountOpenZExistingCustomersMain.this, new_request, getString(R.string.loading), currentTask);
                 /*if(PhoneNumber.getCountryCode().equals("256")){
                     otpPinView.setEnabled(false);
                 } else {
@@ -1340,33 +1350,33 @@ public class AccountOpenZExistingCustomersMain extends AppCompatActivity impleme
                 }*/
                 otpPinView.setEnabled(true);
                 otpPinView.requestFocus();
-            },300);
+            }, 300);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private void verify(){
-        if(cnt!=null) {
+    private void verify() {
+        if (cnt != null) {
             cnt.cancel();
         }
         currentTask = "VerifyOTP";
         String customerMobilenNumber = "";
-        if(selectedAccountID.equals("32219")){
+        if (selectedAccountID.equals("32219")) {
             customerMobilenNumber = staffPhoneNumber.getCountryCode() + staffPhoneNumber.getText();
         } else {
             customerMobilenNumber = PhoneNumber.getCountryCode() + PhoneNumber.getText();
         }
         new_request = "FORMID:O-OTPVERIFY:" +
                 "SERVICENAME:SELFRAO:" +
-                "BANKID:"+am.getBankID()+":" +
-                "CUSTOMERMOBILENUMBER:"+customerMobilenNumber+":" +
-                "OTPKEY:"+raoOTP + ":" +
-                "EMAILID:" + EmailAddress.getText()+":";
-        am.get(AccountOpenZExistingCustomersMain.this,new_request,getString(R.string.loading),currentTask);
+                "BANKID:" + am.getBankID() + ":" +
+                "CUSTOMERMOBILENUMBER:" + customerMobilenNumber + ":" +
+                "OTPKEY:" + raoOTP + ":" +
+                "EMAILID:" + "test@gmail.com" + ":";
+        am.get(AccountOpenZExistingCustomersMain.this, new_request, getString(R.string.loading), currentTask);
     }
 
-    private void accountBranchChoice(){
+    private void accountBranchChoice() {
         final Dialog mDialog = new Dialog(AccountOpenZExistingCustomersMain.this);
         //noinspection ConstantConditions
         mDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -1418,7 +1428,7 @@ public class AccountOpenZExistingCustomersMain extends AppCompatActivity impleme
     }
 
     private void processDataPipe(String response) {
-        String [] howlong = response.split("\\|");
+        String[] howlong = response.split("\\|");
         String RequestDetails = response;
         FieldIDs = new String[howlong.length / 2];
         FieldValues = new String[howlong.length / 2];
@@ -1451,7 +1461,7 @@ public class AccountOpenZExistingCustomersMain extends AppCompatActivity impleme
         try {
             unregisterReceiver(onBroadcastSMSReceived);
             unregisterReceiver(populateProducts);
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         super.onDestroy();
@@ -1460,15 +1470,54 @@ public class AccountOpenZExistingCustomersMain extends AppCompatActivity impleme
     @Override
     public void onResponse(String response, String step) {
         processData(response);
+        Log.e("Agnes", response);
         String Status = am.FindInArray(FieldIDs, FieldValues, "STATUS");
         String Message = am.FindInArray(FieldIDs, FieldValues, "MESSAGE");
         if (TextUtils.isEmpty(Message)) {
             Message = am.FindInArray(FieldIDs, FieldValues, "DATA");
         }
+        if (TextUtils.isEmpty(Status) && step.equals("RequestOTP")) {
+            if (response.equals("OTP Created Successfully.")) {
+
+                if (step_ == 1 /*&& tv_resend_otp.getVisibility()==View.GONE*/) {
+                    step_++;
+                    flipViewIt(step_);
+                    flipper.showNext();
+                    startStimer();
+                }
+                Toast.makeText(AccountOpenZExistingCustomersMain.this, response, Toast.LENGTH_LONG).show();
+              
+            }
+        }
+        if (TextUtils.isEmpty(Status) && step.equals("ResentRequestOTP")) {
+            if (response.equals("OTP Created Successfully.")) {
+                    startStimer();
+                    Toast.makeText(AccountOpenZExistingCustomersMain.this, response, Toast.LENGTH_LONG).show();
+
+            }
+        }
+        if (TextUtils.isEmpty(Status) && step.equals("VerifyOTP")) {
+            if (response.equals("SUCCESS|NAME|")) {
+                currentTask = "RAO";
+                new_request = RAO();
+                new Handler().postDelayed(() -> am.get(AccountOpenZExistingCustomersMain.this, new_request, getString(R.string.loading), currentTask), 400);
+
+
+            }
+        }
+        ///TOA PLZ
+        
         if (TextUtils.isEmpty(Message)) {
-            Message = getString(R.string.tryAgain);
-            Toast.makeText(AccountOpenZExistingCustomersMain.this,Message,Toast.LENGTH_LONG).show();
-        } else {
+            if(step.equals("RequestOTP")||step.equals("ResentRequestOTP")||step.equals("VerifyOTP")) {
+                   Log.d("Condition","OK") ;
+            }else{
+                Message = getString(R.string.tryAgain);
+                Toast.makeText(AccountOpenZExistingCustomersMain.this, Message, Toast.LENGTH_LONG).show();
+            }
+         
+        }
+       
+        else {
             switch (Status) {
                 case "000":
                 case "OK":
@@ -1502,7 +1551,7 @@ public class AccountOpenZExistingCustomersMain extends AppCompatActivity impleme
                             break;
                         }
                         case "FetchOccupation": {
-                            String [] regions = Message.split("~");
+                            String[] regions = Message.split("~");
                             for (String aRegion : regions) {
                                 processDataPipe(aRegion);
                                 occupationIds.add(am.FindInArray(FieldIDs, FieldValues, "CODE"));
@@ -1516,17 +1565,19 @@ public class AccountOpenZExistingCustomersMain extends AppCompatActivity impleme
                                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                                     occupationIDString = occupationIds.get(position);
                                 }
+
                                 @Override
                                 public void onNothingSelected(AdapterView<?> parent) {
                                 }
                             });
                             new Handler().postDelayed(() -> {
-                                if(am.getCountry().equals("UGANDATEST")) getCustomParam("PROFFESSIONSTATUS","FetchProfession");
-                            },400);
+                                if (am.getCountry().equals("UGANDATEST"))
+                                    getCustomParam("PROFFESSIONSTATUS", "FetchProfession");
+                            }, 400);
                             break;
                         }
                         case "FetchProfession": {
-                            String [] regions = Message.split("~");
+                            String[] regions = Message.split("~");
                             for (String aRegion : regions) {
                                 processDataPipe(aRegion);
                                 professionIds.add(am.FindInArray(FieldIDs, FieldValues, "CODE"));
@@ -1540,6 +1591,7 @@ public class AccountOpenZExistingCustomersMain extends AppCompatActivity impleme
                                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                                     professionIDString = professionIds.get(position);
                                 }
+
                                 @Override
                                 public void onNothingSelected(AdapterView<?> parent) {
                                 }
@@ -1551,8 +1603,8 @@ public class AccountOpenZExistingCustomersMain extends AppCompatActivity impleme
                                 //STATUS:OK:DATA:{"Satatus":"00","CenteAddressCodes":[{"Region":"NORTH"},{"Region":"EAST"},{"Region":"WEST"},{"Region":"CENTRAL"}]}
                                 JSONObject res = new JSONObject(response.replace("STATUS:OK:DATA:", ""));
                                 JSONArray addressRegionArray = res.getJSONArray("CenteAddressCodes");
-                                regionsIds.add(0,"Select One");
-                                regionNames.add(0,"Select One");
+                                regionsIds.add(0, "Select One");
+                                regionNames.add(0, "Select One");
                                 for (int i = 0; i < addressRegionArray.length(); i++) {
                                     JSONObject actor = addressRegionArray.getJSONObject(i);
                                     regionsIds.add(String.valueOf(i));
@@ -1576,12 +1628,13 @@ public class AccountOpenZExistingCustomersMain extends AppCompatActivity impleme
                                 @Override
                                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                                     regionIDString = regionsIds.get(position);
-                                    if(position!=0){
+                                    if (position != 0) {
                                         districtIds.clear();
                                         districtNames.clear();
-                                        getAddressParam("DISTRICTNAME","FetchDistrict", regionselect.getSelectedItem().toString().trim());
+                                        getAddressParam("DISTRICTNAME", "FetchDistrict", regionselect.getSelectedItem().toString().trim());
                                     }
                                 }
+
                                 @Override
                                 public void onNothingSelected(AdapterView<?> parent) {
                                 }
@@ -1593,11 +1646,11 @@ public class AccountOpenZExistingCustomersMain extends AppCompatActivity impleme
                                 //STATUS:OK:DATA:{"Satatus":"00","CenteAddressCodes":[{"DistrictName":"AGAGO"},{"DistrictName":"MOROTO"},{"DistrictName":"AMOLATAR"},{"DistrictName":"OTUKE"},{"DistrictName":"DOKOLO"},{"DistrictName":"NAKAPIRIPIRIT"},{"DistrictName":"AMUDAT"},{"DistrictName":"LUUKA"},{"DistrictName":"LIRA"},{"DistrictName":"NWOYA"},{"DistrictName":"PADER"},{"DistrictName":"LAMWO"},{"DistrictName":"KAABONG"},{"DistrictName":"AMURIA"},{"DistrictName":"KITGUM"},{"DistrictName":"KOLE"},{"DistrictName":"KOBOKO"},{"DistrictName":"ALEBTONG"},{"DistrictName":"ABIM"},{"DistrictName":"GULU"},{"DistrictName":"ARUA"},{"DistrictName":"OYAM"},{"DistrictName":"APAC"},{"DistrictName":"MARACHA"},{"DistrictName":"KOTIDO"},{"DistrictName":"ADJUMANI"},{"DistrictName":"NAPAK"},{"DistrictName":"ZOMBO"},{"DistrictName":"YUMBE"},{"DistrictName":"MOYO"},{"DistrictName":"AMURU"},{"DistrictName":"NEBBI"}]}
                                 JSONObject res = new JSONObject(response.replace("STATUS:OK:DATA:", ""));
                                 JSONArray addressRegionArray = res.getJSONArray("CenteAddressCodes");
-                                districtIds.add(0,"Select One");
-                                districtNames.add(0,"Select One");
+                                districtIds.add(0, "Select One");
+                                districtNames.add(0, "Select One");
                                 for (int i = 0; i < addressRegionArray.length(); i++) {
                                     JSONObject actor = addressRegionArray.getJSONObject(i);
-                                    if(!districtNames.contains(actor.getString("DistrictName"))){
+                                    if (!districtNames.contains(actor.getString("DistrictName"))) {
                                         districtIds.add(String.valueOf(i));
                                         districtNames.add(actor.getString("DistrictName"));
                                     }
@@ -1620,12 +1673,13 @@ public class AccountOpenZExistingCustomersMain extends AppCompatActivity impleme
                                 @Override
                                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                                     districtIDString = districtIds.get(position);
-                                    if(position!=0){
+                                    if (position != 0) {
                                         countyIds.clear();
                                         countylistNames.clear();
-                                        getAddressParam("COUNTYNAME","FetchCounty", districtName.getSelectedItem().toString().trim());
+                                        getAddressParam("COUNTYNAME", "FetchCounty", districtName.getSelectedItem().toString().trim());
                                     }
                                 }
+
                                 @Override
                                 public void onNothingSelected(AdapterView<?> parent) {
                                 }
@@ -1637,11 +1691,11 @@ public class AccountOpenZExistingCustomersMain extends AppCompatActivity impleme
                                 //STATUS:OK:DATA:{"Satatus":"00","CenteAddressCodes":[{"CountyName":"BUKOTO"},{"CountyName":"MASAKA MUNICIPALITY"}]}
                                 JSONObject res = new JSONObject(response.replace("STATUS:OK:DATA:", ""));
                                 JSONArray addressRegionArray = res.getJSONArray("CenteAddressCodes");
-                                countyIds.add(0,"Select One");
-                                countylistNames.add(0,"Select One");
+                                countyIds.add(0, "Select One");
+                                countylistNames.add(0, "Select One");
                                 for (int i = 0; i < addressRegionArray.length(); i++) {
                                     JSONObject actor = addressRegionArray.getJSONObject(i);
-                                    if(!countylistNames.contains(actor.getString("CountyName"))){
+                                    if (!countylistNames.contains(actor.getString("CountyName"))) {
                                         countyIds.add(String.valueOf(i));
                                         countylistNames.add(actor.getString("CountyName"));
                                     }
@@ -1664,12 +1718,13 @@ public class AccountOpenZExistingCustomersMain extends AppCompatActivity impleme
                                 @Override
                                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                                     countyIDString = countyIds.get(position);
-                                    if(position!=0){
+                                    if (position != 0) {
                                         subcountyIds.clear();
                                         subcountylistNames.clear();
-                                        getAddressParam("SUBCOUNTYNAME","FetchSubCounty", countyName.getSelectedItem().toString().trim());
+                                        getAddressParam("SUBCOUNTYNAME", "FetchSubCounty", countyName.getSelectedItem().toString().trim());
                                     }
                                 }
+
                                 @Override
                                 public void onNothingSelected(AdapterView<?> parent) {
                                 }
@@ -1681,11 +1736,11 @@ public class AccountOpenZExistingCustomersMain extends AppCompatActivity impleme
                                 //STATUS:OK:DATA:{"Satatus":"00","CenteAddressCodes":[{"CountyName":"BUKOTO"},{"CountyName":"MASAKA MUNICIPALITY"}]}
                                 JSONObject res = new JSONObject(response.replace("STATUS:OK:DATA:", ""));
                                 JSONArray addressRegionArray = res.getJSONArray("CenteAddressCodes");
-                                subcountyIds.add(0,"Select One");
-                                subcountylistNames.add(0,"Select One");
+                                subcountyIds.add(0, "Select One");
+                                subcountylistNames.add(0, "Select One");
                                 for (int i = 0; i < addressRegionArray.length(); i++) {
                                     JSONObject actor = addressRegionArray.getJSONObject(i);
-                                    if(!subcountylistNames.contains(actor.getString("SubCountyName"))){
+                                    if (!subcountylistNames.contains(actor.getString("SubCountyName"))) {
                                         subcountyIds.add(String.valueOf(i));
                                         subcountylistNames.add(actor.getString("SubCountyName"));
                                     }
@@ -1706,12 +1761,13 @@ public class AccountOpenZExistingCustomersMain extends AppCompatActivity impleme
                                 @Override
                                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                                     subcountyIDString = subcountyIds.get(position);
-                                    if(position!=0){
+                                    if (position != 0) {
                                         parishIds.clear();
                                         parishlistNames.clear();
-                                        getAddressParam("PARISHNAME","FetchParishName", subCountyName.getSelectedItem().toString().trim());
+                                        getAddressParam("PARISHNAME", "FetchParishName", subCountyName.getSelectedItem().toString().trim());
                                     }
                                 }
+
                                 @Override
                                 public void onNothingSelected(AdapterView<?> parent) {
                                 }
@@ -1723,11 +1779,11 @@ public class AccountOpenZExistingCustomersMain extends AppCompatActivity impleme
                                 //STATUS:OK:DATA:{"Satatus":"00","CenteAddressCodes":[{"ParishName":"KAMATURU"},{"ParishName":"NARISAE"},{"ParishName":"NATHINYONOIT"}]}
                                 JSONObject res = new JSONObject(response.replace("STATUS:OK:DATA:", ""));
                                 JSONArray addressRegionArray = res.getJSONArray("CenteAddressCodes");
-                                parishIds.add(0,"Select One");
-                                parishlistNames.add(0,"Select One");
+                                parishIds.add(0, "Select One");
+                                parishlistNames.add(0, "Select One");
                                 for (int i = 0; i < addressRegionArray.length(); i++) {
                                     JSONObject actor = addressRegionArray.getJSONObject(i);
-                                    if(!parishlistNames.contains(actor.getString("ParishName"))){
+                                    if (!parishlistNames.contains(actor.getString("ParishName"))) {
                                         parishIds.add(String.valueOf(i));
                                         parishlistNames.add(actor.getString("ParishName"));
                                     }
@@ -1748,12 +1804,13 @@ public class AccountOpenZExistingCustomersMain extends AppCompatActivity impleme
                                 @Override
                                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                                     parishIdString = parishIds.get(position);
-                                    if(position!=0){
+                                    if (position != 0) {
                                         villageIds.clear();
                                         villagelistNames.clear();
-                                        getAddressParam("VILLAGENAME","FetchVillageName", parishName.getSelectedItem().toString().trim());
+                                        getAddressParam("VILLAGENAME", "FetchVillageName", parishName.getSelectedItem().toString().trim());
                                     }
                                 }
+
                                 @Override
                                 public void onNothingSelected(AdapterView<?> parent) {
                                 }
@@ -1765,11 +1822,11 @@ public class AccountOpenZExistingCustomersMain extends AppCompatActivity impleme
                                 //STATUS:OK:DATA:{"Satatus":"00","CenteAddressCodes":[{"VillageName":"LOKWAMORU"},{"VillageName":"NANGAMIT"},{"VillageName":"NAOI"},{"VillageName":"NAOI SPECIAL AREA"}]}
                                 JSONObject res = new JSONObject(response.replace("STATUS:OK:DATA:", ""));
                                 JSONArray addressRegionArray = res.getJSONArray("CenteAddressCodes");
-                                villageIds.add(0,"Select One");
-                                villagelistNames.add(0,"Select One");
+                                villageIds.add(0, "Select One");
+                                villagelistNames.add(0, "Select One");
                                 for (int i = 0; i < addressRegionArray.length(); i++) {
                                     JSONObject actor = addressRegionArray.getJSONObject(i);
-                                    if(!villagelistNames.contains(actor.getString("VillageName"))){
+                                    if (!villagelistNames.contains(actor.getString("VillageName"))) {
                                         villageIds.add(String.valueOf(i));
                                         villagelistNames.add(actor.getString("VillageName"));
                                     }
@@ -1790,12 +1847,13 @@ public class AccountOpenZExistingCustomersMain extends AppCompatActivity impleme
                                 @Override
                                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                                     villageIdString = villageIds.get(position);
-                                    if(position!=0){
+                                    if (position != 0) {
                                         eAIds.clear();
                                         eAlistNames.clear();
-                                        getAddressParam("EANAME","FetchEaName", villageName.getSelectedItem().toString().trim());
+                                        getAddressParam("EANAME", "FetchEaName", villageName.getSelectedItem().toString().trim());
                                     }
                                 }
+
                                 @Override
                                 public void onNothingSelected(AdapterView<?> parent) {
                                 }
@@ -1807,11 +1865,11 @@ public class AccountOpenZExistingCustomersMain extends AppCompatActivity impleme
                                 //STATUS:OK:DATA:{"Satatus":"00","CenteAddressCodes":[{"AddressCode":"25134","EAName":"OLYERAI"}]}
                                 JSONObject res = new JSONObject(response.replace("STATUS:OK:DATA:", ""));
                                 JSONArray addressRegionArray = res.getJSONArray("CenteAddressCodes");
-                                eAIds.add(0,"Select One");
-                                eAlistNames.add(0,"Select One");
+                                eAIds.add(0, "Select One");
+                                eAlistNames.add(0, "Select One");
                                 for (int i = 0; i < addressRegionArray.length(); i++) {
                                     JSONObject actor = addressRegionArray.getJSONObject(i);
-                                    if(!eAIds.contains(actor.getString("AddressCode"))){
+                                    if (!eAIds.contains(actor.getString("AddressCode"))) {
                                         eAIds.add(actor.getString("AddressCode"));
                                         eAlistNames.add(actor.getString("EAName"));
                                     }
@@ -1831,42 +1889,43 @@ public class AccountOpenZExistingCustomersMain extends AppCompatActivity impleme
                             eAName.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                                 @Override
                                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                                    if(position!=0){
+                                    if (position != 0) {
                                         eAIdString = eAIds.get(position);
                                     } else {
                                         eAIdString = "";
                                     }
                                 }
+
                                 @Override
                                 public void onNothingSelected(AdapterView<?> parent) {
                                 }
                             });
                             break;
                         }
-                        case "RequestOTP":
-                            startStimer();
-                            if (step_ == 1 /*&& tv_resend_otp.getVisibility()==View.GONE*/) {
-                                step_++;
-                                flipViewIt(step_);
-                                flipper.showNext();
-                            }
-                            Toast.makeText(AccountOpenZExistingCustomersMain.this, Message, Toast.LENGTH_LONG).show();
-                            break;
-                        case "ResentRequestOTP":
-                            startStimer();
-                            Toast.makeText(AccountOpenZExistingCustomersMain.this, Message, Toast.LENGTH_LONG).show();
-                            break;
-                        case "VerifyOTP": {
-                            currentTask = "RAO";
-                            new_request = RAO();
-                            new Handler().postDelayed(() -> am.get(AccountOpenZExistingCustomersMain.this,new_request,getString(R.string.loading),currentTask),400);
-                            break;
-                        }
+//                        case "RequestOTP":
+//                            if (step_ == 2 /*&& tv_resend_otp.getVisibility()==View.GONE*/) {
+//                                step_++;
+//                                flipViewIt(step_);
+//                                flipper.showNext();
+//                                startStimer();
+//                            }
+//                            Toast.makeText(AccountOpenZExistingCustomersMain.this, Message, Toast.LENGTH_LONG).show();
+//                            break;
+//                        case "ResentRequestOTP":
+//                            startStimer();
+//                            Toast.makeText(AccountOpenZExistingCustomersMain.this, Message, Toast.LENGTH_LONG).show();
+//                            break;
+//                        case "VerifyOTP": {
+//                            currentTask = "RAO";
+//                            new_request = RAO();
+//                            new Handler().postDelayed(() -> am.get(AccountOpenZExistingCustomersMain.this, new_request, getString(R.string.loading), currentTask), 400);
+//                            break;
+//                        }
                         case "VerifyExisting":
-                            am.myDialog(AccountOpenZExistingCustomersMain.this,getString(R.string.alert), getString(R.string.exists));
+                            am.myDialog(AccountOpenZExistingCustomersMain.this, getString(R.string.alert), getString(R.string.exists));
                             break;
                         case "VerifyExistingAlt":
-                            am.myDialog(AccountOpenZExistingCustomersMain.this,getString(R.string.alert), getString(R.string.already_exists));
+                            am.myDialog(AccountOpenZExistingCustomersMain.this, getString(R.string.alert), getString(R.string.already_exists));
                             break;
                         case "VAL_EXIST":
 
@@ -1906,7 +1965,7 @@ public class AccountOpenZExistingCustomersMain extends AppCompatActivity impleme
                             Toast.makeText(AccountOpenZExistingCustomersMain.this, Message, Toast.LENGTH_LONG).show();
                             break;
                         case "VerifyExisting":
-                            new Handler().postDelayed(() -> checkCustomerExists(AlternatePhoneNumber.getCountryCode() + AlternatePhoneNumber.getText(),"2"),300);
+                            new Handler().postDelayed(() -> checkCustomerExists(AlternatePhoneNumber.getCountryCode() + AlternatePhoneNumber.getText(), "2"), 300);
                             break;
                         case "VerifyExistingAlt":
                             step_++;
@@ -1940,19 +1999,19 @@ public class AccountOpenZExistingCustomersMain extends AppCompatActivity impleme
 
         yes.setOnClickListener(v -> {
             step_ = am.getSavedPreviousStep();
-            if(step_ >0){
+            if (step_ > 0) {
                 prev.setVisibility(View.VISIBLE);
             }
 
-            for(int i = 0; i< step_; i++) {
+            for (int i = 0; i < step_; i++) {
                 flipper.showNext();
             }
 
-            for(int i = 0; i<= step_; i++) {
+            for (int i = 0; i <= step_; i++) {
                 try {
                     switch (i) {
                         case 0:
-                            if(am.getCustomerCategory() == R.id.new_Lay) {
+                            if (am.getCustomerCategory() == R.id.new_Lay) {
                                 new_Lay.performClick();
                             } else {
                                 existing_lay.performClick();
@@ -1963,9 +2022,9 @@ public class AccountOpenZExistingCustomersMain extends AppCompatActivity impleme
                             scrollAccounts.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    if(am.getAccountTypePosition()>2 && am.getAccountTypePosition()<4) {
-                                        scrollAccounts.scrollTo(accountsGroup.getWidth()/2, 0);
-                                    } else if (am.getAccountTypePosition()>=4) {
+                                    if (am.getAccountTypePosition() > 2 && am.getAccountTypePosition() < 4) {
+                                        scrollAccounts.scrollTo(accountsGroup.getWidth() / 2, 0);
+                                    } else if (am.getAccountTypePosition() >= 4) {
                                         scrollAccounts.fullScroll(HorizontalScrollView.FOCUS_RIGHT);
                                     }
                                 }
@@ -1991,15 +2050,15 @@ public class AccountOpenZExistingCustomersMain extends AppCompatActivity impleme
                                     cMiss.performClick();
                                     break;
                             }
-                            if(!am.getSavedData("encodedImageFront").equals("")) {
+                            if (!am.getSavedData("encodedImageFront").equals("")) {
                                 encodedImageFront = am.getSavedData("encodedImageFront");
                                 Glide.with(AccountOpenZExistingCustomersMain.this).load(Base64.decode(encodedImageFront, Base64.DEFAULT)).into(front.imageView);
                             }
-                            if(!am.getSavedData("encodedImageSelfie").equals("")) {
+                            if (!am.getSavedData("encodedImageSelfie").equals("")) {
                                 encodedImageSelfie = am.getSavedData("encodedImageSelfie");
                                 Glide.with(AccountOpenZExistingCustomersMain.this).load(Base64.decode(encodedImageSelfie, Base64.DEFAULT)).into(selfie.imageView);
                             }
-                            if(!am.getSavedData("encodedImageBack").equals("")) {
+                            if (!am.getSavedData("encodedImageBack").equals("")) {
                                 encodedImageBack = am.getSavedData("encodedImageBack");
                                 Glide.with(AccountOpenZExistingCustomersMain.this).load(Base64.decode(encodedImageBack, Base64.DEFAULT)).into(backpick.imageView);
                             }
@@ -2012,13 +2071,13 @@ public class AccountOpenZExistingCustomersMain extends AppCompatActivity impleme
                             NextofKinAltPhoneNumber.citizenship.setSelection(am.getAltNextofKinCountryPosition());
                             break;
                         case 5:
-                            if(am.getPeriodEmployment() == 0) {
+                            if (am.getPeriodEmployment() == 0) {
                                 yearsButtonE.setChecked(true);
                             } else {
                                 monthsButtonE.setChecked(true);
                             }
                             break;
-                    
+
                         case 6:
                             try {
                                 radioGroup.check(am.getMediumRadio());
@@ -2082,23 +2141,23 @@ public class AccountOpenZExistingCustomersMain extends AppCompatActivity impleme
             Button no = dialog.findViewById(R.id.no);
 
             yes.setOnClickListener(v -> {
-                
-                if (step_ == 0){
+
+                if (step_ == 0) {
                     am.putSaveCustomerCategory(customer_cat_.getSelectedCatID());
                     am.putSaveSelectedBranchPosition(branchselect.getSelectedItemPosition());
                     am.putSaveSelectedCurrencyPosition(currselect.getSelectedItemPosition());
                     am.putBankStaffCountryPosition(staffPhoneNumber.citizenship.getSelectedItemPosition());
-                }else if(step_ ==1) {
+                } else if (step_ == 1) {
                     am.putSaveCustomerCountryPosition(PhoneNumber.citizenship.getSelectedItemPosition());
                     am.putSaveAlterCustomerCountryPosition(AlternatePhoneNumber.citizenship.getSelectedItemPosition());
-                } else if (step_ == 2){
+                } else if (step_ == 2) {
                     am.putSaveTitlePosition(singleTitle.getViewTitleID());
-                } else if (step_ == 3){
+                } else if (step_ == 3) {
                     am.putSaveNextofKinCountry(NextofKinPhoneNumber.citizenship.getSelectedItemPosition());
                     am.putSaveAltNextofKinCountry(NextofKinAltPhoneNumber.citizenship.getSelectedItemPosition());
-                } else if (step_ == 4){
+                } else if (step_ == 4) {
                     am.putSavePeriodEmployment(employPeriod.getCheckedRadioButtonId());
-                }  else if (step_ == 5){
+                } else if (step_ == 5) {
                     am.putMediumRadio(radioGroup.getCheckedRadioButtonId());
                 }
                 am.putSavedPreviousStep(step_);
@@ -2146,7 +2205,7 @@ public class AccountOpenZExistingCustomersMain extends AppCompatActivity impleme
                         am.putProceed(true);
                         am.putSavedPreviousStep(step_);
 
-                        if(step_ ==0){
+                        if (step_ == 0) {
                             am.putSaveCustomerCountryPosition(PhoneNumber.citizenship.getSelectedItemPosition());
                             am.putSaveAlterCustomerCountryPosition(AlternatePhoneNumber.citizenship.getSelectedItemPosition());
                         } else if (step_ == 1) {
@@ -2161,7 +2220,7 @@ public class AccountOpenZExistingCustomersMain extends AppCompatActivity impleme
                             am.putSaveSelectedBranchPosition(branchselect.getSelectedItemPosition());
                             am.putSaveSelectedCurrencyPosition(currselect.getSelectedItemPosition());
                             am.putBankStaffCountryPosition(staffPhoneNumber.citizenship.getSelectedItemPosition());
-                        }  else if (step_ == 6) {
+                        } else if (step_ == 6) {
                             am.putMediumRadio(radioGroup.getCheckedRadioButtonId());
                         }
 
@@ -2191,32 +2250,32 @@ public class AccountOpenZExistingCustomersMain extends AppCompatActivity impleme
                     step_--;
                     flipViewIt(step_);
                     flipper.showPrevious();
-                    if(step_ == 0) {
+                    if (step_ == 0) {
                         prev.setVisibility(View.VISIBLE);
-                        if(pan_pin_in.getVisibility()==View.VISIBLE) {
+                        if (pan_pin_in.getVisibility() == View.VISIBLE) {
                             et_pin.setText("");
                             pan_pin_in.setVisibility(View.GONE);
                             webView.setVisibility(View.VISIBLE);
                             radiob.setVisibility(View.VISIBLE);
-                           
+
                         }
-                    } else if(step_ == 1) {
-                        if(pan_pin_in.getVisibility()==View.VISIBLE) {
+                    } else if (step_ == 1) {
+                        if (pan_pin_in.getVisibility() == View.VISIBLE) {
                             et_pin.setText("");
                             pan_pin_in.setVisibility(View.GONE);
                             webView.setVisibility(View.VISIBLE);
                             radiob.setVisibility(View.VISIBLE);
                         }
-                    } else if(step_ == 3) {
+                    } else if (step_ == 3) {
                         occupationIds.clear();
                         occupationNames.clear();
                         professionIds.clear();
                         professionNames.clear();
-                    } else if(step_ == 4) {
+                    } else if (step_ == 4) {
                         politicsIDs.clear();
                         politicsNames.clear();
                         StringPoliticallyExposed = "";
-                    } else if(step_ == 6) {
+                    } else if (step_ == 6) {
                         regionsIds.clear();
                         regionNames.clear();
                         districtIds.clear();
@@ -2232,32 +2291,19 @@ public class AccountOpenZExistingCustomersMain extends AppCompatActivity impleme
                         eAIds.clear();
                         eAlistNames.clear();
                     }
-                }
-
-              else  if(step_==0) {
+                } else if (step_ == 0) {
                     finish();
                 }
                 break;
             case R.id.next:
-         
-                if(step_ == 0) {
-                    if(TextUtils.isEmpty(EmailAddress.getText())) {
-                        ErrorAlert("Email Address required");
-                    } else if(!TextUtils.isEmpty(EmailAddress.getText()) && !android.util.Patterns.EMAIL_ADDRESS.matcher(EmailAddress.getText()).matches()) {
-                        ErrorAlert("Invalid Email address format");
-                    } else if(!selectedAccountID.equals("32219") && PhoneNumber.getText().length() < 5) {
+
+                if (step_ == 0) {
+                    if (TextUtils.isEmpty(country.getText())) {
+                        ErrorAlert("Name required");
+                    } else if (!selectedAccountID.equals("32219") && PhoneNumber.getText().length() < 5) {
                         ErrorAlert("Invalid phone number");
-                    } else if(!selectedAccountID.equals("32219") && !PhoneNumber.getCountryCode().equals("256") && TextUtils.isEmpty(EmailAddress.getText())) {
-                        ErrorAlert("Email address required outside Uganda");
-                    }  /*else if(TextUtils.isEmpty(eAIdString)) {  //was for address drop downa
-                        ErrorAlert("EA Name required");}*/
-                    else if(TextUtils.isEmpty(city.getText())) {
-                        ErrorAlert("City required");
-                    } else if(TextUtils.isEmpty(ActualAddress.getText())) {
-                        ErrorAlert("Address required");
-                    } else if(ActualAddress.getText().length()>25) {
-                        ErrorAlert("Address length should not be above 25 characters");
-                    }  else {
+                    } /*else if(TextUtils.isEmpty(eAIdString)) {  //was for address drop downa
+                        ErrorAlert("EA Name required");}*/ else {
                         am.putSaveCustomerCountryPosition(PhoneNumber.citizenship.getSelectedItemPosition());
                         am.putSaveAlterCustomerCountryPosition(AlternatePhoneNumber.citizenship.getSelectedItemPosition());
                         step_++;
@@ -2265,75 +2311,52 @@ public class AccountOpenZExistingCustomersMain extends AppCompatActivity impleme
                         flipViewIt(step_);
                         flipper.showNext();
                     }
-                }  
-               
-                else if(step_ == 1) {
+                } else if (step_ == 1) {
                     if (!radiob.isChecked()) {
                         ErrorAlert("Please accept terms and conditions to proceed");
                     } else {
-                        String recommendation = "";
+                        step_++;
+                        prev.setVisibility(View.VISIBLE);
+                        flipViewIt(step_);
+                        flipper.showNext();
+                        RegisterNewListener();
+                        CustomerCategory = "Existing Customer";
+                        otpPinView.setEnabled(true);
+                        startStimer();
+//                        INFOFIELD1 = "INFOFIELD1:ACCOUNTID|"+ accountNumber.getText() +"|CUSTOMER_CATEGORY|"+CustomerCategory+"|ACCOUNT_TYPE|"+selectedAccount+"|FIRST_NAME|"+ name.getText() +
+//                                "|MIDDLE_NAME|"+ otherNames.getText() +"|LAST_NAME|"+ sname.getText() +"|DOB|"+DOBEdit.getText()+"|NATIONALID|"+ nationalID.getText() +
+//                                "|PHONE_NUMBER|"+customerMobilenNumber+"|ALTERNATE_PHONE_NUMBER|"+alternatePhone+"|EMAIL_ADDRESS|"+ EmailAddress.getText() +"|GENDER|"+gender+"|TITLE|"+Usertitle+"|CURRENCY|"+currName+"|BRANCH|"+branchID+"|PRODUCTID|"+selectedAccountID+"|ALTERNATE_ACCOUNT_NUMBER|"+"N/A"+"|ALTERNATE_ACCOUNT_NAME|"+"N/A"+"|ALTERNATE_BANKNAME|"+ "N/A"+"|ALTERNATE_BRANCHNAME|"+"N/A"+"|MOBILE_MONEY_PROVIDER|"+mobileMoneyProvider+"|MOBILE_MONEY_PHONE_OWNER|"+"N/A"+"|MOBILE_MONEY_PHONE_NUMBER|"+PhoneNumberMobile.getText();
 
-                        if(ss.isChecked()){
-                            recommendation = "Social Media";
-                        }
-                        if(tv.isChecked()){
-                            recommendation = "TV/Radio-"+c4.getText();
-                        }
-
-                        if(bankstaff.isChecked()) {
-                            recommendation = "Bank Staff-"+c4.getText()+"-"+c44.getText();
-                        }
-
-                        if(HFBCustomer.isChecked()) {
-                            recommendation = "Cente Customer-"+c4.getText()+"-"+c45.getCountryCode()+c45.getText();
-                        }
-
-                        if(Agent.isChecked()) {
-                            recommendation = "Agent-"+c4.getText();
-                        }
-
-                        String gender = "M";
-                        if(Usertitle.equals("Mr")){
-                            gender = "M";
-                        }
-                        else if(Usertitle.equals("Mrs") || Usertitle.equals("Miss")){
-                            gender = "F";
-                        }
-
-
-                        INFOFIELD1 = "INFOFIELD1:ACCOUNTID|"+ AccoutNo +"|CUSTOMER_CATEGORY|"+CustomerCategory+"|ACCOUNT_TYPE|"+selectedAccount+"|FIRST_NAME|"+ name.getText() +
-                                "|MIDDLE_NAME|"+ otherNames.getText() +"|LAST_NAME|"+ sname.getText() +"|DOB|"+DOBEdit.getText()+"|NATIONALID|"+ nationalID.getText() +
-                                "|PHONE_NUMBER|"+PhoneNumber.getCountryCode()+ PhoneNumber.getText()+"|ALTERNATE_PHONE_NUMBER|"+AlternatePhoneNumber.getCountryCode()+AlternatePhoneNumber.getText()+"|EMAIL_ADDRESS|"+ EmailAddress.getText() +"|GENDER|"+gender+"|TITLE|"+Usertitle+"|CURRENCY|"+ Currency+"|BRANCH|"+BranchID+"|PRODUCTID|"+ProductID;
+                        INFOFIELD1 = "INFOFIELD1:ACCOUNTID|" + AccoutNo + "|CUSTOMER_CATEGORY|" + CustomerCategory + "|ACCOUNT_TYPE|" + selectedAccount + "|FIRST_NAME|" + country.getText() +
+                                "|MIDDLE_NAME|" + otherNames.getText() + "|LAST_NAME|" + country.getText() + "|DOB|" + "N/A" + "|NATIONALID|" + "N/A" +
+                                "|PHONE_NUMBER|" + PhoneNumber.getCountryCode() + PhoneNumber.getText() + "|ALTERNATE_PHONE_NUMBER|" + AlternatePhoneNumber.getCountryCode() + AlternatePhoneNumber.getText() + "|EMAIL_ADDRESS|" + "N/A"+"|GENDER|"+"N/A"+"|TITLE|" + "N/A"+"|CURRENCY|"+ Currency + "|BRANCH|" + BranchID + "|PRODUCTID|" + ProductID+"|ALTERNATE_ACCOUNT_NUMBER|"+"N/A"+"|ALTERNATE_ACCOUNT_NAME|"+"N/A"+"|ALTERNATE_BANKNAME|"+ "N/A"+"|ALTERNATE_BRANCHNAME|"+"N/A"+"|MOBILE_MONEY_PROVIDER|"+"N/A"+"|MOBILE_MONEY_PHONE_OWNER|"+"N/A"+"|MOBILE_MONEY_PHONE_NUMBER|"+"N/A";
 
                         /*if(am.getCountry().equals("UGANDATEST")){
                             INFOFIELD2 = "INFOFIELD2:FATHER_FIRST_NAME|"+ FatherFirstName.getText() +"|FATHER_MIDDLE_NAME|"+ FatherMiddleName.getText() +"|FATHER_LAST_NAME|"+ FatherLastName.getText() +"|MOTHER_FIRST_NAME|"+ MotherFirstName.getText() +"|MOTHER_MIDDLE_NAME|"+ MotherMiddleName.getText() +"|MOTHER_LAST_NAME|"+ MotherLastName.getText() +"|ADDRESSCODE|"+ eAIdString ;
                         }*/
-                        INFOFIELD2 = "INFOFIELD2:FATHER_FIRST_NAME|"+ FatherFirstName.getText() +"|FATHER_MIDDLE_NAME|"+ FatherMiddleName.getText() +"|FATHER_LAST_NAME|"+ FatherLastName.getText() +"|MOTHER_FIRST_NAME|"+ MotherFirstName.getText() +"|MOTHER_MIDDLE_NAME|"+ MotherMiddleName.getText() +"|MOTHER_LAST_NAME|"+ MotherLastName.getText();
+                        INFOFIELD2 = "INFOFIELD2:FATHER_FIRST_NAME|" + FatherFirstName.getText() + "|FATHER_MIDDLE_NAME|" + FatherMiddleName.getText() + "|FATHER_LAST_NAME|" + FatherLastName.getText() + "|MOTHER_FIRST_NAME|" + MotherFirstName.getText() + "|MOTHER_MIDDLE_NAME|" + MotherMiddleName.getText() + "|MOTHER_LAST_NAME|" + MotherLastName.getText();
 
 
                         /*if(am.getCountry().equals("UGANDATEST")){
                             INFOFIELD3 = "INFOFIELD3:CURRENT_LOCATION|"+ c5.getText() +"|ADDRESS|"+ ActualAddress.getText() +"|HOME_DISTRICT|"+ Address.getText() +"|YEARS_AT_ADDRESS|"+ YearsAtAddress.getText().concat(periodAddressString)+"|POLITICALLY_EXPOSED|"+StringPoliticallyExposed+"|CITY|"+city.getText()+"|ZIPCODE|"+zipCode.getText();
                         }*/
-                        INFOFIELD3 = "INFOFIELD3:CURRENT_LOCATION|"+ c5.getText() +"|ADDRESS|"+ ActualAddress.getText() +"|HOME_DISTRICT|"+ Address.getText() +"|YEARS_AT_ADDRESS|"+ YearsAtAddress.getText().concat(periodAddressString)+"|POLITICALLY_EXPOSED|"+PoliticallyExposed.getText()+"|CITY|"+city.getText()+"|ZIPCODE|"+zipCode.getText();
+                        INFOFIELD3 = "INFOFIELD3:CURRENT_LOCATION|"+"N/A"+"|ADDRESS|"+"N/A"+"|HOME_DISTRICT|"+"N/A"+"|YEARS_AT_ADDRESS|"+"N/A"+"|POLITICALLY_EXPOSED|"+"N/A"+"|MARITALSTATUS|"+"N/A"+"|ZIPCODE|"+"N/A";
 
                         /*if(am.getCountry().equals("UGANDATEST")){
                             INFOFIELD4 = "INFOFIELD4:INCOME_PER_ANUM|"+ IncomeperAnnum.getText() +"|EMPLOYMENT_TYPE|"+ professionIDString +"|OCCUPATION|"+ occupationIDString +"|PLACE_OF_WORK|"+ PlaceofWork.getText() +"|NATURE_OF_BUSINESS_SECTOR|"+ NatureofBussiness.getText() +"|PERIOD_OF_EMPLOYMENT|"+ PeriodofEmployment.getText().concat(periodWorkString) +"|EMPLOYER_NAME|"+ EmployerName.getText() +"|NATURE|"+ NatureofEmployment.getText();
                         }*/
-                        INFOFIELD4 = "INFOFIELD4:INCOME_PER_ANUM|"+ IncomeperAnnum.getText() +"|EMPLOYMENT_TYPE|"+ EmploymentType.getText() +"|OCCUPATION|"+ Occupation.getText() +"|PLACE_OF_WORK|"+ PlaceofWork.getText() +"|NATURE_OF_BUSINESS_SECTOR|"+ NatureofBussiness.getText() +"|PERIOD_OF_EMPLOYMENT|"+ PeriodofEmployment.getText().concat(periodWorkString) +"|EMPLOYER_NAME|"+ EmployerName.getText() +"|NATURE|"+ NatureofEmployment.getText();
+                        INFOFIELD4 = "INFOFIELD4:INCOME_PER_ANUM|"+ "N/A" +"|EMPLOYMENT_TYPE|"+"N/A"+"|OCCUPATION|"+ "N/A" +"|PLACE_OF_WORK|"+"N/A" +"|NATURE_OF_BUSINESS_SECTOR|"+ "N/A" +"|PERIOD_OF_EMPLOYMENT|"+ "N/A"+"|EMPLOYER_NAME|"+ "N/A"+"|NATURE|"+"N/A"+"|BUSINESS_ADDRESS|"+ "N/A";
 
-                        INFOFIELD5 = "INFOFIELD5:NEXT_OF_KIN_FIRST_NAME|"+ NextofKinFirstName.getText() +"|NEXT_OF_KIN_MIDDLE_NAME|"+ NextofKinMiddleName.getText() +"|NEXT_OF_KIN_LAST_NAME|"+ NextofKinLastName.getText() +"|NEXT_OF_KIN_PHONE_NUMBER|"+NextofKinPhoneNumber.getCountryCode()+NextofKinPhoneNumber.getText()+"|NEXT_OF_KIN_ALTERNATE_PHONE_NUMBER|"+NextofKinAltPhoneNumber.getCountryCode()+ NextofKinAltPhoneNumber.getText() +"|NEXT_OF_KIN_ADDRESS|"+ NextofKinAddress.getText() +"|OTHER_SERVICES_REQUIRED|"+""+"|RECOMMENDED_BY|"+recommendation;
+                        INFOFIELD5 = "INFOFIELD5:NEXT_OF_KIN_FIRST_NAME|" + "N/A" + "|NEXT_OF_KIN_MIDDLE_NAME|" +"N/A" +"|NEXT_OF_KIN_LAST_NAME|" +"N/A"+"|NEXT_OF_KIN_PHONE_NUMBER|" + "N/A"+"|NEXT_OF_KIN_ALTERNATE_PHONE_NUMBER|"+"N/A"+"|NEXT_OF_KIN_ADDRESS|" +"N/A"+"|OTHER_SERVICES_REQUIRED|"+"N/A"+"|RECOMMENDED_BY|"+"N/A";
 
                         currentTask = "RequestOTP";
                         createOTP();
-            
-                    }  
-                }
-                else if(step_ == 2){
 
-
-                    if(TextUtils.isEmpty(raoOTP)){
+                    }
+                } else if (step_ == 2) {
+                    if (TextUtils.isEmpty(raoOTP)) {
                         ErrorAlert("One time password required");
-                    } else if(raoOTP.length() < 6){
+                    } else if (raoOTP.length() < 6) {
                         ErrorAlert("Otp can not be less than 6 digits");
                     } else {
                         verify();
@@ -2356,7 +2379,7 @@ public class AccountOpenZExistingCustomersMain extends AppCompatActivity impleme
                 break;
             case R.id.front:
                 Dexter.withActivity(AccountOpenZExistingCustomersMain.this)
-                        .withPermissions(Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                        .withPermissions(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                         .withListener(new MultiplePermissionsListener() {
                             @Override
                             public void onPermissionsChecked(MultiplePermissionsReport report) {
@@ -2368,6 +2391,7 @@ public class AccountOpenZExistingCustomersMain extends AppCompatActivity impleme
                                     showSettingsDialog();
                                 }
                             }
+
                             @Override
                             public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token) {
                                 token.continuePermissionRequest();
@@ -2388,6 +2412,7 @@ public class AccountOpenZExistingCustomersMain extends AppCompatActivity impleme
                                     showSettingsDialog();
                                 }
                             }
+
                             @Override
                             public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token) {
                                 token.continuePermissionRequest();
@@ -2408,6 +2433,7 @@ public class AccountOpenZExistingCustomersMain extends AppCompatActivity impleme
                                     showSettingsDialog();
                                 }
                             }
+
                             @Override
                             public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token) {
                                 token.continuePermissionRequest();
@@ -2426,8 +2452,8 @@ public class AccountOpenZExistingCustomersMain extends AppCompatActivity impleme
                 break;
             case R.id.done:
                 am.putProceed(false);
-               
                 finish();
+                startActivity(new Intent(this, DepositOptionsActivity.class));
                 break;
 
         }
@@ -2450,5 +2476,30 @@ public class AccountOpenZExistingCustomersMain extends AppCompatActivity impleme
                 super.onPageFinished(view, url);
             }
         }
+    }
+
+    private void depositMethodes() {
+
+        final Dialog mDialog = new Dialog(AccountOpenZExistingCustomersMain.this);
+        //noinspection ConstantConditions
+        mDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        mDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        mDialog.setContentView(R.layout.deposit_options);
+        CheckBox check;
+        final TextView txtTitle = mDialog.findViewById(R.id.message),
+                txtMessage = mDialog.findViewById(R.id.show_response),
+                txtOk = mDialog.findViewById(R.id.done);
+        check = mDialog.findViewById(R.id.check) ;
+        txtTitle.setText(R.string.registerd_n_successfully);
+        txtMessage.setText(R.string.deposit_options);
+
+        txtOk.setOnClickListener(v1 -> {
+            finish();
+            mDialog.dismiss();
+
+
+        });
+        mDialog.show();
+
     }
 }

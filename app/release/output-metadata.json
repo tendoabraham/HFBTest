@@ -11,10 +11,10 @@
       "type": "SINGLE",
       "filters": [],
       "properties": [],
-      "versionCode": 128,
-      "versionName": "128",
+      "versionCode": 129,
+      "versionName": "129.9",
       "enabled": true,
-      "outputFile": "test-app-HFB-v-128.apk"
+      "outputFile": "test-app-HFB-v-129.9.apk"
     }
   ]
 }

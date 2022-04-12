@@ -97,16 +97,16 @@ public class ugandanID {
                 SNAME = LINE3.split("<<")[1].split("<")[0];
                 LNAME = LINE3.split("<<")[1].split("<")[1];
             } catch (Exception e) {
-               try
-               {
-                   FNAME = LINE3.split("<")[0];
-                   SNAME = LINE3.split("<")[1];
-                   LNAME = LINE3.split("<")[2];
-               }catch (Exception ee){
-                   FNAME = LINE3.split("<<")[0];
-                   SNAME = LINE3.split("<<")[1];
-                   LNAME = "";
-               }
+                try
+                {
+                    FNAME = LINE3.split("<")[0];
+                    SNAME = LINE3.split("<")[1];
+                    LNAME = LINE3.split("<")[2];
+                }catch (Exception ee){
+                    FNAME = LINE3.split("<<")[0];
+                    SNAME = LINE3.split("<<")[1];
+                    LNAME = "";
+                }
             }
             //Kazi iendelee DOB
             DOB = LINE2.substring(0, Math.min(LINE2.length(), 6));
@@ -187,7 +187,7 @@ public class ugandanID {
             for (int i = 0; i < fTags.size(); i++) {
                 String s = results.getString(fTags.get(i));
                 if (!containsNumbers(s)) {
-                    if (LevenshteinTrick(s, "SURNAME") > 3 && LevenshteinTrick(s, "GIVEN NAME") > 3 && LevenshteinTrick(s, "REPUBLIC OF UGANDA") > 3 && LevenshteinTrick(s, "NATIONAL ID CARD") > 3 && LevenshteinTrick(s, "NATIONAL") > 3 && LevenshteinTrick(s, "SEX") > 2 && LevenshteinTrick(s, "DATE OF BIRTH") > 3) {
+                    if (LevenshteinTrick(s, "GIVEN NAME") > 3 && LevenshteinTrick(s, "SURNAME") > 3 && LevenshteinTrick(s, "REPUBLIC OF UGANDA") > 3 && LevenshteinTrick(s, "NATIONAL ID CARD") > 3 && LevenshteinTrick(s, "NATIONAL") > 3 && LevenshteinTrick(s, "SEX") > 2 && LevenshteinTrick(s, "DATE OF BIRTH") > 3) {
                         return s;
                     }
                 }
@@ -230,7 +230,7 @@ public class ugandanID {
     public String getGivenNameNew() {
         String nM="";
         try {
-            nM = results.getString("F-5");
+            nM = results.getString("F-2");
             if (nM.isEmpty()){
                 nM = results.getString("B-5");
             }
@@ -281,6 +281,56 @@ public class ugandanID {
             }
         }
         return jibu;
+    }
+
+
+
+//    public String  getCardNumber() {
+//        String c;
+//        for (int i = 0; i < fTags.size(); i++) {
+//            try {
+//                c = results.getString(fTags.get(i));
+//                if (!isNoNumberAtBeginning(c) && containsNumbers(c))
+//                    return c.replaceAll("\\s+", "");
+//            } catch (Exception e) {
+//                return jibu;
+//            }
+//        }
+//        return jibu;
+//    }
+
+
+
+//    public String getCardNumber() {
+//        try {
+//            for (int i = 0; i < fTags.size(); i++) {
+//                String s = results.getString(fTags.get(i));
+//                if (containsNumbers(s)) {
+//                    if (LevenshteinTrick(s, "CARD NO") > 3&& LevenshteinTrick(s, "SURNAME") > 3 && LevenshteinTrick(s, "GIVEN NAME") > 3 && LevenshteinTrick(s, "REPUBLIC OF UGANDA") > 3 && LevenshteinTrick(s, "NATIONAL ID CARD") > 3 && LevenshteinTrick(s, "NATIONAL") > 3 && LevenshteinTrick(s, "SEX") > 2 && LevenshteinTrick(s, "DATE OF BIRTH") > 3) {
+//                        return s;
+//                    }
+//                }
+//            }
+//        } catch (Exception e) {
+//            return jibu;
+//        }
+//        return jibu;
+//    }
+    
+    
+
+    public String getCardNumber() {
+        String nM="";
+        try {
+            if (!isNoNumberAtBeginning(nM) ) {
+                nM = results.getString("F-10");
+            }else {
+                nM = results.getString("F-15");
+            }
+            return nM;
+        } catch (Exception e) {
+            return nM;
+        }
     }
 
     private boolean containsNumbers(String s) {

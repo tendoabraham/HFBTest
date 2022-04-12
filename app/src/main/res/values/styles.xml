@@ -12,6 +12,16 @@
         <item name="customText">@color/icon_blue</item>
     </style>
 
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/dark_orange</item>
+    </style>
+    <style name="TextAppearanceBold" parent="@android:style/TextAppearance.Small">
+        
+    </style>
+
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
 
     <style name="MyDrawerArrowTheme" parent="Widget.AppCompat.DrawerArrowToggle">
@@ -131,6 +141,19 @@
         <item name="android:textColor">@color/dark_blue</item>
         <item name="android:layout_margin">5dp</item>
         <item name="android:textSize">15sp</item>
+    </style>
+
+
+    <style name="Button" parent="AppTheme">
+        <item name="android:layout_height">40dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:layout_margin">10dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:background">@drawable/back_button_no_stroke</item>
+        <item name="android:elevation" tools:targetApi="lollipop">5dp</item>
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:textSize">16sp</item>
     </style>
 
     <style name="Blue_Text_Center_two" parent="Theme_I">

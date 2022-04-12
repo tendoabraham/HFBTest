@@ -393,7 +393,7 @@
     <string name="lbl_choose_from_gallery">Choose from gallery</string>
     <string name="previous">Previous</string>
     <string name="next">Next</string>
-    <string name="registerd_n_successfully">Registerd Successfully</string>
+    <string name="registerd_n_successfully">Registered Successfully</string>
     <string name="mandatory_field">(Mandatory field)</string>
     <string name="optional_field">(Optional field)</string>
     <string name="done">Done</string>
@@ -444,5 +444,25 @@
     <string name="miss">Miss</string>
     <string name="others">Others</string>
     <string name="doctor_honourable_e_t_c">Doctor, Honourable, e.t.c</string>
-    <string name="i_have_read_and_agree_with_the_nterms_and_conditions_of_use">I Have Read and Agreed With  The Terms and Conditions Of Use</string>
+    <string name="i_have_read_and_agree_with_the_terms_and_conditions_of_use">I Have Read and Agreed With  The Terms and Conditions Of Use</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string name="select_gender">Select Gender</string>
+    <string name="select_mobileMoney">Select MobileMoney Provider</string>
+    <string name="numberregisterd">Is the number registered to you?</string>
+    <string name="deposit_methodes"><![CDATA[You can deposite to your bank account using the following chanes.Modes of payment to be used to deposit    1.Agent banking 2.Bank transfers(EFTs , RTGS and TTs) 3.Mobile money(Wallet to bank) MTN & Airtel  4.Remittance services(World remit, Western Union, Money gram )HFB Branches]]></string>
+    <string name="atm_deposit">ATM Deposit</string>
+    <string name="wallet_deposit">Wallet</string>
+    <string name="bank_agents">Bank Agents</string>
+    <string name="telegraphic_transfer">Telegraphic Transfer</string>
+    <string name="wireless_transfer">Wireless Transfer</string>
+    <string name="western_union">Western Union</string>
+    <string name="hfb_bank">Housing Finance Bank Branches</string>
+    <string name="deposit_options">You can Deposit to this Account using:</string>
+    <string name="proceed">Proceed</string>
+    <array name="id_employment_type">
+        <item>Self-employed /Business</item>
+        <item>Employed/Salary</item>
+        <item>Others</item>
+    </array>
 </resources>
