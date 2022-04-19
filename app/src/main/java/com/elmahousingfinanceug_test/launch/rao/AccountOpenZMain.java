@@ -5,7 +5,6 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.DownloadManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -93,10 +92,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.regex.Pattern;
 
 import id.zelory.compressor.Compressor;
@@ -108,7 +105,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
     Bitmap bitmapImageFront, bitmapImageBack, bitmapImageSelfie;
     ViewFlipper flipper;
     WebView webView;
-    String  nationality = "", sex ,surName= "" , CardNumber= "",DateOfExpiry = "" , NIN = "", dob  = "" ,Name = "";
+    String  nationality = "", sex ,surName= "" , CardNumber= "",DateOfExpiry = "" , NIN = "", dob  = "" ,Name = "", faceId1 = "", imageURL = "",faceId2 = "";
     String status = "", message = "", fields = "", idNumberObject = "", fullName = "", issueDate = "", idSerial = "", birthdate = "";
     ImagePick front, backpick, selfie, signature;
     Spinner currselect, branchselect, employmentType, political_spin, occupation_spin, proffession_status, regionselect, districtName,
@@ -140,6 +137,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
     int REQUEST_IMAGE = 100, REQUEST_IMAGEX = 0, step_ = 0;
 
     byte[] byteArray;
+    byte[] byteArray1;
 
     String encodedImageFront = "", encodedImageBack = "", encodedImageSelfie = "", encodedImageSignature = "", Usertitle = "", CustomerCategory = "",
             step0 = "Customer Type & Product", step1 = "Personal details?", step2 = "Share with us your ID details", step3 = "Confirm these are your ID details",
@@ -149,7 +147,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
             INFOFIELD4 = "", INFOFIELD5 = "", token = "", payload = "", Device = "", uri = "", extrauri = "", new_request = "",
             selectedAccount = "", selectedAccountID = "", currName = "", branchID = "", termsUrl = "", currencyURL, periodAddressString = "", periodWorkString = "", gender = "", mobileMoneyProvider = "", ProductDescription = "",
             StringPoliticallyExposed = "", occupationIDString = "", professionIDString = "", regionIDString = "", districtIDString = "", countyIDString = "",
-            subcountyIDString = "", parishIdString = "", villageIdString = "", eAIdString = "", userEmploymentType, maritalStatus, alternativeSecurityDeposit, processID = "";
+            subcountyIDString = "", parishIdString = "", villageIdString = "", eAIdString = "", userEmploymentType, maritalStatus, alternativeSecurityDeposit, processID = "",processID2 = "",imageURL1 = "";
 
     boolean done = false;
     private String[] FieldIDs, FieldValues;
@@ -1376,7 +1374,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                         String message = jsonObject.getString("Message");
 
                         if (status.equals("000")) {
-                            String imageURL = "";
+                            
                             if (jsonObject.has("ImageURL")) {
                                 imageURL = jsonObject.getString("ImageURL");
 
@@ -1655,8 +1653,9 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                         DOBEdit.setText(dob);
                         nationalIDCardNo.setText(CardNumber);
                         otherNames.setText(Name);
-                        flipper.showNext();
-                        step_++;
+                        uploadSelfyImage(byteArray1,"SELF") ;
+//                        flipper.showNext();
+//                        step_++;
 //                                    niraValidation() ;
                         flipViewIt(step_);
 //                        Toast.makeText(AccountOpenZMain.this, "NATIONAL" + nationality, Toast.LENGTH_SHORT).show();
@@ -1915,6 +1914,19 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                             am.putSavedData("encodedImageFront", encodedImageFront);
                             break;
                         case 2:
+                            
+                            //Bitmap bmp = ;
+                            ByteArrayOutputStream stream1 = new ByteArrayOutputStream();
+                            bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream1);
+                            byteArray1 = stream1.toByteArray();
+
+//                            bmp.recycle()
+                            front.setImage(bitmap);
+                            bitmapImageFront = BitmapCompressionWithZ(this, mFile);
+                            encodedImageFront = ConvertImageToBase64(bitmap);
+
+                            am.putSavedData("encodedImageFront", encodedImageFront);
+                            
                             selfie.setImage(bitmap);
                             bitmapImageSelfie = BitmapCompressionWithZ(this, mFile);
                             encodedImageSelfie = ConvertImageToBase64(bitmap);
@@ -3072,6 +3084,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                         am.putSaveTitlePosition(singleTitle.getViewTitleID());
 //                        submitImages();
                         uploadImage(byteArray, "IDFRONT");
+                       
                     }
                 } else if (step_ == 3) {
                     if (TextUtils.isEmpty(name.getText())) {
@@ -3648,6 +3661,381 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
 
         }
 
+    }
+
+    private void uploadSelfyImage(byte[] byteArray1, String self) {
+        String url_string = "{" + "\"FormID\":\"LITTLEBUSINESS\"," +
+                "\"FileType\":\"jpg\"," +
+                "\"ModuleID\":\"" + self + "\"," +
+                "\"BankID\":\"LITTLE\"}";
+
+        try {
+            image_URL = base_URL + URLEncoder.encode(url_string, "UTF-8");
+
+            Log.d("encoded_url_string", image_URL);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+
+            Log.d("encoded_url_error", e.getMessage());
+        }
+
+
+        Log.d("image_url_front", image_URL);
+
+
+        int max = 100;
+
+        //showProgressBar(0, max);
+        //image_URL = base_URL + "%7B%22FormID%22%3A%22BANKIDFRONT%22%2C%22Key%22%3A%22PORTAL-FF7B-4CCA-B884-98346D5EC385%22%2C%22Country%22%3A%22"+preferenceHelper.getCountry()+"%22%2C%22FileType%22%3A%22jpg%22%2C%22MobileNumber%22%3A%22"+preferenceHelper.getDriverMobileNumber()+"%22%2C%22EMailID%22%3A%22"+preferenceHelper.getEmail()+"%22%2C%22ModuleID%22%3A%22CREATECUSTOMER%22%2C%22BankID%22%3A%22"+bank_id+"%22%7D";
+        Ion.with(AccountOpenZMain.this)
+                .load("POST", image_URL)
+                .uploadProgressHandler((uploaded, total) -> runOnUiThread(() -> {
+                    Log.d("mercedes_progress-1", uploaded + " of " + total);
+                    Double progress = (double) uploaded / (double) total;
+                    Log.d("mercedes_progress-2", progress + " / " + max);
+                    progress = progress * max;
+                    Log.d("mercedes_progress-3", progress + " / " + max);
+                    //showProgressBar(progress.intValue(), max);
+
+                    am.progressDialog("1");
+
+                }))
+                .setByteArrayBody(byteArray)
+                .asString()
+                .setCallback((e, result) -> {
+                    //{"Status":"091","Message":"Invalid Form Details 1.0","ImageURL":null}
+                    //dismisDialog();
+                    if (result != null) {
+                        //Upload Success
+                        Log.d("mercedes-result", "1" + result);
+
+                    } else {
+                        //Upload Failed
+                        Log.d("mercedes-else", "2");
+                    }
+                    if (e != null) {
+                        Log.d("mercedes-error", "1" + e.getMessage());
+                    }
+
+
+                    //let me put it outside the result is null check so that when images fail they can still proceed
+                    try {
+                        removeDialogs();
+
+                        // {"Status":"000","Message":"Data Saved","ImageURL":"https://littleimages.blob.core.windows.net/documents/6F005297-5883-4EAE-A30F-5C9F058CF3E7"}
+
+                        Log.d("response_", result);
+                        JSONObject jsonObject = new JSONObject(result);
+                        String status = jsonObject.getString("Status");
+                        String message = jsonObject.getString("Message");
+
+                        if (status.equals("000")) {
+                            
+                            if (jsonObject.has("ImageURL")) {
+                                imageURL1 = jsonObject.getString("ImageURL");
+
+                                Log.d("response_idurl", result);
+                                validateImageSelfSubmited(imageURL1);
+
+//                                imgCheck.setVisibility(View.VISIBLE);
+//
+//                                BusinessDocumentsModel businessDocumentsModel = new BusinessDocumentsModel(imageURL, document);
+//                                lstDocumentsUrl.add(businessDocumentsModel);
+
+                            }
+
+                        } else if (status.equals("091")) {
+                            ErrorAlert(message);
+                        }
+
+                    } catch (Exception exception) {
+                        Log.d("mercedes-result", "signature-> " + exception.getMessage());
+
+                        am.progressDialog("0");
+
+                    }
+                });
+        
+    }
+
+    private void validateImageSelfSubmited(String imageURL1) {
+
+        String base_URL2 = "https://imageai.azurewebsites.net/ReadDocument.aspx";
+
+        JSONObject jsonObject1 = new JSONObject();
+        try {
+            jsonObject1.put("RequestID", "SUBMITIMAGE");
+            jsonObject1.put("ImageID", "NATIONALID");
+            jsonObject1.put("ImageURL", imageURL1);
+            jsonObject1.put("Country", "UGANDA");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        JsonObjectRequest req = new JsonObjectRequest(Request.Method.POST, base_URL2, jsonObject1,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        am.progressDialog("1");
+//                        {"Status":"Accepted","Message":"Accepted","RequestID":"37236775-bf86-4240-a1db-8baafc33cbd1","ProcessID":"4C22913D-CDEA-480F-B4B1-2A1F703F110C"}
+                        try {
+                            JSONObject jsonObject = new JSONObject(response.toString());
+                            String status = jsonObject.getString("Status");
+                            String message = jsonObject.getString("Message");
+
+                            if (status.equals("Accepted")) {
+
+                                if (jsonObject.has("ProcessID")) {
+                                    processID2 = jsonObject.getString("ProcessID");
+                                    Log.d("response_ProcessIDSELF", processID2);
+
+                                    final Handler handler = new Handler(Looper.getMainLooper());
+                                    handler.postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            //Do something after 100ms
+                                            submitImageSelf(processID2,imageURL1);
+                                        }
+                                    }, 10000);
+
+
+//                                imgCheck.setVisibility(View.VISIBLE);
+//
+//                                BusinessDocumentsModel businessDocumentsModel = new BusinessDocumentsModel(imageURL, document);
+//                                lstDocumentsUrl.add(businessDocumentsModel);
+
+                                }
+
+                            } else if (status.equals("091")) {
+                                ErrorAlert(message);
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.e("Error: ", error.getMessage());
+            }
+        });
+
+// add the request object to the queue to be executed
+        RequestQueue queue = Volley.newRequestQueue(AccountOpenZMain.this);
+        queue.add(req);
+        Log.d("IMAGEURL", req.toString());
+        
+        
+    }
+
+    private void submitImageSelf(String processID, String imageURL1) {
+       
+//        {
+//            "RequestID":"GETFACE",
+//                "ImageID":"NATIONALID",
+//                "ProcessID":"F56F08A7-C678-4B10-82C9-C8E27601AAD8",
+//                "ImageURL":"https:\/\/littleimages.blob.core.windows.net\/bankdocuments\/\/0DBFAC18-7617-4627-8629-6A9E5DCC06D7",
+//                "Country":"UGANDA"
+//        }
+
+        String base_URL2 = "https://imageai.azurewebsites.net/GetFaceFromImage.aspx";
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("RequestID", "GETFACE");
+            jsonObject.put("ImageID", "NATIONALID");
+            jsonObject.put("ProcessID", processID);
+            jsonObject.put("ImageURL",imageURL1);
+            jsonObject.put("Country", "UGANDA");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        am.progressDialog("1");
+        JsonObjectRequest req = new JsonObjectRequest(Request.Method.POST, base_URL2, jsonObject,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        am.progressDialog("1");
+//                        {"Status":"Accepted","Message":"Accepted","RequestID":"37236775-bf86-4240-a1db-8baafc33cbd1","ProcessID":"4C22913D-CDEA-480F-B4B1-2A1F703F110C"}
+                        try {
+                            JSONObject jsonObject = new JSONObject(response.toString());
+                            String status = jsonObject.getString("Status");
+                            String message = jsonObject.getString("Message");
+                            String AnalyzeFaceDetails = jsonObject.getString("AnalyzeFaceDetails");
+
+                            JSONArray jsonArrayFields = new JSONArray(AnalyzeFaceDetails);
+                            JSONObject jsonFields = jsonArrayFields.getJSONObject(0);
+                            if (jsonFields.has("faceId")){
+                                faceId1 = jsonFields.getString("faceId");
+                            }
+
+
+                            if (status.equals("000")) {
+                                Log.d("responseSELF", faceId1)  ;
+                                getNationalIdFaceID(processID,imageURL) ;
+
+                            } else if (status.equals("091")) {
+                                ErrorAlert(message);
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.e("Error: ", error.getMessage());
+            }
+        });
+
+// add the request object to the queue to be executed
+        RequestQueue queue = Volley.newRequestQueue(AccountOpenZMain.this);
+        queue.add(req);
+        Log.d("faceId", req.toString());
+
+    }
+
+    private void getNationalIdFaceID(String processID,String imageURL) {
+
+//        {
+//            "RequestID":"GETFACE",
+//                "ImageID":"NATIONALID",
+//                "ProcessID":"F56F08A7-C678-4B10-82C9-C8E27601AAD8",
+//                "ImageURL":"https:\/\/littleimages.blob.core.windows.net\/bankdocuments\/\/0DBFAC18-7617-4627-8629-6A9E5DCC06D7",
+//                "Country":"UGANDA"
+//        }
+
+        String base_URL2 = "https://imageai.azurewebsites.net/GetFaceFromImage.aspx";
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("RequestID", "GETFACE");
+            jsonObject.put("ImageID", "NATIONALID");
+            jsonObject.put("ProcessID", processID);
+            jsonObject.put("ImageURL",imageURL);
+            jsonObject.put("Country", "UGANDA");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        am.progressDialog("1");
+        JsonObjectRequest req = new JsonObjectRequest(Request.Method.POST, base_URL2, jsonObject,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        am.progressDialog("1");
+//                        {"Status":"Accepted","Message":"Accepted","RequestID":"37236775-bf86-4240-a1db-8baafc33cbd1","ProcessID":"4C22913D-CDEA-480F-B4B1-2A1F703F110C"}
+                        try {
+                            JSONObject jsonObject = new JSONObject(response.toString());
+                            String status = jsonObject.getString("Status");
+                            String message = jsonObject.getString("Message");
+                            String AnalyzeFaceDetails = jsonObject.getString("AnalyzeFaceDetails");
+
+                            JSONArray jsonArrayFields = new JSONArray(AnalyzeFaceDetails);
+                            JSONObject jsonFields = jsonArrayFields.getJSONObject(0);
+                            if (jsonFields.has("faceId")){
+                                faceId2 = jsonFields.getString("faceId");
+                            }
+
+
+                            if (status.equals("000")) {
+                                Log.d("responseSELF", faceId1)  ;
+                                compareFaceId(faceId1,faceId2) ;
+
+                            } else if (status.equals("091")) {
+                                ErrorAlert(message);
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.e("Error: ", error.getMessage());
+            }
+        });
+
+// add the request object to the queue to be executed
+        RequestQueue queue = Volley.newRequestQueue(AccountOpenZMain.this);
+        queue.add(req);
+        Log.d("faceId", req.toString());
+
+
+
+    }
+
+    private void compareFaceId(String faceId1, String faceId2) {
+
+        String base_URL2 = "https://imageai.azurewebsites.net/CompareFace.aspx";
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("RequestID", "COMPAREFACE");
+            jsonObject.put("FaceID1", faceId1);
+            jsonObject.put("FaceID2", faceId2);
+            jsonObject.put("Country", "UGANDA");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        am.progressDialog("1");
+        JsonObjectRequest req = new JsonObjectRequest(Request.Method.POST, base_URL2, jsonObject,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.e("COMPARE",response.toString())  ;
+                        am.progressDialog("1");
+//                        {"Status":"Accepted","Message":"Accepted","RequestID":"37236775-bf86-4240-a1db-8baafc33cbd1","ProcessID":"4C22913D-CDEA-480F-B4B1-2A1F703F110C"}
+                        try {
+                            JSONObject jsonObject = new JSONObject(response.toString());
+                            String status = jsonObject.getString("Status");
+                            String message = jsonObject.getString("Message");
+                            String ConfidenceScore = jsonObject.getString("ConfidenceScore");
+
+//                            JSONArray jsonArrayFields = new JSONArray(AnalyzeFaceDetails);
+//                            JSONObject jsonFields = jsonArrayFields.getJSONObject(0);
+//                            if (jsonFields.has("faceId")){
+//                                faceId2 = jsonFields.getString("faceId");
+//                            }
+
+
+                            if (status.equals("000")) {
+                                am.progressDialog("0");
+//                                if (price != null && Integer.valueOf(price) > 0) {
+//                                    do something with price...
+//                                }
+                              if(Integer.parseInt(ConfidenceScore)>0.8){ 
+                                  flipper.showNext();
+                                  step_++;
+                                  flipViewIt(step_);
+                                  
+                              }  else {
+                                  am.progressDialog("0");
+                                  ErrorAlert("Kindly take a selfie of self!");
+                              }
+
+                            } else if (status.equals("091")) {
+                                am.progressDialog("0");
+                                ErrorAlert(message);
+                            }
+
+                        } catch (JSONException e) {
+                            Log.e("ErrorV",response.toString()) ;
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("Test",error.toString()) ;
+                VolleyLog.e("Error: ", error.getMessage());
+            }
+        });
+
+// add the request object to the queue to be executed
+        RequestQueue queue = Volley.newRequestQueue(AccountOpenZMain.this);
+        queue.add(req);
+        Log.d("", req.toString());
+        
     }
 
 //    private void popupDeposit() {
