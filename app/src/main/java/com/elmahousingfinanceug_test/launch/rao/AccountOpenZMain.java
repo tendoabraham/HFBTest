@@ -88,6 +88,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -1367,6 +1368,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                         removeDialogs();
 
                         // {"Status":"000","Message":"Data Saved","ImageURL":"https://littleimages.blob.core.windows.net/documents/6F005297-5883-4EAE-A30F-5C9F058CF3E7"}
+                        Log.d("upload_id_response", result);
 
                         Log.d("response_", result);
                         JSONObject jsonObject = new JSONObject(result);
@@ -1414,7 +1416,11 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
         } catch (JSONException e) {
             e.printStackTrace();
         }
-                    
+
+        
+        Log.d("upload_idval_call", jsonObject1.toString());
+
+
         JsonObjectRequest req = new JsonObjectRequest(Request.Method.POST, base_URL2, jsonObject1,
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -1425,6 +1431,9 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                             JSONObject jsonObject = new JSONObject(response.toString());
                             String status = jsonObject.getString("Status");
                             String message = jsonObject.getString("Message");
+
+                            Log.d("upload_idval_resp", jsonObject1.toString());
+
 
                             if (status.equals("Accepted")) {
 
@@ -1487,7 +1496,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
             @Override
             public void onResponse(JSONArray response) {
                 am.progressDialog("0");
-                Log.d("IMEFIKA",response.toString());
+//                Log.d("IMEFIKA",response.toString());
 //                :[{"Nationality":[{"text":"UGA","confidence":"0.995"}],"Sex":[{"text":"M","confidence":"0.989"}],"Surname":[{"text":"BIGIRWA","confidence":"0.995"}],"CardNumber":[{"text":"010394857","confidence":"0.995"}],"DateOfExpiry":[{"text":"06.06.2025","confidence":"0.995"}],"NIN":[{"text":"CM86004106Z49G","confidence":"0.983"}],"DateOfBirth":[{"text":"10.08.1986","confidence":"0.995"}],"Name":[{"text":"ISAAC","confidence":"0.978"}]}]}]
                 try {
                     JSONObject jsonObject1 = response.getJSONObject(0);
@@ -1921,11 +1930,11 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                             byteArray1 = stream1.toByteArray();
 
 //                            bmp.recycle()
-                            front.setImage(bitmap);
+                            /*front.setImage(bitmap);
                             bitmapImageFront = BitmapCompressionWithZ(this, mFile);
                             encodedImageFront = ConvertImageToBase64(bitmap);
 
-                            am.putSavedData("encodedImageFront", encodedImageFront);
+                            am.putSavedData("encodedImageFront", encodedImageFront);*/
                             
                             selfie.setImage(bitmap);
                             bitmapImageSelfie = BitmapCompressionWithZ(this, mFile);
@@ -3700,7 +3709,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                     am.progressDialog("1");
 
                 }))
-                .setByteArrayBody(byteArray)
+                .setByteArrayBody(byteArray1)
                 .asString()
                 .setCallback((e, result) -> {
                     //{"Status":"091","Message":"Invalid Form Details 1.0","ImageURL":null}
@@ -3724,7 +3733,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
 
                         // {"Status":"000","Message":"Data Saved","ImageURL":"https://littleimages.blob.core.windows.net/documents/6F005297-5883-4EAE-A30F-5C9F058CF3E7"}
 
-                        Log.d("response_", result);
+                        Log.d("upload_selfie_response", result);
                         JSONObject jsonObject = new JSONObject(result);
                         String status = jsonObject.getString("Status");
                         String message = jsonObject.getString("Message");
@@ -3794,6 +3803,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                                         @Override
                                         public void run() {
                                             //Do something after 100ms
+                                            faceId1 = "";
                                             submitImageSelf(processID2,imageURL1);
                                         }
                                     }, 10000);
@@ -3811,7 +3821,8 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                             }
 
                         } catch (JSONException e) {
-                            e.printStackTrace();
+//                            e.printStackTrace();
+                            Toast.makeText(AccountOpenZMain.this, "Could not retrieve cliient image from selife", Toast.LENGTH_SHORT).show();
                         }
                     }
                 }, new Response.ErrorListener() {
@@ -3855,14 +3866,17 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        am.progressDialog("1");
+                        am.progressDialog("0");
+                        Log.d("IMEFIKAGATEFACE1",response.toString());
 //                        {"Status":"Accepted","Message":"Accepted","RequestID":"37236775-bf86-4240-a1db-8baafc33cbd1","ProcessID":"4C22913D-CDEA-480F-B4B1-2A1F703F110C"}
                         try {
                             JSONObject jsonObject = new JSONObject(response.toString());
                             String status = jsonObject.getString("Status");
                             String message = jsonObject.getString("Message");
+                            
+                            
                             String AnalyzeFaceDetails = jsonObject.getString("AnalyzeFaceDetails");
-
+                            
                             JSONArray jsonArrayFields = new JSONArray(AnalyzeFaceDetails);
                             JSONObject jsonFields = jsonArrayFields.getJSONObject(0);
                             if (jsonFields.has("faceId")){
@@ -3872,6 +3886,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
 
                             if (status.equals("000")) {
                                 Log.d("responseSELF", faceId1)  ;
+                                faceId2 = "";
                                 getNationalIdFaceID(processID,imageURL) ;
 
                             } else if (status.equals("091")) {
@@ -3879,7 +3894,10 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                             }
 
                         } catch (JSONException e) {
-                            e.printStackTrace();
+                            ErrorAlert("No client face to compare!!");
+                            //e.printStackTrace();
+                            
+//                            Toast.makeText(AccountOpenZMain.this, "Could not retrieve cliient image from ID", Toast.LENGTH_SHORT).show();
                         }
                     }
                 }, new Response.ErrorListener() {
@@ -3892,7 +3910,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
 // add the request object to the queue to be executed
         RequestQueue queue = Volley.newRequestQueue(AccountOpenZMain.this);
         queue.add(req);
-        Log.d("faceId", req.toString());
+        Log.d("faceId1", jsonObject.toString());
 
     }
 
@@ -3922,7 +3940,8 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        am.progressDialog("1");
+                        am.progressDialog("0");
+                        Log.d("IMEFIKAGATEFACE2",response.toString());
 //                        {"Status":"Accepted","Message":"Accepted","RequestID":"37236775-bf86-4240-a1db-8baafc33cbd1","ProcessID":"4C22913D-CDEA-480F-B4B1-2A1F703F110C"}
                         try {
                             JSONObject jsonObject = new JSONObject(response.toString());
@@ -3937,16 +3956,20 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                             }
 
 
-                            if (status.equals("000")) {
-                                Log.d("responseSELF", faceId1)  ;
-                                compareFaceId(faceId1,faceId2) ;
-
-                            } else if (status.equals("091")) {
+                            if (status.equals("000")){
+                                if(faceId1==null || faceId2==null || faceId1.equals("")||faceId2.equals("")) {
+                                    ErrorAlert("No Image face to compare kindly take a clear selfie!");
+//                                    Toast.makeText(AccountOpenZMain.this, "No face to compare", Toast.LENGTH_SHORT).show();
+                                } else{
+                                    compareFaceId(faceId1,faceId2) ;
+                                }
+                            }else if (status.equals("091")) {
                                 ErrorAlert(message);
                             }
 
                         } catch (JSONException e) {
-                            e.printStackTrace();
+                            ErrorAlert("No Image face and ID Card to compare kindly take a clear selfie and upload a valid ID Card!");
+//                            e.printStackTrace();
                         }
                     }
                 }, new Response.ErrorListener() {
@@ -3959,13 +3982,14 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
 // add the request object to the queue to be executed
         RequestQueue queue = Volley.newRequestQueue(AccountOpenZMain.this);
         queue.add(req);
-        Log.d("faceId", req.toString());
+        Log.d("faceId2", jsonObject.toString());
 
 
 
     }
 
     private void compareFaceId(String faceId1, String faceId2) {
+        Log.e("faceID",faceId1 + "-" + faceId2) ;
 
         String base_URL2 = "https://imageai.azurewebsites.net/CompareFace.aspx";
         JSONObject jsonObject = new JSONObject();
@@ -3977,42 +4001,42 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        Log.d("upload_compare_call", jsonObject.toString());
+
         am.progressDialog("1");
         JsonObjectRequest req = new JsonObjectRequest(Request.Method.POST, base_URL2, jsonObject,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
                         Log.e("COMPARE",response.toString())  ;
-                        am.progressDialog("1");
+                        am.progressDialog("0")   ;
+//                        Log.d("upload_compare_response", response.toString());
+                        ;
 //                        {"Status":"Accepted","Message":"Accepted","RequestID":"37236775-bf86-4240-a1db-8baafc33cbd1","ProcessID":"4C22913D-CDEA-480F-B4B1-2A1F703F110C"}
                         try {
                             JSONObject jsonObject = new JSONObject(response.toString());
                             String status = jsonObject.getString("Status");
                             String message = jsonObject.getString("Message");
-                            String ConfidenceScore = jsonObject.getString("ConfidenceScore");
+                           
+                            if (status.equals("000")){
+                                if(jsonObject.has("ConfidenceScore")){
+                                    String ConfidenceScore = jsonObject.getString("ConfidenceScore");
+                                    if(AllMethods.isNumeric(ConfidenceScore)){
+                                        Double cs_score = Double.parseDouble(ConfidenceScore);
+                                        DecimalFormat formatter = new DecimalFormat("#,###,##0.00");//here 0.00 instead #.##
+                                        //txtSelfieText.setText(formatter.format(cs_score)+"\nmatch");
+                                        if(cs_score>0.5){
+                                            flipper.showNext();
+                                            step_++;
+                                            flipViewIt(step_);
+                                        }else{
+                                          ErrorAlert("You did not Match the Image on your Id!"); 
+                                        } 
 
-//                            JSONArray jsonArrayFields = new JSONArray(AnalyzeFaceDetails);
-//                            JSONObject jsonFields = jsonArrayFields.getJSONObject(0);
-//                            if (jsonFields.has("faceId")){
-//                                faceId2 = jsonFields.getString("faceId");
-//                            }
-
-
-                            if (status.equals("000")) {
-                                am.progressDialog("0");
-//                                if (price != null && Integer.valueOf(price) > 0) {
-//                                    do something with price...
-//                                }
-                              if(Integer.parseInt(ConfidenceScore)>0.8){ 
-                                  flipper.showNext();
-                                  step_++;
-                                  flipViewIt(step_);
-                                  
-                              }  else {
-                                  am.progressDialog("0");
-                                  ErrorAlert("Kindly take a selfie of self!");
-                              }
-
+                                    }else{
+                                        ErrorAlert("Ensure the photo you take is close on hat is in your ID Card");
+                                    }
+                                }
                             } else if (status.equals("091")) {
                                 am.progressDialog("0");
                                 ErrorAlert(message);
@@ -4026,7 +4050,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.e("Test",error.toString()) ;
+//                Log.e("Test",error.toString()) ;
                 VolleyLog.e("Error: ", error.getMessage());
             }
         });
@@ -4034,7 +4058,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
 // add the request object to the queue to be executed
         RequestQueue queue = Volley.newRequestQueue(AccountOpenZMain.this);
         queue.add(req);
-        Log.d("", req.toString());
+//        Log.d("", req.toString());
         
     }
 

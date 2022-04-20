@@ -110,6 +110,15 @@ public class AllMethods {
             animate_Text(cancelTrx);
         }
     };
+
+    public static boolean isNumeric(String str) {
+        try {
+            Double.parseDouble(str);
+            return true;
+        } catch(NumberFormatException e){
+            return false;
+        }
+    }
     public Dialog mDialog = null, netDialog = null;
     private KeyStore keyStore;
 
