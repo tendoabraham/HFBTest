@@ -24,7 +24,7 @@ import mumayank.com.airlocationlibrary.AirLocation;
 
 public class AccountOpenSplash extends AppCompatActivity implements ResponseListener {
     private AllMethods am;
-    private AirLocation airLocation;
+   private AirLocation airLocation;
     private static final int REQUEST_ID_AIRLOCATION = 1235;
 
     @Override
