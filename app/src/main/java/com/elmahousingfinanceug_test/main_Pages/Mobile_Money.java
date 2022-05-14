@@ -27,11 +27,13 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.elmahousingfinanceug_test.R;
+import com.elmahousingfinanceug_test.recursiveClasses.AllMethods;
 import com.elmahousingfinanceug_test.recursiveClasses.BaseAct;
 import com.elmahousingfinanceug_test.recursiveClasses.ResponseListener;
 import com.elmahousingfinanceug_test.recursiveClasses.SuccessDialogPage;
 import com.elmahousingfinanceug_test.recursiveClasses.VolleyResponse;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -188,19 +190,31 @@ public class Mobile_Money extends BaseAct implements ResponseListener, VolleyRes
             txtOk.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    String quest = (
-                            "FORMID:M-:" +
-                                    "MERCHANTID:" + am.getMerchantID() + ":" +
-                                    "BANKACCOUNTID:" + accSend + ":" +
-                                    "ACCOUNTID:" + phoneReceive + ":" +
-                                    "AMOUNT:" + ETAmount.getText().toString().trim() + ":" +
-                                    "TMPIN:" + ETPin.getText().toString().trim() + ":" +
-                                    "MESSAGE:MOBILE MONEY:" +
-                                    "ACTION:PAYBILL:"
-                    );
-                    //am.connectOldTwo(getString(R.string.processingTrx),quest,Mobile_Money.this,"TRX");
-                    am.get(Mobile_Money.this,quest,getString(R.string.processingTrx),"TRX");
-                    gDialog.cancel();
+                    if (AllMethods.isNumeric(am.getBal())) {
+                        Double balance = Double.parseDouble(am.getBal());
+                        DecimalFormat formatter = new DecimalFormat("#,###,##0.00");//here 0.00 instead #.##
+                        //txtSelfieText.setText(formatter.format(cs_score)+"\nmatch");
+
+                        if (Double.parseDouble((ETAmount.getText().toString())) >= balance) {
+
+                            am.myDialog(Mobile_Money.this, getString(R.string.alert), getString(R.string.insufficient_funds));
+                        } else {
+                            String quest = (
+                                    "FORMID:M-:" +
+                                            "MERCHANTID:" + am.getMerchantID() + ":" +
+                                            "BANKACCOUNTID:" + accSend + ":" +
+                                            "ACCOUNTID:" + phoneReceive + ":" +
+                                            "AMOUNT:" + ETAmount.getText().toString().trim() + ":" +
+                                            "TMPIN:" + ETPin.getText().toString().trim() + ":" +
+                                            "MESSAGE:MOBILE MONEY:" +
+                                            "ACTION:PAYBILL:"
+                            );
+                            //am.connectOldTwo(getString(R.string.processingTrx),quest,Mobile_Money.this,"TRX");
+                            am.get(Mobile_Money.this, quest, getString(R.string.processingTrx), "TRX");
+                            gDialog.cancel();
+                        }
+
+                    }
                 }
             });
             txtNo.setOnClickListener(new View.OnClickListener() {

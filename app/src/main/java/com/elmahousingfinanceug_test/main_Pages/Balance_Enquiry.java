@@ -80,5 +80,6 @@ public class Balance_Enquiry extends BaseAct implements ResponseListener, Volley
         accountTotal.setText(am.Amount_Thousands(total));
         accountCredit.setText(am.Amount_Thousands(credit));
         accountInfoLayout.setVisibility(View.VISIBLE);
+        
     }
 }

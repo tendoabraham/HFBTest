@@ -32,6 +32,7 @@ import com.elmahousingfinanceug_test.recursiveClasses.ResponseListener;
 import com.elmahousingfinanceug_test.recursiveClasses.SuccessDialogPage;
 import com.elmahousingfinanceug_test.recursiveClasses.VolleyResponse;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -134,6 +135,35 @@ public class Airtime_Services extends BaseAct implements ResponseListener, Volle
             }
         });
         RBTNMyNumber.setChecked(true);
+
+
+        ETAmount.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String bal = am.getBal().replace(",", "");
+                Double balance = Double.parseDouble(bal);
+
+                DecimalFormat formatter = new DecimalFormat("#,###,##0.00");//here 0.00 instead #.##
+                //txtSelfieText.setText(formatter.format(cs_score)+"\nmatch");
+                String inputedAmount = String.valueOf(s);
+                if (!inputedAmount.equals("")&&(Double.parseDouble(inputedAmount)) >= balance) {
+                    am.myDialog(Airtime_Services.this, getString(R.string.alert), getString(R.string.insufficient_funds));
+                    eTPin.setEnabled(false);
+                }
+
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
 
         eTPin.addTextChangedListener(new TextWatcher() {
             @Override

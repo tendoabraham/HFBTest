@@ -461,6 +461,7 @@
     <string name="deposit_options">You can Deposit to this Account using:</string>
     <string name="proceed">Proceed</string>
     <string name="notaface">There is no  client face to compare!</string>
+    <string name="insufficient_funds">You have insufficient funds</string>
     <array name="id_employment_type">
         <item>Self-employed /Business</item>
         <item>Employed/Salary</item>

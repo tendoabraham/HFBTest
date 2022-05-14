@@ -16,8 +16,8 @@ public class ZNewSmsReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         // TODO: 5/28/2021 remove before live
-        //com.elmahousingfinanceug_test -- hash:  <#>
-        // D/hash: 80/7SsvKf1O
+//        com.elmahousingfinanceug_test -- hash:  <#>
+//         D/hash: 80/7SsvKf1O
         if (SmsRetriever.SMS_RETRIEVED_ACTION.equals(intent.getAction())) {
             try {
                 Bundle extras = intent.getExtras();

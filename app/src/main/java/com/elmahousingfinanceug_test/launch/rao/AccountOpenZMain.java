@@ -2060,7 +2060,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                         "SERVICENAME:SELFRAO:" +
                         "BANKID:" + am.getBankID() + ":" +
                         "CUSTOMERMOBILENUMBER:" + customerMobilenNumber + ":" +
-                        "EMAILID:" + EmailAddress.getText() + ":";
+                        "EMAILID:" + EmailAddress.getText().trim() + ":";
 
                 am.get(AccountOpenZMain.this, new_request, getString(R.string.loading), currentTask);
                 /*if(PhoneNumber.getCountryCode().equals("256")){
@@ -2092,7 +2092,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                 "BANKID:" + am.getBankID() + ":" +
                 "CUSTOMERMOBILENUMBER:" + customerMobilenNumber + ":" +
                 "OTPKEY:" + raoOTP + ":" +
-                "EMAILID:" + EmailAddress.getText() + ":";
+                "EMAILID:" + EmailAddress.getText().trim() + ":";
         am.get(AccountOpenZMain.this, new_request, getString(R.string.loading), currentTask);
     }
 
@@ -3052,8 +3052,8 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                 } else if (step_ == 1) {
                     if (TextUtils.isEmpty(EmailAddress.getText())) {
                         ErrorAlert("Email Address required");
-                    } else if (!TextUtils.isEmpty(EmailAddress.getText()) && !android.util.Patterns.EMAIL_ADDRESS.matcher(EmailAddress.getText()).matches()) {
-                        ErrorAlert("Invalid Email address format");
+                    } else if (!TextUtils.isEmpty(EmailAddress.getText().trim()) && !android.util.Patterns.EMAIL_ADDRESS.matcher(EmailAddress.getText().trim()).matches()) {
+                        ErrorAlert("Invalid Email address format kindly avoid spacing at the end or any special characters");
                     } else if (!selectedAccountID.equals("32219") && PhoneNumber.getText().length() < 5) {
                         ErrorAlert("Invalid phone number");
                     } else if (!selectedAccountID.equals("32219") && !PhoneNumber.getCountryCode().equals("256") && TextUtils.isEmpty(EmailAddress.getText())) {
@@ -3507,15 +3507,15 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                         if (alternativeSecurityDeposit.equals("Bank Account")) {
                             INFOFIELD1 = "INFOFIELD1:ACCOUNTID|" + accountNumber.getText() + "|CUSTOMER_CATEGORY|" + CustomerCategory + "|ACCOUNT_TYPE|" + selectedAccount + "|FIRST_NAME|" + name.getText() +
                                     "|MIDDLE_NAME|" + otherNames.getText() + "|LAST_NAME|" + sname.getText() + "|DOB|" + DOBEdit.getText() + "|NATIONALID|" + nationalID.getText() +
-                                    "|PHONE_NUMBER|" + customerMobilenNumber + "|ALTERNATE_PHONE_NUMBER|" + alternatePhone + "|EMAIL_ADDRESS|" + EmailAddress.getText() + "|GENDER|" + gender + "|TITLE|" + Usertitle + "|CURRENCY|" + currName + "|BRANCH|" + branchID + "|PRODUCTID|" + selectedAccountID + "|ALTERNATE_ACCOUNT_NUMBER|" + alternativeAccountNumber.getText() + "|ALTERNATE_ACCOUNT_NAME|" + accountName.getText() + "|ALTERNATE_BANKNAME|" + bankName.getText() + "|ALTERNATE_BRANCHNAME|" + branchName.getText() + "|MOBILE_MONEY_PROVIDER|" + "N/A" + "|MOBILE_MONEY_PHONE_OWNER|" + "N/A" + "|MOBILE_MONEY_PHONE_NUMBER|" + "N/A";
+                                    "|PHONE_NUMBER|" + customerMobilenNumber + "|ALTERNATE_PHONE_NUMBER|" + alternatePhone + "|EMAIL_ADDRESS|" + EmailAddress.getText().trim() + "|GENDER|" + gender + "|TITLE|" + Usertitle + "|CURRENCY|" + currName + "|BRANCH|" + branchID + "|PRODUCTID|" + selectedAccountID + "|ALTERNATE_ACCOUNT_NUMBER|" + alternativeAccountNumber.getText() + "|ALTERNATE_ACCOUNT_NAME|" + accountName.getText() + "|ALTERNATE_BANKNAME|" + bankName.getText() + "|ALTERNATE_BRANCHNAME|" + branchName.getText() + "|MOBILE_MONEY_PROVIDER|" + "N/A" + "|MOBILE_MONEY_PHONE_OWNER|" + "N/A" + "|MOBILE_MONEY_PHONE_NUMBER|" + "N/A";
                         } else if (alternativeSecurityDeposit.equals("Mobile Money") && no.isChecked()) {
                             INFOFIELD1 = "INFOFIELD1:ACCOUNTID|" + accountNumber.getText() + "|CUSTOMER_CATEGORY|" + CustomerCategory + "|ACCOUNT_TYPE|" + selectedAccount + "|FIRST_NAME|" + name.getText() +
                                     "|MIDDLE_NAME|" + otherNames.getText() + "|LAST_NAME|" + sname.getText() + "|DOB|" + DOBEdit.getText() + "|NATIONALID|" + nationalID.getText() +
-                                    "|PHONE_NUMBER|" + customerMobilenNumber + "|ALTERNATE_PHONE_NUMBER|" + alternatePhone + "|EMAIL_ADDRESS|" + EmailAddress.getText() + "|GENDER|" + gender + "|TITLE|" + Usertitle + "|CURRENCY|" + currName + "|BRANCH|" + branchID + "|PRODUCTID|" + selectedAccountID + "|ALTERNATE_ACCOUNT_NUMBER|" + "N/A" + "|ALTERNATE_ACCOUNT_NAME|" + "N/A" + "|ALTERNATE_BANKNAME|" + "N/A" + "|ALTERNATE_BRANCHNAME|" + "N/A" + "|MOBILE_MONEY_PROVIDER|" + mobileMoneyProvider + "|MOBILE_MONEY_PHONE_OWNER|" + phoneregName.getText() + "" + phoneregLastName.getText() + "|MOBILE_MONEY_PHONE_NUMBER|" + PhoneNumberMobile.getText();
+                                    "|PHONE_NUMBER|" + customerMobilenNumber + "|ALTERNATE_PHONE_NUMBER|" + alternatePhone + "|EMAIL_ADDRESS|" + EmailAddress.getText().trim() + "|GENDER|" + gender + "|TITLE|" + Usertitle + "|CURRENCY|" + currName + "|BRANCH|" + branchID + "|PRODUCTID|" + selectedAccountID + "|ALTERNATE_ACCOUNT_NUMBER|" + "N/A" + "|ALTERNATE_ACCOUNT_NAME|" + "N/A" + "|ALTERNATE_BANKNAME|" + "N/A" + "|ALTERNATE_BRANCHNAME|" + "N/A" + "|MOBILE_MONEY_PROVIDER|" + mobileMoneyProvider + "|MOBILE_MONEY_PHONE_OWNER|" + phoneregName.getText() + "" + phoneregLastName.getText() + "|MOBILE_MONEY_PHONE_NUMBER|" + PhoneNumberMobile.getText();
                         } else {
                             INFOFIELD1 = "INFOFIELD1:ACCOUNTID|" + accountNumber.getText() + "|CUSTOMER_CATEGORY|" + CustomerCategory + "|ACCOUNT_TYPE|" + selectedAccount + "|FIRST_NAME|" + name.getText() +
                                     "|MIDDLE_NAME|" + otherNames.getText() + "|LAST_NAME|" + sname.getText() + "|DOB|" + DOBEdit.getText() + "|NATIONALID|" + nationalID.getText() +
-                                    "|PHONE_NUMBER|" + customerMobilenNumber + "|ALTERNATE_PHONE_NUMBER|" + alternatePhone + "|EMAIL_ADDRESS|" + EmailAddress.getText() + "|GENDER|" + gender + "|TITLE|" + Usertitle + "|CURRENCY|" + currName + "|BRANCH|" + branchID + "|PRODUCTID|" + selectedAccountID + "|ALTERNATE_ACCOUNT_NUMBER|" + "N/A" + "|ALTERNATE_ACCOUNT_NAME|" + "N/A" + "|ALTERNATE_BANKNAME|" + "N/A" + "|ALTERNATE_BRANCHNAME|" + "N/A" + "|MOBILE_MONEY_PROVIDER|" + mobileMoneyProvider + "|MOBILE_MONEY_PHONE_OWNER|" + "N/A" + "|MOBILE_MONEY_PHONE_NUMBER|" + PhoneNumberMobile.getText();
+                                    "|PHONE_NUMBER|" + customerMobilenNumber + "|ALTERNATE_PHONE_NUMBER|" + alternatePhone + "|EMAIL_ADDRESS|" + EmailAddress.getText().trim() + "|GENDER|" + gender + "|TITLE|" + Usertitle + "|CURRENCY|" + currName + "|BRANCH|" + branchID + "|PRODUCTID|" + selectedAccountID + "|ALTERNATE_ACCOUNT_NUMBER|" + "N/A" + "|ALTERNATE_ACCOUNT_NAME|" + "N/A" + "|ALTERNATE_BANKNAME|" + "N/A" + "|ALTERNATE_BRANCHNAME|" + "N/A" + "|MOBILE_MONEY_PROVIDER|" + mobileMoneyProvider + "|MOBILE_MONEY_PHONE_OWNER|" + "N/A" + "|MOBILE_MONEY_PHONE_NUMBER|" + PhoneNumberMobile.getText();
                         }
 
 //                        INFOFIELD1 = "INFOFIELD1:ACCOUNTID|"+ accountNumber.getText() +"|CUSTOMER_CATEGORY|"+CustomerCategory+"|ACCOUNT_TYPE|"+selectedAccount+"|FIRST_NAME|"+ name.getText() +

@@ -111,7 +111,7 @@ public class Launch_Screen extends AppCompatActivity {
             // TEST 2021              459483989
 //            am.saveCustomerID("4594839890");
 //            am.saveUserPhone("256700146817");
-            
+
             if(am.getIMEI().equals("")) {
                 readDevice();
             } else {

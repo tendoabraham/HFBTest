@@ -9,6 +9,7 @@ import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
+import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -72,7 +73,8 @@ public class AccountOpenSplash extends AppCompatActivity implements ResponseList
                     "MOBILENUMBER:" + am.getUserPhone() + ":" +
                     "BANKID:" + am.getBankID() + ":",
                     getString(R.string.processingReq),"RAO_GSD");
-        });                                      
+        });
+      
     }
 
     @Override

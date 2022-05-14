@@ -28,6 +28,8 @@ import com.elmahousingfinanceug_test.recursiveClasses.ResponseListener;
 import com.elmahousingfinanceug_test.recursiveClasses.SuccessDialogPage;
 import com.elmahousingfinanceug_test.recursiveClasses.VolleyResponse;
 
+import java.text.DecimalFormat;
+
 public class School_Fees extends BaseAct implements ResponseListener, VolleyResponse {
     Spinner debitAcc;
     EditText studentId,studentAmount,pin;
@@ -67,6 +69,34 @@ public class School_Fees extends BaseAct implements ResponseListener, VolleyResp
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {}
+        });
+
+        studentAmount.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String bal = am.getBal().replace(",", "");
+                Double balance = Double.parseDouble(bal);
+
+                DecimalFormat formatter = new DecimalFormat("#,###,##0.00");//here 0.00 instead #.##
+                //txtSelfieText.setText(formatter.format(cs_score)+"\nmatch");
+                String inputedAmount = String.valueOf(s);
+                if (!inputedAmount.equals("")&&(Double.parseDouble(inputedAmount)) >= balance) {
+                    am.myDialog(School_Fees.this, getString(R.string.alert), getString(R.string.insufficient_funds));
+                    pin.setEnabled(false);
+                }
+
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
         });
 
         pin.addTextChangedListener(new TextWatcher() {

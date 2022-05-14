@@ -67,6 +67,7 @@
         <entry key="..\:/HFBTestApp/app/src/main/res/drawable/bckgrd_screen2.xml" value="0.1425" />
         <entry key="..\:/HFBTestApp/app/src/main/res/drawable/bckgrd_sections.xml" value="0.1425" />
         <entry key="..\:/HFBTestApp/app/src/main/res/drawable/bckgrd_sections_trans.xml" value="0.1425" />
+        <entry key="..\:/HFBTestApp/app/src/main/res/layout/activity_bank_requests.xml" value="0.14114583333333333" />
         <entry key="..\:/HFBTestApp/app/src/main/res/layout/activity_bill_options.xml" value="0.14114583333333333" />
         <entry key="..\:/HFBTestApp/app/src/main/res/layout/activity_bill_payment_airtime.xml" value="0.14114583333333333" />
         <entry key="..\:/HFBTestApp/app/src/main/res/layout/activity_bill_payments.xml" value="0.14114583333333333" />
@@ -77,9 +78,10 @@
         <entry key="..\:/HFBTestApp/app/src/main/res/layout/activity_e_statement.xml" value="0.14114583333333333" />
         <entry key="..\:/HFBTestApp/app/src/main/res/layout/activity_funds_transfer.xml" value="0.14114583333333333" />
         <entry key="..\:/HFBTestApp/app/src/main/res/layout/activity_funds_transfer_external.xml" value="0.14114583333333333" />
+        <entry key="..\:/HFBTestApp/app/src/main/res/layout/activity_image_picker.xml" value="0.14114583333333333" />
         <entry key="..\:/HFBTestApp/app/src/main/res/layout/activity_launch_screen.xml" value="0.10461956521739131" />
         <entry key="..\:/HFBTestApp/app/src/main/res/layout/activity_login.xml" value="0.14114583333333333" />
-        <entry key="..\:/HFBTestApp/app/src/main/res/layout/activity_main_menu.xml" value="0.1082427536231884" />
+        <entry key="..\:/HFBTestApp/app/src/main/res/layout/activity_main_menu.xml" value="0.12" />
         <entry key="..\:/HFBTestApp/app/src/main/res/layout/activity_main_open_account.xml" value="0.16666666666666666" />
         <entry key="..\:/HFBTestApp/app/src/main/res/layout/activity_main_open_account_existing.xml" value="0.12" />
         <entry key="..\:/HFBTestApp/app/src/main/res/layout/activity_main_open_account_existingcustomer.xml" value="0.14114583333333333" />
@@ -91,6 +93,7 @@
         <entry key="..\:/HFBTestApp/app/src/main/res/layout/alternativedeposit.xml" value="0.16666666666666666" />
         <entry key="..\:/HFBTestApp/app/src/main/res/layout/centecontacts.xml" value="0.14114583333333333" />
         <entry key="..\:/HFBTestApp/app/src/main/res/layout/centecontactsEx.xml" value="0.14114583333333333" />
+        <entry key="..\:/HFBTestApp/app/src/main/res/layout/centeextras.xml" value="0.14114583333333333" />
         <entry key="..\:/HFBTestApp/app/src/main/res/layout/centehearusfrom.xml" value="0.14114583333333333" />
         <entry key="..\:/HFBTestApp/app/src/main/res/layout/centeids.xml" value="0.1625" />
         <entry key="..\:/HFBTestApp/app/src/main/res/layout/centeidsdetails.xml" value="0.14114583333333333" />
@@ -99,7 +102,7 @@
         <entry key="..\:/HFBTestApp/app/src/main/res/layout/centeparentinfo.xml" value="0.1625" />
         <entry key="..\:/HFBTestApp/app/src/main/res/layout/centesourceincome.xml" value="0.22" />
         <entry key="..\:/HFBTestApp/app/src/main/res/layout/customer_cat_.xml" value="0.10461956521739131" />
-        <entry key="..\:/HFBTestApp/app/src/main/res/layout/customer_category.xml" value="0.3333333333333333" />
+        <entry key="..\:/HFBTestApp/app/src/main/res/layout/customer_category.xml" value="0.1" />
         <entry key="..\:/HFBTestApp/app/src/main/res/layout/deposit_options.xml" value="0.22" />
         <entry key="..\:/HFBTestApp/app/src/main/res/layout/dialog_info.xml" value="0.1625" />
         <entry key="..\:/HFBTestApp/app/src/main/res/layout/dialog_infoRAO.xml" value="0.1625" />
@@ -107,6 +110,8 @@
         <entry key="..\:/HFBTestApp/app/src/main/res/layout/dialog_inforao.xml" value="0.14114583333333333" />
         <entry key="..\:/HFBTestApp/app/src/main/res/layout/gendergroup.xml" value="0.14114583333333333" />
         <entry key="..\:/HFBTestApp/app/src/main/res/layout/joe_edittext.xml" value="0.1625" />
+        <entry key="..\:/HFBTestApp/app/src/main/res/layout/joe_imageview.xml" value="0.14114583333333333" />
+        <entry key="..\:/HFBTestApp/app/src/main/res/layout/joe_multichoice.xml" value="0.14114583333333333" />
         <entry key="..\:/HFBTestApp/app/src/main/res/layout/spinner_item.xml" value="0.1625" />
         <entry key="..\:/HFBTestApp/app/src/main/res/layout/webview.xml" value="0.14114583333333333" />
       </map>

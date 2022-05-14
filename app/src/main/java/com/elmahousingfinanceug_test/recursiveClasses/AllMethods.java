@@ -1495,7 +1495,13 @@ public class AllMethods {
                     }
                 });
     }
-    
-    
 
+
+    public void setBal(String bal) {
+        SP("Bal", bal);
+    }
+
+    public String getBal() {
+        return gSP("Bal");
+    }
 }

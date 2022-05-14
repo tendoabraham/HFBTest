@@ -224,6 +224,7 @@ public class Main_Menu extends BaseAct implements NavigationView.OnNavigationIte
         String credit = values[3].trim();
         accountTotal.setText(am.Amount_Thousands(total));
         accountCredit.setText(am.Amount_Thousands(credit));
+        am.setBal(credit);
         am.saveDoneTrx(false);
     }
 }

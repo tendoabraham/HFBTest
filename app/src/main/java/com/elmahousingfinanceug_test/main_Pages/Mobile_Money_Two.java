@@ -13,6 +13,7 @@ import android.provider.ContactsContract;
 import android.telephony.PhoneNumberUtils;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,6 +27,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -33,24 +35,26 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.elmahousingfinanceug_test.R;
 import com.elmahousingfinanceug_test.main_Pages.Adapters.AdapterKeyValue;
+import com.elmahousingfinanceug_test.recursiveClasses.AllMethods;
 import com.elmahousingfinanceug_test.recursiveClasses.BaseAct;
 import com.elmahousingfinanceug_test.recursiveClasses.ResponseListener;
 import com.elmahousingfinanceug_test.recursiveClasses.SuccessDialogPage;
 import com.elmahousingfinanceug_test.recursiveClasses.VolleyResponse;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Mobile_Money_Two extends BaseAct implements ResponseListener, VolleyResponse {
     TextView myNum, validateMTN;
-    Spinner accNum,serviceProvider;
+    Spinner accNum, serviceProvider;
     EditText otherNum, ETAmount, ETPin;
     RadioGroup radioGroup;
-    RadioButton rMyAccount,rOtherAccount;
-    LinearLayout othNumLayout,numChoice,after,validateLayout;
+    RadioButton rMyAccount, rOtherAccount;
+    LinearLayout othNumLayout, numChoice, after, validateLayout;
     ImageView contactsVw;
     RecyclerView valRecycler;
-    String accNumString="",sendPhoneStr="",quest;
+    String accNumString = "", sendPhoneStr = "", quest;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,15 +93,17 @@ public class Mobile_Money_Two extends BaseAct implements ResponseListener, Volle
                     accNumString = am.getBankAccountID(position);
                 }
             }
+
             @Override
-            public void onNothingSelected(AdapterView<?> parent) {}
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
         });
 
         final List<String> arrayList = new ArrayList<>();
         arrayList.add(getString(R.string.selectOne));
         arrayList.add(getString(R.string.mtn));
         arrayList.add(getString(R.string.airtel));
-        ArrayAdapter<String> dataAdapterSv = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item, arrayList);
+        ArrayAdapter<String> dataAdapterSv = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, arrayList);
         dataAdapterSv.setDropDownViewResource(R.layout.spinner_dropdown_item);
         serviceProvider.setAdapter(dataAdapterSv);
         serviceProvider.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -121,6 +127,7 @@ public class Mobile_Money_Two extends BaseAct implements ResponseListener, Volle
                 validateLayout.setVisibility(View.GONE);
                 ETPin.setText("");
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
                 am.saveMerchantID("");
@@ -130,7 +137,7 @@ public class Mobile_Money_Two extends BaseAct implements ResponseListener, Volle
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                if(serviceProvider.getSelectedItemPosition()==1){
+                if (serviceProvider.getSelectedItemPosition() == 1) {
                     ETPin.setText("");
                     validateLayout.setVisibility(View.GONE);
                     after.setVisibility(View.GONE);
@@ -149,28 +156,58 @@ public class Mobile_Money_Two extends BaseAct implements ResponseListener, Volle
         });
 
         rMyAccount.setChecked(true);
+        ETAmount.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String bal = am.getBal().replace(",", "");
+                Double balance = Double.parseDouble(bal);
+
+                DecimalFormat formatter = new DecimalFormat("#,###,##0.00");//here 0.00 instead #.##
+                //txtSelfieText.setText(formatter.format(cs_score)+"\nmatch");
+                String inputedAmount = String.valueOf(s);
+                if (!inputedAmount.equals("")&&(Double.parseDouble(inputedAmount)) >= balance) {
+                    am.myDialog(Mobile_Money_Two.this, getString(R.string.alert), getString(R.string.insufficient_funds));
+                    ETPin.setEnabled(false);
+                }   
+
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
 
         ETPin.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                if(after>1)
+                if (after > 1)
                     am.myDialog(Mobile_Money_Two.this, getString(R.string.alert), getString(R.string.copyPaste));
             }
+
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(count>1) ETPin.setText("");
+                if (count > 1) ETPin.setText("");
             }
+
             @Override
-            public void afterTextChanged(Editable s) {}
+            public void afterTextChanged(Editable s) {
+            }
         });
 
         valRecycler.setLayoutManager(new LinearLayoutManager(this));
     }
 
     public void transferBTN(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.validateMTN:
-                if (rOtherAccount.isChecked() && otherNum.getText().length() < 4){
+                if (rOtherAccount.isChecked() && otherNum.getText().length() < 4) {
                     am.myDialog(this, getString(R.string.alert), getString(R.string.enterValidPhoneAcc));
                     otherNum.setError(getString(R.string.enterValidPhoneAcc));
                 } else {
@@ -188,7 +225,7 @@ public class Mobile_Money_Two extends BaseAct implements ResponseListener, Volle
                                     "ACTION:GETNAME:"
                     );
                     //am.connectOldTwo(getString(R.string.validating),quest,this,"MTN");
-                    am.get(this, quest, getString(R.string.validating),"MTN");
+                    am.get(this, quest, getString(R.string.validating), "MTN");
                 }
                 break;
             case R.id.back:
@@ -198,16 +235,17 @@ public class Mobile_Money_Two extends BaseAct implements ResponseListener, Volle
                 validateMTN.setVisibility(View.VISIBLE);
                 break;
             case R.id.send:
+//              
                 if (accNumString.equals("")) {
                     am.myDialog(this, getString(R.string.alert), getString(R.string.selectAccDebited));
                 } else if (am.getMerchantID().equals("")) {
                     am.myDialog(this, getString(R.string.alert), getString(R.string.slctPrvdr));
-                } else if (rMyAccount.isChecked() && accNumString.equals(myNum.getText().toString().trim())){
+                } else if (rMyAccount.isChecked() && accNumString.equals(myNum.getText().toString().trim())) {
                     am.myDialog(this, getString(R.string.alert), getString(R.string.sameAccError));
-                } else if (rOtherAccount.isChecked() && otherNum.getText().length() < 4){
+                } else if (rOtherAccount.isChecked() && otherNum.getText().length() < 4) {
                     am.myDialog(this, getString(R.string.alert), getString(R.string.enterValidPhoneAcc));
                     otherNum.setError(getString(R.string.enterValidPhoneAcc));
-                } else if (rOtherAccount.isChecked() && accNumString.equals(otherNum.getText().toString().trim())){
+                } else if (rOtherAccount.isChecked() && accNumString.equals(otherNum.getText().toString().trim())) {
                     am.myDialog(this, getString(R.string.alert), getString(R.string.sameAccError));
                 } else if (ETAmount.getText().toString().trim().isEmpty()) {
                     am.myDialog(this, getString(R.string.alert), getString(R.string.enterValidAmount));
@@ -241,7 +279,9 @@ public class Mobile_Money_Two extends BaseAct implements ResponseListener, Volle
                     txtOk.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                             quest = (
+
+
+                            quest = (
                                     "FORMID:M-:" +
                                             "MERCHANTID:" + am.getMerchantID() + ":" +
                                             "BANKACCOUNTID:" + accNumString + ":" +
@@ -252,8 +292,10 @@ public class Mobile_Money_Two extends BaseAct implements ResponseListener, Volle
                                             "ACTION:PAYBILL:"
                             );
                             //am.connectOldTwo(getString(R.string.processingTrx),quest,Mobile_Money_Two.this,"TRX");
-                            am.get(Mobile_Money_Two.this, quest, getString(R.string.processingTrx),"TRX");
+                            am.get(Mobile_Money_Two.this, quest, getString(R.string.processingTrx), "TRX");
                             gDialog.cancel();
+
+
                         }
                     });
                     txtNo.setOnClickListener(new View.OnClickListener() {
@@ -318,12 +360,12 @@ public class Mobile_Money_Two extends BaseAct implements ResponseListener, Volle
                         }
                     }
                 } else {
-                    am.ToastMessage(getApplicationContext(),getString(R.string.error) + " " + getString(R.string.plstryAgn));
+                    am.ToastMessage(getApplicationContext(), getString(R.string.error) + " " + getString(R.string.plstryAgn));
                 }
             } else {
-                am.ToastMessage(getApplicationContext(),getString(R.string.errRetrievePhone));
+                am.ToastMessage(getApplicationContext(), getString(R.string.errRetrievePhone));
             }
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         super.onActivityResult(requestCode, resultCode, data);
@@ -331,13 +373,13 @@ public class Mobile_Money_Two extends BaseAct implements ResponseListener, Volle
 
     @Override
     public void onResponse(String response, String step) {
-        switch (step){
+        switch (step) {
             case "MTN":
-                String [] howLong =response.split("\\|");
-                String [] field_IDs =new String[howLong.length/2];
-                String [] field_Values =new String[howLong.length/2];
-                am.separate(response,"|",field_IDs ,field_Values);
-                valRecycler.setAdapter(new AdapterKeyValue(field_IDs,field_Values));
+                String[] howLong = response.split("\\|");
+                String[] field_IDs = new String[howLong.length / 2];
+                String[] field_Values = new String[howLong.length / 2];
+                am.separate(response, "|", field_IDs, field_Values);
+                valRecycler.setAdapter(new AdapterKeyValue(field_IDs, field_Values));
                 validateMTN.setVisibility(View.GONE);
                 validateLayout.setVisibility(View.VISIBLE);
                 after.setVisibility(View.VISIBLE);
