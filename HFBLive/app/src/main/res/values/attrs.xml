@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="customBackground" format="color"/>
+    <attr name="customText" format="color"/>
+
+    <declare-styleable name="CustomFont">
+        <attr name="fontName" format="string" />
+    </declare-styleable>
+
+    <declare-styleable name="WindmillView">
+        <attr name="view_width" format="dimension" />
+    </declare-styleable>
+
+    <declare-styleable name="cicEditText">
+        <attr name="label" format="string" localization="suggested"/>
+        <attr name="text" format="string" localization="suggested"/>
+        <attr name="type" format="integer" localization="suggested"/>
+        <attr name="android:inputType"/>
+    </declare-styleable>
+
+    <declare-styleable name="cicSpinner">
+        <attr name="spinlabel" format="string" localization="suggested"/>
+    </declare-styleable>
+</resources>

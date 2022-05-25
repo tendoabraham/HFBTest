@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="?attr/customBackground"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:targetApi="lollipop">
+
+    <!--<ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:alpha="0.3"
+        android:contentDescription="@string/app_name"
+        android:layout_below="@+id/appBarLayout"
+        android:src="@drawable/background"/>-->
+
+    <LinearLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <include layout="@layout/toolbar_layout" />
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/appBarLayout">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="10dp"
+                android:background="@drawable/bckgrd_screen"
+                android:elevation="10dp"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/Black_Text"
+                    android:text="@string/selectAccount" />
+
+                <Spinner
+                    android:id="@+id/accountNumber"
+                    style="@style/Spinner_Text" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="10dp"
+                android:background="@drawable/bckgrd_screen"
+                android:elevation="10dp"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/Black_Text"
+                    android:text="@string/startdate" />
+
+                <TextView
+                    android:id="@+id/startDate"
+                    style="@style/Spinner_Text" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="10dp"
+                android:background="@drawable/bckgrd_screen"
+                android:elevation="10dp"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/Black_Text"
+                    android:text="@string/endDate" />
+
+                <TextView
+                    android:id="@+id/endDate"
+                    style="@style/Spinner_Text" />
+
+            </LinearLayout>
+
+            <TextView
+                style="@style/Button_Yes"
+                android:onClick="createBTN"
+                android:text="@string/submit" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</RelativeLayout>
+

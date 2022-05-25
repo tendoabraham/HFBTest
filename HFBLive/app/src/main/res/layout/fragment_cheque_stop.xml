@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:filterTouchesWhenObscured="true"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:targetApi="lollipop">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_margin="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bckgrd_screen"
+            android:orientation="vertical"
+            android:elevation="10dp">
+
+            <TextView
+                style="@style/Black_Text"
+                android:text="@string/srcAcc"/>
+
+            <Spinner
+                android:id="@+id/src_account"
+                style="@style/Spinner_Text"
+                android:layout_marginBottom="20dp"
+                android:layout_marginTop="20dp"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:background="@drawable/bckgrd_screen"
+            android:orientation="vertical"
+            android:elevation="10dp">
+
+            <TextView
+                style="@style/Black_Text"
+                android:text="@string/chqNum"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/frmchq"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="5dp"
+                    android:hint="@string/frmchqnum"
+                    android:inputType="number"/>
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/dark_grey" />
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/tochq"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="5dp"
+                    android:hint="@string/tochqnum"
+                    android:inputType="number"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/submit"
+            style="@style/Button_Yes"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="20dp"
+            android:text="@string/submit" />
+
+    </LinearLayout>
+
+</ScrollView>
+

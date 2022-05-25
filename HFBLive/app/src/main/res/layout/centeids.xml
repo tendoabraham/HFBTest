@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/tools"
+    android:id="@+id/photos_names"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="20dp"
+    android:orientation="vertical"
+    app:ignore="NamespaceTypo">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="50dp"
+            android:orientation="vertical">
+
+            <com.elmahousingfinanceug.launch.rao.joeSingleChoice
+                android:id="@+id/singleTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:textStyle="normal"
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="50dp"
+            android:layout_marginBottom="10dp"
+            android:gravity="left"
+            android:text="Please provide the following documents *"
+            android:textColor="@color/dark_blue"
+            android:textSize="12sp" />
+
+        <HorizontalScrollView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="170dp"
+                android:orientation="horizontal">
+
+                <com.elmahousingfinanceug.launch.rao.ImagePick
+                    android:id="@+id/front"
+                    android:layout_width="120dp"
+                    android:layout_height="170dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp" />
+
+                <com.elmahousingfinanceug.launch.rao.ImagePick
+                    android:id="@+id/backpick"
+                    android:layout_width="120dp"
+                    android:layout_height="170dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp" />
+
+                <com.elmahousingfinanceug.launch.rao.ImagePick
+                    android:id="@+id/selfie"
+                    android:layout_width="120dp"
+                    android:layout_height="170dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"/>
+
+                <com.elmahousingfinanceug.launch.rao.ImagePick
+                    android:id="@+id/signature"
+                    android:layout_width="120dp"
+                    android:layout_height="170dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"/>
+
+            </LinearLayout>
+
+        </HorizontalScrollView>
+
+    </LinearLayout>
+
+</ScrollView>
+

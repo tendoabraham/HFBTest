@@ -1,0 +1,121 @@
+apply plugin: 'com.android.application'
+apply plugin: 'dexprotector'
+
+android {
+    compileSdkVersion 30
+    buildToolsVersion '30.0.0'
+
+    signingConfigs {
+        release {
+            keyAlias 'elmaandroidkeystore'
+            keyPassword 'priya143'
+            storeFile file("/D:/ElmaAndroidKeyStore")
+            storePassword 'priya143'
+        }
+    }
+
+    defaultConfig {
+        applicationId "com.elmahousingfinanceug"
+        multiDexEnabled true
+        minSdkVersion 16
+        targetSdkVersion 30
+        //TODO: increase version b4 upload
+        versionCode 108
+        versionName '108'
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
+        signingConfig signingConfigs.release
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            ext.set("dexprotector.configFile", "${projectDir}/dexprotector.xml")
+            signingConfig signingConfigs.release
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    android {
+        applicationVariants.all { variant ->
+            variant.outputs.all { output ->
+                outputFileName = "" +
+                        "/live-app-HFB-v-${defaultConfig.versionName}.apk"
+            }
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'androidx.multidex:multidex:2.0.1'
+    implementation 'androidx.annotation:annotation:1.1.0'
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.vectordrawable:vectordrawable:1.1.0'
+    implementation 'androidx.cardview:cardview:1.0.0'
+    implementation 'androidx.cardview:cardview:1.0.0'
+    implementation 'com.android.volley:volley:1.2.1'
+    implementation 'com.google.android.material:material:1.2.1'
+    implementation 'com.google.android.gms:play-services-maps:17.0.0'
+    implementation 'com.google.android.gms:play-services-location:17.1.0'
+    implementation 'com.google.android.gms:play-services-auth-api-phone:17.0.0'
+    implementation 'com.google.android.gms:play-services-auth:20.0.1'
+    implementation 'com.amitshekhar.android:android-networking:1.0.2'
+    implementation 'com.chaos.view:pinview:1.4.4'
+    implementation 'com.daimajia.androidanimations:library:2.3@aar'
+    implementation 'com.daimajia.easing:library:2.0@aar'
+    implementation 'com.github.mumayank:AirLocation:1.3'
+    implementation 'com.github.florent37:shapeofview:1.4.7'
+    implementation 'com.github.bumptech.glide:glide:4.11.0'
+    implementation 'com.github.yalantis:ucrop:2.2.2'
+    implementation 'com.karumi:dexter:4.2.0'
+    implementation 'com.madgag.spongycastle:core:1.54.0.0'
+    implementation 'com.madgag.spongycastle:prov:1.54.0.0'
+    implementation 'com.madgag.spongycastle:pkix:1.54.0.0'
+    implementation 'com.madgag.spongycastle:pg:1.54.0.0'
+    implementation 'com.nineoldandroids:library:2.4.0'
+    implementation 'com.wang.avi:library:2.1.3'
+    implementation 'de.hdodenhof:circleimageview:2.2.0'
+    implementation 'id.zelory:compressor:2.1.1'
+    implementation 'androidx.browser:browser:1.0.0'
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+    //uploading files as binary in ION
+    implementation 'com.koushikdutta.ion:ion:3.1.0'
+
+    implementation 'androidx.multidex:multidex:2.0.1'
+    implementation 'androidx.annotation:annotation:1.1.0'
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.vectordrawable:vectordrawable:1.1.0'
+    implementation 'androidx.cardview:cardview:1.0.0'
+    implementation 'androidx.cardview:cardview:1.0.0'
+    implementation 'com.android.volley:volley:1.1.1'
+    implementation 'com.google.android.material:material:1.2.1'
+    implementation 'com.google.android.gms:play-services-maps:17.0.0'
+    implementation 'com.google.android.gms:play-services-location:17.1.0'
+    implementation 'com.amitshekhar.android:android-networking:1.0.2'
+    implementation 'com.daimajia.androidanimations:library:2.3@aar'
+    implementation 'com.daimajia.easing:library:2.0@aar'
+    implementation 'com.github.bumptech.glide:glide:4.11.0'
+    implementation 'com.madgag.spongycastle:core:1.54.0.0'
+    implementation 'com.madgag.spongycastle:prov:1.54.0.0'
+    implementation 'com.madgag.spongycastle:pkix:1.54.0.0'
+    implementation 'com.madgag.spongycastle:pg:1.54.0.0'
+    implementation 'com.nineoldandroids:library:2.4.0'
+    implementation 'com.wang.avi:library:2.1.3'
+    implementation 'de.hdodenhof:circleimageview:2.2.0'
+    implementation 'com.google.android.play:core:1.10.2'
+    testImplementation 'junit:junit:4.13'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+
+}

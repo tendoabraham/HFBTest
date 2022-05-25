@@ -1078,7 +1078,7 @@ public class AllMethods {
         return RESULTS;
     }
 
-    private String HashLatest(String word) {
+    public String HashLatest(String word) {
         String input = word + D_T("73RWvh50akerG5emdzSFkQ==");
         MessageDigest digest = null;
         try {
@@ -1314,7 +1314,7 @@ public class AllMethods {
                                         LogThis("AGNESRAO"+ "AKIFIKA");
                                     } else {
                                         connect(finalShe, uri, machine, responseListener, token, step);
-                                    }
+                                    }         LogThis("AGNESRAO"+ uri);
                                     break;
                                 default:
                                     progressDialog("0");

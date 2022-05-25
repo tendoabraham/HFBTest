@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="?attr/customBackground"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+
+    <LinearLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <include layout="@layout/toolbar_layout" />
+    </LinearLayout>
+
+    <ScrollView
+        android:id="@+id/scroll"
+        android:layout_below="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/colors"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:padding="10sp"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:orientation="horizontal"
+                android:baselineAligned="false">
+
+                <LinearLayout
+                    android:id="@+id/bWhite"
+                    android:layout_margin="10dp"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:onClick="white"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/bckgrd_sections">
+
+                    <ImageView
+                        android:layout_margin="10sp"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/white">
+                    </ImageView>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/blogo_orange"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_margin="10dp"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/bckgrd_sections"
+                    android:gravity="center"
+                    android:onClick="orange"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_margin="10sp"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/logo_orange">
+                    </ImageView>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/blightest_blue"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_margin="10dp"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/bckgrd_sections"
+                    android:gravity="center"
+                    android:onClick="blue"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_margin="10sp"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/lightest_blue">
+                    </ImageView>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:padding="10sp"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:orientation="horizontal"
+                android:baselineAligned="false">
+
+                <LinearLayout
+                    android:id="@+id/blight_grey"
+                    android:layout_margin="10dp"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:onClick="light_grey"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/bckgrd_sections">
+
+                    <ImageView
+                        android:layout_margin="10sp"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/light_grey">
+                    </ImageView>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/borange"
+                    android:layout_margin="10dp"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:onClick="oOrange"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/bckgrd_sections">
+
+                    <ImageView
+                        android:layout_margin="10sp"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/orange">
+                    </ImageView>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/blighter_blue"
+                    android:layout_margin="10dp"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:onClick="lLBlue"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/bckgrd_sections">
+
+                    <ImageView
+                        android:layout_margin="10sp"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/blue">
+                    </ImageView>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</RelativeLayout>

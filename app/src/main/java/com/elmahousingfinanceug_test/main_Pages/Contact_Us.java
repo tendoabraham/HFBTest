@@ -120,7 +120,7 @@ public class Contact_Us extends BaseAct {
                 try{
                     PackageManager packageManager = getPackageManager();
                     Intent i = new Intent(Intent.ACTION_VIEW);
-                    String url = "https://api.whatsapp.com/send?phone="+"256790542262" ;
+                    String url = "https://api.whatsapp.com/send?phone="+"256771888755" ;
                     i.setPackage("com.whatsapp");
                     i.setData(Uri.parse(url));
                     if (i.resolveActivity(packageManager) != null) {

@@ -135,7 +135,7 @@ public class Login extends AppCompatActivity implements ResponseListener, Volley
                 } else {
                     quest = (
                             "FORMID:LOGIN:" +
-                                    "LOGINMPIN:" + eTPin.getText().toString().trim() + ":" +
+                                    "LOGINMPIN:" + (eTPin.getText().toString().trim()) + ":" +
                                     "LOGINTYPE:PIN:"
                     );
                     am.get(this,quest,getString(R.string.loggingIn),"IN");

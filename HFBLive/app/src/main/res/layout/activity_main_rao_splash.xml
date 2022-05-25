@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/backrepeat"
+        android:orientation="vertical" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/logo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:baselineAligned="false"
+            android:orientation="horizontal"
+            android:paddingBottom="30dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="end|center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="120dp"
+                    android:contentDescription="@string/app_name"
+                    android:src="@drawable/housing_finance_logo" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/Blue_Text"
+                    android:layout_width="match_parent"
+                    android:layout_margin="0dp"
+                    android:text="@string/housing"
+                    android:textSize="30sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    style="@style/Blue_Text"
+                    android:layout_width="match_parent"
+                    android:layout_margin="0dp"
+                    android:text="@string/finance"
+                    android:textSize="30sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    style="@style/Blue_Text"
+                    android:layout_width="match_parent"
+                    android:layout_margin="0dp"
+                    android:text="@string/bank"
+                    android:textSize="30sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <TextView
+            style="@style/Orange_Text_Center"
+            android:layout_margin="0dp"
+            android:text="@string/mbagilawa"
+            android:textColor="@color/icon_orange"
+            android:textSize="45sp"
+            android:textStyle="bold"
+            android:visibility="gone" />
+
+        <TextView
+            style="@style/Blue_Text_Center"
+            android:layout_margin="0dp"
+            android:text="@string/account_opening"
+            android:textColor="@color/w_icon_blue"
+            android:textSize="28sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/title"
+            style="@style/Blue_Text_Center"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/submit"
+            style="@style/Button_Yes"
+            android:layout_margin="45dp"
+            android:text="@string/let_apos_s_get_started_gt"
+            android:textAllCaps="false"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+</RelativeLayout>

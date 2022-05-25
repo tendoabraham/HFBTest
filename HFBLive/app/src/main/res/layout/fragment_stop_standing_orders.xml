@@ -1,0 +1,34 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:filterTouchesWhenObscured="true"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/listords"
+        style="@style/Button_Yes"
+        android:text="@string/fetchOds" />
+
+    <LinearLayout
+        android:id="@+id/accInfo"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:orientation="vertical">
+
+        <TextView
+            style="@style/Blue_Text_Center"
+            android:textColor="?attr/customText"
+            android:text="@string/tapOrder"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_standing_order"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="?attr/customBackground"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+
+    <LinearLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <include layout="@layout/toolbar_layout" />
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_below="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:baselineAligned="false"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/a"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_margin="10dp"
+                    android:layout_height="120dp"
+                    android:background="@drawable/bckgrd_sections"
+                    android:gravity="center"
+                    android:onClick="bRPage"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_gravity="center_horizontal"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/new_standing_orders"
+                        tools:ignore="ContentDescription" />
+
+                    <TextView
+                        style="@style/White_Text_Center"
+                        android:text="@string/stndOrds" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/b"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_margin="10dp"
+                    android:layout_height="120dp"
+                    android:background="@drawable/bckgrd_sections"
+                    android:gravity="center"
+                    android:onClick="bRPage"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_gravity="center_horizontal"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/e_statements"
+                        tools:ignore="ContentDescription"/>
+
+                    <TextView
+                        style="@style/White_Text_Center"
+                        android:text="@string/eStmnt"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:baselineAligned="false"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/c"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_margin="10dp"
+                    android:layout_height="120dp"
+                    android:background="@drawable/bckgrd_sections"
+                    android:gravity="center"
+                    android:onClick="bRPage"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_gravity="center_horizontal"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/cheque"
+                        tools:ignore="ContentDescription" />
+
+                    <TextView
+                        style="@style/White_Text_Center"
+                        android:text="@string/cheques" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:visibility="invisible"
+                    android:id="@+id/d"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_margin="10dp"
+                    android:layout_height="120dp"
+                    android:background="@drawable/bckgrd_sections"
+                    android:gravity="center"
+                    android:onClick="bRPage"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_gravity="center_horizontal"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/school_fees"
+                        tools:ignore="ContentDescription"
+                        app:tint="@color/icon_orange" />
+
+                    <TextView
+                        style="@style/White_Text_Center"
+                        android:text="@string/schoolFees"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</RelativeLayout>
+

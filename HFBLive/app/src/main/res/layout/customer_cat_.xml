@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:baselineAligned="false"
+    tools:targetApi="lollipop">
+
+    <LinearLayout
+        android:id="@+id/new_Lay"
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:padding="10dp"
+        android:background="@drawable/button_bg_a"
+        android:elevation="10dp"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/new_image"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:padding="10dp"
+            android:scaleType="centerInside"
+            android:layout_gravity="end"
+            android:src="@drawable/new_customer_blue"/>
+
+        <TextView
+            android:id="@+id/txt_iam_new"
+            android:textStyle="normal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/i_am_a"
+            android:textColor="@android:color/black"
+            android:textSize="12sp"/>
+
+        <TextView
+            android:id="@+id/txt_new"
+            android:textStyle="bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/new_customer"
+            android:textColor="@android:color/black"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/existing_lay"
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:padding="10dp"
+        android:background="@drawable/button_bg_a"
+        android:elevation="10dp"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/existing_image"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:padding="10dp"
+            android:scaleType="centerInside"
+            android:layout_gravity="end"
+            android:src="@drawable/existing_blue"/>
+
+        <TextView
+            android:id="@+id/txt_iam_exist"
+            android:textStyle="normal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/i_am_an"
+            android:textColor="@android:color/black"
+            android:textSize="12sp"/>
+
+        <TextView
+            android:id="@+id/txt_exist"
+            android:textStyle="bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/existing_customer"
+            android:textColor="@android:color/black"/>
+
+    </LinearLayout>
+
+</LinearLayout>

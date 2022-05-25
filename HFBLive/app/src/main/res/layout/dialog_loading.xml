@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:filterTouchesWhenObscured="true"
+    android:layout_width="300dp"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:background="@drawable/bckgrd_screen2"
+    android:elevation="15dp"
+    android:gravity="center_vertical"
+    android:orientation="vertical"
+    tools:targetApi="lollipop">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="10dp"
+        android:src="@drawable/housing_finance_logo"
+        tools:ignore="ContentDescription" />
+
+    <TextView
+        android:id="@+id/messageText"
+        style="@style/Blue_Text_Center"
+        android:padding="15dp"
+        android:text="@string/loading"
+        android:textSize="17sp" />
+
+    <ProgressBar
+        android:id="@+id/progressBar2"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp" />
+
+    <TextView
+        android:id="@+id/cancelReq"
+        style="@style/Blue_Text_Center"
+        android:layout_width="100dp"
+        android:layout_gravity="end"
+        android:gravity="center"
+        android:paddingTop="20dp"
+        android:text="@string/cancel"
+        android:drawableTop="@drawable/delete_log"/>
+
+</LinearLayout>

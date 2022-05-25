@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="10dp">
+
+    <LinearLayout
+        android:id="@+id/centeextras"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        tools:targetApi="lollipop">
+
+        <androidx.appcompat.widget.AppCompatCheckBox
+            android:visibility="gone"
+            android:id="@+id/chkChequeBook"
+            android:layout_width="match_parent"
+            android:layout_height="95dp"
+            android:layout_margin="10dp"
+            android:padding="5dp"
+            android:elevation="5dp"
+            android:background="@drawable/back_radio_button_select"
+            android:drawableRight="@drawable/cheque_book"
+            android:buttonTint="@color/dark_blue"
+            android:text="Cheque Book"/>
+
+
+        <androidx.appcompat.widget.AppCompatCheckBox
+            android:id="@+id/chkMobileBanking"
+            android:layout_width="match_parent"
+            android:layout_height="95dp"
+            android:layout_margin="10dp"
+            android:padding="5dp"
+            android:elevation="5dp"
+            android:background="@drawable/back_radio_button_select"
+            android:drawableRight="@drawable/mobile_banking"
+            android:buttonTint="@color/dark_blue"
+            android:text="Mobile Banking"/>
+
+        <androidx.appcompat.widget.AppCompatCheckBox
+            android:id="@+id/chkATM"
+            android:layout_width="match_parent"
+            android:layout_height="95dp"
+            android:layout_margin="10dp"
+            android:padding="5dp"
+            android:elevation="5dp"
+            android:background="@drawable/back_radio_button_select"
+            android:drawableRight="@drawable/card"
+            android:buttonTint="@color/dark_blue"
+            android:text="Master Card"/>
+
+        <androidx.appcompat.widget.AppCompatCheckBox
+            android:id="@+id/chkInternetBanking"
+            android:layout_width="match_parent"
+            android:layout_height="95dp"
+            android:layout_margin="10dp"
+            android:padding="5dp"
+            android:elevation="5dp"
+            android:background="@drawable/back_radio_button_select"
+            android:drawableRight="@drawable/internet_banking"
+            android:buttonTint="@color/dark_blue"
+            android:text="Internet Banking"/>
+
+        <androidx.appcompat.widget.AppCompatCheckBox
+            android:id="@+id/chkPos"
+            android:layout_width="match_parent"
+            android:layout_height="95dp"
+            android:layout_margin="10dp"
+            android:padding="5dp"
+            android:elevation="5dp"
+            android:background="@drawable/back_radio_button_select"
+            android:drawableRight="@drawable/agent_banking"
+            android:buttonTint="@color/dark_blue"
+            android:text="Bank Assurance" />
+
+        <androidx.appcompat.widget.AppCompatCheckBox
+            android:id="@+id/chkAgencyBanking"
+            android:layout_width="match_parent"
+            android:layout_height="95dp"
+            android:layout_margin="10dp"
+            android:padding="5dp"
+            android:elevation="5dp"
+            android:background="@drawable/back_radio_button_select"
+            android:drawableRight="@drawable/pos"
+            android:buttonTint="@color/dark_blue"
+            android:text="Agent Banking"/>
+
+
+
+
+    </LinearLayout>
+
+</ScrollView>

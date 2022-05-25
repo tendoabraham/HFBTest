@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:targetApi="lollipop"
+    tools:context=".main_Pages.School_Fees">
+
+    <LinearLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <include layout="@layout/toolbar_layout" />
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_below="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="10dp"
+                android:background="@drawable/bckgrd_screen"
+                android:elevation="10dp"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/Black_Text"
+                    android:text="@string/selectAccount" />
+
+                <Spinner
+                    android:id="@+id/debitAccountNumber"
+                    style="@style/Spinner_Text" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="10dp"
+                android:background="@drawable/bckgrd_screen"
+                android:elevation="10dp"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/Black_Text"
+                    android:text="@string/studentId" />
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/studentId"
+                    style="@style/Edit_Text"
+                    android:hint="@string/studentId"
+                    android:inputType="text"/>
+
+                <TextView
+                    android:id="@+id/validate"
+                    style="@style/Button_Yes"
+                    android:text="@string/validate"
+                    android:onClick="clicks"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:visibility="gone"
+                android:id="@+id/validateLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="10dp"
+                android:background="@drawable/bckgrd_screen"
+                android:elevation="10dp"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/Blue_Text_Center"
+                    android:text="@string/confirmSchool"/>
+
+                <TextView
+                    android:id="@+id/schoolName"
+                    style="@style/Orange_Text_Center"/>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/valRecycler"/>
+
+                <TextView
+                    android:id="@+id/backIn"
+                    style="@style/Button_Yes"
+                    android:text="@string/back"
+                    android:onClick="clicks"/>
+
+                <TextView
+                    style="@style/Black_Text"
+                    android:text="@string/enterAmount" />
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/studentAmount"
+                    style="@style/Edit_Text"
+                    android:hint="@string/amount"
+                    android:inputType="numberDecimal"/>
+
+                <TextView
+                    style="@style/Black_Text"
+                    android:text="@string/enterPIn"/>
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/pin"
+                    style="@style/Edit_Text"
+                    android:longClickable="false"
+                    android:hint="@string/pin"
+                    android:inputType="numberPassword"/>
+
+                <TextView
+                    android:id="@+id/submit"
+                    style="@style/Button_Yes"
+                    android:text="@string/submit"
+                    android:onClick="clicks"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</RelativeLayout>

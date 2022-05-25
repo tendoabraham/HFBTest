@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context=".main_Pages.ZAtmBranch">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorPrimaryDark"
+        android:elevation="15dp"
+        app:title="@string/agent_locator"
+        app:titleTextAppearance="@style/Toolbar_Text"
+        app:popupTheme="@style/AppTheme.PopupOverlay"
+        tools:targetApi="lollipop"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="?attr/actionBarSize"
+        android:orientation="vertical">
+
+        <fragment
+            android:id="@+id/map"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/list"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|start"
+                android:layout_margin="10dp"
+                android:onClick="showHide"
+                android:src="@drawable/branchlistw"
+                app:backgroundTint="@color/dim"
+                app:borderWidth="0dp"
+                app:elevation="0dp"
+                app:fabSize="normal"/>
+        </fragment>
+
+    </LinearLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/bottom_sheet_go"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/dim"
+        android:clipToPadding="true"
+        app:behavior_hideable="true"
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
+        <TextView
+            android:id="@+id/b_label"
+            style="@style/White_Text_Center"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@drawable/bckgrd_sections_trans"
+            android:padding="15dp"
+            android:onClick="loc"
+            android:text="@string/loading_ellipsis"/>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/branch_list"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:clipToPadding="true"
+        android:background="@color/dim"
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"/>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

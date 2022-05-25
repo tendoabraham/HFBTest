@@ -22,7 +22,7 @@ android {
         targetSdkVersion 30
         //TODO: increase version b4 upload
         versionCode 130
-        versionName "130.5"
+        versionName "130.6"
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
         signingConfig signingConfigs.release
     }

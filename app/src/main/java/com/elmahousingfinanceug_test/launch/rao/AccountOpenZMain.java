@@ -3050,13 +3050,13 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                         }
                     }
                 } else if (step_ == 1) {
-                    if (TextUtils.isEmpty(EmailAddress.getText())) {
+                    if (TextUtils.isEmpty(EmailAddress.getText().trim())) {
                         ErrorAlert("Email Address required");
                     } else if (!TextUtils.isEmpty(EmailAddress.getText().trim()) && !android.util.Patterns.EMAIL_ADDRESS.matcher(EmailAddress.getText().trim()).matches()) {
                         ErrorAlert("Invalid Email address format kindly avoid spacing at the end or any special characters");
                     } else if (!selectedAccountID.equals("32219") && PhoneNumber.getText().length() < 5) {
                         ErrorAlert("Invalid phone number");
-                    } else if (!selectedAccountID.equals("32219") && !PhoneNumber.getCountryCode().equals("256") && TextUtils.isEmpty(EmailAddress.getText())) {
+                    } else if (!selectedAccountID.equals("32219") && !PhoneNumber.getCountryCode().equals("256") && TextUtils.isEmpty(EmailAddress.getText().trim())) {
                         ErrorAlert("Email address required outside Uganda");
                     } else if (maritalStatus.isEmpty()) {
                         ErrorAlert("You need to select marital status");
@@ -3329,13 +3329,13 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                 } else if (step_ == 8) {
                     CustomerCategory = customer_cat_.getSelectedCategory();
                     otpPinView.setEnabled(true);
-                    if (TextUtils.isEmpty(EmailAddress.getText())) {
+                    if (TextUtils.isEmpty(EmailAddress.getText().trim())) {
                         ErrorAlert("Email Address required");
-                    } else if (!TextUtils.isEmpty(EmailAddress.getText()) && !android.util.Patterns.EMAIL_ADDRESS.matcher(EmailAddress.getText()).matches()) {
+                    } else if (!TextUtils.isEmpty(EmailAddress.getText().trim()) && !android.util.Patterns.EMAIL_ADDRESS.matcher(EmailAddress.getText().trim()).matches()) {
                         ErrorAlert("Invalid Email address format");
                     } else if (/*!selectedAccountID.equals("32219") &&*/ PhoneNumber.getText().length() < 5) {
                         ErrorAlert("Invalid phone number");
-                    } else if (/*!selectedAccountID.equals("32219") &&*/ !PhoneNumber.getCountryCode().equals("256") && TextUtils.isEmpty(EmailAddress.getText())) {
+                    } else if (/*!selectedAccountID.equals("32219") &&*/ !PhoneNumber.getCountryCode().equals("256") && TextUtils.isEmpty(EmailAddress.getText().trim())) {
                         ErrorAlert("Email address required outside Uganda");
                     }  /*else if(TextUtils.isEmpty(eAIdString)) {  //was for address dropdowna
                         ErrorAlert("EA Name required");}*/

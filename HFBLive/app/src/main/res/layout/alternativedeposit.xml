@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView  xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/alternativeDeposite"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:textStyle="bold"
+        android:textColor="@color/colorPrimary"
+        android:text="Select Alternative accounts number(Bank Account or Mobile Money)"/>
+
+        <Spinner
+            android:id="@+id/alternativeBank"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:minHeight="48dp" />
+
+        <TextView
+            android:visibility="gone"
+            android:textStyle="normal"
+            android:id="@+id/textView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:gravity="left"
+            android:text="@string/select_mobileMoney"
+            android:textColor="@color/dark_blue"
+            android:textSize="15sp" />
+        
+
+        <RadioGroup
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:id="@+id/RGroupM">
+
+            <RadioButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:foregroundTint="@color/dark_blue"
+                android:text="MTN"
+                android:textSize="14sp"
+                android:layout_gravity="center_vertical"
+                android:id="@+id/mtn"/>
+
+            <RadioButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:foregroundTint="@color/dark_blue"
+                android:text="AirTel"
+                android:layout_gravity="center_vertical"
+                android:textSize="14sp"
+                android:id="@+id/airtel"/>
+
+
+        </RadioGroup>
+
+        <TextView
+            android:visibility="gone"
+            android:textStyle="normal"
+            android:id="@+id/textView3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:gravity="left"
+            android:text="@string/numberregisterd"
+            android:textColor="@color/dark_blue"
+            android:textSize="15sp" />
+
+
+        <RadioGroup
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:id="@+id/RGroupCon">
+
+            <RadioButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:foregroundTint="@color/dark_blue"
+                android:text="Yes"
+                android:textSize="14sp"
+                android:layout_gravity="center_vertical"
+                android:id="@+id/yes"/>
+
+            <RadioButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:foregroundTint="@color/dark_blue"
+                android:text="No"
+                android:layout_gravity="center_vertical"
+                android:textSize="14sp"
+                android:id="@+id/no"/>
+
+
+        </RadioGroup>
+    </LinearLayout>
+
+</ScrollView>

@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginBottom="20dp">
+
+    <LinearLayout
+        android:id="@+id/ccg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@color/white">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:textStyle="bold"
+            android:textColor="@color/colorPrimary"
+            android:text="@string/mandatory_field"/>
+
+        <com.elmahousingfinanceug.launch.rao.CustomerCat
+            android:id="@+id/customer_cat_"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:paddingTop="25dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_weight="2.5"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textColor="@color/colorPrimary"
+                android:text="Select your Preferred Account"/>
+
+            <TextView
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="end|bottom"
+                android:textStyle="bold"
+                android:textColor="@color/colorPrimary"
+                android:text=" ↔ "/>
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:textStyle="bold"
+            android:textColor="@color/colorPrimary"
+            android:text="@string/mandatory_field"/>
+
+        <HorizontalScrollView
+            android:id="@+id/scrollAccounts"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:measureAllChildren="false"
+            android:padding="2dp"
+            android:fillViewport="true"
+            android:scrollbars="none">
+
+            <RadioGroup
+                android:id="@+id/accountsGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"/>
+
+        </HorizontalScrollView>
+
+        <LinearLayout
+            android:id="@+id/currencyLayout"
+            android:visibility="invisible"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:textStyle="bold"
+                android:textColor="@color/colorPrimary"
+                android:text="Select Account Currency"/>
+
+            <Spinner
+                android:id="@+id/currselect"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:textStyle="bold"
+            android:textColor="@color/colorPrimary"
+            android:text="Select your Preferred Branch"/>
+
+        <Spinner
+            android:id="@+id/branchselect"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"/>
+
+    </LinearLayout>
+
+</ScrollView>
+

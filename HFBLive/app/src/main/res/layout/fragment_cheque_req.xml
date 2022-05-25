@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:filterTouchesWhenObscured="true"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:targetApi="lollipop">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:background="@drawable/bckgrd_screen"
+        android:orientation="vertical"
+        android:elevation="10dp">
+
+        <TextView
+            style="@style/Black_Text"
+            android:text="@string/srcAcc" />
+
+        <Spinner
+            android:id="@+id/src_account"
+            style="@style/Spinner_Text"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="20dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_margin="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bckgrd_screen"
+        android:orientation="vertical"
+        android:elevation="10dp">
+
+        <TextView
+            style="@style/Black_Text"
+            android:text="@string/leaves"/>
+
+        <RadioGroup
+            android:id="@+id/choose_leaves"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/l_25"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/l_25" />
+
+            <RadioButton
+                android:id="@+id/l_50"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/l_50"/>
+
+            <RadioButton
+                android:id="@+id/l_100"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/l_100"/>
+
+        </RadioGroup>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/submit"
+        style="@style/Button_Yes"
+        android:layout_marginBottom="20dp"
+        android:layout_marginTop="20dp"
+        android:text="@string/submit" />
+
+</LinearLayout>
