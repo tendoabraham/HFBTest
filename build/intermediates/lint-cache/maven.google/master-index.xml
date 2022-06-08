@@ -36,6 +36,7 @@
   <androidx.contentpager/>
   <androidx.coordinatorlayout/>
   <androidx.core/>
+  <androidx.core.uwb/>
   <androidx.cursoradapter/>
   <androidx.customview/>
   <androidx.databinding/>
@@ -129,6 +130,7 @@
   <com.android.library/>
   <com.android.lint/>
   <com.android.ndk.thirdparty/>
+  <com.android.privacy-sandbox-sdk/>
   <com.android.reporting/>
   <com.android.settings/>
   <com.android.support/>

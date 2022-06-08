@@ -8,6 +8,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -390,6 +391,7 @@ public class Funds_Transfer_External extends BaseAct implements ResponseListener
     public void onResponse(String response, String step) {
         switch (step) {
             case "CBK":
+                Log.e("RESPONSE",response) ;
                 utilBank(response);
                 break;
             case "BRH":

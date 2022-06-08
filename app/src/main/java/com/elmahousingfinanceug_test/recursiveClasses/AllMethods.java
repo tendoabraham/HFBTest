@@ -1388,6 +1388,7 @@ public class AllMethods {
     }
 
     private void RAOApiCall(String request, String BaseUrl, String machine, final ResponseListener responseListener, final String Token, String step) {
+        Log.e("RAO",request)  ;
         request = EncryptNoEncoding(request,machine);
         JSONObject object = new JSONObject();
         try {

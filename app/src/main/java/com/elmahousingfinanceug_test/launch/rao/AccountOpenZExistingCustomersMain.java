@@ -443,7 +443,7 @@ public class AccountOpenZExistingCustomersMain extends AppCompatActivity impleme
                     selectedAccount = ProductAccout;
                     selectedAccountID = ProductID;
                     termsUrl = TermsURL;
-                    Log.e("URLTE", TermsURL);
+                    Log.e("URLTEAKI", selectedAccount);
 
 //                    webView.loadUrl(termsUrl);
 //                    webView.setOnClickListener(view1-> {
@@ -2327,7 +2327,7 @@ public class AccountOpenZExistingCustomersMain extends AppCompatActivity impleme
 //                                "|MIDDLE_NAME|"+ otherNames.getText() +"|LAST_NAME|"+ sname.getText() +"|DOB|"+DOBEdit.getText()+"|NATIONALID|"+ nationalID.getText() +
 //                                "|PHONE_NUMBER|"+customerMobilenNumber+"|ALTERNATE_PHONE_NUMBER|"+alternatePhone+"|EMAIL_ADDRESS|"+ EmailAddress.getText() +"|GENDER|"+gender+"|TITLE|"+Usertitle+"|CURRENCY|"+currName+"|BRANCH|"+branchID+"|PRODUCTID|"+selectedAccountID+"|ALTERNATE_ACCOUNT_NUMBER|"+"N/A"+"|ALTERNATE_ACCOUNT_NAME|"+"N/A"+"|ALTERNATE_BANKNAME|"+ "N/A"+"|ALTERNATE_BRANCHNAME|"+"N/A"+"|MOBILE_MONEY_PROVIDER|"+mobileMoneyProvider+"|MOBILE_MONEY_PHONE_OWNER|"+"N/A"+"|MOBILE_MONEY_PHONE_NUMBER|"+PhoneNumberMobile.getText();
 
-                        INFOFIELD1 = "INFOFIELD1:ACCOUNTID|" + AccoutNo + "|CUSTOMER_CATEGORY|" + CustomerCategory + "|ACCOUNT_TYPE|" + selectedAccount + "|FIRST_NAME|" + country.getText() +
+                        INFOFIELD1 = "INFOFIELD1:ACCOUNTID|" + AccoutNo + "|CUSTOMER_CATEGORY|" + CustomerCategory + "|ACCOUNT_TYPE|" + ProductAccout + "|FIRST_NAME|" + country.getText() +
                                 "|MIDDLE_NAME|" + otherNames.getText() + "|LAST_NAME|" + country.getText() + "|DOB|" + "N/A" + "|NATIONALID|" + "N/A" +
                                 "|PHONE_NUMBER|" + PhoneNumber.getCountryCode() + PhoneNumber.getText() + "|ALTERNATE_PHONE_NUMBER|" + AlternatePhoneNumber.getCountryCode() + AlternatePhoneNumber.getText() + "|EMAIL_ADDRESS|" + "N/A"+"|GENDER|"+"N/A"+"|TITLE|" + "N/A"+"|CURRENCY|"+ Currency + "|BRANCH|" + BranchID + "|PRODUCTID|" + ProductID+"|ALTERNATE_ACCOUNT_NUMBER|"+"N/A"+"|ALTERNATE_ACCOUNT_NAME|"+"N/A"+"|ALTERNATE_BANKNAME|"+ "N/A"+"|ALTERNATE_BRANCHNAME|"+"N/A"+"|MOBILE_MONEY_PROVIDER|"+"N/A"+"|MOBILE_MONEY_PHONE_OWNER|"+"N/A"+"|MOBILE_MONEY_PHONE_NUMBER|"+"N/A";
 
