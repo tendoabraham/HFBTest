@@ -1,15 +1,15 @@
 <component name="libraryTable">
   <library name="Gradle: com.github.bumptech.glide:glide:4.11.0@aar">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/../AmanaTZ/gradle/wrapper/caches/transforms-2/files-2.1/52c4054834512a44af86a81b70723354/jetified-glide-4.11.0/jars/classes.jar!/" />
-      <root url="file://$PROJECT_DIR$/../AmanaTZ/gradle/wrapper/caches/transforms-2/files-2.1/52c4054834512a44af86a81b70723354/jetified-glide-4.11.0/res" />
-      <root url="file://$PROJECT_DIR$/../AmanaTZ/gradle/wrapper/caches/transforms-2/files-2.1/52c4054834512a44af86a81b70723354/jetified-glide-4.11.0/AndroidManifest.xml" />
+      <root url="jar://$PROJECT_DIR$/../ptc_android_challenge_Agnes_Musyoka-development_mocklab/caches/transforms-2/files-2.1/3335bac9999322609106cdfe8398dae2/jetified-glide-4.11.0/jars/classes.jar!/" />
+      <root url="file://$PROJECT_DIR$/../ptc_android_challenge_Agnes_Musyoka-development_mocklab/caches/transforms-2/files-2.1/3335bac9999322609106cdfe8398dae2/jetified-glide-4.11.0/res" />
+      <root url="file://$PROJECT_DIR$/../ptc_android_challenge_Agnes_Musyoka-development_mocklab/caches/transforms-2/files-2.1/3335bac9999322609106cdfe8398dae2/jetified-glide-4.11.0/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC>
-      <root url="jar://$PROJECT_DIR$/../AmanaTZ/gradle/wrapper/caches/modules-2/files-2.1/com.github.bumptech.glide/glide/4.11.0/c7431a0f446d7be1d3e99914f1bfb8db403ae76a/glide-4.11.0-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../ptc_android_challenge_Agnes_Musyoka-development_mocklab/caches/modules-2/files-2.1/com.github.bumptech.glide/glide/4.11.0/c7431a0f446d7be1d3e99914f1bfb8db403ae76a/glide-4.11.0-javadoc.jar!/" />
     </JAVADOC>
     <SOURCES>
-      <root url="jar://$PROJECT_DIR$/../AmanaTZ/gradle/wrapper/caches/modules-2/files-2.1/com.github.bumptech.glide/glide/4.11.0/95d42bd1c43b39d58ad2c21355c2edcba1851cc1/glide-4.11.0-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../ptc_android_challenge_Agnes_Musyoka-development_mocklab/caches/modules-2/files-2.1/com.github.bumptech.glide/glide/4.11.0/95d42bd1c43b39d58ad2c21355c2edcba1851cc1/glide-4.11.0-sources.jar!/" />
     </SOURCES>
   </library>
 </component>

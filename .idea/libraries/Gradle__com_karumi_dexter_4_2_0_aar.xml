@@ -1,15 +1,15 @@
 <component name="libraryTable">
   <library name="Gradle: com.karumi:dexter:4.2.0@aar">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/../AmanaTZ/gradle/wrapper/caches/transforms-2/files-2.1/34a12d348d1e17f6868c563a8a3e4214/jetified-dexter-4.2.0/jars/classes.jar!/" />
-      <root url="file://$PROJECT_DIR$/../AmanaTZ/gradle/wrapper/caches/transforms-2/files-2.1/34a12d348d1e17f6868c563a8a3e4214/jetified-dexter-4.2.0/res" />
-      <root url="file://$PROJECT_DIR$/../AmanaTZ/gradle/wrapper/caches/transforms-2/files-2.1/34a12d348d1e17f6868c563a8a3e4214/jetified-dexter-4.2.0/AndroidManifest.xml" />
+      <root url="jar://$PROJECT_DIR$/../ptc_android_challenge_Agnes_Musyoka-development_mocklab/caches/transforms-2/files-2.1/37e111200749ac34c9141d3eceacf95e/jetified-dexter-4.2.0/jars/classes.jar!/" />
+      <root url="file://$PROJECT_DIR$/../ptc_android_challenge_Agnes_Musyoka-development_mocklab/caches/transforms-2/files-2.1/37e111200749ac34c9141d3eceacf95e/jetified-dexter-4.2.0/res" />
+      <root url="file://$PROJECT_DIR$/../ptc_android_challenge_Agnes_Musyoka-development_mocklab/caches/transforms-2/files-2.1/37e111200749ac34c9141d3eceacf95e/jetified-dexter-4.2.0/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC>
-      <root url="jar://$PROJECT_DIR$/../AmanaTZ/gradle/wrapper/caches/modules-2/files-2.1/com.karumi/dexter/4.2.0/bb22e0b7a652b141bf6cf0b854ab64cafff8a02/dexter-4.2.0-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../ptc_android_challenge_Agnes_Musyoka-development_mocklab/caches/modules-2/files-2.1/com.karumi/dexter/4.2.0/bb22e0b7a652b141bf6cf0b854ab64cafff8a02/dexter-4.2.0-javadoc.jar!/" />
     </JAVADOC>
     <SOURCES>
-      <root url="jar://$PROJECT_DIR$/../AmanaTZ/gradle/wrapper/caches/modules-2/files-2.1/com.karumi/dexter/4.2.0/752c90129e562407a82d42fca0bb5d57c4e1a329/dexter-4.2.0-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../ptc_android_challenge_Agnes_Musyoka-development_mocklab/caches/modules-2/files-2.1/com.karumi/dexter/4.2.0/752c90129e562407a82d42fca0bb5d57c4e1a329/dexter-4.2.0-sources.jar!/" />
     </SOURCES>
   </library>
 </component>

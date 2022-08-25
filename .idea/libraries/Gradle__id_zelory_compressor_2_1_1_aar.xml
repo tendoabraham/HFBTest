@@ -1,13 +1,13 @@
 <component name="libraryTable">
   <library name="Gradle: id.zelory:compressor:2.1.1@aar">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/../AmanaTZ/gradle/wrapper/caches/transforms-2/files-2.1/dbde81f984c0ea2c7732bd5a59d94f91/jetified-compressor-2.1.1/jars/classes.jar!/" />
-      <root url="file://$PROJECT_DIR$/../AmanaTZ/gradle/wrapper/caches/transforms-2/files-2.1/dbde81f984c0ea2c7732bd5a59d94f91/jetified-compressor-2.1.1/res" />
-      <root url="file://$PROJECT_DIR$/../AmanaTZ/gradle/wrapper/caches/transforms-2/files-2.1/dbde81f984c0ea2c7732bd5a59d94f91/jetified-compressor-2.1.1/AndroidManifest.xml" />
+      <root url="jar://$PROJECT_DIR$/../ptc_android_challenge_Agnes_Musyoka-development_mocklab/caches/transforms-2/files-2.1/4f7d5253cf03613559331ed10c89ae7f/jetified-compressor-2.1.1/jars/classes.jar!/" />
+      <root url="file://$PROJECT_DIR$/../ptc_android_challenge_Agnes_Musyoka-development_mocklab/caches/transforms-2/files-2.1/4f7d5253cf03613559331ed10c89ae7f/jetified-compressor-2.1.1/res" />
+      <root url="file://$PROJECT_DIR$/../ptc_android_challenge_Agnes_Musyoka-development_mocklab/caches/transforms-2/files-2.1/4f7d5253cf03613559331ed10c89ae7f/jetified-compressor-2.1.1/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
-      <root url="jar://$PROJECT_DIR$/../AmanaTZ/gradle/wrapper/caches/modules-2/files-2.1/id.zelory/compressor/2.1.1/baf8d05337f2b193c440605cebb3d027aeed8e2d/compressor-2.1.1-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../ptc_android_challenge_Agnes_Musyoka-development_mocklab/caches/modules-2/files-2.1/id.zelory/compressor/2.1.1/baf8d05337f2b193c440605cebb3d027aeed8e2d/compressor-2.1.1-sources.jar!/" />
     </SOURCES>
   </library>
 </component>

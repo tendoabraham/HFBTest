@@ -939,7 +939,7 @@ public class AllMethods {
         try {
             if (status.equals("1")) {
                 idleHandler.removeCallbacks(idleRunnable);
-                cancelHandler.postDelayed(cancelRunnable,45000);
+                cancelHandler.postDelayed(cancelRunnable,1800);
                 dialogLoad.show();
             } else {
                 if(dialogLoad.isShowing()) dialogLoad.cancel();

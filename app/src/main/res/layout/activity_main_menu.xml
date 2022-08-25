@@ -51,7 +51,8 @@
 
                     <Spinner
                         android:id="@+id/accountNumber"
-                        style="@style/Spinner_Text" />
+                        style="@style/Spinner_Text"
+                        android:layout_height="48dp" />
 
                     <TextView
                         android:visibility="gone"

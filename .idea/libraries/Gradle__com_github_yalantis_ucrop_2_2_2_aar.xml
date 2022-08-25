@@ -1,18 +1,18 @@
 <component name="libraryTable">
   <library name="Gradle: com.github.yalantis:ucrop:2.2.2@aar">
     <ANNOTATIONS>
-      <root url="jar://$PROJECT_DIR$/../AmanaTZ/gradle/wrapper/caches/transforms-2/files-2.1/f36198da7c52d8671b1a1dbe3733c452/jetified-ucrop-2.2.2/annotations.zip!/" />
+      <root url="jar://$PROJECT_DIR$/../ptc_android_challenge_Agnes_Musyoka-development_mocklab/caches/transforms-2/files-2.1/f2f3915d0d4d4d323a07887cd81bd730/jetified-ucrop-2.2.2/annotations.zip!/" />
     </ANNOTATIONS>
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/../AmanaTZ/gradle/wrapper/caches/transforms-2/files-2.1/f36198da7c52d8671b1a1dbe3733c452/jetified-ucrop-2.2.2/jars/classes.jar!/" />
-      <root url="file://$PROJECT_DIR$/../AmanaTZ/gradle/wrapper/caches/transforms-2/files-2.1/f36198da7c52d8671b1a1dbe3733c452/jetified-ucrop-2.2.2/res" />
-      <root url="file://$PROJECT_DIR$/../AmanaTZ/gradle/wrapper/caches/transforms-2/files-2.1/f36198da7c52d8671b1a1dbe3733c452/jetified-ucrop-2.2.2/AndroidManifest.xml" />
+      <root url="jar://$PROJECT_DIR$/../ptc_android_challenge_Agnes_Musyoka-development_mocklab/caches/transforms-2/files-2.1/f2f3915d0d4d4d323a07887cd81bd730/jetified-ucrop-2.2.2/jars/classes.jar!/" />
+      <root url="file://$PROJECT_DIR$/../ptc_android_challenge_Agnes_Musyoka-development_mocklab/caches/transforms-2/files-2.1/f2f3915d0d4d4d323a07887cd81bd730/jetified-ucrop-2.2.2/res" />
+      <root url="file://$PROJECT_DIR$/../ptc_android_challenge_Agnes_Musyoka-development_mocklab/caches/transforms-2/files-2.1/f2f3915d0d4d4d323a07887cd81bd730/jetified-ucrop-2.2.2/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC>
-      <root url="jar://$PROJECT_DIR$/../AmanaTZ/gradle/wrapper/caches/modules-2/files-2.1/com.github.yalantis/ucrop/2.2.2/2fed192d3bbdf16ea0c579db2f7f398f2db36ac0/ucrop-2.2.2-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../ptc_android_challenge_Agnes_Musyoka-development_mocklab/caches/modules-2/files-2.1/com.github.yalantis/ucrop/2.2.2/2fed192d3bbdf16ea0c579db2f7f398f2db36ac0/ucrop-2.2.2-javadoc.jar!/" />
     </JAVADOC>
     <SOURCES>
-      <root url="jar://$PROJECT_DIR$/../AmanaTZ/gradle/wrapper/caches/modules-2/files-2.1/com.github.yalantis/ucrop/2.2.2/52964c37a0c8c68fa6fc828abcd11402dd2c076e/ucrop-2.2.2-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../ptc_android_challenge_Agnes_Musyoka-development_mocklab/caches/modules-2/files-2.1/com.github.yalantis/ucrop/2.2.2/52964c37a0c8c68fa6fc828abcd11402dd2c076e/ucrop-2.2.2-sources.jar!/" />
     </SOURCES>
   </library>
 </component>

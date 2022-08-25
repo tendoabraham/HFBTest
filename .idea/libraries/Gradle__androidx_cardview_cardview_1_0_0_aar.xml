@@ -1,13 +1,13 @@
 <component name="libraryTable">
   <library name="Gradle: androidx.cardview:cardview:1.0.0@aar">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/../AmanaTZ/gradle/wrapper/caches/transforms-2/files-2.1/5a6430e61ba89b8e66b7f5848827f9e7/cardview-1.0.0/jars/classes.jar!/" />
-      <root url="file://$PROJECT_DIR$/../AmanaTZ/gradle/wrapper/caches/transforms-2/files-2.1/5a6430e61ba89b8e66b7f5848827f9e7/cardview-1.0.0/res" />
-      <root url="file://$PROJECT_DIR$/../AmanaTZ/gradle/wrapper/caches/transforms-2/files-2.1/5a6430e61ba89b8e66b7f5848827f9e7/cardview-1.0.0/AndroidManifest.xml" />
+      <root url="jar://$PROJECT_DIR$/../ptc_android_challenge_Agnes_Musyoka-development_mocklab/caches/transforms-2/files-2.1/b1af4f2bb3cdb8a270b23f3dd207998b/cardview-1.0.0/jars/classes.jar!/" />
+      <root url="file://$PROJECT_DIR$/../ptc_android_challenge_Agnes_Musyoka-development_mocklab/caches/transforms-2/files-2.1/b1af4f2bb3cdb8a270b23f3dd207998b/cardview-1.0.0/res" />
+      <root url="file://$PROJECT_DIR$/../ptc_android_challenge_Agnes_Musyoka-development_mocklab/caches/transforms-2/files-2.1/b1af4f2bb3cdb8a270b23f3dd207998b/cardview-1.0.0/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
-      <root url="jar://$PROJECT_DIR$/../AmanaTZ/gradle/wrapper/caches/modules-2/files-2.1/androidx.cardview/cardview/1.0.0/c9f3ce7ca74ad2c978230f4094ba6804c5166f9c/cardview-1.0.0-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../ptc_android_challenge_Agnes_Musyoka-development_mocklab/caches/modules-2/files-2.1/androidx.cardview/cardview/1.0.0/c9f3ce7ca74ad2c978230f4094ba6804c5166f9c/cardview-1.0.0-sources.jar!/" />
     </SOURCES>
   </library>
 </component>

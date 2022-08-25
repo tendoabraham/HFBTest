@@ -1,15 +1,15 @@
 <component name="libraryTable">
   <library name="Gradle: com.amitshekhar.android:android-networking:1.0.2@aar">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/../AmanaTZ/gradle/wrapper/caches/transforms-2/files-2.1/f88104b029760a7852abb6a0f84398f6/jetified-android-networking-1.0.2/jars/classes.jar!/" />
-      <root url="file://$PROJECT_DIR$/../AmanaTZ/gradle/wrapper/caches/transforms-2/files-2.1/f88104b029760a7852abb6a0f84398f6/jetified-android-networking-1.0.2/res" />
-      <root url="file://$PROJECT_DIR$/../AmanaTZ/gradle/wrapper/caches/transforms-2/files-2.1/f88104b029760a7852abb6a0f84398f6/jetified-android-networking-1.0.2/AndroidManifest.xml" />
+      <root url="jar://$PROJECT_DIR$/../ptc_android_challenge_Agnes_Musyoka-development_mocklab/caches/transforms-2/files-2.1/3b053372692f76a2a1170595d757a996/jetified-android-networking-1.0.2/jars/classes.jar!/" />
+      <root url="file://$PROJECT_DIR$/../ptc_android_challenge_Agnes_Musyoka-development_mocklab/caches/transforms-2/files-2.1/3b053372692f76a2a1170595d757a996/jetified-android-networking-1.0.2/res" />
+      <root url="file://$PROJECT_DIR$/../ptc_android_challenge_Agnes_Musyoka-development_mocklab/caches/transforms-2/files-2.1/3b053372692f76a2a1170595d757a996/jetified-android-networking-1.0.2/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC>
-      <root url="jar://$PROJECT_DIR$/../AmanaTZ/gradle/wrapper/caches/modules-2/files-2.1/com.amitshekhar.android/android-networking/1.0.2/866743b4b91a1e598595ed7dd365add8d38f94be/android-networking-1.0.2-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../ptc_android_challenge_Agnes_Musyoka-development_mocklab/caches/modules-2/files-2.1/com.amitshekhar.android/android-networking/1.0.2/866743b4b91a1e598595ed7dd365add8d38f94be/android-networking-1.0.2-javadoc.jar!/" />
     </JAVADOC>
     <SOURCES>
-      <root url="jar://$PROJECT_DIR$/../AmanaTZ/gradle/wrapper/caches/modules-2/files-2.1/com.amitshekhar.android/android-networking/1.0.2/45745c4b3c155243f77a7431f200ca60106a27e4/android-networking-1.0.2-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../ptc_android_challenge_Agnes_Musyoka-development_mocklab/caches/modules-2/files-2.1/com.amitshekhar.android/android-networking/1.0.2/45745c4b3c155243f77a7431f200ca60106a27e4/android-networking-1.0.2-sources.jar!/" />
     </SOURCES>
   </library>
 </component>

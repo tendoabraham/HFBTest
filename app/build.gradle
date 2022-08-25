@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-apply plugin: 'dexprotector'
+//apply plugin: 'dexprotector'
 
 android {
     compileSdkVersion 30
@@ -22,7 +22,7 @@ android {
         targetSdkVersion 30
         //TODO: increase version b4 upload
         versionCode 130
-        versionName "130.7"
+        versionName "130.9"
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
         signingConfig signingConfigs.release
     }
@@ -31,7 +31,7 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            ext.set("dexprotector.configFile", "${projectDir}/dexprotector.xml")
+//            ext.set("dexprotector.configFile", "${projectDir}/dexprotector.xml")
             signingConfig signingConfigs.release
         }
     }

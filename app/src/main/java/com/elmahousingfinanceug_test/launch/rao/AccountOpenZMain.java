@@ -54,6 +54,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatCheckBox;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -72,11 +73,13 @@ import com.elmahousingfinanceug_test.recursiveClasses.ResponseListener;
 import com.google.android.gms.auth.api.phone.SmsRetriever;
 import com.google.android.gms.auth.api.phone.SmsRetrieverClient;
 import com.google.android.gms.tasks.Task;
+import com.google.gson.JsonObject;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
+import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 
 import org.json.JSONArray;
@@ -93,8 +96,11 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+import java.util.Timer;
 import java.util.regex.Pattern;
 
 import id.zelory.compressor.Compressor;
@@ -106,7 +112,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
     Bitmap bitmapImageFront, bitmapImageBack, bitmapImageSelfie;
     ViewFlipper flipper;
     WebView webView;
-    String  nationality = "", sex ,surName= "" , CardNumber= "",DateOfExpiry = "" , NIN = "", dob  = "" ,Name = "", faceId1 = "", imageURL = "",faceId2 = "";
+    String nationality = "", sex, surName = "", CardNumber = "", DateOfExpiry = "", NIN = "", dob = "", Name = "", faceId1 = "", imageURL = "", faceId2 = "";
     String status = "", message = "", fields = "", idNumberObject = "", fullName = "", issueDate = "", idSerial = "", birthdate = "";
     ImagePick front, backpick, selfie, signature;
     Spinner currselect, branchselect, employmentType, political_spin, occupation_spin, proffession_status, regionselect, districtName,
@@ -133,12 +139,15 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
     RelativeLayout success_failed;
 
     private AllMethods am;
-    private  CustomJsonRequest customJsonRequest;  
+    private CustomJsonRequest customJsonRequest;
 
     int REQUEST_IMAGE = 100, REQUEST_IMAGEX = 0, step_ = 0;
 
     byte[] byteArray;
     byte[] byteArray1;
+    private CountDownTimer countDownTimer;
+    private long timeOut = 60000;
+
 
     String encodedImageFront = "", encodedImageBack = "", encodedImageSelfie = "", encodedImageSignature = "", Usertitle = "", CustomerCategory = "",
             step0 = "Customer Type & Product", step1 = "Personal details?", step2 = "Share with us your ID details", step3 = "Confirm these are your ID details",
@@ -148,7 +157,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
             INFOFIELD4 = "", INFOFIELD5 = "", token = "", payload = "", Device = "", uri = "", extrauri = "", new_request = "",
             selectedAccount = "", selectedAccountID = "", currName = "", branchID = "", termsUrl = "", currencyURL, periodAddressString = "", periodWorkString = "", gender = "", mobileMoneyProvider = "", ProductDescription = "",
             StringPoliticallyExposed = "", occupationIDString = "", professionIDString = "", regionIDString = "", districtIDString = "", countyIDString = "",
-            subcountyIDString = "", parishIdString = "", villageIdString = "", eAIdString = "", userEmploymentType, maritalStatus, alternativeSecurityDeposit, processID = "",processID2 = "",imageURL1 = "";
+            subcountyIDString = "", parishIdString = "", villageIdString = "", eAIdString = "", userEmploymentType, maritalStatus, alternativeSecurityDeposit, processID = "", processID2 = "", imageURL1 = "";
 
     boolean done = false;
     private String[] FieldIDs, FieldValues;
@@ -192,7 +201,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
 
         am = new AllMethods(this);
         am.disableScreenShot(this);
-        
+
 
         title = findViewById(R.id.title);
         customer_cat_ = findViewById(R.id.customer_cat_);
@@ -751,7 +760,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
         // occupation details
 
 
-        IncomeperAnnum = new cicEditText(this, VAR.AMOUNT, "Annual income ", "");
+        IncomeperAnnum = new cicEditText(this, VAR.AMOUNT, "Monthly  income ", "");
         NatureofBussiness = new cicEditText(this, VAR.TEXT, "Nature of Business/Activity Sector ", "");
         NatureofEmployment = new cicEditText(this, VAR.TEXT, "Business Address ", " 123 Kampala");
         PeriodofEmployment = new cicEditText(this, VAR.TEXT, "Kindly specify ", "Allowance");
@@ -1309,10 +1318,14 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
 
     private void uploadImage(byte[] byteArray, String document) { //IDFRONT
 
-        String url_string = "{" + "\"FormID\":\"LITTLEBUSINESS\"," +
+        String url_string = "{" + "\"FormID\":\"BANKIDFRONT\"," +
+                "\"Key\":\"PORTAL-FF7B-4CCA-B884-98346D5EC385\"," +
+                "\"Country\":\"UGANDATEST\"," +
                 "\"FileType\":\"jpg\"," +
+                "\"MobileNumber\":\"25600116\"," +
+                "\"EMailID\":\"craft@gmail.com\"," +
                 "\"ModuleID\":\"" + document + "\"," +
-                "\"BankID\":\"LITTLE\"}";
+                "\"BankID\":\"23\"}";
 
         try {
             image_URL = base_URL + URLEncoder.encode(url_string, "UTF-8");
@@ -1376,7 +1389,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                         String message = jsonObject.getString("Message");
 
                         if (status.equals("000")) {
-                            
+
                             if (jsonObject.has("ImageURL")) {
                                 imageURL = jsonObject.getString("ImageURL");
 
@@ -1404,20 +1417,21 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
     }
 
     private void validateImageSubmited(String imageURL) {
+        am.progressDialog("1");
 
-        String base_URL2 = "https://imageai.azurewebsites.net/ReadDocument.aspx";
+        String base_URL2 = "https://aicraftsilicon.azurewebsites.net/CraftSiliconAI/SubmitDocument_V1";
 
         JSONObject jsonObject1 = new JSONObject();
         try {
-            jsonObject1.put("RequestID", "SUBMITIMAGE");
+            jsonObject1.put("Country", "UGANDA");
             jsonObject1.put("ImageID", "NATIONALID");
             jsonObject1.put("ImageURL", imageURL);
-            jsonObject1.put("Country", "UGANDA");
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        
+
         Log.d("upload_idval_call", jsonObject1.toString());
 
 
@@ -1426,35 +1440,37 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                     @Override
                     public void onResponse(JSONObject response) {
                         am.progressDialog("1");
-//                        {"Status":"Accepted","Message":"Accepted","RequestID":"37236775-bf86-4240-a1db-8baafc33cbd1","ProcessID":"4C22913D-CDEA-480F-B4B1-2A1F703F110C"}
+                        Log.e("Tunapata", response.toString());
+//                        {
+//   "status":"000",
+//   "message":"Success",
+//   "requestID":"8f2c67aa-d065-4074-8fb9-6ec3a56752cd",
+//   "processID":"5F4079E1-251C-4DAF-9F26-581BA9BA92E5"
+//}
                         try {
                             JSONObject jsonObject = new JSONObject(response.toString());
-                            String status = jsonObject.getString("Status");
-                            String message = jsonObject.getString("Message");
+                            String status = jsonObject.getString("status");
+                            String message = jsonObject.getString("message");
 
                             Log.d("upload_idval_resp", jsonObject1.toString());
 
 
-                            if (status.equals("Accepted")) {
+                            if (status.equals("000")) {
 
-                                if (jsonObject.has("ProcessID")) {
-                                    processID = jsonObject.getString("ProcessID");
+
+                                if (jsonObject.has("processID")) {
+                                    processID = jsonObject.getString("processID");
                                     Log.d("response_ProcessID", processID);
-
                                     final Handler handler = new Handler(Looper.getMainLooper());
                                     handler.postDelayed(new Runnable() {
                                         @Override
                                         public void run() {
                                             //Do something after 100ms
-                                            submitImage(processID);
+                                            submitImage();
                                         }
                                     }, 10000);
-                                   
 
-//                                imgCheck.setVisibility(View.VISIBLE);
-//
-//                                BusinessDocumentsModel businessDocumentsModel = new BusinessDocumentsModel(imageURL, document);
-//                                lstDocumentsUrl.add(businessDocumentsModel);
+
 
                                 }
 
@@ -1462,256 +1478,242 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                                 ErrorAlert(message);
                             }
 
+
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
                     }
+
+
                 }, new Response.ErrorListener() {
+
+
             @Override
             public void onErrorResponse(VolleyError error) {
                 VolleyLog.e("Error: ", error.getMessage());
             }
-        });
 
-// add the request object to the queue to be executed
+
+        }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Content-Type", "application/json");
+                params.put("APIKey", "8CC9432C-B5AD-471C-A77D-28088C695916");
+                return params;
+            }
+
+        };
+        // add the request object to the queue to be executed
+
         RequestQueue queue = Volley.newRequestQueue(AccountOpenZMain.this);
         queue.add(req);
         Log.d("IMAGEURL", req.toString());
     }
 
-    private void submitImage(String processID) {
-       
-        String base_URL2 = "https://imageai.azurewebsites.net/ReadDocument.aspx";
+    private void submitImage() {
+        String base_URL2 = "https://aicraftsilicon.azurewebsites.net/CraftSiliconAI/GetDocumentDetails";
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("RequestID", "GETRESULT");
-            jsonObject.put("ImageID", "NATIONALID");
-            jsonObject.put("ProcessID", processID);
             jsonObject.put("Country", "UGANDA");
+//            jsonObject.put("ProcessID","0647510C-C6DF-4B9E-8BCD-4EA80BCF9AF8");
+            jsonObject.put("ProcessID",processID);
         } catch (JSONException e) {
             e.printStackTrace();
         }
         am.progressDialog("1");
-        customJsonRequest = new CustomJsonRequest(Request.Method.POST, base_URL2, jsonObject, new Response.Listener<JSONArray>() {
-            @Override
-            public void onResponse(JSONArray response) {
-                am.progressDialog("0");
-//                Log.d("IMEFIKA",response.toString());
+        JsonObjectRequest req = new JsonObjectRequest(Request.Method.POST, base_URL2, jsonObject,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        am.progressDialog("0");
+                        Log.d("IMEFIKA", response.toString());
 //                :[{"Nationality":[{"text":"UGA","confidence":"0.995"}],"Sex":[{"text":"M","confidence":"0.989"}],"Surname":[{"text":"BIGIRWA","confidence":"0.995"}],"CardNumber":[{"text":"010394857","confidence":"0.995"}],"DateOfExpiry":[{"text":"06.06.2025","confidence":"0.995"}],"NIN":[{"text":"CM86004106Z49G","confidence":"0.983"}],"DateOfBirth":[{"text":"10.08.1986","confidence":"0.995"}],"Name":[{"text":"ISAAC","confidence":"0.978"}]}]}]
-                try {
-                    JSONObject jsonObject1 = response.getJSONObject(0);
-                    String status = jsonObject1.getString("Status");
-                    String message = jsonObject1.getString("Message");
-                    String fields = jsonObject1.getString("fields");
+                        try {
 
-                    JSONArray jsonArrayFields = new JSONArray(fields);
-                    for (int j = 0; j < jsonArrayFields.length(); j++) {
-                        JSONObject jsonFields = jsonArrayFields.getJSONObject(j);
+                            String status = response.getString("Status");
+                            String message = response.getString("Message");
+                            String fields = response.getString("fields");
 
-                        if (jsonFields.has("Nationality")){
+                            JSONArray jsonArrayFields = new JSONArray(fields);
+                            for (int j = 0; j < jsonArrayFields.length(); j++) {
+                                JSONObject jsonFields = jsonArrayFields.getJSONObject(j);
 
-                            String genderArray = jsonFields.getString("Nationality");
+                                if (jsonFields.has("Nationality")) {
 
-                            JSONArray jsonArrayGender = new JSONArray(genderArray);
-                            for (int k = 0; k < jsonArrayGender.length(); k++) {
-                                JSONObject jsonGender = jsonArrayGender.getJSONObject(k);
+                                    String genderArray = jsonFields.getString("Nationality");
 
-                                if (jsonGender.has("text")){
-                                    nationality = jsonGender.getString("text");
+                                    JSONArray jsonArrayGender = new JSONArray(genderArray);
+                                    for (int k = 0; k < jsonArrayGender.length(); k++) {
+                                        JSONObject jsonGender = jsonArrayGender.getJSONObject(k);
+
+                                        if (jsonGender.has("text")) {
+                                            nationality = jsonGender.getString("text");
+                                        }
+                                    }
+
                                 }
+
+                                if (jsonFields.has("Sex")) {
+
+                                    String idNumberArray = jsonFields.getString("Sex");
+
+                                    JSONArray jsonArrayID = new JSONArray(idNumberArray);
+                                    for (int l = 0; l < jsonArrayID.length(); l++) {
+
+                                        JSONObject sex = jsonArrayID.getJSONObject(l);
+
+                                    }
+
+                                }
+
+                                if (jsonFields.has("Surname")) {
+
+                                    String issueDateArray = jsonFields.getString("Surname");
+
+                                    JSONArray jsonArrayIssueDate = new JSONArray(issueDateArray);
+                                    for (int m = 0; m < jsonArrayIssueDate.length(); m++) {
+
+
+                                        JSONObject jsonIssueDate = jsonArrayIssueDate.getJSONObject(m);
+                                        if (jsonIssueDate.has("text")) {
+                                            surName = jsonIssueDate.getString("text");
+                                        }
+                                    }
+
+                                }
+
+                                if (jsonFields.has("CardNumber")) {
+
+                                    String IdSerialArray = jsonFields.getString("CardNumber");
+
+                                    JSONArray jsonArrayIDSerial = new JSONArray(IdSerialArray);
+                                    for (int n = 0; n < jsonArrayIDSerial.length(); n++) {
+
+                                        JSONObject jsonSerialNumber = jsonArrayIDSerial.getJSONObject(n);
+                                        if (jsonSerialNumber.has("text")) {
+                                            CardNumber = jsonSerialNumber.getString("text");
+                                        }
+                                    }
+
+
+                                }
+
+                                if (jsonFields.has("DateOfExpiry")) {
+
+                                    String idNumberArray = jsonFields.getString("DateOfExpiry");
+
+                                    JSONArray jsonArrayID = new JSONArray(idNumberArray);
+                                    for (int l = 0; l < jsonArrayID.length(); l++) {
+
+                                        JSONObject jsonIDNumber = jsonArrayID.getJSONObject(l);
+                                        if (jsonIDNumber.has("text")) {
+                                            DateOfExpiry = jsonIDNumber.getString("text");
+                                        }
+                                    }
+
+
+                                }
+                                if (jsonFields.has("NIN")) {
+
+                                    String idNumberArray = jsonFields.getString("NIN");
+
+                                    JSONArray jsonArrayID = new JSONArray(idNumberArray);
+                                    for (int l = 0; l < jsonArrayID.length(); l++) {
+
+                                        JSONObject jsonIDNumber = jsonArrayID.getJSONObject(l);
+                                        if (jsonIDNumber.has("text")) {
+                                            NIN = jsonIDNumber.getString("text");
+                                        }
+                                    }
+
+                                }
+
+                                if (jsonFields.has("DateOfBirth")) {
+                                    String birthDateArray = jsonFields.getString("DateOfBirth");
+
+                                    JSONArray jsonArrayBirthDate = new JSONArray(birthDateArray);
+                                    for (int q = 0; q < jsonArrayBirthDate.length(); q++) {
+
+                                        JSONObject jsonBirthDateDate = jsonArrayBirthDate.getJSONObject(q);
+                                        if (jsonBirthDateDate.has("text")) {
+                                            birthdate = jsonBirthDateDate.getString("text");
+                                        }
+                                        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
+                                        SimpleDateFormat outFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+
+                                        try {
+                                            Date date = sdf.parse(birthdate);
+                                            dob = outFormat.format(date);
+                                        } catch (ParseException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+
+                                }
+
+                                if (jsonFields.has("Name")) {
+
+                                    String idNumberArray = jsonFields.getString("Name");
+
+                                    JSONArray jsonArrayID = new JSONArray(idNumberArray);
+                                    for (int l = 0; l < jsonArrayID.length(); l++) {
+
+                                        JSONObject jsonIDNumber = jsonArrayID.getJSONObject(l);
+                                        if (jsonIDNumber.has("text")) {
+                                            Name = jsonIDNumber.getString("text");
+                                        }
+                                    }
+
+                                }
+
                             }
 
-                        }
 
-                        if (jsonFields.has("Sex")){
+                            if (status.equals("000")) {
 
-                            String idNumberArray = jsonFields.getString("Sex");
 
-                            JSONArray jsonArrayID = new JSONArray(idNumberArray);
-                            for (int l = 0; l < jsonArrayID.length(); l++) {
-
-                                JSONObject sex = jsonArrayID.getJSONObject(l);
-                               
+                                sname.setText(surName);
+                                name.setText(Name);
+                                nationalID.setText(NIN);
+                                DOBEdit.setText(dob);
+                                nationalIDCardNo.setText(CardNumber);
+                                otherNames.setText(Name);
+                                uploadSelfyImage(byteArray1, "SELF");
+                                flipViewIt(step_);
+                            } else {
+                                am.myDialog(AccountOpenZMain.this, getString(R.string.unrecognized_ID), getString(R.string.sure_clear));
                             }
-
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
 
-                        if (jsonFields.has("Surname")){
-
-                            String issueDateArray   =   jsonFields.getString("Surname");
-
-                            JSONArray jsonArrayIssueDate = new JSONArray(issueDateArray);
-                            for (int m = 0; m < jsonArrayIssueDate.length(); m++) {
-                                
-
-                                JSONObject jsonIssueDate = jsonArrayIssueDate.getJSONObject(m);
-                                if (jsonIssueDate.has("text")){
-                                    surName = jsonIssueDate.getString("text");
-                                }
-                            }
-
-                        }
-
-                        if (jsonFields.has("CardNumber")){
-
-                            String IdSerialArray = jsonFields.getString("CardNumber");
-
-                            JSONArray jsonArrayIDSerial = new JSONArray(IdSerialArray);
-                            for (int n = 0; n < jsonArrayIDSerial.length(); n++) {
-
-                                JSONObject jsonSerialNumber = jsonArrayIDSerial.getJSONObject(n);
-                                if (jsonSerialNumber.has("text")){
-                                    CardNumber = jsonSerialNumber.getString("text");
-                                }
-                            }
-
-
-                        }
-
-                        if (jsonFields.has("DateOfExpiry")){
-
-                            String idNumberArray = jsonFields.getString("DateOfExpiry");
-
-                            JSONArray jsonArrayID = new JSONArray(idNumberArray);
-                            for (int l = 0; l < jsonArrayID.length(); l++) {
-
-                                JSONObject jsonIDNumber = jsonArrayID.getJSONObject(l);
-                                if (jsonIDNumber.has("text")){
-                                    DateOfExpiry = jsonIDNumber.getString("text");
-                                }
-                            }
-                            
-
-                        }
-                        if (jsonFields.has("NIN")){
-
-                            String idNumberArray = jsonFields.getString("NIN");
-
-                            JSONArray jsonArrayID = new JSONArray(idNumberArray);
-                            for (int l = 0; l < jsonArrayID.length(); l++) {
-
-                                JSONObject jsonIDNumber = jsonArrayID.getJSONObject(l);
-                                if (jsonIDNumber.has("text")){
-                                    NIN = jsonIDNumber.getString("text");
-                                }
-                            }
-
-                        }
-
-                        if (jsonFields.has("DateOfBirth")){
-                            String birthDateArray = jsonFields.getString("DateOfBirth");
-
-                            JSONArray jsonArrayBirthDate = new JSONArray(birthDateArray);
-                            for (int q = 0; q < jsonArrayBirthDate.length(); q++) {
-
-                                JSONObject jsonBirthDateDate = jsonArrayBirthDate.getJSONObject(q);
-                                if (jsonBirthDateDate.has("text")){
-                                    birthdate = jsonBirthDateDate.getString("text");
-                                }
-                                SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
-                                SimpleDateFormat outFormat = new SimpleDateFormat("yyyy-MM-dd",Locale.getDefault());
-                                
-                                try {
-                                    Date date = sdf.parse(birthdate);
-                                    dob = outFormat.format(date); 
-                                } catch (ParseException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-
-                        }
-
-                        if (jsonFields.has("Name")){
-
-                            String idNumberArray = jsonFields.getString("Name");
-
-                            JSONArray jsonArrayID = new JSONArray(idNumberArray);
-                            for (int l = 0; l < jsonArrayID.length(); l++) {
-
-                                JSONObject jsonIDNumber = jsonArrayID.getJSONObject(l);
-                                if (jsonIDNumber.has("text")){
-                                    Name = jsonIDNumber.getString("text");
-                                }
-                            }
-
-                        }
 
                     }
-
-
-                    
-
-
-
-//                           
-                    if(status.equals("000"))  {
-                        
-
-//                        String  nationality = getValues(fields,0,"Nationality");
-//                        String  sex = getValues(fields,1,"Sex");
-//                        Toast.makeText(AccountOpenZMain.this, "GENDER"+sex, Toast.LENGTH_SHORT).show();
-//                        String  surName = getValues(fields,2,"Surname");
-//                        String  CardNumber = getValues(fields,3,"CardNumber");
-//                        String  DateOfExpiry = getValues(fields,4,"DateOfExpiry");
-//                        String  NIN = getValues(fields,5,"NIN");
-//                        String  DateOfBirth = getValues(fields,6,"DateOfBirth");
-//                        String  Name = getValues(fields,7,"Name");
-                        sname.setText(surName);
-                        name.setText(Name);
-                        nationalID.setText(NIN);
-                        DOBEdit.setText(dob);
-                        nationalIDCardNo.setText(CardNumber);
-                        otherNames.setText(Name);
-                        uploadSelfyImage(byteArray1,"SELF") ;
-//                        flipper.showNext();
-//                        step_++;
-//                                    niraValidation() ;
-                        flipViewIt(step_);
-//                        Toast.makeText(AccountOpenZMain.this, "NATIONAL" + nationality, Toast.LENGTH_SHORT).show();
-                    }   else{
-                        am.myDialog(AccountOpenZMain.this, getString(R.string.unrecognized_ID), getString(R.string.sure_clear)); 
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-
-            }
-        }, new Response.ErrorListener() {
+                }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                
+
             }
-        }){
-            
+        }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Content-Type", "application/json");
+                params.put("APIKey", "8CC9432C-B5AD-471C-A77D-28088C695916");
+                return params;
+            }
+
         };
+        Log.d("SUBMIT", jsonObject.toString());
+
+        RequestQueue queue = Volley.newRequestQueue(AccountOpenZMain.this);
+        queue.add(req);
 
 
-        MS.getInstance(AccountOpenZMain.this.getApplicationContext()).addToRequestQueue(customJsonRequest);
-
-       
     }
-
-    private String getValues(String fields,int index, String fieldName) {
-        String text = "";
-        try {
-            JSONArray jsonArray = new JSONArray(fields);
-            JSONObject jsonObject1 = jsonArray.getJSONObject(index);
-            String nationality = jsonObject1.getString(fieldName);
-            JSONArray jsonArray2 = new JSONArray(nationality);
-            JSONObject jsonObject2 = jsonArray2.getJSONObject(0);
-            text = jsonObject2.getString("text");
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return text;
-    }
-
-
-
     private void niraValidation() {
-        String surname  ;
+        String surname;
 //        if(sname.getText().contains("")) {
 //           surname = sname.getText().replace(" ","-") ;
 //        } else{
@@ -1911,9 +1913,11 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
 //                            Try something like this:
 //
                             //Bitmap bmp = ;
-                            ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                            bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-                            byteArray = stream.toByteArray();
+
+
+                            ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+                            bitmap.compress(Bitmap.CompressFormat.PNG, 100, bytes);
+                            byteArray = bytes.toByteArray();
 
 //                            bmp.recycle()
                             front.setImage(bitmap);
@@ -1923,7 +1927,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                             am.putSavedData("encodedImageFront", encodedImageFront);
                             break;
                         case 2:
-                            
+
                             //Bitmap bmp = ;
                             ByteArrayOutputStream stream1 = new ByteArrayOutputStream();
                             bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream1);
@@ -1935,7 +1939,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                             encodedImageFront = ConvertImageToBase64(bitmap);
 
                             am.putSavedData("encodedImageFront", encodedImageFront);*/
-                            
+
                             selfie.setImage(bitmap);
                             bitmapImageSelfie = BitmapCompressionWithZ(this, mFile);
                             encodedImageSelfie = ConvertImageToBase64(bitmap);
@@ -2966,9 +2970,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                             webView.setVisibility(View.VISIBLE);
                             radiob.setVisibility(View.VISIBLE);
                         }
-                    }
-                    
-                    else if (step_ == 3) {
+                    } else if (step_ == 3) {
                         name.setText("");
                         sname.setText("");
                         nationalID.setText("");
@@ -3093,7 +3095,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                         am.putSaveTitlePosition(singleTitle.getViewTitleID());
 //                        submitImages();
                         uploadImage(byteArray, "IDFRONT");
-                       
+
                     }
                 } else if (step_ == 3) {
                     if (TextUtils.isEmpty(name.getText())) {
@@ -3739,7 +3741,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                         String message = jsonObject.getString("Message");
 
                         if (status.equals("000")) {
-                            
+
                             if (jsonObject.has("ImageURL")) {
                                 imageURL1 = jsonObject.getString("ImageURL");
 
@@ -3764,7 +3766,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
 
                     }
                 });
-        
+
     }
 
     private void validateImageSelfSubmited(String imageURL1) {
@@ -3804,7 +3806,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                                         public void run() {
                                             //Do something after 100ms
                                             faceId1 = "";
-                                            submitImageSelf(processID2,imageURL1);
+                                            submitImageSelf(processID2, imageURL1);
                                         }
                                     }, 10000);
 
@@ -3836,12 +3838,12 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
         RequestQueue queue = Volley.newRequestQueue(AccountOpenZMain.this);
         queue.add(req);
         Log.d("IMAGEURL", req.toString());
-        
-        
+
+
     }
 
     private void submitImageSelf(String processID, String imageURL1) {
-       
+
 //        {
 //            "RequestID":"GETFACE",
 //                "ImageID":"NATIONALID",
@@ -3856,7 +3858,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
             jsonObject.put("RequestID", "GETFACE");
             jsonObject.put("ImageID", "NATIONALID");
             jsonObject.put("ProcessID", processID);
-            jsonObject.put("ImageURL",imageURL1);
+            jsonObject.put("ImageURL", imageURL1);
             jsonObject.put("Country", "UGANDA");
         } catch (JSONException e) {
             e.printStackTrace();
@@ -3867,27 +3869,27 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                     @Override
                     public void onResponse(JSONObject response) {
                         am.progressDialog("0");
-                        Log.d("IMEFIKAGATEFACE1",response.toString());
+                        Log.d("IMEFIKAGATEFACE1", response.toString());
 //                        {"Status":"Accepted","Message":"Accepted","RequestID":"37236775-bf86-4240-a1db-8baafc33cbd1","ProcessID":"4C22913D-CDEA-480F-B4B1-2A1F703F110C"}
                         try {
                             JSONObject jsonObject = new JSONObject(response.toString());
                             String status = jsonObject.getString("Status");
                             String message = jsonObject.getString("Message");
-                            
-                            
+
+
                             String AnalyzeFaceDetails = jsonObject.getString("AnalyzeFaceDetails");
-                            
+
                             JSONArray jsonArrayFields = new JSONArray(AnalyzeFaceDetails);
                             JSONObject jsonFields = jsonArrayFields.getJSONObject(0);
-                            if (jsonFields.has("faceId")){
+                            if (jsonFields.has("faceId")) {
                                 faceId1 = jsonFields.getString("faceId");
                             }
 
 
                             if (status.equals("000")) {
-                                Log.d("responseSELF", faceId1)  ;
+                                Log.d("responseSELF", faceId1);
                                 faceId2 = "";
-                                getNationalIdFaceID(processID,imageURL) ;
+                                getNationalIdFaceID(processID, imageURL);
 
                             } else if (status.equals("091")) {
                                 ErrorAlert(message);
@@ -3896,7 +3898,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                         } catch (JSONException e) {
                             ErrorAlert("No client face to compare!!");
                             //e.printStackTrace();
-                            
+
 //                            Toast.makeText(AccountOpenZMain.this, "Could not retrieve cliient image from ID", Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -3914,7 +3916,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
 
     }
 
-    private void getNationalIdFaceID(String processID,String imageURL) {
+    private void getNationalIdFaceID(String processID, String imageURL) {
 
 //        {
 //            "RequestID":"GETFACE",
@@ -3930,7 +3932,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
             jsonObject.put("RequestID", "GETFACE");
             jsonObject.put("ImageID", "NATIONALID");
             jsonObject.put("ProcessID", processID);
-            jsonObject.put("ImageURL",imageURL);
+            jsonObject.put("ImageURL", imageURL);
             jsonObject.put("Country", "UGANDA");
         } catch (JSONException e) {
             e.printStackTrace();
@@ -3941,7 +3943,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                     @Override
                     public void onResponse(JSONObject response) {
                         am.progressDialog("0");
-                        Log.d("IMEFIKAGATEFACE2",response.toString());
+                        Log.d("IMEFIKAGATEFACE2", response.toString());
 //                        {"Status":"Accepted","Message":"Accepted","RequestID":"37236775-bf86-4240-a1db-8baafc33cbd1","ProcessID":"4C22913D-CDEA-480F-B4B1-2A1F703F110C"}
                         try {
                             JSONObject jsonObject = new JSONObject(response.toString());
@@ -3951,19 +3953,19 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
 
                             JSONArray jsonArrayFields = new JSONArray(AnalyzeFaceDetails);
                             JSONObject jsonFields = jsonArrayFields.getJSONObject(0);
-                            if (jsonFields.has("faceId")){
+                            if (jsonFields.has("faceId")) {
                                 faceId2 = jsonFields.getString("faceId");
                             }
 
 
-                            if (status.equals("000")){
-                                if(faceId1==null || faceId2==null || faceId1.equals("")||faceId2.equals("")) {
+                            if (status.equals("000")) {
+                                if (faceId1 == null || faceId2 == null || faceId1.equals("") || faceId2.equals("")) {
                                     ErrorAlert("No Image face to compare kindly take a clear selfie!");
 //                                    Toast.makeText(AccountOpenZMain.this, "No face to compare", Toast.LENGTH_SHORT).show();
-                                } else{
-                                    compareFaceId(faceId1,faceId2) ;
+                                } else {
+                                    compareFaceId(faceId1, faceId2);
                                 }
-                            }else if (status.equals("091")) {
+                            } else if (status.equals("091")) {
                                 ErrorAlert(message);
                             }
 
@@ -3985,11 +3987,10 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
         Log.d("faceId2", jsonObject.toString());
 
 
-
     }
 
     private void compareFaceId(String faceId1, String faceId2) {
-        Log.e("faceID",faceId1 + "-" + faceId2) ;
+        Log.e("faceID", faceId1 + "-" + faceId2);
 
         String base_URL2 = "https://imageai.azurewebsites.net/CompareFace.aspx";
         JSONObject jsonObject = new JSONObject();
@@ -4008,8 +4009,8 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        Log.e("COMPARE",response.toString())  ;
-                        am.progressDialog("0")   ;
+                        Log.e("COMPARE", response.toString());
+                        am.progressDialog("0");
 //                        Log.d("upload_compare_response", response.toString());
                         ;
 //                        {"Status":"Accepted","Message":"Accepted","RequestID":"37236775-bf86-4240-a1db-8baafc33cbd1","ProcessID":"4C22913D-CDEA-480F-B4B1-2A1F703F110C"}
@@ -4017,23 +4018,23 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                             JSONObject jsonObject = new JSONObject(response.toString());
                             String status = jsonObject.getString("Status");
                             String message = jsonObject.getString("Message");
-                           
-                            if (status.equals("000")){
-                                if(jsonObject.has("ConfidenceScore")){
+
+                            if (status.equals("000")) {
+                                if (jsonObject.has("ConfidenceScore")) {
                                     String ConfidenceScore = jsonObject.getString("ConfidenceScore");
-                                    if(AllMethods.isNumeric(ConfidenceScore)){
+                                    if (AllMethods.isNumeric(ConfidenceScore)) {
                                         Double cs_score = Double.parseDouble(ConfidenceScore);
                                         DecimalFormat formatter = new DecimalFormat("#,###,##0.00");//here 0.00 instead #.##
                                         //txtSelfieText.setText(formatter.format(cs_score)+"\nmatch");
-                                        if(cs_score>0.5){
+                                        if (cs_score > 0.5) {
                                             flipper.showNext();
                                             step_++;
                                             flipViewIt(step_);
-                                        }else{
-                                          ErrorAlert("You did not Match the Image on your Id!"); 
-                                        } 
+                                        } else {
+                                            ErrorAlert("You did not Match the Image on your Id!");
+                                        }
 
-                                    }else{
+                                    } else {
                                         ErrorAlert("Ensure the photo you take is close on hat is in your ID Card");
                                     }
                                 }
@@ -4043,7 +4044,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                             }
 
                         } catch (JSONException e) {
-                            Log.e("ErrorV",response.toString()) ;
+                            Log.e("ErrorV", response.toString());
                             e.printStackTrace();
                         }
                     }
@@ -4059,7 +4060,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
         RequestQueue queue = Volley.newRequestQueue(AccountOpenZMain.this);
         queue.add(req);
 //        Log.d("", req.toString());
-        
+
     }
 
 //    private void popupDeposit() {
@@ -4217,4 +4218,12 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
             super.onPageFinished(view, url);
         }
     }
+
+    public static byte[] getBitmapBytes(Bitmap bitmap) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 30, bytes);
+        return bytes.toByteArray();
+    }
+
+
 }

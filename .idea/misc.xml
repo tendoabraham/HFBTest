@@ -63,10 +63,12 @@
         <entry key="..\:/HFBTestApp/app/src/main/res/drawable-xxhdpi/bckgrd_text_fields.xml" value="0.1425" />
         <entry key="..\:/HFBTestApp/app/src/main/res/drawable/back_radio_button_tick.xml" value="0.1385" />
         <entry key="..\:/HFBTestApp/app/src/main/res/drawable/backrepeat.xml" value="0.1385" />
+        <entry key="..\:/HFBTestApp/app/src/main/res/drawable/bckgrd_button_yes.xml" value="0.179" />
         <entry key="..\:/HFBTestApp/app/src/main/res/drawable/bckgrd_screen.xml" value="0.1425" />
         <entry key="..\:/HFBTestApp/app/src/main/res/drawable/bckgrd_screen2.xml" value="0.1425" />
         <entry key="..\:/HFBTestApp/app/src/main/res/drawable/bckgrd_sections.xml" value="0.1425" />
         <entry key="..\:/HFBTestApp/app/src/main/res/drawable/bckgrd_sections_trans.xml" value="0.1425" />
+        <entry key="..\:/HFBTestApp/app/src/main/res/layout/activity_balance_enquiry.xml" value="0.14666666666666667" />
         <entry key="..\:/HFBTestApp/app/src/main/res/layout/activity_bank_requests.xml" value="0.14114583333333333" />
         <entry key="..\:/HFBTestApp/app/src/main/res/layout/activity_bill_options.xml" value="0.14114583333333333" />
         <entry key="..\:/HFBTestApp/app/src/main/res/layout/activity_bill_payment_airtime.xml" value="0.14114583333333333" />
@@ -80,12 +82,13 @@
         <entry key="..\:/HFBTestApp/app/src/main/res/layout/activity_funds_transfer_external.xml" value="0.14114583333333333" />
         <entry key="..\:/HFBTestApp/app/src/main/res/layout/activity_image_picker.xml" value="0.14114583333333333" />
         <entry key="..\:/HFBTestApp/app/src/main/res/layout/activity_launch_screen.xml" value="0.10461956521739131" />
-        <entry key="..\:/HFBTestApp/app/src/main/res/layout/activity_login.xml" value="0.14114583333333333" />
+        <entry key="..\:/HFBTestApp/app/src/main/res/layout/activity_login.xml" value="0.10655737704918032" />
         <entry key="..\:/HFBTestApp/app/src/main/res/layout/activity_main_menu.xml" value="0.12" />
         <entry key="..\:/HFBTestApp/app/src/main/res/layout/activity_main_open_account.xml" value="0.16666666666666666" />
         <entry key="..\:/HFBTestApp/app/src/main/res/layout/activity_main_open_account_existing.xml" value="0.12" />
         <entry key="..\:/HFBTestApp/app/src/main/res/layout/activity_main_open_account_existingcustomer.xml" value="0.14114583333333333" />
         <entry key="..\:/HFBTestApp/app/src/main/res/layout/activity_main_rao_splash.xml" value="0.1625" />
+        <entry key="..\:/HFBTestApp/app/src/main/res/layout/activity_mini_statement.xml" value="0.181640625" />
         <entry key="..\:/HFBTestApp/app/src/main/res/layout/activity_profile.xml" value="0.14114583333333333" />
         <entry key="..\:/HFBTestApp/app/src/main/res/layout/activity_recreate_key_s.xml" value="0.14114583333333333" />
         <entry key="..\:/HFBTestApp/app/src/main/res/layout/activity_recreate_key_v.xml" value="0.14114583333333333" />
@@ -108,10 +111,12 @@
         <entry key="..\:/HFBTestApp/app/src/main/res/layout/dialog_infoRAO.xml" value="0.1625" />
         <entry key="..\:/HFBTestApp/app/src/main/res/layout/dialog_info_customised.xml" value="0.16666666666666666" />
         <entry key="..\:/HFBTestApp/app/src/main/res/layout/dialog_inforao.xml" value="0.14114583333333333" />
+        <entry key="..\:/HFBTestApp/app/src/main/res/layout/fragment_cheque_stop.xml" value="0.181640625" />
         <entry key="..\:/HFBTestApp/app/src/main/res/layout/gendergroup.xml" value="0.14114583333333333" />
         <entry key="..\:/HFBTestApp/app/src/main/res/layout/joe_edittext.xml" value="0.1625" />
         <entry key="..\:/HFBTestApp/app/src/main/res/layout/joe_imageview.xml" value="0.14114583333333333" />
         <entry key="..\:/HFBTestApp/app/src/main/res/layout/joe_multichoice.xml" value="0.14114583333333333" />
+        <entry key="..\:/HFBTestApp/app/src/main/res/layout/list_item_ministatement.xml" value="0.181640625" />
         <entry key="..\:/HFBTestApp/app/src/main/res/layout/spinner_item.xml" value="0.1625" />
         <entry key="..\:/HFBTestApp/app/src/main/res/layout/webview.xml" value="0.14114583333333333" />
       </map>

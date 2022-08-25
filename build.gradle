@@ -6,13 +6,13 @@ buildscript {
         jcenter()
         mavenCentral()
         //flatDir dirs: 'E://AndroidAPPS/dexprotector-ent-11.0.79/dexprotector-ent-11.0.79'
-        flatDir dirs: '/D:/dexprotector-ent-12.1.53'
+//        flatDir dirs: '/D:/dexprotector-ent-12.1.53'
     }
 
     dependencies {
         classpath 'com.android.tools.build:gradle:4.0.2'
-        classpath ':dexprotector-gradle-plugin'
-        classpath ':dexprotector'
+//        classpath ':dexprotector-gradle-plugin'
+//        classpath ':dexprotector'
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
