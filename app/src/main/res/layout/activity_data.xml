@@ -1,9 +1,291 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:background="?attr/customBackground"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:targetApi="lollipop"
     tools:context=".main_Pages.Data">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bckgrd_header"
+            app:titleTextAppearance="@style/Toolbar_Text"
+            app:popupTheme="@style/AppTheme.PopupOverlay"/>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/appBarLayout">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="10dp"
+                android:background="@drawable/bckgrd_screen"
+                android:elevation="10dp"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/Black_Text"
+                    android:text="@string/selectAccDebited" />
+
+                <Spinner
+                    android:id="@+id/accountNumber"
+                    style="@style/Spinner_Text" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="10dp"
+                android:background="@drawable/bckgrd_screen"
+                android:elevation="10dp"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/Black_Text"
+                    android:text="@string/slctPrvdr" />
+
+                <Spinner
+                    android:id="@+id/serviceProvider"
+                    style="@style/Edit_Text" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="10dp"
+                android:background="@drawable/bckgrd_screen"
+                android:elevation="10dp"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/Black_Text"
+                    android:text="@string/selectCategory" />
+
+                <Spinner
+                    android:id="@+id/selectCategory"
+                    style="@style/Edit_Text" />
+
+                <TextView
+                    style="@style/Black_Text"
+                    android:text="@string/selectBundle" />
+
+                <Spinner
+                    android:id="@+id/selectBundle"
+                    style="@style/Edit_Text" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/mobileNos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="10dp"
+                android:background="@drawable/bckgrd_screen"
+                android:elevation="10dp"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/Black_Text"
+                    android:text="@string/selectOption" />
+
+                <RadioGroup
+                    android:id="@+id/radioGroup"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/RBTNMyNumber"
+                        style="@style/Black_Text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/ownNumber" />
+
+                    <RadioButton
+                        android:id="@+id/RBTNOtherNumber"
+                        style="@style/Black_Text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/otherNumber" />
+
+                </RadioGroup>
+
+                <TextView
+                    android:id="@+id/myNumber"
+                    style="@style/Blue_Text_Center" />
+
+                <LinearLayout
+                    android:id="@+id/othNumLyt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/ETOtherNumber"
+                        style="@style/Edit_Text"
+                        android:layout_weight="1"
+                        android:hint="@string/number"
+                        android:inputType="phone"/>
+
+                    <ImageView
+                        android:id="@+id/contacts"
+                        style="@style/Edit_Text"
+                        android:background="@drawable/bckgrd_sections"
+                        android:layout_weight="2.4"
+                        android:src="@drawable/interphone"
+                        android:onClick="getContact"
+                        tools:ignore="ContentDescription"
+                        app:tint="@color/logo_orange" />
+
+                </LinearLayout>
+
+
+                <TextView
+                    android:id="@+id/validateMTN"
+                    style="@style/Button_Yes"
+                    android:onClick="air"
+                    android:text="@string/validate" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/after"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:id="@+id/validateLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:background="@drawable/bckgrd_screen"
+                    android:layout_margin="10dp"
+                    android:elevation="10dp"
+                    android:orientation="vertical">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/valRecycler"/>
+
+                    <LinearLayout
+                        android:id="@+id/airtelLayout"
+                        android:visibility="gone"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="10dp"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:textAlignment="center"
+                            android:id="@+id/name"
+                            android:textColor="@color/colorPrimary"
+                            android:layout_gravity="center"
+                            android:text="@string/NAME" />
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:id="@+id/airtelResponse"
+                            android:textColor="@color/dark_orange"
+                            android:layout_gravity="center"
+                            />
+                    </LinearLayout>
+
+
+
+                    <TextView
+                        android:id="@+id/back"
+                        style="@style/Button_Yes"
+                        android:onClick="air"
+                        android:text="@string/back" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:visibility="gone"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/bckgrd_screen"
+                    android:elevation="10dp"
+                    android:orientation="vertical">
+
+
+                    <TextView
+                        style="@style/Black_Text"
+                        android:text="@string/enterAmount" />
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/ETAmount"
+                        style="@style/Edit_Text"
+                        android:hint="@string/amount"
+                        android:inputType="numberDecimal"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/bckgrd_screen"
+                    android:elevation="10dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/Black_Text"
+                        android:text="@string/enterTPin"/>
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/eTPin"
+                        style="@style/Edit_Text"
+                        android:longClickable="false"
+                        android:hint="@string/pin"
+                        android:inputType="numberPassword"/>
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/send"
+                    style="@style/Button_Yes"
+                    android:onClick="air"
+                    android:text="@string/pay"/>
+
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>

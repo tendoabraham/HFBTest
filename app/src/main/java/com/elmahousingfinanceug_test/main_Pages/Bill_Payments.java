@@ -7,6 +7,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -31,14 +32,17 @@ import com.elmahousingfinanceug_test.recursiveClasses.VolleyResponse;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Bill_Payments extends BaseAct implements ResponseListener, VolleyResponse {
-    Spinner accountNumber,area;
+    Spinner accountNumber,area, bouquets;
     LinearLayout step1Layout,step2Layout,step3Layout;
     EditText ETMeterAccNumber,ETAmount,ETPin;
-    TextView tVAccName,tVDisplay;
+    TextView tVAccName,tVDisplay, bouquetTitle;
     RecyclerView valRecycler;
     String pageTitle="",code="",accSend="",areaString="",areaCode="",quest="",billAccName="",billDueAmount="";
+    public static String[] FieldIDs;
+    public static String[] FieldValues;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,11 +68,21 @@ public class Bill_Payments extends BaseAct implements ResponseListener, VolleyRe
         step1Layout = findViewById(R.id.step1Layout);
         step2Layout = findViewById(R.id.step2Layout);
         step3Layout = findViewById(R.id.step3Layout);
+        bouquets = findViewById(R.id.bouquets);
+        bouquetTitle = findViewById(R.id.bouquetsText);
 
         step1Layout.setVisibility(View.VISIBLE);
         step2Layout.setVisibility(View.GONE);
         step3Layout.setVisibility(View.GONE);
         area.setVisibility(View.GONE);
+
+        String dstv = "DSTV";
+        String gotv = "GOTV";
+
+        if (pageTitle.equals(dstv) || pageTitle.equals(gotv)){
+            bouquets.setVisibility(View.VISIBLE);
+            bouquetTitle.setVisibility(View.VISIBLE);
+        }
 
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item, am.getAliases());
         dataAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
@@ -167,6 +181,30 @@ public class Bill_Payments extends BaseAct implements ResponseListener, VolleyRe
         });
 
         valRecycler.setLayoutManager(new LinearLayoutManager(this));
+
+        getBouquets(pageTitle);
+    }
+
+    public void getBouquets(String bouquet){
+        String quest = "";
+        switch (bouquet){
+            case "DSTV":
+                quest = (
+                        "FORMID:O-DataBundleConfig" +
+                                ":PROVIDER:" + bouquet + ":"
+                );
+                am.get(this,quest,getString(R.string.validating),"DSTV");
+                break;
+            case "GOTV":
+                quest = (
+                        "FORMID:O-DataBundleConfig" +
+                                ":PROVIDER:" + bouquet + ":"
+                );
+                am.get(this,quest,getString(R.string.validating),"GOTV");
+                break;
+            default:
+                break;
+        }
     }
 
     public void payments(View y) {
@@ -336,7 +374,7 @@ public class Bill_Payments extends BaseAct implements ResponseListener, VolleyRe
                     });
                     txtNo.setOnClickListener(v -> gDialog.cancel());
                     gDialog.setOnCancelListener(dialog -> {
-                        ETPin.setText("");
+//                        ETPin.setText("");
                         dialog.dismiss();
                     });
                     gDialog.show();
@@ -347,8 +385,78 @@ public class Bill_Payments extends BaseAct implements ResponseListener, VolleyRe
 
     @Override
     protected void onResume() {
-        ETPin.setText("");
+        String status = am.getOTPStatus();
+        Log.e("STAT", status);
+        if (Objects.equals(status, "1")){
+            otpTrxRequest();
+            am.saveOTPStatus("0");
+        }
+//        ETPin.setText("");
         super.onResume();
+    }
+
+    private void otpTrxRequest(){
+
+        switch (am.getMerchantID()){
+            case "007001003":
+                quest = (
+                        "FORMID:B-:" +
+                                "MERCHANTID:" + am.getMerchantID() + ":" +
+                                "BANKACCOUNTID:" + accSend + ":" +
+                                "INFOFIELD1:" + areaString + ":" +
+                                "INFOFIELD2:" + "PAYMENT" + ":" +
+                                "INFOFIELD3:" + ETMeterAccNumber.getText().toString().trim() + ":" +
+                                "INFOFIELD8:POSTOTPVALIDATE:" +
+                                "INFOFIELD9:" + am.getUserPhone() + ":"+
+                                "ACCOUNTID:" + ETMeterAccNumber.getText().toString().trim() + ":" +
+                                "AMOUNT:" + ETAmount.getText().toString().trim() + ":" +
+                                "TMPIN:" + ETPin.getText().toString().trim() + ":" +
+                                "ACTION:GETNAME:"
+
+                                        /*"FORMID:M-:" + old
+                                                "MERCHANTID:" + am.getMerchantID() + ":" +
+                                                "BANKACCOUNTID:" + accSend + ":" +
+                                                "INFOFIELD1:" + areaCode + ":" +
+                                                "INFOFIELD9:" + am.getUserPhone() + ":"+
+                                                "ACCOUNTID:" + ETMeterAccNumber.getText().toString().trim() + ":" +
+                                                "AMOUNT:" + ETAmount.getText().toString().trim() + ":" +
+                                                "TMPIN:" + ETPin.getText().toString().trim() + ":" +
+                                                "ACTION:PAYBILL:"*/
+                );
+                break;
+            case "007001002":
+            case "007001012":
+                quest = (
+                        "FORMID:M-:" +
+                                "MERCHANTID:" + am.getMerchantID() + ":" +
+                                "BANKACCOUNTID:" + accSend + ":" +
+                                "INFOFIELD1:" + billAccName + ":" +
+                                "INFOFIELD2:" + billDueAmount + ":" +
+                                "INFOFIELD3:" + am.getUserPhone() + ":"+
+                                "INFOFIELD8:POSTOTPVALIDATE:" +
+                                "ACCOUNTID:" + ETMeterAccNumber.getText().toString().trim() + ":" +
+                                "AMOUNT:" + ETAmount.getText().toString().trim() + ":" +
+                                "TMPIN:" + ETPin.getText().toString().trim() + ":" +
+                                "ACTION:PAYBILL:"
+                );
+                break;
+            default:
+                quest = (
+                        "FORMID:M-:" +
+                                "MERCHANTID:" + am.getMerchantID() + ":" +
+                                "BANKACCOUNTID:" + accSend + ":" +
+                                "INFOFIELD8:POSTOTPVALIDATE:" +
+                                "INFOFIELD9:" + am.getUserPhone() + ":"+
+                                "ACCOUNTID:" + ETMeterAccNumber.getText().toString().trim() + ":" +
+                                "AMOUNT:" + ETAmount.getText().toString().trim() + ":" +
+                                "TMPIN:" + ETPin.getText().toString().trim() + ":" +
+                                "ACTION:PAYBILL:"
+                );
+                break;
+        }
+        am.get(Bill_Payments.this,quest,getString(R.string.processingTrx),"TRX");
+        ETPin.setText("");
+        gDialog.cancel();
     }
 
     @Override
@@ -407,6 +515,34 @@ public class Bill_Payments extends BaseAct implements ResponseListener, VolleyRe
                 finish();
                 startActivity(new Intent(getApplicationContext(),SuccessDialogPage.class).putExtra("message", response));
                 break;
+            case "DSTV":
+            case "GOTV":
+                String [] TVItems = response.split("~");
+                final List <String> descriptions = new ArrayList<>(), amounts = new ArrayList<>();
+                for (String oneItem : TVItems) {
+                    String [] inside = oneItem.split("\\|");
+                    descriptions.add(inside[1].concat(" ").concat(inside[3]));
+                    amounts.add(inside[3]);
+                }
+
+                ArrayAdapter<String> dstvAdapter = new ArrayAdapter<>(this,R.layout.spinner_dropdown_item, descriptions);
+                dstvAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
+                bouquets.setAdapter(dstvAdapter);
+                bouquets.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                        ETAmount.setText(amounts.get(position));
+                        ETAmount.setEnabled(false);
+                    }
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {
+                    }
+                });
+                break;
+            case "OTPTRX":
+                startActivity(new Intent(Bill_Payments.this, OTP.class).putExtra("Merchant", am.getMerchantID()));
+                break;
         }
     }
+
 }

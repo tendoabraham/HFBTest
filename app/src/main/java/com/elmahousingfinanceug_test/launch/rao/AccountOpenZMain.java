@@ -94,6 +94,8 @@ import java.net.URLEncoder;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -107,7 +109,7 @@ import id.zelory.compressor.Compressor;
 import mumayank.com.airlocationlibrary.AirLocation;
 
 public class AccountOpenZMain extends AppCompatActivity implements ResponseListener, View.OnClickListener {
-    TextView title, prev, next, otpcountdown, tv_resend_otp, show_response, textView2, textView3;
+    TextView title, prev, next, otpcountdown, tv_resend_otp, show_response, textView2, textView3,textViewPEP;
     ProgressBar determinateBar, progressBar1;
     Bitmap bitmapImageFront, bitmapImageBack, bitmapImageSelfie;
     ViewFlipper flipper;
@@ -117,20 +119,20 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
     ImagePick front, backpick, selfie, signature;
     Spinner currselect, branchselect, employmentType, political_spin, occupation_spin, proffession_status, regionselect, districtName,
             countyName, subCountyName, parishName, villageName, eAName, spinnerMulti, alternativeBank;
-    LinearLayout ccg, currencyLayout, centeidsdetails, centeparentinfo, centesourceincome, centenextofkin,
+    LinearLayout ccg, currencyLayout, centeidsdetails, centeparentinfo, centesourceincome, centenextofkin, centepoliticallyexposedinfo,
             centecontacts, centeextras, centehearusfrom, new_Lay, existing_lay, aMr, bMrs, cMiss, alternativeDeposite;
     ScrollView pan_pin_in;
     cicEditText staffPhoneNumber, accountNumber, name, sname, otherNames, nationalID, nationalIDCardNo, DOBEdit, FatherFirstName, phoneregName, phoneregLastName,
             FatherMiddleName, FatherLastName, MotherFirstName, MotherMiddleName, MotherLastName, Address, YearsAtAddress,
             PoliticallyExposed, IncomeperAnnum, MonthlySalary, EmploymentType, Occupation, yearOfEmployment, PlaceofWork, NatureofBussiness,
             PeriodofEmployment, EmployerName, NatureofEmployment, NextofKinFirstName, NextofKinMiddleName,
-            NextofKinLastName, NextofKinPhoneNumber, NextofKinAltPhoneNumber, NextofKinAddress, EmailAddress,
+            NextofKinLastName, NextofKinPhoneNumber, NextofKinAltPhoneNumber, NextofKinAddress, EmailAddress, PEPFirstName, PEPLastName, PEPPosition,
             PhoneNumber, AlternatePhoneNumber, ActualAddress, country, zipCode, c4, c44, c45, c5, alternativeAccountNumber, bankName, branchName, accountName, PhoneNumberMobile;
 
     EditText et_acc, et_pan, et_pin, et_phone;
-    RadioGroup addressPeriod, employPeriod, accountsGroup, radioGroup, genderGroup, RGroupM, RGroupCon;
+    RadioGroup addressPeriod, employPeriod, accountsGroup, radioGroup, genderGroup, RGroupM, RGroupCon, PEGroup, FPEGroup;
     RadioButton yearsButtonM, monthsButtonM, yearsButtonE, monthsButtonE, FaceBook, Twitter,
-            Instagram, tv, rd, ss, bankstaff, HFBCustomer, Agent, male, female, mtn, airtel, yes, no;
+            Instagram, tv, rd, ss, bankstaff, HFBCustomer, Agent, male, female, mtn, airtel, yes, no, yesPE, noPE, yesFPE, noFPE;
     AppCompatCheckBox chkMobileBanking, chkPos, chkATM, chkChequeBook, chkInternetBanking, chkAgencyBanking, radiob;
     PinView otpPinView;
     HorizontalScrollView scrollAccounts;
@@ -152,12 +154,12 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
     String encodedImageFront = "", encodedImageBack = "", encodedImageSelfie = "", encodedImageSignature = "", Usertitle = "", CustomerCategory = "",
             step0 = "Customer Type & Product", step1 = "Personal details?", step2 = "Share with us your ID details", step3 = "Confirm these are your ID details",
             step4 = "Next Of Kin", step5 = "Source of Income",
-            step6 = "Terms & Conditions", step7 = "Provide Alternative account number(Bank Account or Mobile Money)", step8 = "How did you come to know about us ?", step9 = "Other services", step10 = "OTP Confirmation",
-            step11 = "Parent Information", raoOTP = "", currentTask = "", INFOFIELD1 = "", INFOFIELD2 = "", INFOFIELD3 = "",
+            step6 = "Terms & Conditions", step7 = "Provide Alternative account number(Bank Account or Mobile Money)", step8 = "Political Exposure", step9 = "How did you come to know about us ?", step10 = "OTP Confirmation", step11 = "Other services",
+            step12 = "Parent Information", raoOTP = "", currentTask = "", INFOFIELD1 = "", INFOFIELD2 = "", INFOFIELD3 = "",
             INFOFIELD4 = "", INFOFIELD5 = "", token = "", payload = "", Device = "", uri = "", extrauri = "", new_request = "",
             selectedAccount = "", selectedAccountID = "", currName = "", branchID = "", termsUrl = "", currencyURL, periodAddressString = "", periodWorkString = "", gender = "", mobileMoneyProvider = "", ProductDescription = "",
             StringPoliticallyExposed = "", occupationIDString = "", professionIDString = "", regionIDString = "", districtIDString = "", countyIDString = "",
-            subcountyIDString = "", parishIdString = "", villageIdString = "", eAIdString = "", userEmploymentType, maritalStatus, alternativeSecurityDeposit, processID = "", processID2 = "", imageURL1 = "";
+            subcountyIDString = "", parishIdString = "", villageIdString = "", eAIdString = "", userEmploymentType, maritalStatus, alternativeSecurityDeposit, processID = "", processID2 = "", imageURL1 = "", PEPexposure, FPEPexposure;
 
     boolean done = false;
     private String[] FieldIDs, FieldValues;
@@ -226,6 +228,12 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
         selfie = findViewById(R.id.selfie);
         signature = findViewById(R.id.signature);
         show_response = findViewById(R.id.show_response);
+        FPEGroup =  findViewById(R.id.FPEGroup);
+        PEGroup =  findViewById(R.id.PEGroup);
+        yesPE = findViewById(R.id.yesPE);
+        yesFPE = findViewById(R.id.yesFPE);
+        noPE = findViewById(R.id.noPE);
+        noFPE = findViewById(R.id.noFPE);
 
         currselect = findViewById(R.id.currselect);
         spinnerMulti = findViewById(R.id.spinnerMulti);
@@ -275,11 +283,13 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
         centeidsdetails = findViewById(R.id.centeidsdetails);
         alternativeDeposite = findViewById(R.id.alternativeDeposite);
         centeparentinfo = findViewById(R.id.centeparentinfo);
+        centepoliticallyexposedinfo = findViewById(R.id.centepoliticallyexposedinfo);
         centesourceincome = findViewById(R.id.centesourceincome);
         centenextofkin = findViewById(R.id.centenextofkin);
         centecontacts = findViewById(R.id.centecontacts);
         centeextras = findViewById(R.id.centeextras);
         centehearusfrom = findViewById(R.id.centehearusfrom);
+        textViewPEP= findViewById(R.id.textViewPEP);
 
         //Create Fields for user input
         generateForms();
@@ -391,7 +401,10 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                         am.separate(aProduct, "|", field_IDs, field_Values);
                         if (!accountIDs.contains(am.FindInArray(field_IDs, field_Values, "ProductID"))
                                 && (am.FindInArray(field_IDs, field_Values, "ProductID").equals("EASY")
-                                || am.FindInArray(field_IDs, field_Values, "ProductID").equals("SALCA") || am.FindInArray(field_IDs, field_Values, "ProductID").equals("PERC1"))) {
+                                || am.FindInArray(field_IDs, field_Values, "ProductID").equals("SALCA")
+                                || am.FindInArray(field_IDs, field_Values, "ProductID").equals("USAVERS")
+                                || am.FindInArray(field_IDs, field_Values, "ProductID").equals("PEAR1")
+                                || am.FindInArray(field_IDs, field_Values, "ProductID").equals("PERC1"))) {
                             accountIDs.add(am.FindInArray(field_IDs, field_Values, "ProductID"));
                             accountNames.add(am.FindInArray(field_IDs, field_Values, "ProductName"));
                             productDescription.add(am.FindInArray(field_IDs, field_Values, "ProductDescription"));
@@ -416,7 +429,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                     }
                 }
 
-               
+
 
             /*JSONObject tact = new JSONObject(am.getSavedBundle());
             accountProducts = tact.getJSONArray("OnlineAccountProduct");
@@ -848,6 +861,26 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
         });
         genderGroup.check(0);
 
+        PEGroup.setOnCheckedChangeListener((group, checkedId) -> {
+            if (yesPE.isChecked()) {
+                PEPexposure = "Yes";
+            } else if (noPE.isChecked()){
+                PEPexposure = "No";
+            }
+        });
+
+        FPEGroup.setOnCheckedChangeListener((group, checkedId) -> {
+            if (yesFPE.isChecked()) {
+                FPEPexposure = "Yes";
+                textViewPEP.setVisibility(View.VISIBLE);
+                centepoliticallyexposedinfo.setVisibility(View.VISIBLE);
+            } else if (noFPE.isChecked()) {
+                FPEPexposure = "No";
+                textViewPEP.setVisibility(View.GONE);
+                centepoliticallyexposedinfo.setVisibility(View.GONE);
+            }
+        });
+
         centecontacts.addView(genderGroup);
         employmentTypeDescription.add(0, "SelectIncomeType");
         employmentTypeDescription.add("Self-employed/Business");
@@ -1098,6 +1131,11 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
         Address = new cicEditText(this, VAR.TEXT, "Home District ", " Mwanza");
         YearsAtAddress = new cicEditText(this, VAR.AMOUNT, "Duration of living at that Address ", " 1");
 
+        //Politically exposed Details
+        PEPFirstName = new cicEditText(this, VAR.TEXT, "First name ", " John");
+        PEPLastName = new cicEditText(this, VAR.TEXT, "Last name ", " Kawooya");
+        PEPPosition = new cicEditText(this, VAR.TEXT, "Position", " Position");
+
         addressPeriod = new RadioGroup(this);
         addressPeriod.setOrientation(RadioGroup.HORIZONTAL);
 
@@ -1145,6 +1183,10 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
         centeparentinfo.addView(YearsAtAddress);
         centeparentinfo.addView(addressPeriod);
         centeparentinfo.addView(PoliticallyExposed);
+
+        centepoliticallyexposedinfo.addView(PEPFirstName);
+        centepoliticallyexposedinfo.addView(PEPLastName);
+        centepoliticallyexposedinfo.addView(PEPPosition);
 
         //Political  stuff dropdown
         /*PoliticallyExposed.setVisibility(View.GONE);
@@ -1219,7 +1261,6 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                 break;
             case 8:
                 title.setText(step8);
-                otpPinView.setEnabled(true);
                 next.setVisibility(View.VISIBLE);
                 break;
             case 9:
@@ -1228,11 +1269,13 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                 break;
             case 10:
                 title.setText(step10);
+                otpPinView.setEnabled(true);
+                next.setVisibility(View.VISIBLE);
+                break;
+            case 11:
+                title.setText(step11);
                 next.setVisibility(View.INVISIBLE);
                 break;
-//            case 11:
-//                title.setText(step11);
-//                break;
 //            case 12:
 //                title.setText(step11);
 //                break;
@@ -1306,7 +1349,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
         startActivityForResult(intent, 101);
     }
 
-    //OCR request with ID image  
+    //OCR request with ID image
 
 
     ///ImageUpload
@@ -1528,146 +1571,174 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                     public void onResponse(JSONObject response) {
                         am.progressDialog("0");
                         Log.d("IMEFIKA", response.toString());
+//                        {    "Status": "000",    "Nationality": "UGA",    "Nationality_s": "0.969",    "Gender": "M",    "Gender_s": "0.995",    "Surname": "MWEBE",    "Surname_s": "0.995",    "CardNumber": "020821698",    "CardNumber_s": "0.995",    "ExpDate": "12.02.2031",    "ExpDate_s": "0.995",    "NIN": "CM8602410E64QG",    "NIN_s": "0.995",    "BirthDate": "11.10.1986",    "BirthDate_s": "0.989",    "Name": "JOHN BOSCO",    "Name_s": "0.995"}
 //                :[{"Nationality":[{"text":"UGA","confidence":"0.995"}],"Sex":[{"text":"M","confidence":"0.989"}],"Surname":[{"text":"BIGIRWA","confidence":"0.995"}],"CardNumber":[{"text":"010394857","confidence":"0.995"}],"DateOfExpiry":[{"text":"06.06.2025","confidence":"0.995"}],"NIN":[{"text":"CM86004106Z49G","confidence":"0.983"}],"DateOfBirth":[{"text":"10.08.1986","confidence":"0.995"}],"Name":[{"text":"ISAAC","confidence":"0.978"}]}]}]
                         try {
+                            SimpleDateFormat inputFormatter = new SimpleDateFormat("yyyyMMddHHmmss");
+                            SimpleDateFormat outputFormatter = new SimpleDateFormat("yyyy-MM-dd");
 
                             String status = response.getString("Status");
-                            String message = response.getString("Message");
-                            String fields = response.getString("fields");
+                            nationality =  response.getString("Nationality");
+                            sex =  response.getString("Gender");
+                            CardNumber = response.getString("CardNumber");
+                            DateOfExpiry = response.getString("ExpDate");
+                            // Parse the birth date string to a LocalDate object
+                            String birthDateStr = response.getString("BirthDate");
+                            LocalDate birthDate = LocalDate.parse(birthDateStr, DateTimeFormatter.ofPattern("dd.MM.yyyy"));
 
-                            JSONArray jsonArrayFields = new JSONArray(fields);
-                            for (int j = 0; j < jsonArrayFields.length(); j++) {
-                                JSONObject jsonFields = jsonArrayFields.getJSONObject(j);
+                            // Format the birth date to yyyy-MM-dd
+                            String formattedBirthDate = birthDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 
-                                if (jsonFields.has("Nationality")) {
+                            // Set the updated birth date back to the Person object
+                            dob = formattedBirthDate;
 
-                                    String genderArray = jsonFields.getString("Nationality");
-
-                                    JSONArray jsonArrayGender = new JSONArray(genderArray);
-                                    for (int k = 0; k < jsonArrayGender.length(); k++) {
-                                        JSONObject jsonGender = jsonArrayGender.getJSONObject(k);
-
-                                        if (jsonGender.has("text")) {
-                                            nationality = jsonGender.getString("text");
-                                        }
-                                    }
-
-                                }
-
-                                if (jsonFields.has("Sex")) {
-
-                                    String idNumberArray = jsonFields.getString("Sex");
-
-                                    JSONArray jsonArrayID = new JSONArray(idNumberArray);
-                                    for (int l = 0; l < jsonArrayID.length(); l++) {
-
-                                        JSONObject sex = jsonArrayID.getJSONObject(l);
-
-                                    }
-
-                                }
-
-                                if (jsonFields.has("Surname")) {
-
-                                    String issueDateArray = jsonFields.getString("Surname");
-
-                                    JSONArray jsonArrayIssueDate = new JSONArray(issueDateArray);
-                                    for (int m = 0; m < jsonArrayIssueDate.length(); m++) {
-
-
-                                        JSONObject jsonIssueDate = jsonArrayIssueDate.getJSONObject(m);
-                                        if (jsonIssueDate.has("text")) {
-                                            surName = jsonIssueDate.getString("text");
-                                        }
-                                    }
-
-                                }
-
-                                if (jsonFields.has("CardNumber")) {
-
-                                    String IdSerialArray = jsonFields.getString("CardNumber");
-
-                                    JSONArray jsonArrayIDSerial = new JSONArray(IdSerialArray);
-                                    for (int n = 0; n < jsonArrayIDSerial.length(); n++) {
-
-                                        JSONObject jsonSerialNumber = jsonArrayIDSerial.getJSONObject(n);
-                                        if (jsonSerialNumber.has("text")) {
-                                            CardNumber = jsonSerialNumber.getString("text");
-                                        }
-                                    }
-
-
-                                }
-
-                                if (jsonFields.has("DateOfExpiry")) {
-
-                                    String idNumberArray = jsonFields.getString("DateOfExpiry");
-
-                                    JSONArray jsonArrayID = new JSONArray(idNumberArray);
-                                    for (int l = 0; l < jsonArrayID.length(); l++) {
-
-                                        JSONObject jsonIDNumber = jsonArrayID.getJSONObject(l);
-                                        if (jsonIDNumber.has("text")) {
-                                            DateOfExpiry = jsonIDNumber.getString("text");
-                                        }
-                                    }
-
-
-                                }
-                                if (jsonFields.has("NIN")) {
-
-                                    String idNumberArray = jsonFields.getString("NIN");
-
-                                    JSONArray jsonArrayID = new JSONArray(idNumberArray);
-                                    for (int l = 0; l < jsonArrayID.length(); l++) {
-
-                                        JSONObject jsonIDNumber = jsonArrayID.getJSONObject(l);
-                                        if (jsonIDNumber.has("text")) {
-                                            NIN = jsonIDNumber.getString("text");
-                                        }
-                                    }
-
-                                }
-
-                                if (jsonFields.has("DateOfBirth")) {
-                                    String birthDateArray = jsonFields.getString("DateOfBirth");
-
-                                    JSONArray jsonArrayBirthDate = new JSONArray(birthDateArray);
-                                    for (int q = 0; q < jsonArrayBirthDate.length(); q++) {
-
-                                        JSONObject jsonBirthDateDate = jsonArrayBirthDate.getJSONObject(q);
-                                        if (jsonBirthDateDate.has("text")) {
-                                            birthdate = jsonBirthDateDate.getString("text");
-                                        }
-                                        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
-                                        SimpleDateFormat outFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-
-                                        try {
-                                            Date date = sdf.parse(birthdate);
-                                            dob = outFormat.format(date);
-                                        } catch (ParseException e) {
-                                            e.printStackTrace();
-                                        }
-                                    }
-
-                                }
-
-                                if (jsonFields.has("Name")) {
-
-                                    String idNumberArray = jsonFields.getString("Name");
-
-                                    JSONArray jsonArrayID = new JSONArray(idNumberArray);
-                                    for (int l = 0; l < jsonArrayID.length(); l++) {
-
-                                        JSONObject jsonIDNumber = jsonArrayID.getJSONObject(l);
-                                        if (jsonIDNumber.has("text")) {
-                                            Name = jsonIDNumber.getString("text");
-                                        }
-                                    }
-
-                                }
-
+//                            dob = response.getString("BirthDate");
+                            NIN = response.getString("NIN");
+                            Name = response.getString("Name");
+                            if (response.has("Surname")) {
+                                surName = response.getString("Surname");
+                            }else{
+                                surName= Name;
                             }
+
+
+//                            String message = response.getString("Message");
+
+//                            String fields = response.getString("fields");
+//
+//                            JSONArray jsonArrayFields = new JSONArray(fields);
+//                            for (int j = 0; j < jsonArrayFields.length(); j++) {
+//                                JSONObject jsonFields = jsonArrayFields.getJSONObject(j);
+//
+//                                if (jsonFields.has("Nationality")) {
+//
+//                                    String genderArray = response.getString("Nationality");
+//
+//                                    JSONArray jsonArrayGender = new JSONArray(genderArray);
+//                                    for (int k = 0; k < jsonArrayGender.length(); k++) {
+//                                        JSONObject jsonGender = jsonArrayGender.getJSONObject(k);
+//
+//                                        if (jsonGender.has("text")) {
+//                                            nationality = jsonGender.getString("text");
+//                                        }
+//                                    }
+//
+//                                }
+//
+//                                if (jsonFields.has("Sex")) {
+//
+//                                    String idNumberArray = jsonFields.getString("Sex");
+//
+//                                    JSONArray jsonArrayID = new JSONArray(idNumberArray);
+//                                    for (int l = 0; l < jsonArrayID.length(); l++) {
+//
+//                                        JSONObject sex = jsonArrayID.getJSONObject(l);
+//
+//                                    }
+//
+//                                }
+//
+//                                if (jsonFields.has("Surname")) {
+//
+//                                    String issueDateArray = jsonFields.getString("Surname");
+//
+//                                    JSONArray jsonArrayIssueDate = new JSONArray(issueDateArray);
+//                                    for (int m = 0; m < jsonArrayIssueDate.length(); m++) {
+//
+//
+//                                        JSONObject jsonIssueDate = jsonArrayIssueDate.getJSONObject(m);
+//                                        if (jsonIssueDate.has("text")) {
+//                                            surName = jsonIssueDate.getString("text");
+//                                        }
+//                                    }
+//
+//                                }
+//
+//                                if (jsonFields.has("CardNumber")) {
+//
+//                                    String IdSerialArray = jsonFields.getString("CardNumber");
+//
+//                                    JSONArray jsonArrayIDSerial = new JSONArray(IdSerialArray);
+//                                    for (int n = 0; n < jsonArrayIDSerial.length(); n++) {
+//
+//                                        JSONObject jsonSerialNumber = jsonArrayIDSerial.getJSONObject(n);
+//                                        if (jsonSerialNumber.has("text")) {
+//                                            CardNumber = jsonSerialNumber.getString("text");
+//                                        }
+//                                    }
+//
+//
+//                                }
+//
+//                                if (jsonFields.has("DateOfExpiry")) {
+//
+//                                    String idNumberArray = jsonFields.getString("DateOfExpiry");
+//
+//                                    JSONArray jsonArrayID = new JSONArray(idNumberArray);
+//                                    for (int l = 0; l < jsonArrayID.length(); l++) {
+//
+//                                        JSONObject jsonIDNumber = jsonArrayID.getJSONObject(l);
+//                                        if (jsonIDNumber.has("text")) {
+//                                            DateOfExpiry = jsonIDNumber.getString("text");
+//                                        }
+//                                    }
+//
+//
+//                                }
+//                                if (jsonFields.has("NIN")) {
+//
+//                                    String idNumberArray = jsonFields.getString("NIN");
+//
+//                                    JSONArray jsonArrayID = new JSONArray(idNumberArray);
+//                                    for (int l = 0; l < jsonArrayID.length(); l++) {
+//
+//                                        JSONObject jsonIDNumber = jsonArrayID.getJSONObject(l);
+//                                        if (jsonIDNumber.has("text")) {
+//                                            NIN = jsonIDNumber.getString("text");
+//                                        }
+//                                    }
+//
+//                                }
+//
+//                                if (jsonFields.has("DateOfBirth")) {
+//                                    String birthDateArray = jsonFields.getString("DateOfBirth");
+//
+//                                    JSONArray jsonArrayBirthDate = new JSONArray(birthDateArray);
+//                                    for (int q = 0; q < jsonArrayBirthDate.length(); q++) {
+//
+//                                        JSONObject jsonBirthDateDate = jsonArrayBirthDate.getJSONObject(q);
+//                                        if (jsonBirthDateDate.has("text")) {
+//                                            birthdate = jsonBirthDateDate.getString("text");
+//                                        }
+//                                        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
+//                                        SimpleDateFormat outFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+//
+//                                        try {
+//                                            Date date = sdf.parse(birthdate);
+//                                            dob = outFormat.format(date);
+//                                        } catch (ParseException e) {
+//                                            e.printStackTrace();
+//                                        }
+//                                    }
+//
+//                                }
+//
+//                                if (jsonFields.has("Name")) {
+//
+//                                    String idNumberArray = jsonFields.getString("Name");
+//
+//                                    JSONArray jsonArrayID = new JSONArray(idNumberArray);
+//                                    for (int l = 0; l < jsonArrayID.length(); l++) {
+//
+//                                        JSONObject jsonIDNumber = jsonArrayID.getJSONObject(l);
+//                                        if (jsonIDNumber.has("text")) {
+//                                            Name = jsonIDNumber.getString("text");
+//                                        }
+//                                    }
+//
+//                                }
+//
+//                            }
 
 
                             if (status.equals("000")) {
@@ -1718,7 +1789,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
 //           surname = sname.getText().replace(" ","-") ;
 //        } else{
 //            surname  = sname.getText().toString();
-//            
+//
 //        }
         new_request = "FORMID:M-:" +
                 "MERCHANTID:NIRA:" + "ACCOUNTID:" + nationalID.getText() + ":" +
@@ -2639,6 +2710,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                             break;
                         case "RAO":
                             show_response.setText(Message);
+                            Log.e("Message", message);
                             success_failed.setVisibility(View.VISIBLE);
                             //STATUS:000:MESSAGE:Dear Customer We have received your application, we shall respond with the status of your Application with in 24hrs call 0800200555/0800335344 for more info or send an email to cente_mobile@centenarybank.co.ug.~You can Deposit to this Account Using;~
                             //Wallet to Bank Transactions (Momo and Airtel Money)| url~ ATM Deposit| url~ Agent Banking| url~T.Ts| url~Wire Transfer| url~Western Union| url~At any HFB Bank Branch countrywide (Uganda).| url
@@ -3121,10 +3193,12 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                     } else if (TextUtils.isEmpty(nationalIDCardNo.getText())) {
                         ErrorAlert("Invalid Card Number.");
                     } else {
-//                        step_++;
-//                        flipViewIt(step_);
-//                        flipper.showNext();
-                        niraValidation();
+                        // TODO: enable NIRA validation and comment out flipper
+                        step_++;
+                        flipViewIt(step_);
+                        flipper.showNext();
+
+//                        niraValidation();
                         //Was for political dropdown
                         /*if(politicsIDs.isEmpty()) {
                             if(am.getCountry().equals("UGANDATEST")) getPoliticalExposed();
@@ -3141,7 +3215,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
 //                    }
 //                    else if(TextUtils.isEmpty(NextofKinAltPhoneNumber.getText())){
 //                        ErrorAlert("Next of Kin alternate phone number required");
-//                    } 
+//                    }
                     else {
                         am.putSaveNextofKinCountry(NextofKinPhoneNumber.citizenship.getSelectedItemPosition());
                         am.putSaveAltNextofKinCountry(NextofKinAltPhoneNumber.citizenship.getSelectedItemPosition());
@@ -3157,7 +3231,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                         //Was for address drop down
                         /*if(regionsIds.isEmpty()){
                             if(am.getCountry().equals("UGANDATEST")) getAddressParam("REGION","FetchRegion", "");
-                            
+
                               centesourceincome.addView(IncomeperAnnum);
                         centesourceincome.addView(NatureofEmployment);
                         centesourceincome.addView(NatureofBussiness);
@@ -3195,7 +3269,6 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                         step_++;
                         flipViewIt(step_);
                         flipper.showNext();
-
                     }
 
                 } else if (step_ == 6) {
@@ -3328,8 +3401,29 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                         flipViewIt(step_);
                         flipper.showNext();
                     }
-                } else if (step_ == 8) {
+                } else if (step_ == 8){
+                    otpPinView.setEnabled(true);
+                    int selectedRadioButtonId = PEGroup.getCheckedRadioButtonId();
+                    int selectedRadioButtonId2 = FPEGroup.getCheckedRadioButtonId();
+                    if (selectedRadioButtonId == -1) {
+                        ErrorAlert("Please state if you're politically exposed");
+                    } else if (selectedRadioButtonId2 == -1){
+                        ErrorAlert("Please state if you are connected to someone who is politically exposed");
+                    } else if (yesFPE.isChecked() && TextUtils.isEmpty(PEPFirstName.getText().trim())) {
+                        ErrorAlert("Please fill in the First Name of your politically exposed relative");
+                    } else if (yesFPE.isChecked() && TextUtils.isEmpty(PEPLastName.getText().trim())) {
+                        ErrorAlert("Please fill in the Last Name of your politically exposed relative");
+                    }else if (yesFPE.isChecked() && TextUtils.isEmpty(PEPPosition.getText().trim())) {
+                        ErrorAlert("Please fill in the position of your politically exposed relative");
+                    }else {
+                        step_++;
+                        prev.setVisibility(View.VISIBLE);
+                        flipViewIt(step_);
+                        flipper.showNext();
+                    }
+                } else if (step_ == 9) {
                     CustomerCategory = customer_cat_.getSelectedCategory();
+                    int selectedRadioBtnId = radioGroup.getCheckedRadioButtonId();
                     otpPinView.setEnabled(true);
                     if (TextUtils.isEmpty(EmailAddress.getText().trim())) {
                         ErrorAlert("Email Address required");
@@ -3343,7 +3437,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                         ErrorAlert("EA Name required");}*/
 //                    else if(TextUtils.isEmpty(maritalStatus.getText())) {
 //                        ErrorAlert("Marital Status required");
-//                    } 
+//                    }
                     else if (TextUtils.isEmpty(ActualAddress.getText())) {
                         ErrorAlert("Address required");
                     } else if (ActualAddress.getText().length() > 25) {
@@ -3394,10 +3488,12 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                         ErrorAlert("Bank Staff Phone Number required");
                     } else if (!radiob.isChecked()) {
                         ErrorAlert("Please accept terms and conditions to proceed");
-                    } else if (!tv.isChecked() && !ss.isChecked() && !bankstaff.isChecked() && !HFBCustomer.isChecked() && !Agent.isChecked()) {
+                    } else if (selectedRadioBtnId == -1) {
                         ErrorAlert("Recommended by required");
                     } else if (tv.isChecked() && TextUtils.isEmpty(c4.getText())) {
-                        ErrorAlert("TV/Radio station required");
+                        ErrorAlert("TV station required");
+                    }else if (rd.isChecked() && TextUtils.isEmpty(c4.getText())) {
+                        ErrorAlert("Radio station required");
                     } else if (ss.isChecked() && !FaceBook.isChecked() && !Twitter.isChecked() && !Instagram.isChecked()) {
                         ErrorAlert("Social media platform required");
                     } else if (bankstaff.isChecked() && TextUtils.isEmpty(c4.getText())) {
@@ -3534,7 +3630,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                         /*if(am.getCountry().equals("UGANDATEST")){
                             INFOFIELD3 = "INFOFIELD3:CURRENT_LOCATION|"+ c5.getText() +"|ADDRESS|"+ ActualAddress.getText() +"|HOME_DISTRICT|"+ Address.getText() +"|YEARS_AT_ADDRESS|"+ YearsAtAddress.getText().concat(periodAddressString)+"|POLITICALLY_EXPOSED|"+StringPoliticallyExposed+"|CITY|"+city.getText()+"|ZIPCODE|"+zipCode.getText();
                         }*/
-                        INFOFIELD3 = "INFOFIELD3:CURRENT_LOCATION|" + c5.getText() + "|ADDRESS|" + ActualAddress.getText() + "|HOME_DISTRICT|" + Address.getText() + "|YEARS_AT_ADDRESS|" + YearsAtAddress.getText().concat(periodAddressString) + "|POLITICALLY_EXPOSED|" + PoliticallyExposed.getText() + "|MARITALSTATUS|" + maritalStatus + "|ZIPCODE|" + zipCode.getText();
+                        INFOFIELD3 = "INFOFIELD3:CURRENT_LOCATION|" + c5.getText() + "|ADDRESS|" + ActualAddress.getText() + "|HOME_DISTRICT|" + Address.getText() + "|YEARS_AT_ADDRESS|" + YearsAtAddress.getText().concat(periodAddressString) + "|POLITICALLY_EXPOSED|" + PEPexposure + "|MARITALSTATUS|" + maritalStatus + "|ZIPCODE|" + zipCode.getText();
 
                         /*if(am.getCountry().equals("UGANDATEST")){
                             INFOFIELD4 = "INFOFIELD4:INCOME_PER_ANUM|"+ IncomeperAnnum.getText() +"|EMPLOYMENT_TYPE|"+ professionIDString +"|OCCUPATION|"+ occupationIDString +"|PLACE_OF_WORK|"+ PlaceofWork.getText() +"|NATURE_OF_BUSINESS_SECTOR|"+ NatureofBussiness.getText() +"|PERIOD_OF_EMPLOYMENT|"+ PeriodofEmployment.getText().concat(periodWorkString) +"|EMPLOYER_NAME|"+ EmployerName.getText() +"|NATURE|"+ NatureofEmployment.getText();
@@ -3553,8 +3649,12 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                         currentTask = "RequestOTP";
                         createOTP();
 
+                        step_++;
+                        prev.setVisibility(View.VISIBLE);
+                        flipViewIt(step_);
+                        flipper.showNext();
                     }
-                } else if (step_ == 9) {
+                } else if (step_ == 10) {
                     if (TextUtils.isEmpty(raoOTP)) {
                         ErrorAlert("One time password required");
                     } else if (raoOTP.length() < 6) {
@@ -3666,8 +3766,6 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
 //                popupDeposit() ;
                 finish();
                 startActivity(new Intent(this, DepositOptionsActivity.class));
-
-
                 break;
 
         }
@@ -4084,7 +4182,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
 //
 //        });
 //        mDialog.show();
-//        
+//
 //    }
 
     private void depositMethodes(String message) {

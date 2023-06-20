@@ -109,7 +109,10 @@ public class Main_Menu extends BaseAct implements NavigationView.OnNavigationIte
                 am.get(Main_Menu.this,
                         "FORMID:B-:" +
                                 "MERCHANTID:BALANCE:" +
-                                "BANKACCOUNTID:" + selectedAccount + ":",
+                                "BANKACCOUNTID:" + selectedAccount + ":" +
+                                "MOBILENUMBER:" + am.getUserPhone() + ":" +
+                                "BANKID:" + am.getBankID() + ":" +
+                                "COUNTRY:" + am.getCountry() + ":",
                         getString(R.string.loading_ellipsis),"BAL");
             }
             @Override
@@ -146,7 +149,7 @@ public class Main_Menu extends BaseAct implements NavigationView.OnNavigationIte
                 startActivity(new Intent(getApplicationContext(), Funds_Transfer.class));
                 break;
             case R.id.airTimeServices:
-                startActivity(new Intent(getApplicationContext(), Airtime_Services.class));
+                startActivity(new Intent(getApplicationContext(), Airtime_And_Data_Options.class));
                 break;
             case R.id.mobileMoney:
                 startActivity(new Intent(getApplicationContext(), Mobile_Money_Two.class));

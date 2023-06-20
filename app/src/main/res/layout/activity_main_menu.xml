@@ -51,8 +51,7 @@
 
                     <Spinner
                         android:id="@+id/accountNumber"
-                        style="@style/Spinner_Text"
-                        android:layout_height="48dp" />
+                        style="@style/Spinner_Text" />
 
                     <TextView
                         android:visibility="gone"
@@ -213,7 +212,7 @@
 
                         <TextView
                             style="@style/White_Text_Center"
-                            android:text="@string/airtimeServ"/>
+                            android:text="@string/airtimeanddata"/>
 
                     </LinearLayout>
 

@@ -119,10 +119,22 @@
         <entry key="..\:/HFBTestApp/app/src/main/res/layout/list_item_ministatement.xml" value="0.181640625" />
         <entry key="..\:/HFBTestApp/app/src/main/res/layout/spinner_item.xml" value="0.1625" />
         <entry key="..\:/HFBTestApp/app/src/main/res/layout/webview.xml" value="0.14114583333333333" />
+        <entry key="..\:/Users/Abraham.Tendo/AndroidStudioProjects/HFBTest/app/src/main/res/layout/activity_airtime_and_data_options.xml" value="0.1" />
+        <entry key="..\:/Users/Abraham.Tendo/AndroidStudioProjects/HFBTest/app/src/main/res/layout/activity_bill_payment_airtime.xml" value="0.1" />
+        <entry key="..\:/Users/Abraham.Tendo/AndroidStudioProjects/HFBTest/app/src/main/res/layout/activity_bill_payments.xml" value="0.1" />
+        <entry key="..\:/Users/Abraham.Tendo/AndroidStudioProjects/HFBTest/app/src/main/res/layout/activity_data.xml" value="0.1" />
+        <entry key="..\:/Users/Abraham.Tendo/AndroidStudioProjects/HFBTest/app/src/main/res/layout/activity_login.xml" value="0.1" />
+        <entry key="..\:/Users/Abraham.Tendo/AndroidStudioProjects/HFBTest/app/src/main/res/layout/activity_main_menu.xml" value="0.1" />
+        <entry key="..\:/Users/Abraham.Tendo/AndroidStudioProjects/HFBTest/app/src/main/res/layout/activity_main_open_account.xml" value="0.1" />
+        <entry key="..\:/Users/Abraham.Tendo/AndroidStudioProjects/HFBTest/app/src/main/res/layout/activity_mobile_money_two.xml" value="0.1" />
+        <entry key="..\:/Users/Abraham.Tendo/AndroidStudioProjects/HFBTest/app/src/main/res/layout/activity_otp.xml" value="0.1" />
+        <entry key="..\:/Users/Abraham.Tendo/AndroidStudioProjects/HFBTest/app/src/main/res/layout/centeotp.xml" value="0.1" />
+        <entry key="..\:/Users/Abraham.Tendo/AndroidStudioProjects/HFBTest/app/src/main/res/layout/customer_cat_.xml" value="0.1" />
+        <entry key="..\:/Users/Abraham.Tendo/AndroidStudioProjects/HFBTest/app/src/main/res/layout/politicallyexposed.xml" value="0.1" />
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" project-jdk-name="11" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

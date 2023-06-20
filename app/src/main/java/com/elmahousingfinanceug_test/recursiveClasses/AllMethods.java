@@ -33,6 +33,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.JsonObjectRequest;
@@ -76,7 +78,9 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.crypto.BadPaddingException;
@@ -229,6 +233,7 @@ public class AllMethods {
         }
         return h;
     }
+
     public void saveA(String t) {
         SP("AT", t);
     }
@@ -322,6 +327,13 @@ public class AllMethods {
         SP("BANKNAME",bN);
     }
 
+    public String getStaticData() {
+        return gSP("STATICDATA");
+    }
+    public void saveStaticData(String staticverse) {
+        SP("STATICDATA", staticverse);
+    }
+
     public String getBankAccountID(int on) {
         String decAcc =  gSP("BANKACCOUNTID");
         String[] accountID = decAcc.split(",");
@@ -403,6 +415,22 @@ public class AllMethods {
 
     public void saveUserPic(String uP) {
         SP("USERPIC", uP);
+    }
+
+    public String getOTPStatus() {
+        return gSP("OTPSTATUS");
+    }
+
+    public void saveOTPStatus(String uP) {
+        SP("OTPSTATUS", uP);
+    }
+
+    public String getOTP() {
+        return gSP("OTP");
+    }
+
+    public void saveOTP(String uP) {
+        SP("OTP", uP);
     }
 
     Boolean getChangePin() {
@@ -939,7 +967,7 @@ public class AllMethods {
         try {
             if (status.equals("1")) {
                 idleHandler.removeCallbacks(idleRunnable);
-                cancelHandler.postDelayed(cancelRunnable,1800);
+                cancelHandler.postDelayed(cancelRunnable,45000);
                 dialogLoad.show();
             } else {
                 if(dialogLoad.isShowing()) dialogLoad.cancel();
@@ -1260,6 +1288,8 @@ public class AllMethods {
 
     public void get(final ResponseListener responseListener, String she, String task, final String step) {
         final String finalShe = she.concat(finale(step));
+        Log.e("She", finalShe);
+        Log.e("task", task);
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject
@@ -1273,6 +1303,7 @@ public class AllMethods {
         } catch (final JSONException e) {
             LogThis("JSONException : " + e.getMessage());
         }
+
         setProgressMessage(task);
         progressDialog("1");
         AndroidNetworking
@@ -1282,8 +1313,10 @@ public class AllMethods {
                 .doNotCacheResponse()
                 .build()
                 .getAsJSONObject(new JSONObjectRequestListener() {
+
                     @Override
                     public void onResponse(JSONObject response) {
+                        Log.e("response", response.toString());
                         try {
                             String status = response.getString("respCode");
                             switch (status) {
@@ -1308,6 +1341,8 @@ public class AllMethods {
                                     uri = SPAN(uri, machine).concat("?c=S");
                                     extrauri = SPAN(extrauri, machine);
 
+                                    Log.e("uri", uri);
+                                    Log.e("extraUri", extrauri);
                                     if(step.contains("RAO")) {
                                         //Use ExtraUri to fetch and Post large data chunks
                                         RAOApiCall(finalShe, extrauri, machine, responseListener, token, step);
@@ -1340,6 +1375,7 @@ public class AllMethods {
     private void connect (String request, String baseUrl, final String result, final ResponseListener responseListener, final String token, final String step){
         LogThis("send ► " + request);
         baseUrl = baseUrl + BIND(request,result);
+        Log.e("URL", baseUrl);
         AndroidNetworking
                 .get(baseUrl)
                 .addHeaders("T", token)
@@ -1356,6 +1392,7 @@ public class AllMethods {
                             response=REVERSE(response,result);
                             LogThis("response ◄§► "+response);
 
+                            Log.e("ValidationResponse", response);
                             Activity activity = (Activity)context;
                             if (activity.getClass().equals(Login.class) || activity.getClass().equals(AccountOpenSplash.class) || activity.getClass().equals(AccountOpenZMain.class) || step.equals("CON")) {
                                 responseListener.onResponse(response,step);
@@ -1368,6 +1405,9 @@ public class AllMethods {
                                     case "00":
                                         responseListener.onResponse(message,step);
                                         break;
+                                    case "096":
+                                        responseListener.onResponse(message,"OTPTRX");
+                                        break;
                                     default:
                                         myDialog(context,context.getString(R.string.alert), message);
                                         break;
@@ -1375,6 +1415,7 @@ public class AllMethods {
                             }
                         } catch (Exception e) {
                             LogThis("FormatError ► "+e.getMessage());
+                            Log.e("Error", e.getMessage());
                             myDialog(context, context.getString(R.string.alert),context.getString(R.string.tryAgain));
                         }
                     }
@@ -1414,6 +1455,7 @@ public class AllMethods {
                             String rao_response = response.getString("Response");
                             rao_response= REVERSE(rao_response,machine);
                             LogThis("response ◄§► "+rao_response);
+                            Log.e("RAOResponse", rao_response);
                             responseListener.onResponse(rao_response,step);
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -1497,6 +1539,174 @@ public class AllMethods {
                 });
     }
 
+    public void get_(final ResponseListener responseListener, String she, String task, final String step) {
+        final String finalShe = she.concat(finale(step));
+        Log.e("FinalShe", finalShe);
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject
+                    .put("MobileNumber",getUserPhone())
+                    .put("Device",getIMEI())
+                    .put("lat",getLatitude())
+                    .put("longit",getLongitude())
+                    .put("rashi",HashLatest(finalShe))
+                    .put("appName",getAppName())
+                    .put("codeBase","ANDROID");
+        } catch (final JSONException e) {
+            LogThis("JSONException ► "+ e.getMessage());
+        }
+        if(!step.contains("_LOAD")){
+            setProgressDialogMessage(task);
+        }
+        progressDialog("1");
+        jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, get_T(), jsonObject,
+                response -> {
+                    try {
+                        switch (response.getString("respCode")) {
+                            case "000":
+                            case "OK":
+                            case "00":
+                                String token = response.getString("token"),
+                                        payload = response.getString("payload"),
+                                        array_data=response.getString("data");
+                                JSONObject jOPayload = new JSONObject(payload);
+                                String machine = jOPayload.getString("Device"),
+                                        uri = jOPayload.getString("Uri"),
+                                        extraUri = jOPayload.getString("ExtraUri");
+                                array_data=array_data.replace("[","");
+                                array_data=array_data.replace("]","");
+                                String [] indexValues = array_data.split(",");
+                                char [] viceArray = machine.toCharArray();
+                                machine="";
+                                for (String anIndexValue : indexValues) {
+                                    machine = String.format("%s%s", machine, viceArray[Integer.parseInt(anIndexValue)]);
+                                }
+                                uri=SPAN(uri,machine)+"?c=S";
+                                extraUri = SPAN(extraUri, machine);
+                                if (step.equals("sendImg")) {
+//                                        sendImages(finalShe, extraUri, machine, responseListener, token, step);
+                                } else {
+                                    connect_(finalShe, uri, machine, responseListener, token, step);
+                                }
+                                break;
+                            default:
+                                progressDialog("0");
+                                ToastMessageLong(context, response.getString("message"));
+                                break;
+                        }
+                    } catch (Exception e) {
+                        LogThis("JSONResponseError ► "+e.getMessage());
+                        progressDialog("0");
+                        ToastMessageLong(context, context.getString(R.string.tokenTryLater));
+                    }
+                },
+                error -> {
+                    LogThis("VolleyErrorToken ► "+ error.getMessage());
+                    progressDialog("0");
+                    myDialog(context, context.getString(R.string.alert),context.getString(R.string.connectionError));
+                }
+        )
+        {
+            @Override
+            public Priority getPriority() {
+                return Priority.IMMEDIATE;
+            }
+            @Override
+            public String getBodyContentType() {
+                return "application/json";
+            }
+        };
+        jsonObjectRequest.setShouldCache(false);
+        jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(55000,0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        getQ.add(jsonObjectRequest);
+    }
+
+    private void connect_(String request, String baseUrl, final String at, final ResponseListener responseListener, final String reading, final String step) {
+        LogThis("send ► " + request);
+        Log.e("Request", request);
+        Log.e("BaseURL", baseUrl);
+        baseUrl = baseUrl + BIND(request,at);
+        stringRequest = new StringRequest(Request.Method.GET,baseUrl,
+                response -> {
+                    try {
+                        if(!step.contains("_LOAD")){
+                            progressDialog("0");
+                        }
+                        response=response.replace("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">","");
+                        response=response.replace("\r\n","");
+                        response=response.replace("\n","");
+                        response=SPAN(response,at);
+                        LogThis("response ◄§► "+ response);
+                        Log.e("Response1", response);
+
+                        Activity activity = (Activity)context;
+                        if (activity.getClass().equals(Login.class)
+                                || step.equals("DET")
+                                || step.equals("CHZ")
+                                || step.equals("chkPhone")
+                                || step.equals("reqOTP")
+                                || step.equals("verifyOTP")
+                                || step.equals("reqNewAcc")
+                                || step.equals("sendImg")
+                                || step.equals("CON")
+                                || step.equals("ABD")
+                                || step.equals("GETIN")
+                                || step.equals("BK_ADD_LOAD")) {
+                            responseListener.onResponse(response,step);
+                        } else {
+                            String [] splits = response.split(":");
+                            String status = splits[1], message = splits[3];
+                            switch (status) {
+                                case "000":
+                                case "OK":
+                                case "00":
+                                    Log.e("MEsss", response);
+                                    responseListener.onResponse(message,step);
+                                    break;
+                                default:
+                                    myDialog(context,context.getString(R.string.alert), message);
+                                    break;
+                            }
+                        }
+                    }  catch (Exception e) {
+                        LogThis("FormatError ► "+ e.getMessage());
+                        myDialog(context, context.getString(R.string.alert),context.getString(R.string.tryLater));
+                    }
+                },
+                error -> {
+                    LogThis("VolleyErrorConnect ► " + error.getMessage());
+                    progressDialog("0");
+                    myDialog(context,context.getString(R.string.alert),context.getString(R.string.connectionError));
+                })
+        {
+            @Override
+            public Priority getPriority() {
+                return Priority.HIGH;
+            }
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String,String> params = new HashMap<>();
+                params.put("T", reading);
+                return params;
+            }
+        };
+        stringRequest.setShouldCache(false);
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy (55000,0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        connectQ.add(stringRequest);
+    }
+
+    private String get_T() {
+        if(getCountry().equalsIgnoreCase("UGANDA"))
+            //return D_T("i08xK31BsSJc3T1ddzDDdAnzV0OaGMAoD7cptUntZMestLhbjjOgG5XkBCUkuXb2WyBywHoeBQSGxu1c6y9/Yw==");
+            //return D_T("SK8jLvHib4OLFAuYb4Yfbp3s9KN48ShYNVmek1n1zlipEO3ByCb38QN+nsi7SPlr");
+            return "https://app.craftsilicon.com/AuthServ/api/auth/apps";
+        else
+            return D_T("ITcYFtXDh2esU+aOXoJr9ugd1yLhebnlFQJKUA6ulV0YcG1DUP99OfWWPTNCk9VoeDHVv5rd5C0QY0EGJ3SE3g==");
+    }
+
+    private void setProgressDialogMessage(String message) {
+        progressMessage.setText(message);
+    }
 
     public void setBal(String bal) {
         SP("Bal", bal);

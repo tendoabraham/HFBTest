@@ -467,4 +467,23 @@
         <item>Employed/Salary</item>
         <item>Others</item>
     </array>
+    <string name="resend">RESEND</string>
+    <string name="waitingOtp">Waiting to detect the OTP sent…</string>
+    <string name="generatingOtp">Generating OTP…</string>
+    <string name="otpCap">OTP</string>
+    <string name="in">in</string>
+    <string name="didNot">Didn\'t receive ?</string>
+    <string name="isPoliticallyExposed">Do you hold/have you ever held a senior government position (Executive Director of a state-owned agency, Permanent secretary), political or military position?
+</string>
+    <string name="isFamPoliticallyExposed">Are you connected to a person who holds or has held a senior government position (Executive Director of a state-owned agency, Permanent secretary), political or military position?
+</string>
+    <string name="politicallyExposedDetails">Please state the name and position of your politically exposed family member.</string>
+    <string name="data">Data Purchase</string>
+    <string name="airtimeanddata">Airtime and Data</string>
+    <string name="selectCategory">Select Category</string>
+    <string name="selectBundle">Select Bundle</string>
+    <string name="tryLater">Please try again later</string>
+    <string name="fetchBundles">fetching bundles</string>
+    <string name="NAME">NAME</string>
+    <string name="selectBouquet">Select Bouquet</string>
 </resources>

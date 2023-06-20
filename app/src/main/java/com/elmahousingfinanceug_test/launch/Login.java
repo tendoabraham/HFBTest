@@ -130,6 +130,8 @@ public class Login extends AppCompatActivity implements ResponseListener, Volley
                 startActivity(new Intent(this, AccountOpenSplash.class));
                 break;
             case R.id.loginBn:
+//                TODO: Comment out before sharing
+//                startActivity(new Intent(this, Main_Menu.class));
                 if (eTPin.getText().length() < 4) {
                     eTPin.setError(getString(R.string.enterPIn));
                 } else {
@@ -297,7 +299,7 @@ public class Login extends AppCompatActivity implements ResponseListener, Volley
     }
 
     @Override
-        public void onPause(){
+    public void onPause(){
         try {
             if(SDK_INT >= M) {
                 if(am.getManLog() && mFingerprintUiHelper.isFingerprintAuthAvailable()){
@@ -392,7 +394,7 @@ public class Login extends AppCompatActivity implements ResponseListener, Volley
                 case "00":
                 case "OK":
                 case "102":
-                    case "108":
+                case "108":
                     am.saveFirstTimeUser(false);
                     userDetails(response,true);
                     am.saveDoneTrx(false);

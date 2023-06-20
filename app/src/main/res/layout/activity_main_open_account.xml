@@ -86,6 +86,8 @@
 
             <include layout="@layout/alternativedeposit" />
 
+            <include layout="@layout/politicallyexposed"/>
+
             <include layout="@layout/centehearusfrom" />
             <!-- <include layout="@layout/centeextras"/>-->
             <include layout="@layout/centeotp" />
@@ -212,5 +214,5 @@
             android:contentDescription="@string/app_name" />
 
     </RelativeLayout>
-    
+
 </RelativeLayout>

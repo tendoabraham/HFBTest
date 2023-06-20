@@ -5,12 +5,14 @@ buildscript {
         google()
         jcenter()
         mavenCentral()
+//        TODO: Activate dex protector
         //flatDir dirs: 'E://AndroidAPPS/dexprotector-ent-11.0.79/dexprotector-ent-11.0.79'
 //        flatDir dirs: '/D:/dexprotector-ent-12.1.53'
     }
 
     dependencies {
         classpath 'com.android.tools.build:gradle:4.0.2'
+        //        TODO: Activate dex protector
 //        classpath ':dexprotector-gradle-plugin'
 //        classpath ':dexprotector'
         // NOTE: Do not place your application dependencies here; they belong

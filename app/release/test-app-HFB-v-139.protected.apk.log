@@ -1,0 +1,13 @@
+--- console.txt ----
+
+DexProtector Enterprise v12.7.87 (20220729), Licel Corporation
+
+parse 'detectExposedSecrets'
+parent params: com.licel.dexprotector.SecurityAssessmentParams@731f8236
+
+--- log.txt ----
+
+Forking DexProtector with the command line: 
+C:\Users\Abraham.Tendo\Downloads\DexProtectorStudio2-12.5.45.1-windows\jdk\bin\java -cp C:\Craft\Craft\AppDev\dexprotector-ent-12.7.87\dexprotector.jar com.licel.dexprotector.ConsoleTask -configfile C:\Users\ABRAHA~1.TEN\AppData\Local\Temp\config12320579284536631656.xml -logfile C:\Users\ABRAHA~1.TEN\AppData\Local\Temp\log3262572179740880453.txt -fork C:\Users\Abraham.Tendo\AndroidStudioProjects\HFBTest\app\release\test-app-HFB-v-139.apk C:\Users\Abraham.Tendo\AndroidStudioProjects\HFBTest\app\release\test-app-HFB-v-139.protected.apk
+Mode: CLI
+

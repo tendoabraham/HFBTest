@@ -44,7 +44,7 @@
         app:itemCount="6"
         app:itemHeight="48dp"
         app:itemRadius="4dp"
-        app:itemSpacing="10dp"
+        app:itemSpacing="5dp"
         app:itemWidth="48dp"
         app:lineColor="@color/colorPrimary"
         app:lineWidth="0dp"

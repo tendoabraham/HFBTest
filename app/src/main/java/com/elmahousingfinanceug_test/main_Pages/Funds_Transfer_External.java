@@ -32,6 +32,7 @@ import com.elmahousingfinanceug_test.recursiveClasses.VolleyResponse;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Funds_Transfer_External extends BaseAct implements ResponseListener, VolleyResponse {
     Spinner accountNumber,bankName,branchName;
@@ -151,20 +152,58 @@ public class Funds_Transfer_External extends BaseAct implements ResponseListener
 
     @Override
     public void onResume() {
-        ETPin.setText("");
+//        ETPin.setText("");
         if(!bankSet) {
             quest = (
                 "FORMID:O-GetCentralizedEFTRTGSBanks:" +
                         "MODULENAME:" + am.getMerchantID() + ":" +
                         "BANKID:" + am.getBankID() + ":"
-                    /*"FORMID:O-GetCommercialBankIDAndName-" +
-                            "MODULENAME-" + am.getMerchantID() + "-" +
-                            "BANKID-" + am.getBankID() + ":"*/
             );
-            //am.connectOldTwo(getString(R.string.fetchingBanks), quest,this, "CBK");
             am.get(this,quest,getString(R.string.fetchingBanks),"CBK");
         }
+
+        String status = am.getOTPStatus();
+        Log.e("STAT", status);
+        if (Objects.equals(status, "1")){
+            otpTrxRequest();
+            am.saveOTPStatus("0");
+        }
         super.onResume();
+    }
+
+//    @Override
+//    protected void onResume() {
+//        String status = am.getOTPStatus();
+//        Log.e("STAT", status);
+//        if (Objects.equals(status, "1")){
+//            otpTrxRequest();
+//            am.saveOTPStatus("0");
+//        }
+////        ETPin.setText("");
+//        super.onResume();
+//    }
+
+    private void otpTrxRequest(){
+        quest = (
+                "FORMID:B-:" +
+                        "MERCHANTID:" + am.getMerchantID() + ":" +
+                        "BANKACCOUNTID:" + srcAcc + ":" +
+                        "INFOFIELD1:" + selectedShortCode + ":" +
+                        "INFOFIELD2:" + bankCode + ":" +
+                        "INFOFIELD3:" + branchCode + ":" +
+                        "INFOFIELD4:" + ETBenName.getText().toString().trim()  + ":" +
+                        "INFOFIELD5:" + selectedBranchName + ":" +
+                        "INFOFIELD6:" +  ETBenAddress.getText().toString().trim()  + ":" +
+                        "INFOFIELD8:POSTOTPVALIDATE:" +
+                        "TOACCOUNT:" + ETAccount.getText().toString().trim() + ":" +
+                        "AMOUNT:" + ETAmount.getText().toString().trim() + ":" +
+                        "MESSAGE:" + ETMessage.getText().toString().trim() + ":" +
+                        "TMPIN:" + ETPin.getText().toString().trim() + ":"
+        );
+        //am.connectOldTwo(getString(R.string.processingTrx), quest, Funds_Transfer_External.this, "TRX");
+        am.get(Funds_Transfer_External.this,quest,getString(R.string.processingTrx),"TRX");
+        ETPin.setText("");
+        gDialog.cancel();
     }
 
     public void fT(View t) {
@@ -301,7 +340,7 @@ public class Funds_Transfer_External extends BaseAct implements ResponseListener
                 gDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
                     @Override
                     public void onCancel(DialogInterface dialog) {
-                        ETPin.setText("");
+//                        ETPin.setText("");
                         dialog.dismiss();
                     }
                 });
@@ -434,6 +473,9 @@ public class Funds_Transfer_External extends BaseAct implements ResponseListener
             case "TRX":
                 finish();
                 startActivity(new Intent(getApplicationContext(), SuccessDialogPage.class).putExtra("message", response));
+                break;
+            case "OTPTRX":
+                startActivity(new Intent(Funds_Transfer_External.this, OTP.class).putExtra("Merchant", am.getMerchantID()));
                 break;
         }
     }

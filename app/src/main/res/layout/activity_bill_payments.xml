@@ -149,6 +149,17 @@
 
                 <TextView
                     style="@style/Blue_Text"
+                    android:id="@+id/bouquetsText"
+                    android:visibility="gone"
+                    android:text="@string/selectBouquet" />
+
+                <Spinner
+                    android:id="@+id/bouquets"
+                    android:visibility="gone"
+                    style="@style/Spinner_Text" />
+
+                <TextView
+                    style="@style/Blue_Text"
                     android:text="@string/EnterAmount" />
 
                 <com.google.android.material.textfield.TextInputEditText

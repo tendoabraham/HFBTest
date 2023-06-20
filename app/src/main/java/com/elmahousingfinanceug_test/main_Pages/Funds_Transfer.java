@@ -8,6 +8,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -32,6 +33,7 @@ import com.elmahousingfinanceug_test.recursiveClasses.SuccessDialogPage;
 import com.elmahousingfinanceug_test.recursiveClasses.VolleyResponse;
 
 import java.text.DecimalFormat;
+import java.util.Objects;
 
 public class Funds_Transfer extends BaseAct implements ResponseListener, VolleyResponse {
     Spinner accountNumber,accountNumber2;
@@ -244,7 +246,7 @@ public class Funds_Transfer extends BaseAct implements ResponseListener, VolleyR
                 gDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
                     @Override
                     public void onCancel(DialogInterface dialog) {
-                        ETPin.setText("");
+//                        ETPin.setText("");
                         dialog.dismiss();
                     }
                 });
@@ -255,8 +257,31 @@ public class Funds_Transfer extends BaseAct implements ResponseListener, VolleyR
 
     @Override
     protected void onResume() {
-        ETPin.setText("");
+        String status = am.getOTPStatus();
+        Log.e("STAT", status);
+        if (Objects.equals(status, "1")){
+            otpTrxRequest();
+            am.saveOTPStatus("0");
+        }
+//        ETPin.setText("");
         super.onResume();
+    }
+
+    private void otpTrxRequest(){
+        quest = (
+                "FORMID:B-:" +
+                        "MERCHANTID:TRANSFER:" +
+                        "BANKACCOUNTID:" + accSend + ":" +
+                        "TOACCOUNT:" + recipient + ":" +
+                        "INFOFIELD8:POSTOTPVALIDATE:" +
+                        "AMOUNT:" + ETAmount.getText().toString().trim() + ":" +
+                        "MESSAGE:" + ETMessage.getText().toString().trim() + ":" +
+                        "TMPIN:" + ETPin.getText().toString().trim() + ":"
+        );
+        //am.connectOldTwo(getString(R.string.processingTrx), quest, Funds_Transfer.this, "TRX");
+        am.get(Funds_Transfer.this,quest,getString(R.string.processingTrx),"TRX");
+        ETPin.setText("");
+        gDialog.cancel();
     }
 
     @Override
@@ -307,6 +332,9 @@ public class Funds_Transfer extends BaseAct implements ResponseListener, VolleyR
                 am.saveDoneTrx(true);
                 finish();
                 startActivity(new Intent(getApplicationContext(), SuccessDialogPage.class).putExtra("message", response));
+                break;
+            case "OTPTRX":
+                startActivity(new Intent(Funds_Transfer.this, OTP.class).putExtra("Merchant", am.getMerchantID()));
                 break;
         }
     }

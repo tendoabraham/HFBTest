@@ -4,9 +4,13 @@
       <root url="jar://$PROJECT_DIR$/../ptc_android_challenge_Agnes_Musyoka-development_mocklab/caches/transforms-2/files-2.1/ee74169b6bb93910b68a55a2baac0beb/jetified-play-services-auth-20.0.1/jars/classes.jar!/" />
       <root url="file://$PROJECT_DIR$/../ptc_android_challenge_Agnes_Musyoka-development_mocklab/caches/transforms-2/files-2.1/ee74169b6bb93910b68a55a2baac0beb/jetified-play-services-auth-20.0.1/res" />
       <root url="file://$PROJECT_DIR$/../ptc_android_challenge_Agnes_Musyoka-development_mocklab/caches/transforms-2/files-2.1/ee74169b6bb93910b68a55a2baac0beb/jetified-play-services-auth-20.0.1/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/ee74169b6bb93910b68a55a2baac0beb/jetified-play-services-auth-20.0.1/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/ee74169b6bb93910b68a55a2baac0beb/jetified-play-services-auth-20.0.1/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/ee74169b6bb93910b68a55a2baac0beb/jetified-play-services-auth-20.0.1/res" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$PROJECT_DIR$/../ptc_android_challenge_Agnes_Musyoka-development_mocklab/caches/modules-2/files-2.1/com.google.android.gms/play-services-auth/20.0.1/b3a08c387d1881fa68ba39bcfda91815bad81a46/play-services-auth-20.0.1-javadoc.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.android.gms/play-services-auth/20.0.1/b3a08c387d1881fa68ba39bcfda91815bad81a46/play-services-auth-20.0.1-javadoc.jar!/" />
     </JAVADOC>
     <SOURCES />
   </library>

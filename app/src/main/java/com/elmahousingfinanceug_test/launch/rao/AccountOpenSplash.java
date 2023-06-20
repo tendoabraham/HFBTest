@@ -25,7 +25,7 @@ import mumayank.com.airlocationlibrary.AirLocation;
 
 public class AccountOpenSplash extends AppCompatActivity implements ResponseListener {
     private AllMethods am;
-   private AirLocation airLocation;
+    private AirLocation airLocation;
     private static final int REQUEST_ID_AIRLOCATION = 1235;
 
     @Override
@@ -70,11 +70,11 @@ public class AccountOpenSplash extends AppCompatActivity implements ResponseList
         findViewById(R.id.submit).setOnClickListener(v -> {
             am.get(this,
                     "FORMID:O-GetBankHFStaticData:" + //GetBankStaticData GetBankHFStaticData
-                    "MOBILENUMBER:" + am.getUserPhone() + ":" +
-                    "BANKID:" + am.getBankID() + ":",
+                            "MOBILENUMBER:" + am.getUserPhone() + ":" +
+                            "BANKID:" + am.getBankID() + ":",
                     getString(R.string.processingReq),"RAO_GSD");
         });
-      
+
     }
 
     @Override
@@ -87,6 +87,7 @@ public class AccountOpenSplash extends AppCompatActivity implements ResponseList
 
     @Override
     public void onResponse(String response, String step) {
+        Log.e("RAORESS", response);
         String[] howLong = response.split(":");
         String[] fieldIds = new String[howLong.length/2];
         String[] fieldValues = new String[howLong.length/2];
@@ -126,5 +127,5 @@ public class AccountOpenSplash extends AppCompatActivity implements ResponseList
                     break;
             }
         }
-    } 
+    }
 }

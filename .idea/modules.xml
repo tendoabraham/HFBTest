@@ -2,11 +2,11 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/HFBTestApp.iml" filepath="$PROJECT_DIR$/.idea/modules/HFBTestApp.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/HFBTestApp.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/HFBTestApp.app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/HFBTestApp.app.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/HFBTestApp.app.androidTest.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/HFBTestApp.app.main.iml" filepath="$PROJECT_DIR$/.idea/modules/app/HFBTestApp.app.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/HFBTestApp.app.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/HFBTestApp.app.unitTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/HFBTest.iml" filepath="$PROJECT_DIR$/.idea/modules/HFBTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/HFBTest.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/HFBTest.app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/HFBTest.app.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/HFBTest.app.androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/HFBTest.app.main.iml" filepath="$PROJECT_DIR$/.idea/modules/app/HFBTest.app.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/HFBTest.app.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/HFBTest.app.unitTest.iml" />
     </modules>
   </component>
 </project>

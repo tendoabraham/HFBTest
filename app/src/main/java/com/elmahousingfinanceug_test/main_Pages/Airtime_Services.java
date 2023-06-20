@@ -12,6 +12,7 @@ import android.provider.ContactsContract;
 import android.telephony.PhoneNumberUtils;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,7 +27,11 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.elmahousingfinanceug_test.R;
+import com.elmahousingfinanceug_test.main_Pages.Adapters.AdapterKeyValue;
 import com.elmahousingfinanceug_test.recursiveClasses.BaseAct;
 import com.elmahousingfinanceug_test.recursiveClasses.ResponseListener;
 import com.elmahousingfinanceug_test.recursiveClasses.SuccessDialogPage;
@@ -35,16 +40,18 @@ import com.elmahousingfinanceug_test.recursiveClasses.VolleyResponse;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Airtime_Services extends BaseAct implements ResponseListener, VolleyResponse {
     EditText ETOtherNumber,ETAmount,eTPin;
     Spinner accountNumber,serviceProvider;
     RadioGroup radioGroup;
     RadioButton RBTNMyNumber,RBTNOtherNumber;
-    TextView  myNumber;
-    LinearLayout mobileNos,othNumLayout;
+    TextView  myNumber, validateMTN, validateAirtel, airtelResponse;
+    LinearLayout mobileNos,othNumLayout, after, validateLayout,airtelLayout;
     ImageView contactsVw;
-    String  accSend="",phoneReceive="",quest="";
+    RecyclerView valRecycler;
+    String  accSend="",phoneReceive="", sendPhoneStr = "",quest="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +74,14 @@ public class Airtime_Services extends BaseAct implements ResponseListener, Volle
         mobileNos = findViewById(R.id.mobileNos);
         othNumLayout = findViewById(R.id.othNumLyt);
         contactsVw= findViewById(R.id.contacts);
+        validateLayout = findViewById(R.id.validateLayout);
+        valRecycler = findViewById(R.id.valRecycler);
+        airtelResponse = findViewById(R.id.airtelResponse);
+        airtelLayout = findViewById(R.id.airtelLayout);
+        after = findViewById(R.id.after);
+        validateMTN = findViewById(R.id.validateMTN);
+        validateAirtel = findViewById(R.id.validateAirtel);
+
 
         mobileNos.setVisibility(View.GONE);
 
@@ -92,8 +107,6 @@ public class Airtime_Services extends BaseAct implements ResponseListener, Volle
         arrayList.add(getString(R.string.selectOne));
         arrayList.add("Airtel");
         arrayList.add("MTN");
-        arrayList.add("Africell");
-        arrayList.add("UTL");
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item, arrayList);
         dataAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
         serviceProvider.setAdapter(dataAdapter);
@@ -104,12 +117,12 @@ public class Airtime_Services extends BaseAct implements ResponseListener, Volle
                     mobileNos.setVisibility(View.VISIBLE);
                     if (position == 1) {
                         am.saveMerchantID("AIRTELUG");
+                        validateMTN.setVisibility(View.GONE);
+                        validateAirtel.setVisibility(View.VISIBLE);
                     } else if (position == 2) {
                         am.saveMerchantID("MTNUGAIRTIME");
-                    } else if (position == 3) {
-                        am.saveMerchantID("AFRICELUG");
-                    } else if (position == 4) {
-                        am.saveMerchantID("UTLUG");
+                        validateAirtel.setVisibility(View.GONE);
+                        validateMTN.setVisibility(View.VISIBLE);
                     }
                 } else {
                     mobileNos.setVisibility(View.GONE);
@@ -136,34 +149,34 @@ public class Airtime_Services extends BaseAct implements ResponseListener, Volle
         });
         RBTNMyNumber.setChecked(true);
 
-
-        ETAmount.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                String bal = am.getBal().replace(",", "");
-                Double balance = Double.parseDouble(bal);
-
-                DecimalFormat formatter = new DecimalFormat("#,###,##0.00");//here 0.00 instead #.##
-                //txtSelfieText.setText(formatter.format(cs_score)+"\nmatch");
-                String inputedAmount = String.valueOf(s);
-                if (!inputedAmount.equals("")&&(Double.parseDouble(inputedAmount)) >= balance) {
-                    am.myDialog(Airtime_Services.this, getString(R.string.alert), getString(R.string.insufficient_funds));
-                    eTPin.setEnabled(false);
-                }
-
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
+//          TODO: Uncomment
+//        ETAmount.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//                String bal = am.getBal().replace(",", "");
+//                Double balance = Double.parseDouble(bal);
+//
+//                DecimalFormat formatter = new DecimalFormat("#,###,##0.00");//here 0.00 instead #.##
+//                //txtSelfieText.setText(formatter.format(cs_score)+"\nmatch");
+//                String inputedAmount = String.valueOf(s);
+//                if (!inputedAmount.equals("")&&(Double.parseDouble(inputedAmount)) >= balance) {
+//                    am.myDialog(Airtime_Services.this, getString(R.string.alert), getString(R.string.insufficient_funds));
+//                    eTPin.setEnabled(false);
+//                }
+//
+//
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable s) {
+//
+//            }
+//        });
 
         eTPin.addTextChangedListener(new TextWatcher() {
             @Override
@@ -177,79 +190,156 @@ public class Airtime_Services extends BaseAct implements ResponseListener, Volle
             @Override
             public void afterTextChanged(Editable s) {}
         });
+        valRecycler.setLayoutManager(new LinearLayoutManager(this));
     }
 
     public void air(View a) {
-        if(accSend.equals("")){
-            am.myDialog(this, getString(R.string.alert), getString(R.string.selectAccDebited));
-        } else if (am.getMerchantID().equals("")) {
-            am.myDialog(this, getString(R.string.alert), getString(R.string.slctPrvdr));
-        }  else if (RBTNOtherNumber.isChecked() &&  ETOtherNumber.getText().toString().trim().length() < 4){
-            am.myDialog(this, getString(R.string.alert),getString(R.string.invalidMobileNo));
-        } else if (ETAmount.getText().toString().trim().isEmpty()) {
-            am.myDialog(this, getString(R.string.alert), getString(R.string.enterValidAmount));
-        } else if (eTPin.getText().toString().trim().length() < 4) {
-            am.myDialog(this, getString(R.string.alert), getString(R.string.enterValidPin));
-        } else {
-            if(RBTNMyNumber.isChecked()){
-                phoneReceive = am.getUserPhone();
-            } else {
-                am.saveSendPhone(ETOtherNumber.getText().toString().trim());
-                phoneReceive = am.getSendPhone();
-            }
-            gDialog = new Dialog(this);
-            //noinspection ConstantConditions
-            gDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            gDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            gDialog.setContentView(R.layout.dialog_confirm);
-            final TextView txtMessage = gDialog.findViewById(R.id.dialog_message);
-            final TextView txtOk = gDialog.findViewById(R.id.yesBTN);
-            final TextView txtNo = gDialog.findViewById(R.id.noBTN);
-            txtMessage.setText(String.format("%s %s %s %s %s %s.",
-                    getText(R.string.purchaseTopup),
-                    serviceProvider.getSelectedItem().toString().trim(),
-                    getString(R.string.airtimeworthUGX),
-                    am.Amount_Thousands(ETAmount.getText().toString().trim()),
-                    getText(R.string.forNumber),
-                    phoneReceive));
-            txtOk.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+        switch (a.getId()) {
+            case R.id.validateMTN:
+                if (RBTNOtherNumber.isChecked() && ETOtherNumber.getText().length() < 4) {
+                    am.myDialog(this, getString(R.string.alert), getString(R.string.enterValidPhoneAcc));
+                    ETOtherNumber.setError(getString(R.string.enterValidPhoneAcc));
+                } else {
+                    if (RBTNMyNumber.isChecked()) {
+                        sendPhoneStr = am.getUserPhone();
+                    } else {
+                        am.saveSendPhone(ETOtherNumber.getText().toString().trim());
+                        sendPhoneStr = am.getSendPhone();
+                    }
                     quest = (
                             "FORMID:M-:" +
-                                    "MERCHANTID:" + am.getMerchantID() + ":" +
-                                    "BANKACCOUNTID:" + accSend + ":" +
-                                    "ACCOUNTID:" + phoneReceive + ":" +
-                                    "AMOUNT:" + ETAmount.getText().toString().trim() + ":" +
-                                    "TMPIN:" + eTPin.getText().toString().trim() + ":" +
-                                    "ACTION:PAYBILL:"
+                                    "MERCHANTID:MMONEYUGMTN:" +
+                                    "ACCOUNTID:" + sendPhoneStr + ":" +
+                                    "BANKID:" + am.getBankID() + ":" +
+                                    "ACTION:GETNAME:"
                     );
-                    //am.connectOldTwo(getString(R.string.processingTrx),quest,Airtime_Services.this,"TRX");
-                    am.get(Airtime_Services.this,quest,getString(R.string.processingTrx),"TRX");
-                    gDialog.cancel();
+                    //am.connectOldTwo(getString(R.string.validating),quest,this,"MTN");
+                    am.get(this, quest, getString(R.string.validating), "MTN");
                 }
-            });
-            txtNo.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    gDialog.cancel();
-                }
-            });
-            gDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-                @Override
-                public void onCancel(DialogInterface dialog) {
-                    eTPin.setText("");
-                    dialog.dismiss();
-                }
-            });
-            gDialog.show();
-        }
-    }
+                break;
 
-    @Override
-    protected void onResume() {
-        eTPin.setText("");
-        super.onResume();
+            case R.id.validateAirtel:
+                if (RBTNOtherNumber.isChecked() && ETOtherNumber.getText().length() < 4) {
+                    am.myDialog(this, getString(R.string.alert), getString(R.string.enterValidPhoneAcc));
+                    ETOtherNumber.setError(getString(R.string.enterValidPhoneAcc));
+                } else {
+                    if (RBTNMyNumber.isChecked()) {
+                        sendPhoneStr = am.getUserPhone();
+                    } else {
+                        am.saveSendPhone(ETOtherNumber.getText().toString().trim());
+                        sendPhoneStr = am.getSendPhone();
+                    }
+                    String noSpaceMobile = sendPhoneStr.replaceAll("\\s+", "");
+                    String noSpecialXters = noSpaceMobile.replaceAll("[^a-zA-Z0-9]", " ");
+                    String strZipCodeRemovalPattern = "^256+(?!$)";
+                    String cleanMobile = noSpecialXters.replaceAll(strZipCodeRemovalPattern, "0");
+//                    String strPattern = "^0+(?!$)";
+//                    String mobilenumber = cleanMobile.replaceAll(strPattern, "");
+
+
+                    quest = (
+                            "FORMID:M-:" +
+                                    "MERCHANTID:HFBMMONEY:" +
+                                    "INFOFIELD1:VALIDATE:" +
+                                    "INFOFIELD2:AIRTEL:" +
+                                    "ACCOUNTID:" + cleanMobile + ":" +
+                                    "SERVICEACCOUNTID:" + cleanMobile + ":" +
+                                    "COUNTRY:" + am.getCountry() + ":" +
+                                    "BANKNAME:HFB:" +
+                                    "BANKID:" + am.getBankID() + ":" +
+                                    "ACTION:GETNAME:"
+                    );
+                    am.get(this, quest, getString(R.string.validating), "AIRTEL");
+
+
+                    //am.connectOldTwo(getString(R.string.validating),quest,this,"MTN");
+                }
+                break;
+            case R.id.back:
+                eTPin.setText("");
+                validateLayout.setVisibility(View.GONE);
+                after.setVisibility(View.GONE);
+                airtelLayout.setVisibility(View.GONE);
+                if (serviceProvider.getSelectedItemPosition() == 1){
+                    validateMTN.setVisibility(View.VISIBLE);
+                    validateAirtel.setVisibility(View.GONE);
+                }else{
+                    validateAirtel.setVisibility(View.VISIBLE);
+                    validateMTN.setVisibility(View.GONE);
+                }
+
+                break;
+            case R.id.send:
+                if(accSend.equals("")){
+                    am.myDialog(this, getString(R.string.alert), getString(R.string.selectAccDebited));
+                } else if (am.getMerchantID().equals("")) {
+                    am.myDialog(this, getString(R.string.alert), getString(R.string.slctPrvdr));
+                }  else if (RBTNOtherNumber.isChecked() &&  ETOtherNumber.getText().toString().trim().length() < 4){
+                    am.myDialog(this, getString(R.string.alert),getString(R.string.invalidMobileNo));
+                } else if (ETAmount.getText().toString().trim().isEmpty()) {
+                    am.myDialog(this, getString(R.string.alert), getString(R.string.enterValidAmount));
+                } else if (eTPin.getText().toString().trim().length() < 4) {
+                    am.myDialog(this, getString(R.string.alert), getString(R.string.enterValidPin));
+                } else {
+                    if(RBTNMyNumber.isChecked()){
+                        phoneReceive = am.getUserPhone();
+                    } else {
+                        am.saveSendPhone(ETOtherNumber.getText().toString().trim());
+                        phoneReceive = am.getSendPhone();
+                    }
+                    gDialog = new Dialog(this);
+                    //noinspection ConstantConditions
+                    gDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                    gDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                    gDialog.setContentView(R.layout.dialog_confirm);
+                    final TextView txtMessage = gDialog.findViewById(R.id.dialog_message);
+                    final TextView txtOk = gDialog.findViewById(R.id.yesBTN);
+                    final TextView txtNo = gDialog.findViewById(R.id.noBTN);
+                    txtMessage.setText(String.format("%s %s %s %s %s %s.",
+                            getText(R.string.purchaseTopup),
+                            serviceProvider.getSelectedItem().toString().trim(),
+                            getString(R.string.airtimeworthUGX),
+                            am.Amount_Thousands(ETAmount.getText().toString().trim()),
+                            getText(R.string.forNumber),
+                            phoneReceive));
+                    txtOk.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            quest = (
+                                    "FORMID:M-:" +
+                                            "MERCHANTID:" + am.getMerchantID() + ":" +
+                                            "BANKACCOUNTID:" + accSend + ":" +
+                                            "ACCOUNTID:" + phoneReceive + ":" +
+                                            "AMOUNT:" + ETAmount.getText().toString().trim() + ":" +
+                                            "TMPIN:" + eTPin.getText().toString().trim() + ":" +
+                                            "ACTION:PAYBILL:"
+                            );
+                            //am.connectOldTwo(getString(R.string.processingTrx),quest,Airtime_Services.this,"TRX");
+                            am.get(Airtime_Services.this,quest,getString(R.string.processingTrx),"TRX");
+
+//                        startActivity(new Intent(Airtime_Services.this, OTP.class).putExtra("Merchant", am.getMerchantID()));
+
+
+                            gDialog.cancel();
+                        }
+                    });
+                    txtNo.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            gDialog.cancel();
+                        }
+                    });
+                    gDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                        @Override
+                        public void onCancel(DialogInterface dialog) {
+//                            eTPin.setText("");
+                            dialog.dismiss();
+                        }
+                    });
+                    gDialog.show();
+                }
+                break;
+        }
     }
 
     @Override
@@ -269,6 +359,36 @@ public class Airtime_Services extends BaseAct implements ResponseListener, Volle
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onResume() {
+        String status = am.getOTPStatus();
+        Log.e("STAT", status);
+        if (Objects.equals(status, "1")){
+            otpTrxRequest();
+            am.saveOTPStatus("0");
+        }
+//        ETPin.setText("");
+        super.onResume();
+    }
+
+    private void otpTrxRequest(){
+
+        quest = (
+                "FORMID:M-:" +
+                        "MERCHANTID:" + am.getMerchantID() + ":" +
+                        "BANKACCOUNTID:" + accSend + ":" +
+                        "ACCOUNTID:" + phoneReceive + ":" +
+                        "AMOUNT:" + ETAmount.getText().toString().trim() + ":" +
+                        "TMPIN:" + eTPin.getText().toString().trim() + ":" +
+                        "INFOFIELD8:POSTOTPVALIDATE:" +
+                        "ACTION:PAYBILL:"
+        );
+        //am.connectOldTwo(getString(R.string.processingTrx),quest,Airtime_Services.this,"TRX");
+        am.get(Airtime_Services.this,quest,getString(R.string.processingTrx),"TRX");
+        eTPin.setText("");
+        gDialog.cancel();
     }
 
     @Override
@@ -305,8 +425,37 @@ public class Airtime_Services extends BaseAct implements ResponseListener, Volle
 
     @Override
     public void onResponse(String response, String step) {
-        am.saveDoneTrx(true);
-        finish();
-        startActivity(new Intent(getApplicationContext(), SuccessDialogPage.class).putExtra("message", response));
+        Log.e("Response11", response);
+        switch (step) {
+            case "MTN":
+                String[] howLong = response.split("\\|");
+                String[] field_IDs = new String[howLong.length / 2];
+                String[] field_Values = new String[howLong.length / 2];
+                am.separate(response, "|", field_IDs, field_Values);
+                valRecycler.setVisibility(View.VISIBLE);
+                valRecycler.setAdapter(new AdapterKeyValue(field_IDs, field_Values));
+                airtelLayout.setVisibility(View.GONE);
+                validateMTN.setVisibility(View.GONE);
+                validateLayout.setVisibility(View.VISIBLE);
+                after.setVisibility(View.VISIBLE);
+                airtelLayout.setVisibility(View.GONE);
+                break;
+            case "AIRTEL":
+                validateAirtel.setVisibility(View.GONE);
+                validateLayout.setVisibility(View.VISIBLE);
+                airtelLayout.setVisibility(View.VISIBLE);
+                airtelResponse.setText(response);
+                after.setVisibility(View.VISIBLE);
+                valRecycler.setVisibility(View.GONE);
+                break;
+            case "TRX":
+                am.saveDoneTrx(true);
+                finish();
+                startActivity(new Intent(getApplicationContext(), SuccessDialogPage.class).putExtra("message", response));
+                break;
+            case "OTPTRX":
+                startActivity(new Intent(Airtime_Services.this, OTP.class).putExtra("Merchant", am.getMerchantID()));
+                break;
+        }
     }
 }

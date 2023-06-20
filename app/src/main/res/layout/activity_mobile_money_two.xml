@@ -132,9 +132,18 @@
                     android:id="@+id/validateMTN"
                     style="@style/Button_Yes"
                     android:onClick="transferBTN"
+                    android:visibility="gone"
+                    android:text="@string/validate" />
+
+                <TextView
+                    android:id="@+id/validateAirtel"
+                    style="@style/Button_Yes"
+                    android:onClick="transferBTN"
+                    android:visibility="gone"
                     android:text="@string/validate" />
 
             </LinearLayout>
+
 
             <LinearLayout
                 android:id="@+id/after"
@@ -144,7 +153,6 @@
 
                 <LinearLayout
                     android:id="@+id/validateLayout"
-                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/bckgrd_screen"
@@ -156,6 +164,34 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:id="@+id/valRecycler"/>
+
+                    <LinearLayout
+                        android:id="@+id/airtelLayout"
+                        android:visibility="gone"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="10dp"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:textAlignment="center"
+                            android:id="@+id/name"
+                            android:textColor="@color/colorPrimary"
+                            android:layout_gravity="center"
+                            android:text="@string/NAME" />
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:id="@+id/airtelResponse"
+                            android:textColor="@color/dark_orange"
+                            android:layout_gravity="center"
+                            />
+                    </LinearLayout>
+
+
 
                     <TextView
                         android:id="@+id/back"
