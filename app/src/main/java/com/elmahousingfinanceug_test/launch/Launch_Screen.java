@@ -42,7 +42,9 @@ public class Launch_Screen extends AppCompatActivity {
     private static final int M_PHONE_STATE = 778;
 
     enum ENV_CHECK {
-        ROOT(0), DEBUG(1), EMULATOR(2), XPOSED(3), CUSTOM_FIRMWARE (4), INTEGRITY (5), WIRELESS_SECURITY(6);
+        ROOT(0), DEBUG(1),
+        EMULATOR(2),
+        XPOSED(3), CUSTOM_FIRMWARE (4), INTEGRITY (5), WIRELESS_SECURITY(6);
         private final int idx;
         ENV_CHECK(final int newIdx) {
             idx = newIdx;
@@ -105,7 +107,7 @@ public class Launch_Screen extends AppCompatActivity {
                 if(!am.getCustomerIDLaunch().equals("")) am.saveCustomerID(am.getCustomerIDLaunch());
             }
             if(am.getCountry().equals("")) am.saveCountry("UGANDATEST");
-            if(am.getIdleTime()==0) am.saveIdleTime("180000");
+            if(am.getIdleTime()==0) am.saveIdleTime("100000");
             if(am.getAppName().equals("")) am.saveAppName();
             if(am.getBankID().equals("")) am.saveBankID();
             // TEST 2021      01001216339        459483989

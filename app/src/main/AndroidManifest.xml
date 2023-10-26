@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="com.elmahousingfinanceug_test">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -40,9 +39,15 @@
         android:windowSoftInputMode="adjustPan"
         tools:replace="android:icon">
         <activity
+            android:name=".main_Pages.CopyPage"
+            android:exported="false" />
+        <activity
+            android:name=".main_Pages.Beneficiaries"
+            android:exported="false" />
+        <activity
             android:name=".main_Pages.OTP"
             android:exported="false"
-            android:theme="@style/AppTheme"/>
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".main_Pages.Data"
             android:exported="false" />
@@ -72,6 +77,7 @@
 
         <activity
             android:name=".launch.Launch_Screen"
+            android:exported="true"
             android:theme="@style/Theme_I">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -81,6 +87,7 @@
         </activity>
         <activity
             android:name=".launch.Login"
+            android:exported="true"
             android:theme="@style/Theme_I">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -89,7 +96,7 @@
 
         <receiver
             android:name=".recursiveClasses.ZNewSmsReceiver"
-            android:exported="true"
+            android:exported="false"
             android:permission="com.google.android.gms.auth.api.phone.permission.SEND">
             <intent-filter>
                 <action android:name="com.google.android.gms.auth.api.phone.SMS_RETRIEVED" />

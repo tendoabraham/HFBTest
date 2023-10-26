@@ -48,18 +48,20 @@
         </RadioGroup>
 
         <TextView
-            android:textStyle="normal"
+            android:visibility="gone"
+            android:textStyle="bold"
             android:id="@+id/isFamPE"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:gravity="left"
             android:text="@string/isFamPoliticallyExposed"
-            android:textColor="@color/dark_blue"
+            android:textColor="@color/colorPrimary"
             android:textSize="15sp" />
 
 
         <RadioGroup
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -77,7 +79,7 @@
             <RadioButton
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:foregroundTint="@color/dark_blue"
+                android:foregroundTint="@color/colorPrimary"
                 android:text="No"
                 android:layout_gravity="center_vertical"
                 android:textSize="14sp"
@@ -85,16 +87,24 @@
 
         </RadioGroup>
 
+        <LinearLayout
+            android:id="@+id/PEPDet"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
         <TextView
             android:visibility="gone"
-            android:textStyle="normal"
+            android:textStyle="bold"
             android:id="@+id/textViewPEP"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:gravity="left"
             android:text="@string/politicallyExposedDetails"
-            android:textColor="@color/dark_blue"
+            android:textColor="@color/colorPrimary"
             android:textSize="15sp" />
 
         <LinearLayout
@@ -102,8 +112,99 @@
             android:id="@+id/centepoliticallyexposedinfo"
             android:layout_width="match_parent"
             android:layout_marginHorizontal="10dp"
+            android:layout_marginBottom="10dp"
             android:orientation="vertical"
             android:layout_height="wrap_content"/>
 
+        <TextView
+            android:id="@+id/pepPositionTxt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginHorizontal="10dp"
+            android:textStyle="bold"
+            android:textColor="@color/colorPrimary"
+            android:text="@string/pepPositionTxt"/>
+
+        <Spinner
+            android:id="@+id/pepPositionSpin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:minHeight="48dp" />
+
+            <LinearLayout
+                android:visibility="gone"
+                android:id="@+id/otherPosition"
+                android:layout_width="match_parent"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginBottom="10dp"
+                android:orientation="vertical"
+                android:layout_height="wrap_content"/>
+
+        <TextView
+            android:visibility="gone"
+            android:id="@+id/pepRelationshipTxt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginHorizontal="10dp"
+            android:textStyle="bold"
+            android:textColor="@color/colorPrimary"
+            android:text="@string/pepRelationshipTxt"/>
+
+        <Spinner
+            android:visibility="gone"
+            android:id="@+id/pepRelationshipSpin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginBottom="10dp"
+            android:minHeight="48dp" />
+
+            <LinearLayout
+                android:visibility="gone"
+                android:id="@+id/otherRelationship"
+                android:layout_width="match_parent"
+                android:layout_marginHorizontal="10dp"
+                android:orientation="vertical"
+                android:layout_height="wrap_content"/>
+
+
+        <TextView
+            android:id="@+id/pepDetailsTxt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginTop="10dp"
+            android:textStyle="bold"
+            android:textColor="@color/colorPrimary"
+            android:text="@string/pepTitle"/>
+
+        <LinearLayout
+            android:id="@+id/pepDetails"
+            android:layout_width="match_parent"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginBottom="10dp"
+            android:orientation="vertical"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/pepDuration"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginTop="10dp"
+            android:textStyle="bold"
+            android:textColor="@color/colorPrimary"
+            android:text="@string/pepDuration"/>
+
+        <LinearLayout
+            android:id="@+id/pepPeriod"
+            android:layout_width="match_parent"
+            android:layout_marginHorizontal="10dp"
+            android:orientation="vertical"
+            android:layout_height="wrap_content"/>
+        </LinearLayout>
     </LinearLayout>
 </ScrollView>

@@ -57,6 +57,31 @@
                     style="@style/Header_Text"
                     android:text="@string/STEP_1_VALIDATION"/>
 
+                <RadioGroup
+                    android:id="@+id/toOtherRadioGroup"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/enterNumber"
+                        style="@style/Black_Text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/enterMeter" />
+
+                    <RadioButton
+                        android:id="@+id/savedBen"
+                        style="@style/Black_Text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/selectSavedBen" />
+
+                </RadioGroup>
+
+
                 <Spinner
                     android:id="@+id/area"
                     style="@style/Spinner_Text"/>
@@ -65,6 +90,11 @@
                     android:id="@+id/TVDisplay"
                     style="@style/Blue_Text"
                     android:text="@string/enteryour" />
+
+                <Spinner
+                    android:visibility="gone"
+                    android:id="@+id/benSpinner"
+                    style="@style/Spinner_Text" />
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/ETMeterAccNumber"
@@ -75,7 +105,6 @@
                 <TextView
                     android:id="@+id/validate"
                     style="@style/Button_Yes"
-                    android:onClick="payments"
                     android:text="@string/validate" />
 
             </LinearLayout>
@@ -119,7 +148,6 @@
                         style="@style/Button_No"
                         android:layout_width="0dp"
                         android:layout_weight="1"
-                        android:onClick="payments"
                         android:text="@string/back"/>
 
                     <TextView
@@ -182,7 +210,6 @@
                 <TextView
                     android:id="@+id/pay"
                     style="@style/Button_Yes"
-                    android:onClick="payments"
                     android:text="@string/pay"/>
 
             </LinearLayout>

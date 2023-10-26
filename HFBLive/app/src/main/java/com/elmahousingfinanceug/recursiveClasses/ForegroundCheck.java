@@ -92,7 +92,7 @@ public class ForegroundCheck implements Application.ActivityLifecycleCallbacks {
                 try {
                     l.onBecameForeground();
                 } catch (Exception exc) {
-                    Log.e(TAG, "Listener threw exception!", exc);
+//                    Log.e(TAG, "Listener threw exception!", exc);
                 }
             }
         } else {
@@ -117,7 +117,7 @@ public class ForegroundCheck implements Application.ActivityLifecycleCallbacks {
                         try {
                             l.onBecameBackground();
                         } catch (Exception exc) {
-                            Log.e(TAG, "Listener threw exception!", exc);
+//                            Log.e(TAG, "Listener threw exception!", exc);
                         }
                     }
                 } else {

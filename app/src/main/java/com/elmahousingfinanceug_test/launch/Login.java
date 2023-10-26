@@ -57,9 +57,9 @@ import static android.os.Build.VERSION.SDK_INT;
 import static android.os.Build.VERSION_CODES.M;
 
 public class Login extends AppCompatActivity implements ResponseListener, VolleyResponse, FingerprintUiHelper.Callback {
-    LinearLayout loginLayout,buttonsLayout,fingerInput;
+    LinearLayout loginLayout,buttonsLayout,fingerInput, contactUs, toLogin, branches, atmLocations, agent_locations, account_opening;
     ImageView bckGrd,fingerprint_icon;
-    TextView fingerprint_status;
+    TextView fingerprint_status, loginBn, backBn ;
     EditText eTPin;
     Dialog dialog;
     AllMethods am;
@@ -84,6 +84,14 @@ public class Login extends AppCompatActivity implements ResponseListener, Volley
         fingerprint_icon = findViewById(R.id.fingerprint_icon);
         fingerprint_status = findViewById(R.id.fingerprint_status);
         eTPin = findViewById(R.id.eTPin);
+        contactUs = findViewById(R.id.contactUs);
+        toLogin = findViewById(R.id.toLogin);
+        branches = findViewById(R.id.branches);
+        atmLocations = findViewById(R.id.atmLocations);
+        agent_locations = findViewById(R.id.agent_locations);
+        account_opening = findViewById(R.id.account_opening);
+        loginBn = findViewById(R.id.loginBn);
+        backBn = findViewById(R.id.backBn);
         buttonsLayout.setVisibility(View.VISIBLE);
         loginLayout.setVisibility(View.GONE);
 
@@ -99,37 +107,60 @@ public class Login extends AppCompatActivity implements ResponseListener, Volley
             @Override
             public void afterTextChanged(Editable s) {}
         });
-    }
 
-    public void LoginPage(View l) {
-        switch (l.getId()){
-            case R.id.contactUs:
-                startActivity(new Intent(this,Contact_Us.class));
-                break;
-            case R.id.toLogin:
+        contactUs.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(Login.this,Contact_Us.class));
+            }
+        });
+
+        toLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
                 buttonsLayout.setVisibility(View.GONE);
                 loginLayout.setVisibility(View.VISIBLE);
                 YoYo.with(Techniques.FlipInX).duration(800).playOn(loginLayout);
-                break;
-            case R.id.branches:
+            }
+        });
+
+        branches.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
                 am.saveViewBraches(true);
                 am.saveViewAgent(false);
-                startActivity(new Intent(this,Branches_Page.class));
-                break;
-            case R.id.atmLocations:
+                startActivity(new Intent(Login.this,Branches_Page.class));
+            }
+        });
+
+        atmLocations.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
                 am.saveViewBraches(false);
                 am.saveViewAgent(false);
-                startActivity(new Intent(this, ATM_Locations.class));
-                break;
-            case R.id.agent_locations:
+                startActivity(new Intent(Login.this, ATM_Locations.class));
+            }
+        });
+
+        agent_locations.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
                 am.saveViewBraches(false);
                 am.saveViewAgent(true);
-                startActivity(new Intent(this, ZAtmBranch.class));
-                break;
-            case R.id.account_opening:
-                startActivity(new Intent(this, AccountOpenSplash.class));
-                break;
-            case R.id.loginBn:
+                startActivity(new Intent(Login.this, ZAtmBranch.class));
+            }
+        });
+
+        account_opening.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(Login.this, AccountOpenSplash.class));
+            }
+        });
+
+        loginBn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 //                TODO: Comment out before sharing
 //                startActivity(new Intent(this, Main_Menu.class));
                 if (eTPin.getText().length() < 4) {
@@ -140,18 +171,74 @@ public class Login extends AppCompatActivity implements ResponseListener, Volley
                                     "LOGINMPIN:" + (eTPin.getText().toString().trim()) + ":" +
                                     "LOGINTYPE:PIN:"
                     );
-                    am.get(this,quest,getString(R.string.loggingIn),"IN");
+                    am.get(Login.this,quest,getString(R.string.loggingIn),"IN");
                     eTPin.setText("");
                 }
-                break;
-            case R.id.backBn:
+            }
+        });
+
+        backBn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
                 eTPin.setText("");
                 buttonsLayout.setVisibility(View.VISIBLE);
                 loginLayout.setVisibility(View.GONE);
                 YoYo.with(Techniques.FlipInX).duration(800).playOn(buttonsLayout);
-                break;
-        }
+            }
+        });
     }
+
+//    public void LoginPage(View l) {
+//        switch (l.getId()){
+//            case R.id.contactUs:
+//                startActivity(new Intent(this,Contact_Us.class));
+//                break;
+//            case R.id.toLogin:
+//                buttonsLayout.setVisibility(View.GONE);
+//                loginLayout.setVisibility(View.VISIBLE);
+//                YoYo.with(Techniques.FlipInX).duration(800).playOn(loginLayout);
+//                break;
+//            case R.id.branches:
+//                am.saveViewBraches(true);
+//                am.saveViewAgent(false);
+//                startActivity(new Intent(this,Branches_Page.class));
+//                break;
+//            case R.id.atmLocations:
+//                am.saveViewBraches(false);
+//                am.saveViewAgent(false);
+//                startActivity(new Intent(this, ATM_Locations.class));
+//                break;
+//            case R.id.agent_locations:
+//                am.saveViewBraches(false);
+//                am.saveViewAgent(true);
+//                startActivity(new Intent(this, ZAtmBranch.class));
+//                break;
+//            case R.id.account_opening:
+//                startActivity(new Intent(this, AccountOpenSplash.class));
+//                break;
+//            case R.id.loginBn:
+////                TODO: Comment out before sharing
+////                startActivity(new Intent(this, Main_Menu.class));
+//                if (eTPin.getText().length() < 4) {
+//                    eTPin.setError(getString(R.string.enterPIn));
+//                } else {
+//                    quest = (
+//                            "FORMID:LOGIN:" +
+//                                    "LOGINMPIN:" + (eTPin.getText().toString().trim()) + ":" +
+//                                    "LOGINTYPE:PIN:"
+//                    );
+//                    am.get(this,quest,getString(R.string.loggingIn),"IN");
+//                    eTPin.setText("");
+//                }
+//                break;
+//            case R.id.backBn:
+//                eTPin.setText("");
+//                buttonsLayout.setVisibility(View.VISIBLE);
+//                loginLayout.setVisibility(View.GONE);
+//                YoYo.with(Techniques.FlipInX).duration(800).playOn(buttonsLayout);
+//                break;
+//        }
+//    }
 
     private final BroadcastReceiver noConnection = new BroadcastReceiver() {
         @Override

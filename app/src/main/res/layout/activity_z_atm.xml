@@ -37,7 +37,6 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|start"
                 android:layout_margin="10dp"
-                android:onClick="showHide"
                 android:src="@drawable/branchlistw"
                 app:backgroundTint="@color/dim"
                 app:borderWidth="0dp"
@@ -63,7 +62,6 @@
             android:layout_height="?attr/actionBarSize"
             android:background="@drawable/bckgrd_sections_trans"
             android:padding="15dp"
-            android:onClick="loc"
             android:text="@string/loading_ellipsis"/>
 
     </androidx.core.widget.NestedScrollView>

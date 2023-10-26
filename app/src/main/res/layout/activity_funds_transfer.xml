@@ -82,6 +82,36 @@
 
                 </RadioGroup>
 
+                <RadioGroup
+                    android:id="@+id/toOtherRadioGroup"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/enterAccount"
+                        style="@style/Black_Text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/enterAccount" />
+
+                    <RadioButton
+                        android:id="@+id/savedAccount"
+                        style="@style/Black_Text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/selectSavedBen" />
+
+                </RadioGroup>
+
+                <Spinner
+                    android:visibility="gone"
+                    android:id="@+id/benSpinner"
+                    style="@style/Spinner_Text" />
+
                 <EditText
                     android:id="@+id/ETAccount"
                     style="@style/Edit_Text"
@@ -91,7 +121,6 @@
                 <TextView
                     android:id="@+id/validate"
                     style="@style/Button_Yes"
-                    android:onClick="fT"
                     android:text="@string/validate" />
 
                 <Spinner
@@ -192,7 +221,6 @@
                 <TextView
                     android:id="@+id/sendFunds"
                     style="@style/Button_Yes"
-                    android:onClick="fT"
                     android:text="@string/fundsTransfer"/>
 
             </LinearLayout>

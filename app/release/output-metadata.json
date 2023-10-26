@@ -1,5 +1,5 @@
 {
-  "version": 1,
+  "version": 3,
   "artifactType": {
     "type": "APK",
     "kind": "Directory"
@@ -10,11 +10,11 @@
     {
       "type": "SINGLE",
       "filters": [],
-      "properties": [],
-      "versionCode": 140,
-      "versionName": "140",
-      "enabled": true,
-      "outputFile": "test-app-HFB-v-140.apk"
+      "attributes": [],
+      "versionCode": 146,
+      "versionName": "146",
+      "outputFile": "test-app-HFB-v-146.apk"
     }
-  ]
+  ],
+  "elementType": "File"
 }

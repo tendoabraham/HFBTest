@@ -172,7 +172,6 @@
                 <TextView
                     android:id="@+id/validateMTN"
                     style="@style/Button_Yes"
-                    android:onClick="air"
                     android:text="@string/validate" />
 
             </LinearLayout>
@@ -228,7 +227,6 @@
                     <TextView
                         android:id="@+id/back"
                         style="@style/Button_Yes"
-                        android:onClick="air"
                         android:text="@string/back" />
 
                 </LinearLayout>
@@ -281,7 +279,6 @@
                 <TextView
                     android:id="@+id/send"
                     style="@style/Button_Yes"
-                    android:onClick="air"
                     android:text="@string/pay"/>
 
             </LinearLayout>

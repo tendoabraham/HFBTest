@@ -109,6 +109,36 @@
 
                 </RadioGroup>
 
+                <RadioGroup
+                    android:id="@+id/toOtherRadioGroup"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/enterNumber"
+                        style="@style/Black_Text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/enterNumber" />
+
+                    <RadioButton
+                        android:id="@+id/savedBen"
+                        style="@style/Black_Text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/selectSavedBen" />
+
+                </RadioGroup>
+
+                <Spinner
+                    android:visibility="gone"
+                    android:id="@+id/benSpinner"
+                    style="@style/Spinner_Text" />
+
                 <TextView
                     android:id="@+id/myNumber"
                     style="@style/Blue_Text_Center" />
@@ -142,13 +172,11 @@
                     android:id="@+id/validateMTN"
                     style="@style/Button_Yes"
                     android:visibility="gone"
-                    android:onClick="air"
                     android:text="@string/validate" />
 
                 <TextView
                     android:id="@+id/validateAirtel"
                     style="@style/Button_Yes"
-                    android:onClick="air"
                     android:visibility="gone"
                     android:text="@string/validate" />
 
@@ -205,7 +233,6 @@
                     <TextView
                         android:id="@+id/back"
                         style="@style/Button_Yes"
-                        android:onClick="air"
                         android:text="@string/back" />
 
                 </LinearLayout>
@@ -257,7 +284,6 @@
                 <TextView
                     android:id="@+id/send"
                     style="@style/Button_Yes"
-                    android:onClick="air"
                     android:text="@string/pay"/>
 
             </LinearLayout>

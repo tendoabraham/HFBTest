@@ -36,13 +36,11 @@
             <TextView
                 android:id="@+id/inactivity"
                 style="@style/Button_Yes"
-                android:onClick="setClicks"
                 android:text="@string/whenInactive"/>
 
             <TextView
                 android:id="@+id/DisplayCLPBTN"
                 style="@style/Button_Yes"
-                android:onClick="DisplayCLPBTN"
                 android:text="@string/changeloginPin"/>
 
             <LinearLayout
@@ -85,17 +83,17 @@
                     android:orientation="horizontal">
 
                     <TextView
+                        android:id="@+id/cancel"
                         style="@style/Button_No"
                         android:layout_width="0dp"
                         android:layout_weight="1"
-                        android:onClick="CLPCloseBTN"
                         android:text="@string/cancel" />
 
                     <TextView
+                        android:id="@+id/change"
                         style="@style/Button_Yes"
                         android:layout_width="0dp"
                         android:layout_weight="1"
-                        android:onClick="CLPChangeBTN"
                         android:text="@string/change" />
 
                 </LinearLayout>
@@ -105,7 +103,6 @@
             <TextView
                 android:id="@+id/DisplayCTPBTN"
                 style="@style/Button_Yes"
-                android:onClick="DisplayCTPBTN"
                 android:text="@string/changeTrxPin" />
 
             <LinearLayout
@@ -148,17 +145,17 @@
                     android:orientation="horizontal">
 
                     <TextView
+                        android:id="@+id/close"
                         style="@style/Button_No"
                         android:layout_width="0dp"
                         android:layout_weight="1"
-                        android:onClick="CTPCloseBTN"
                         android:text="@string/cancel" />
 
                     <TextView
+                        android:id="@+id/change2"
                         style="@style/Button_Yes"
                         android:layout_width="0dp"
                         android:layout_weight="1"
-                        android:onClick="CTPChangeBTN"
                         android:text="@string/change" />
 
                 </LinearLayout>
@@ -168,7 +165,6 @@
             <TextView
                 android:id="@+id/DisplayThemes"
                 style="@style/Button_Yes"
-                android:onClick="displayTheme"
                 android:text="@string/changeTheme" />
 
             <LinearLayout
@@ -215,7 +211,6 @@
                         style="@style/Button_Yes"
                         android:layout_weight="1.5"
                         android:layout_width="0dp"
-                        android:onClick="setClicks"
                         android:text="@string/confirm"/>
 
                 </LinearLayout>

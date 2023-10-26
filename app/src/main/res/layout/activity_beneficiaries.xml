@@ -1,0 +1,319 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="?attr/customBackground"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:ignore="ContentDescription"
+    tools:context=".main_Pages.Beneficiaries">
+
+    <LinearLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <include layout="@layout/toolbar_layout" />
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_below="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@drawable/bckgrd_screen"
+            android:elevation="10dp"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/Black_Text"
+                android:text="@string/select1Option" />
+
+            <RadioGroup
+                android:id="@+id/radioGroupType"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/add"
+                    style="@style/Black_Text"
+                    android:padding="10dp"
+                    android:layout_weight="1"
+                    android:text="@string/add" />
+
+                <RadioButton
+                    android:id="@+id/view"
+                    style="@style/Black_Text"
+                    android:padding="10dp"
+                    android:layout_weight="1"
+                    android:text="@string/view" />
+
+                <RadioButton
+                    android:id="@+id/delete"
+                    style="@style/Black_Text"
+                    android:padding="10dp"
+                    android:layout_weight="1"
+                    android:text="@string/delete" />
+
+            </RadioGroup>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="10dp"
+            android:elevation="10dp"
+            android:background="@drawable/bckgrd_screen"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/Black_Text"
+                android:text="@string/selectCategory" />
+
+            <Spinner
+                android:id="@+id/service"
+                style="@style/Edit_Text" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/providerLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="10dp"
+            android:visibility="gone"
+            android:elevation="10dp"
+            android:background="@drawable/bckgrd_screen"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/Black_Text"
+                android:text="@string/slctPrvdr" />
+
+            <Spinner
+                android:id="@+id/serviceProvider"
+                style="@style/Edit_Text" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/numChoice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:visibility="gone"
+            android:elevation="10dp"
+            android:background="@drawable/bckgrd_screen"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/Black_Text"
+                android:text="@string/enterPhoneNumber" />
+
+            <LinearLayout
+                android:id="@+id/otherNumLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/phoneNum"
+                    style="@style/Edit_Text"
+                    android:layout_weight="1"
+                    android:hint="@string/phoneNum"
+                    android:inputType="phone"/>
+
+                <ImageView
+                    android:id="@+id/contacts"
+                    style="@style/Edit_Text"
+                    android:background="@drawable/bckgrd_sections"
+                    android:layout_weight="2.4"
+                    android:src="@drawable/interphone"
+                    android:onClick="getContact"
+                    tools:ignore="ContentDescription"
+                    app:tint="@color/logo_orange" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/validateMNO"
+                style="@style/Button_Yes"
+                android:text="@string/validate" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/numChoice2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:elevation="10dp"
+            android:background="@drawable/bckgrd_screen"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/nwscAreas"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <TextView
+                    style="@style/Black_Text"
+                    android:text="@string/selectArea" />
+
+                <Spinner
+                    android:id="@+id/areas"
+                    style="@style/Edit_Text" />
+            </LinearLayout>
+
+            <TextView
+                style="@style/Black_Text"
+                android:text="@string/enterMeterNumber" />
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/meter"
+                style="@style/Edit_Text"
+                android:layout_weight="1"
+                android:hint="@string/meterNumber"
+                android:inputType="phone"/>
+
+            <TextView
+                android:id="@+id/validateMeter"
+                style="@style/Button_Yes"
+                android:text="@string/validate" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/addBen"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_margin="10dp"
+                android:background="@color/black"/>
+
+            <TextView
+                style="@style/Blue_Text_Center"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:text="@string/addBenficiary" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:elevation="10dp"
+            android:background="@drawable/bckgrd_screen"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/Black_Text"
+                android:text="@string/meterDetails" />
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/benName"
+                style="@style/Edit_Text"
+                android:layout_weight="1"
+                android:hint="@string/enterBenName"
+                android:inputType="text"/>
+
+            <TextView
+                android:id="@+id/addBeneficiary"
+                style="@style/Button_Yes"
+                android:text="@string/add" />
+        </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/viewBen"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_margin="10dp"
+                android:background="@color/black"/>
+
+            <TextView
+                android:id="@+id/benTitle"
+                style="@style/Blue_Text_Center"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:text="@string/fetchingBeneficiaries" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:visibility="gone"
+                android:id="@+id/benRecords"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/delBen"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_margin="10dp"
+                android:background="@color/black"/>
+
+            <TextView
+                android:id="@+id/benTitleDel"
+                style="@style/Blue_Text_Center"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:text="@string/fetchingBeneficiaries" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="10dp"
+                android:elevation="10dp"
+                android:background="@drawable/bckgrd_screen"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/Black_Text"
+                    android:text="@string/meterDetails" />
+
+                <Spinner
+                    android:id="@+id/benefit"
+                    style="@style/Edit_Text" />
+
+                <TextView
+                    android:id="@+id/validate"
+                    style="@style/Button_Yes"
+                    android:text="@string/delete" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+    </ScrollView>
+</RelativeLayout>

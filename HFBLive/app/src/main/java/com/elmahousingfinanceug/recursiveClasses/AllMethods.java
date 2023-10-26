@@ -1314,7 +1314,7 @@ public class AllMethods {
                                         LogThis("AGNESRAO"+ "AKIFIKA");
                                     } else {
                                         connect(finalShe, uri, machine, responseListener, token, step);
-                                        Log.e("RAO-PRO",jsonObject.toString()) ;
+//                                        Log.e("RAO-PRO",jsonObject.toString()) ;
                                     }
                                     break;
                                 default:

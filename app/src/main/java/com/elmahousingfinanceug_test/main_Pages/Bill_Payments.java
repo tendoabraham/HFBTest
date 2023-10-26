@@ -16,6 +16,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -35,12 +37,15 @@ import java.util.List;
 import java.util.Objects;
 
 public class Bill_Payments extends BaseAct implements ResponseListener, VolleyResponse {
-    Spinner accountNumber,area, bouquets;
+    Spinner accountNumber,area, bouquets, benSpinner;
     LinearLayout step1Layout,step2Layout,step3Layout;
     EditText ETMeterAccNumber,ETAmount,ETPin;
-    TextView tVAccName,tVDisplay, bouquetTitle;
+    TextView tVAccName,tVDisplay, bouquetTitle, validate, backIn, okToPay, pay;
     RecyclerView valRecycler;
-    String pageTitle="",code="",accSend="",areaString="",areaCode="",quest="",billAccName="",billDueAmount="";
+    String pageTitle="",code="",accSend="",areaString="",areaCode="",quest="",billAccName="",billDueAmount=""
+            , utilityID, meterNumber, benAcc, merchant;
+    RadioButton enterNumber, savedBen;
+    RadioGroup toOtherRadioGroup;
     public static String[] FieldIDs;
     public static String[] FieldValues;
 
@@ -70,11 +75,21 @@ public class Bill_Payments extends BaseAct implements ResponseListener, VolleyRe
         step3Layout = findViewById(R.id.step3Layout);
         bouquets = findViewById(R.id.bouquets);
         bouquetTitle = findViewById(R.id.bouquetsText);
+        enterNumber = findViewById(R.id.enterNumber);
+        savedBen = findViewById(R.id.savedBen);
+        toOtherRadioGroup = findViewById(R.id.toOtherRadioGroup);
+        benSpinner = findViewById(R.id.benSpinner);
+        validate = findViewById(R.id.validate);
+        backIn = findViewById(R.id.backIn);
+        okToPay = findViewById(R.id.okToPay);
+        pay = findViewById(R.id.pay);
 
         step1Layout.setVisibility(View.VISIBLE);
         step2Layout.setVisibility(View.GONE);
         step3Layout.setVisibility(View.GONE);
         area.setVisibility(View.GONE);
+
+        enterNumber.setChecked(true);
 
         String dstv = "DSTV";
         String gotv = "GOTV";
@@ -84,138 +99,15 @@ public class Bill_Payments extends BaseAct implements ResponseListener, VolleyRe
             bouquetTitle.setVisibility(View.VISIBLE);
         }
 
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item, am.getAliases());
-        dataAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
-        accountNumber.setAdapter(dataAdapter);
-        accountNumber.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        validate.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (position == 0) {
-                    accSend = "";
-                } else {
-                    accSend = am.getBankAccountID(position);
-                }
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {}
-        });
-
-        if(am.getMerchantID().equals("007001003")){
-            final List<String> areaNames = new ArrayList<>(), idList = new ArrayList<>();
-            areaNames.add(getString(R.string.selectArea));
-            String [] areaIDS = am.getAreas().split(",");
-            for (String anAreaID : areaIDS) {
-                String[] insideData = anAreaID.split("\\|");
-                String code = insideData[0], area = insideData[1];
-                idList.add(code);
-                areaNames.add(area);
-            }
-            ArrayAdapter<String> dataAdapterA = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item, areaNames);
-            dataAdapterA.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            area.setAdapter(dataAdapterA);
-            area.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    if (position == 0) {
-                        areaCode="";
-                        areaString="";
-                    } else {
-                        areaCode = idList.get(position-1);
-                        areaString = areaNames.get(position);
-                    }
-                }
-                @Override
-                public void onNothingSelected(AdapterView<?> parent) {}
-            });
-            area.setVisibility(View.VISIBLE);
-        } else {
-            area.setVisibility(View.GONE);
-        }
-
-        if (code.equals("1")) {
-            ETMeterAccNumber.setHint(getString(R.string.meterNumber));
-            tVDisplay.setText(getString(R.string.enterMeterNumber));
-        } else {
-            ETMeterAccNumber.setHint(getString(R.string.accountNumber));
-            tVDisplay.setText(getString(R.string.enterAccountNumber));
-        }
-
-        ETAmount.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                String bal = am.getBal().replace(",", "");
-                Double balance = Double.parseDouble(bal);
-
-                DecimalFormat formatter = new DecimalFormat("#,###,##0.00");//here 0.00 instead #.##
-                //txtSelfieText.setText(formatter.format(cs_score)+"\nmatch");
-                String inputedAmount = String.valueOf(s);
-                if (!inputedAmount.equals("")&&(Double.parseDouble(inputedAmount)) >= balance) {
-                    am.myDialog(Bill_Payments.this, getString(R.string.alert), getString(R.string.insufficient_funds));
-                }
-
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-
-        ETPin.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                if(after>1) am.myDialog(Bill_Payments.this, getString(R.string.alert), getString(R.string.copyPaste));
-            }
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(count>1) ETPin.setText("");
-            }
-            @Override
-            public void afterTextChanged(Editable s) {}
-        });
-
-        valRecycler.setLayoutManager(new LinearLayoutManager(this));
-
-        getBouquets(pageTitle);
-    }
-
-    public void getBouquets(String bouquet){
-        String quest = "";
-        switch (bouquet){
-            case "DSTV":
-                quest = (
-                        "FORMID:O-DataBundleConfig" +
-                                ":PROVIDER:" + bouquet + ":"
-                );
-                am.get(this,quest,getString(R.string.validating),"DSTV");
-                break;
-            case "GOTV":
-                quest = (
-                        "FORMID:O-DataBundleConfig" +
-                                ":PROVIDER:" + bouquet + ":"
-                );
-                am.get(this,quest,getString(R.string.validating),"GOTV");
-                break;
-            default:
-                break;
-        }
-    }
-
-    public void payments(View y) {
-        switch (y.getId()){
-            case R.id.validate:
+            public void onClick(View view) {
                 if(am.getMerchantID().equals("007001003") && accSend.equals("")) {
-                    am.myDialog(this, getString(R.string.alert), getString(R.string.selectAccDebited));
+                    am.myDialog(Bill_Payments.this, getString(R.string.alert), getString(R.string.selectAccDebited));
                 } else if(am.getMerchantID().equals("007001003") && areaCode.equals("")) {
-                    am.myDialog(this, getString(R.string.alert), getString(R.string.selectAreaOne));
-                } else if (ETMeterAccNumber.getText().length() < 5) {
-                    am.myDialog(this, getString(R.string.alert), getString(R.string.enterValidAccMet));
+                    am.myDialog(Bill_Payments.this, getString(R.string.alert), getString(R.string.selectAreaOne));
+                } else if (enterNumber.isChecked() && ETMeterAccNumber.getText().length() < 5) {
+                    am.myDialog(Bill_Payments.this, getString(R.string.alert), getString(R.string.enterValidAccMet));
                 } else {
                     //DSTV  44987720
                     //National Water 21220290  21156830
@@ -223,34 +115,18 @@ public class Bill_Payments extends BaseAct implements ResponseListener, VolleyRe
                     //PostPaid 200166496
                     //TEST 11111
 
-                    //National Water
-                    // Account #            Location
-                    //
-                    //10810001             Mbarara
-                    //
-                    //117391             Kampala
-                    //
-                    //11112              Jinja
-                    //
-                    //10510001             Others
-                    //
-                    //10810020             Others
-                    //
-                    //11121                 Entebbe
-                    //
-                    //NC2589                 Others
-                    //
-                    //21117391             Kampala
-                    //
-                    //4276137                Lugazi
-                    //
-                    //4386539                Iganga
+                    if (enterNumber.isChecked()){
+                        meterNumber = ETMeterAccNumber.getText().toString().trim();
+                    }else {
+                        meterNumber = benAcc;
+                    }
+
                     if ("007001003".equals(am.getMerchantID())) {
                         quest = (
                                 "FORMID:B-:" +
                                         "MERCHANTID:" + am.getMerchantID() + ":" +
                                         "BANKACCOUNTID:" + accSend + ":" +
-                                        "ACCOUNTID:" + ETMeterAccNumber.getText().toString().trim() + ":" +
+                                        "ACCOUNTID:" + meterNumber + ":" +
                                         "INFOFIELD1:" + areaString + ":" +
                                         "INFOFIELD2:" + "VALIDATION" + ":" +
                                         "INFOFIELD3:" + ETMeterAccNumber.getText().toString().trim() + ":" +
@@ -269,35 +145,48 @@ public class Bill_Payments extends BaseAct implements ResponseListener, VolleyRe
                         quest = (
                                 "FORMID:M-:" +
                                         "MERCHANTID:" + am.getMerchantID() + ":" +
-                                        "ACCOUNTID:" + ETMeterAccNumber.getText().toString().trim() + ":" +
+                                        "ACCOUNTID:" + meterNumber + ":" +
                                         "INFOFIELD1:" + pageTitle + ":" +
                                         "INFOFIELD9:" + am.getUserPhone() + ":" +
                                         "ACTION:GETNAME:"
                         );
                     }
-                    am.get(this,quest,getString(R.string.validating),"VAL");
+                    am.get(Bill_Payments.this,quest,getString(R.string.validating),"VAL");
                 }
-                break;
-            case R.id.backIn:
+            }
+        });
+
+
+        backIn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
                 step2Layout.setVisibility(View.GONE);
                 step1Layout.setVisibility(View.VISIBLE);
                 step3Layout.setVisibility(View.GONE);
-                break;
-            case R.id.okToPay:
+            }
+        });
+
+        okToPay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
                 step3Layout.setVisibility(View.VISIBLE);
-                break;
-            case R.id.pay:
+            }
+        });
+
+        pay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
                 if(accSend.equals("")){
-                    am.myDialog(this, getString(R.string.alert), getString(R.string.selectAccDebited));
+                    am.myDialog(Bill_Payments.this, getString(R.string.alert), getString(R.string.selectAccDebited));
                 } else if (ETMeterAccNumber.getText().length() < 5) {
                     ETMeterAccNumber.setError(getString(R.string.invalidInput));
-                    am.myDialog(this, getString(R.string.alert), getString(R.string.enterValidAccMet));
+                    am.myDialog(Bill_Payments.this, getString(R.string.alert), getString(R.string.enterValidAccMet));
                 } else if (ETAmount.getText().toString().trim().isEmpty()) {
-                    am.myDialog(this, getString(R.string.alert), getString(R.string.enterValidAmount));
+                    am.myDialog(Bill_Payments.this, getString(R.string.alert), getString(R.string.enterValidAmount));
                 } else if (ETPin.getText().length() < 4) {
-                    am.myDialog(this, getString(R.string.alert), getString(R.string.enterValidPin));
+                    am.myDialog(Bill_Payments.this, getString(R.string.alert), getString(R.string.enterValidPin));
                 } else {
-                    gDialog = new Dialog(this);
+                    gDialog = new Dialog(Bill_Payments.this);
                     //noinspection ConstantConditions
                     gDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                     gDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -379,14 +268,361 @@ public class Bill_Payments extends BaseAct implements ResponseListener, VolleyRe
                     });
                     gDialog.show();
                 }
+            }
+        });
+
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item, am.getAliases());
+        dataAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
+        accountNumber.setAdapter(dataAdapter);
+        accountNumber.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position == 0) {
+                    accSend = "";
+                } else {
+                    accSend = am.getBankAccountID(position);
+                }
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {}
+        });
+
+        if(am.getMerchantID().equals("007001003")){
+            final List<String> areaNames = new ArrayList<>(), idList = new ArrayList<>();
+            areaNames.add(getString(R.string.selectArea));
+            String [] areaIDS = am.getAreas().split(",");
+            for (String anAreaID : areaIDS) {
+                String[] insideData = anAreaID.split("\\|");
+                String code = insideData[0], area = insideData[1];
+                idList.add(code);
+                areaNames.add(area);
+            }
+            ArrayAdapter<String> dataAdapterA = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item, areaNames);
+            dataAdapterA.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            area.setAdapter(dataAdapterA);
+            area.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    if (position == 0) {
+                        areaCode="";
+                        areaString="";
+                    } else {
+                        areaCode = idList.get(position-1);
+                        areaString = areaNames.get(position);
+                    }
+                }
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {}
+            });
+            area.setVisibility(View.VISIBLE);
+        } else {
+            area.setVisibility(View.GONE);
+        }
+
+        if (code.equals("1")) {
+            ETMeterAccNumber.setHint(getString(R.string.meterNumber));
+            tVDisplay.setText(getString(R.string.enterMeterNumber));
+        } else {
+            ETMeterAccNumber.setHint(getString(R.string.accountNumber));
+            tVDisplay.setText(getString(R.string.enterAccountNumber));
+        }
+
+        toOtherRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                ETMeterAccNumber.setText("");
+                if (enterNumber.isChecked()){
+                    ETMeterAccNumber.setVisibility(View.VISIBLE);
+                    benSpinner.setVisibility(View.GONE);
+                    tVDisplay.setText("Kindly enter your meter number");
+                } else if (savedBen.isChecked()){
+                    ETMeterAccNumber.setVisibility(View.GONE);
+                    tVDisplay.setText("Please select your beneficiary");
+                    getBens();
+                }
+            }
+        });
+
+        ETAmount.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//                TODO: Uncomment for balance check
+//                String bal = am.getBal().replace(",", "");
+//                Double balance = Double.parseDouble(bal);
+//
+//                DecimalFormat formatter = new DecimalFormat("#,###,##0.00");//here 0.00 instead #.##
+//                //txtSelfieText.setText(formatter.format(cs_score)+"\nmatch");
+//                String inputedAmount = String.valueOf(s);
+//                if (!inputedAmount.equals("")&&(Double.parseDouble(inputedAmount)) >= balance) {
+//                    am.myDialog(Bill_Payments.this, getString(R.string.alert), getString(R.string.insufficient_funds));
+//                }
+
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        ETPin.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                if(after>1) am.myDialog(Bill_Payments.this, getString(R.string.alert), getString(R.string.copyPaste));
+            }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(count>1) ETPin.setText("");
+            }
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+
+        valRecycler.setLayoutManager(new LinearLayoutManager(this));
+
+        getBouquets(pageTitle);
+    }
+
+    private void getBens(){
+
+        if (Objects.equals(am.getMerchantID(), "007001001")){
+            utilityID = "DSTV";
+            quest = (
+                    "FORMID:O-GetUtilityAlias:" +
+                            "SERVICETYPE:Utility:" +
+                            "SERVICEID:DSTV:"
+            );
+        }else if (Objects.equals(am.getMerchantID(), "007001014")){
+            utilityID = "GOTV";
+            quest = (
+                    "FORMID:O-GetUtilityAlias:" +
+                            "SERVICETYPE:Utility:" +
+                            "SERVICEID:GOTV:"
+            );
+        }else if (Objects.equals(am.getMerchantID(), "007001015")){
+            utilityID = "StarTimes";
+            quest = (
+                    "FORMID:O-GetUtilityAlias:" +
+                            "SERVICETYPE:Utility:" +
+                            "SERVICEID:STAR TIMES:"
+            );
+        }else if (Objects.equals(am.getMerchantID(), "007001003")){
+            utilityID = "National Water";
+            quest = (
+                    "FORMID:O-GetUtilityAlias:" +
+                            "SERVICETYPE:Utility:" +
+                            "SERVICEID:National Water:"
+            );
+        }else if (Objects.equals(am.getMerchantID(), "007001012")){
+            utilityID = "UMEME Yaka";
+            quest = (
+                    "FORMID:O-GetUtilityAlias:" +
+                            "SERVICETYPE:Utility:" +
+                            "SERVICEID:UMEME YAKA:"
+            );
+        }else if (Objects.equals(am.getMerchantID(), "007001002")){
+            utilityID = "UMEME Post-Paid";
+            quest = (
+                    "FORMID:O-GetUtilityAlias:" +
+                            "SERVICETYPE:Utility:" +
+                            "SERVICEID:UMEME Power:"
+            );
+        }
+        am.get_(this,quest,getString(R.string.fetchingBeneficiaries) + " " + getString(R.string.forWord) + " " + utilityID,"BEN");
+    }
+
+    public void getBouquets(String bouquet){
+        String quest = "";
+        switch (bouquet){
+            case "DSTV":
+                quest = (
+                        "FORMID:O-DataBundleConfig" +
+                                ":PROVIDER:" + bouquet + ":"
+                );
+                am.get(this,quest,getString(R.string.validating),"DSTV");
+                break;
+            case "GOTV":
+                quest = (
+                        "FORMID:O-DataBundleConfig" +
+                                ":PROVIDER:" + bouquet + ":"
+                );
+                am.get(this,quest,getString(R.string.validating),"GOTV");
+                break;
+            default:
                 break;
         }
     }
 
+//    public void payments(View y) {
+//        switch (y.getId()){
+//            case R.id.validate:
+//                if(am.getMerchantID().equals("007001003") && accSend.equals("")) {
+//                    am.myDialog(this, getString(R.string.alert), getString(R.string.selectAccDebited));
+//                } else if(am.getMerchantID().equals("007001003") && areaCode.equals("")) {
+//                    am.myDialog(this, getString(R.string.alert), getString(R.string.selectAreaOne));
+//                } else if (enterNumber.isChecked() && ETMeterAccNumber.getText().length() < 5) {
+//                    am.myDialog(this, getString(R.string.alert), getString(R.string.enterValidAccMet));
+//                } else {
+//                    //DSTV  44987720
+//                    //National Water 21220290  21156830
+//                    //YAKA 04243699636  04250936749
+//                    //PostPaid 200166496
+//                    //TEST 11111
+//
+//                    if (enterNumber.isChecked()){
+//                        meterNumber = ETMeterAccNumber.getText().toString().trim();
+//                    }else {
+//                        meterNumber = benAcc;
+//                    }
+//
+//                    if ("007001003".equals(am.getMerchantID())) {
+//                        quest = (
+//                                "FORMID:B-:" +
+//                                        "MERCHANTID:" + am.getMerchantID() + ":" +
+//                                        "BANKACCOUNTID:" + accSend + ":" +
+//                                        "ACCOUNTID:" + meterNumber + ":" +
+//                                        "INFOFIELD1:" + areaString + ":" +
+//                                        "INFOFIELD2:" + "VALIDATION" + ":" +
+//                                        "INFOFIELD3:" + ETMeterAccNumber.getText().toString().trim() + ":" +
+//                                        "INFOFIELD9:" + am.getUserPhone() + ":" +
+//                                        "AMOUNT:" + "501" + ":" +
+//                                        "ACTION:GETNAME:"
+//
+//                                /*"FORMID:M-:" + old
+//                                        "MERCHANTID:" + am.getMerchantID() + ":" +
+//                                        "ACCOUNTID:" + ETMeterAccNumber.getText().toString().trim() + ":" +
+//                                        "INFOFIELD1:" + areaCode + ":" +
+//                                        "INFOFIELD9:" + am.getUserPhone() + ":" +
+//                                        "ACTION:GETNAME:"*/
+//                        );
+//                    } else {
+//                        quest = (
+//                                "FORMID:M-:" +
+//                                        "MERCHANTID:" + am.getMerchantID() + ":" +
+//                                        "ACCOUNTID:" + meterNumber + ":" +
+//                                        "INFOFIELD1:" + pageTitle + ":" +
+//                                        "INFOFIELD9:" + am.getUserPhone() + ":" +
+//                                        "ACTION:GETNAME:"
+//                        );
+//                    }
+//                    am.get(this,quest,getString(R.string.validating),"VAL");
+//                }
+//                break;
+//            case R.id.backIn:
+//                step2Layout.setVisibility(View.GONE);
+//                step1Layout.setVisibility(View.VISIBLE);
+//                step3Layout.setVisibility(View.GONE);
+//                break;
+//            case R.id.okToPay:
+//                step3Layout.setVisibility(View.VISIBLE);
+//                break;
+//            case R.id.pay:
+//                if(accSend.equals("")){
+//                    am.myDialog(this, getString(R.string.alert), getString(R.string.selectAccDebited));
+//                } else if (ETMeterAccNumber.getText().length() < 5) {
+//                    ETMeterAccNumber.setError(getString(R.string.invalidInput));
+//                    am.myDialog(this, getString(R.string.alert), getString(R.string.enterValidAccMet));
+//                } else if (ETAmount.getText().toString().trim().isEmpty()) {
+//                    am.myDialog(this, getString(R.string.alert), getString(R.string.enterValidAmount));
+//                } else if (ETPin.getText().length() < 4) {
+//                    am.myDialog(this, getString(R.string.alert), getString(R.string.enterValidPin));
+//                } else {
+//                    gDialog = new Dialog(this);
+//                    //noinspection ConstantConditions
+//                    gDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+//                    gDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+//                    gDialog.setContentView(R.layout.dialog_confirm);
+//                    final TextView txtMessage = gDialog.findViewById(R.id.dialog_message);
+//                    final TextView txtOk = gDialog.findViewById(R.id.yesBTN);
+//                    final TextView txtNo = gDialog.findViewById(R.id.noBTN);
+//                    txtMessage.setText(String.format("%s %s %s %s %s %s %s %s.",
+//                            getString(R.string.make),
+//                            pageTitle,
+//                            getText(R.string.payFor),
+//                            ETMeterAccNumber.getText().toString().trim(),
+//                            getString(R.string.withAmount),
+//                            am.Amount_Thousands(ETAmount.getText().toString().trim()),
+//                            getText(R.string.fromAccNo),
+//                            accSend));
+//                    txtOk.setOnClickListener(v -> {
+//                        switch (am.getMerchantID()){
+//                            case "007001003":
+//                                quest = (
+//                                        "FORMID:B-:" +
+//                                                "MERCHANTID:" + am.getMerchantID() + ":" +
+//                                                "BANKACCOUNTID:" + accSend + ":" +
+//                                                "INFOFIELD1:" + areaString + ":" +
+//                                                "INFOFIELD2:" + "PAYMENT" + ":" +
+//                                                "INFOFIELD3:" + ETMeterAccNumber.getText().toString().trim() + ":" +
+//                                                "INFOFIELD9:" + am.getUserPhone() + ":"+
+//                                                "ACCOUNTID:" + ETMeterAccNumber.getText().toString().trim() + ":" +
+//                                                "AMOUNT:" + ETAmount.getText().toString().trim() + ":" +
+//                                                "TMPIN:" + ETPin.getText().toString().trim() + ":" +
+//                                                "ACTION:GETNAME:"
+//
+//                                        /*"FORMID:M-:" + old
+//                                                "MERCHANTID:" + am.getMerchantID() + ":" +
+//                                                "BANKACCOUNTID:" + accSend + ":" +
+//                                                "INFOFIELD1:" + areaCode + ":" +
+//                                                "INFOFIELD9:" + am.getUserPhone() + ":"+
+//                                                "ACCOUNTID:" + ETMeterAccNumber.getText().toString().trim() + ":" +
+//                                                "AMOUNT:" + ETAmount.getText().toString().trim() + ":" +
+//                                                "TMPIN:" + ETPin.getText().toString().trim() + ":" +
+//                                                "ACTION:PAYBILL:"*/
+//                                );
+//                                break;
+//                            case "007001002":
+//                            case "007001012":
+//                                quest = (
+//                                        "FORMID:M-:" +
+//                                                "MERCHANTID:" + am.getMerchantID() + ":" +
+//                                                "BANKACCOUNTID:" + accSend + ":" +
+//                                                "INFOFIELD1:" + billAccName + ":" +
+//                                                "INFOFIELD2:" + billDueAmount + ":" +
+//                                                "INFOFIELD3:" + am.getUserPhone() + ":"+
+//                                                "ACCOUNTID:" + ETMeterAccNumber.getText().toString().trim() + ":" +
+//                                                "AMOUNT:" + ETAmount.getText().toString().trim() + ":" +
+//                                                "TMPIN:" + ETPin.getText().toString().trim() + ":" +
+//                                                "ACTION:PAYBILL:"
+//                                );
+//                                break;
+//                            default:
+//                                quest = (
+//                                        "FORMID:M-:" +
+//                                                "MERCHANTID:" + am.getMerchantID() + ":" +
+//                                                "BANKACCOUNTID:" + accSend + ":" +
+//                                                "INFOFIELD9:" + am.getUserPhone() + ":"+
+//                                                "ACCOUNTID:" + ETMeterAccNumber.getText().toString().trim() + ":" +
+//                                                "AMOUNT:" + ETAmount.getText().toString().trim() + ":" +
+//                                                "TMPIN:" + ETPin.getText().toString().trim() + ":" +
+//                                                "ACTION:PAYBILL:"
+//                                );
+//                                break;
+//                        }
+//                        am.get(Bill_Payments.this,quest,getString(R.string.processingTrx),"TRX");
+//                        gDialog.cancel();
+//                    });
+//                    txtNo.setOnClickListener(v -> gDialog.cancel());
+//                    gDialog.setOnCancelListener(dialog -> {
+////                        ETPin.setText("");
+//                        dialog.dismiss();
+//                    });
+//                    gDialog.show();
+//                }
+//                break;
+//        }
+//    }
+
     @Override
     protected void onResume() {
         String status = am.getOTPStatus();
-        Log.e("STAT", status);
+//        Log.e("STAT", status);
         if (Objects.equals(status, "1")){
             otpTrxRequest();
             am.saveOTPStatus("0");
@@ -485,6 +721,32 @@ public class Bill_Payments extends BaseAct implements ResponseListener, VolleyRe
     @Override
     public void onResponse(String response, String step) {
         switch (step){
+            case "BEN":
+                String [] benZ  = response.split(";");
+                final List <String> listMerchant = new ArrayList<>(),
+                        listAccOrPhones = new ArrayList<>(),
+                        listNames = new ArrayList<>();
+                for (String aBenZ : benZ) {
+                    String [] inside = aBenZ.split(",");
+                    listMerchant.add(inside[0]);
+                    listAccOrPhones.add(inside[1]);
+                    listNames.add(inside[2]);
+                }
+                ArrayAdapter<String> benZAdapter = new ArrayAdapter<>(this ,R.layout.spinner_dropdown_item, listNames);
+                benZAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
+                benSpinner.setAdapter(benZAdapter);
+                benSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                        benAcc = listAccOrPhones.get(position);
+                        merchant = listMerchant.get(position);
+                    }
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {}
+                });
+                ETMeterAccNumber.setVisibility(View.GONE);
+                benSpinner.setVisibility(View.VISIBLE);
+                break;
             case "VAL":
                 if(response.contains("|")){
                     String[] howLong = response.split("\\|");

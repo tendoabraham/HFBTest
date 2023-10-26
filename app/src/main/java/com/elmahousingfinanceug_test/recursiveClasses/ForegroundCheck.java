@@ -97,16 +97,16 @@ public class ForegroundCheck implements Application.ActivityLifecycleCallbacks {
             handler.removeCallbacks(check);
 
         if (wasBackground){
-            Log.e(TAG, "went foreground");
+//            Log.e(TAG, "went foreground");
             for (Listener l : listeners) {
                 try {
                     l.onBecameForeground();
                 } catch (Exception exc) {
-                    Log.e(TAG, "Listener threw exception!", exc);
+//                    Log.e(TAG, "Listener threw exception!", exc);
                 }
             }
         } else {
-            Log.e(TAG, "still foreground");
+//            Log.e(TAG, "still foreground");
 
         }
     }
@@ -123,16 +123,16 @@ public class ForegroundCheck implements Application.ActivityLifecycleCallbacks {
             public void run() {
                 if (foreground && paused) {
                     foreground = false;
-                    Log.e(TAG, "went background");
+//                    Log.e(TAG, "went background");
                     for (Listener l : listeners) {
                         try {
                             l.onBecameBackground();
                         } catch (Exception exc) {
-                            Log.e(TAG, "Listener threw exception!", exc);
+//                            Log.e(TAG, "Listener threw exception!", exc);
                         }
                     }
                 } else {
-                    Log.e(TAG, "still foreground");
+//                    Log.e(TAG, "still foreground");
                 }
             }
         }, CHECK_DELAY);

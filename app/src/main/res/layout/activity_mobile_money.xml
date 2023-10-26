@@ -175,7 +175,6 @@
             <TextView
                 android:id="@+id/sendMoney"
                 style="@style/Button_Yes"
-                android:onClick="sm$"
                 android:text="@string/sendMoney" />
 
         </LinearLayout>

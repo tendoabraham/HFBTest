@@ -120,6 +120,77 @@ public class Main_Menu extends BaseAct implements NavigationView.OnNavigationIte
         });
 
         am.saveCount("0");
+
+        a.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(), Balance_Enquiry.class));
+            }
+        });
+
+        b.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(), Mini_Statement.class));
+            }
+        });
+
+        c.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(), Funds_Transfer.class));
+            }
+        });
+
+        d.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(), Airtime_And_Data_Options.class));
+            }
+        });
+
+        e.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(), Bank_Requests.class));
+            }
+        });
+
+        f.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(), Mobile_Money_Two.class));
+            }
+        });
+
+        g.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(), Bill_Pay_Options.class));
+            }
+        });
+
+        h.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(), Funds_Transfer_External.class));
+            }
+        });
+
+        i.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(), Activity_Log.class));
+            }
+        });
+
+        j.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                am.saveMerchantID("SCHOOLFEES");
+                startActivity(new Intent(getApplicationContext(), School_Fees.class));
+            }
+        });
     }
 
     private void refreshPage() {
@@ -137,42 +208,43 @@ public class Main_Menu extends BaseAct implements NavigationView.OnNavigationIte
         am.Set_Items_2_Animate(allLayouts);
     }
 
-    public void mnu(View u) {
-        switch (u.getId()){
-            case R.id.balanceEnquiry:
-                startActivity(new Intent(getApplicationContext(), Balance_Enquiry.class));
-                break;
-            case R.id.miniStatement:
-                startActivity(new Intent(getApplicationContext(), Mini_Statement.class));
-                break;
-            case R.id.fundsTransfer:
-                startActivity(new Intent(getApplicationContext(), Funds_Transfer.class));
-                break;
-            case R.id.airTimeServices:
-                startActivity(new Intent(getApplicationContext(), Airtime_And_Data_Options.class));
-                break;
-            case R.id.mobileMoney:
-                startActivity(new Intent(getApplicationContext(), Mobile_Money_Two.class));
-                break;
-            case R.id.bankRequest:
-                startActivity(new Intent(getApplicationContext(), Bank_Requests.class));
-                break;
-            case R.id.billPayments:
-                startActivity(new Intent(getApplicationContext(), Bill_Pay_Options.class));
-                break;
-            case R.id.schoolFees:
-                //am.saveMerchantID("021001001");
-                am.saveMerchantID("SCHOOLFEES");
-                startActivity(new Intent(getApplicationContext(), School_Fees.class));
-                break;
-            case R.id.extTransfer:
-                startActivity(new Intent(getApplicationContext(), Funds_Transfer_External.class));
-                break;
-            case R.id.activityLog:
-                startActivity(new Intent(getApplicationContext(), Activity_Log.class));
-                break;
-        }
-    }
+//    public void mnu(View u) {
+//        switch (u.getId()){
+//            case R.id.balanceEnquiry:
+//                startActivity(new Intent(getApplicationContext(), Balance_Enquiry.class));
+//                break;
+//            case R.id.miniStatement:
+//                startActivity(new Intent(getApplicationContext(), Mini_Statement.class));
+//                break;
+//            case R.id.fundsTransfer:
+//                startActivity(new Intent(getApplicationContext(), Funds_Transfer.class));
+//                break;
+//            case R.id.airTimeServices:
+//                startActivity(new Intent(getApplicationContext(), Airtime_And_Data_Options.class));
+//                break;
+//            case R.id.mobileMoney:
+//                startActivity(new Intent(getApplicationContext(), Mobile_Money_Two.class));
+//                break;
+//            case R.id.bankRequest:
+//                startActivity(new Intent(getApplicationContext(), Bank_Requests.class));
+//                break;
+//            case R.id.billPayments:
+//                startActivity(new Intent(getApplicationContext(), Bill_Pay_Options.class));
+//                break;
+//            case R.id.schoolFees:
+//                //am.saveMerchantID("021001001");
+//                am.saveMerchantID("SCHOOLFEES");
+//                startActivity(new Intent(getApplicationContext(), School_Fees.class));
+////                startActivity(new Intent(getApplicationContext(), OTP.class));
+//                break;
+//            case R.id.extTransfer:
+//                startActivity(new Intent(getApplicationContext(), Funds_Transfer_External.class));
+//                break;
+//            case R.id.activityLog:
+//                startActivity(new Intent(getApplicationContext(), Activity_Log.class));
+//                break;
+//        }
+//    }
 
     @Override
     protected void onStart() {

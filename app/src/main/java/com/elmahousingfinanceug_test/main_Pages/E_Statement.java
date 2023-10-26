@@ -26,7 +26,7 @@ import java.util.Calendar;
 import java.util.TimeZone;
 
 public class E_Statement extends BaseAct implements ResponseListener, VolleyResponse {
-    TextView startDate,endDate;
+    TextView startDate,endDate, submit;
     Spinner accountNumber;
     String accSend = "";
     private int currDay,currMonth,currYear,startDay,startMonth,startYear;
@@ -41,6 +41,7 @@ public class E_Statement extends BaseAct implements ResponseListener, VolleyResp
         accountNumber = findViewById(R.id.accountNumber);
         startDate = findViewById(R.id.startDate);
         endDate = findViewById(R.id.endDate);
+        submit = findViewById(R.id.submit);
 
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item, am.getAliases());
         dataAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
@@ -59,6 +60,57 @@ public class E_Statement extends BaseAct implements ResponseListener, VolleyResp
         });
 
         setDates();
+
+        submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (accSend.equals("")) {
+                    am.myDialog(E_Statement.this, getString(R.string.alert), getString(R.string.selectAcc));
+                } else if (startDate.getText().toString().length() < 1) {
+                    am.myDialog(E_Statement.this, getString(R.string.alert), getString(R.string.setstrtDt));
+                } else if (endDate.getText().toString().length() < 1) {
+                    am.myDialog(E_Statement.this, getString(R.string.alert), getString(R.string.setEnDt));
+                } else {
+                    gDialog = new Dialog(E_Statement.this);
+                    //noinspection ConstantConditions
+                    gDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                    gDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                    gDialog.setContentView(R.layout.dialog_confirm);
+                    final TextView txtMessage = gDialog.findViewById(R.id.dialog_message);
+                    final TextView txtNo = gDialog.findViewById(R.id.noBTN);
+                    final TextView txtOk = gDialog.findViewById(R.id.yesBTN);
+                    txtMessage.setText(String.format("%s %s  %s %s %s %s.",
+                            getText(R.string.createEstmnt),
+                            accSend,
+                            getText(R.string.from),
+                            startDate.getText().toString().trim(),
+                            getText(R.string.to),
+                            endDate.getText().toString().trim()));
+                    txtNo.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            gDialog.dismiss();
+                        }
+                    });
+                    txtOk.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            String quest = (
+                                    "FORMID:O-FullStatementBank:" +
+                                            "FIELD1:" + startDate.getText().toString().trim() + ":" +
+                                            "FIELD2:" + endDate.getText().toString().trim() + ":" +
+                                            "FIELD3:" + accSend + ":"
+                            );
+                            //am.connectOldTwo(getString(R.string.processingReq),quest,E_Statement.this,"FSB");
+                            am.get(E_Statement.this,quest,getString(R.string.processingReq),"FSB");
+                            gDialog.dismiss();
+                        }
+                    });
+                    gDialog.setCancelable(true);
+                    gDialog.show();
+                }
+            }
+        });
     }
 
     private void setDates() {
@@ -174,53 +226,53 @@ public class E_Statement extends BaseAct implements ResponseListener, VolleyResp
         });
     }
 
-    public void createBTN(View view) {
-        if (accSend.equals("")) {
-            am.myDialog(this, getString(R.string.alert), getString(R.string.selectAcc));
-        } else if (startDate.getText().toString().length() < 1) {
-            am.myDialog(this, getString(R.string.alert), getString(R.string.setstrtDt));
-        } else if (endDate.getText().toString().length() < 1) {
-            am.myDialog(this, getString(R.string.alert), getString(R.string.setEnDt));
-        } else {
-            gDialog = new Dialog(this);
-            //noinspection ConstantConditions
-            gDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            gDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            gDialog.setContentView(R.layout.dialog_confirm);
-            final TextView txtMessage = gDialog.findViewById(R.id.dialog_message);
-            final TextView txtNo = gDialog.findViewById(R.id.noBTN);
-            final TextView txtOk = gDialog.findViewById(R.id.yesBTN);
-            txtMessage.setText(String.format("%s %s  %s %s %s %s.",
-                    getText(R.string.createEstmnt),
-                    accSend,
-                    getText(R.string.from),
-                    startDate.getText().toString().trim(),
-                    getText(R.string.to),
-                    endDate.getText().toString().trim()));
-            txtNo.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    gDialog.dismiss();
-                }
-            });
-            txtOk.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    String quest = (
-                            "FORMID:O-FullStatementBank:" +
-                                    "FIELD1:" + startDate.getText().toString().trim() + ":" +
-                                    "FIELD2:" + endDate.getText().toString().trim() + ":" +
-                                    "FIELD3:" + accSend + ":"
-                    );
-                    //am.connectOldTwo(getString(R.string.processingReq),quest,E_Statement.this,"FSB");
-                    am.get(E_Statement.this,quest,getString(R.string.processingReq),"FSB");
-                    gDialog.dismiss();
-                }
-            });
-            gDialog.setCancelable(true);
-            gDialog.show();
-        }
-    }
+//    public void createBTN(View view) {
+//        if (accSend.equals("")) {
+//            am.myDialog(this, getString(R.string.alert), getString(R.string.selectAcc));
+//        } else if (startDate.getText().toString().length() < 1) {
+//            am.myDialog(this, getString(R.string.alert), getString(R.string.setstrtDt));
+//        } else if (endDate.getText().toString().length() < 1) {
+//            am.myDialog(this, getString(R.string.alert), getString(R.string.setEnDt));
+//        } else {
+//            gDialog = new Dialog(this);
+//            //noinspection ConstantConditions
+//            gDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+//            gDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+//            gDialog.setContentView(R.layout.dialog_confirm);
+//            final TextView txtMessage = gDialog.findViewById(R.id.dialog_message);
+//            final TextView txtNo = gDialog.findViewById(R.id.noBTN);
+//            final TextView txtOk = gDialog.findViewById(R.id.yesBTN);
+//            txtMessage.setText(String.format("%s %s  %s %s %s %s.",
+//                    getText(R.string.createEstmnt),
+//                    accSend,
+//                    getText(R.string.from),
+//                    startDate.getText().toString().trim(),
+//                    getText(R.string.to),
+//                    endDate.getText().toString().trim()));
+//            txtNo.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    gDialog.dismiss();
+//                }
+//            });
+//            txtOk.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    String quest = (
+//                            "FORMID:O-FullStatementBank:" +
+//                                    "FIELD1:" + startDate.getText().toString().trim() + ":" +
+//                                    "FIELD2:" + endDate.getText().toString().trim() + ":" +
+//                                    "FIELD3:" + accSend + ":"
+//                    );
+//                    //am.connectOldTwo(getString(R.string.processingReq),quest,E_Statement.this,"FSB");
+//                    am.get(E_Statement.this,quest,getString(R.string.processingReq),"FSB");
+//                    gDialog.dismiss();
+//                }
+//            });
+//            gDialog.setCancelable(true);
+//            gDialog.show();
+//        }
+//    }
     
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

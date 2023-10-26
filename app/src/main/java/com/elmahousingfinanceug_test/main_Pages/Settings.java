@@ -43,7 +43,8 @@ import static android.os.Build.VERSION_CODES.M;
 public class Settings extends BaseAct implements ResponseListener, VolleyResponse, FingerprintUiHelper.Callback{
     EditText ETOldLPin,ETNewLPin,ETConfirmLPin,ETOldTPin,ETNewTPin,ETConfirmTPin, lCon;
     LinearLayout CLPLayout,CTPLayout,appBar,fingerPrintStuff,pinCon,fingerInput;
-    TextView idle_Btn,DisplayCLPBTN,DisplayCTPBTN,displayThemes,fingerprint_status;
+    TextView idle_Btn,DisplayCLPBTN,DisplayCTPBTN,displayThemes,fingerprint_status,
+            cancel, change, change2, close, go;
     SwitchCompat fingerSwitch;
     ImageView fingerprint_icon;
     Boolean scheduledRestart = false;
@@ -77,6 +78,12 @@ public class Settings extends BaseAct implements ResponseListener, VolleyRespons
         fingerprint_status = findViewById(R.id.fingerprint_status);
         CLPLayout = findViewById(R.id.CLPLayout);
         CTPLayout = findViewById(R.id.CTPLayout);
+
+        go = findViewById(R.id.go);
+        close = findViewById(R.id.close);
+        change = findViewById(R.id.change);
+        change2 = findViewById(R.id.change2);
+        cancel = findViewById(R.id.cancel);
 
         idle_Btn = findViewById(R.id.inactivity);
         DisplayCLPBTN = findViewById(R.id.DisplayCLPBTN);
@@ -181,33 +188,10 @@ public class Settings extends BaseAct implements ResponseListener, VolleyRespons
             @Override
             public void afterTextChanged(Editable s) {}
         });
-    }
 
-    private void resetViews() {
-        if(!am.getFirstTimeUser()){
-            CLPLayout.setVisibility(View.GONE);
-            CTPLayout.setVisibility(View.GONE);
-            DisplayCLPBTN.setVisibility(View.VISIBLE);
-            DisplayCTPBTN.setVisibility(View.VISIBLE);
-            reveal();
-        }
-    }
-
-    public void setClicks(View s){
-        switch (s.getId()){
-            case R.id.go:
-                if (lCon.getText().toString().trim().length() < 4) {
-                    am.myDialog(this, getString(R.string.alert), getString(R.string.confirmGo));
-                } else {
-                    quest = (
-                            "FORMID:LOGIN:" +
-                                    "LOGINMPIN:" + lCon.getText().toString().trim() + ":" +
-                                    "LOGINTYPE:PIN:"
-                    );
-                    am.get(this, quest,getString(R.string.loggingIn),"CON");
-                }
-                break;
-            case R.id.inactivity:
+        idle_Btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
                 final String [] milliseconds = {"120000","180000","240000","300000"};
                 final CharSequence[] items = {getString(R.string.min2),getString(R.string.min3),getString(R.string.min4),getString(R.string.min5)};
                 int checked = 0;
@@ -224,14 +208,150 @@ public class Settings extends BaseAct implements ResponseListener, VolleyRespons
                                 dialog.dismiss();
                             }
                         }).setPositiveButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.dismiss();
-                    }
-                });
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.dismiss();
+                            }
+                        });
                 gDialog = builder.show();
-                break;
+            }
+        });
+
+        DisplayCLPBTN.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!am.getFirstTimeUser()){
+                    CTPLayout.setVisibility(View.GONE);
+                    DisplayCTPBTN.setVisibility(View.VISIBLE);
+                }
+                DisplayCLPBTN.setVisibility(View.GONE);
+                CLPLayout.setVisibility(View.VISIBLE);
+            }
+        });
+
+        DisplayCTPBTN.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CLPLayout.setVisibility(View.GONE);
+                DisplayCTPBTN.setVisibility(View.GONE);
+                CTPLayout.setVisibility(View.VISIBLE);
+                DisplayCLPBTN.setVisibility(View.VISIBLE);
+            }
+        });
+
+        displayThemes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                resetViews();
+                startActivity(new Intent(Settings.this,ThemePreference.class));
+            }
+        });
+
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(am.getFirstTimeUser()){
+                    confirm();
+                } else {
+                    resetViews();
+                }
+            }
+        });
+
+        change.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CLPChangeBTN();
+            }
+        });
+
+        change2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CTPChangeBTN();
+            }
+        });
+
+        close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                resetViews();
+            }
+        });
+
+        go.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (lCon.getText().toString().trim().length() < 4) {
+                    am.myDialog(Settings.this, getString(R.string.alert), getString(R.string.confirmGo));
+                } else {
+                    quest = (
+                            "FORMID:LOGIN:" +
+                                    "LOGINMPIN:" + lCon.getText().toString().trim() + ":" +
+                                    "LOGINTYPE:PIN:"
+                    );
+                    am.get(Settings.this, quest,getString(R.string.loggingIn),"CON");
+                }
+            }
+        });
+
+        fingerprint_status.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+    }
+
+    private void resetViews() {
+        if(!am.getFirstTimeUser()){
+            CLPLayout.setVisibility(View.GONE);
+            CTPLayout.setVisibility(View.GONE);
+            DisplayCLPBTN.setVisibility(View.VISIBLE);
+            DisplayCTPBTN.setVisibility(View.VISIBLE);
+            reveal();
         }
     }
+
+//    public void setClicks(View s){
+//        switch (s.getId()){
+//            case R.id.go:
+//                if (lCon.getText().toString().trim().length() < 4) {
+//                    am.myDialog(this, getString(R.string.alert), getString(R.string.confirmGo));
+//                } else {
+//                    quest = (
+//                            "FORMID:LOGIN:" +
+//                                    "LOGINMPIN:" + lCon.getText().toString().trim() + ":" +
+//                                    "LOGINTYPE:PIN:"
+//                    );
+//                    am.get(this, quest,getString(R.string.loggingIn),"CON");
+//                }
+//                break;
+//            case R.id.inactivity:
+//                final String [] milliseconds = {"120000","180000","240000","300000"};
+//                final CharSequence[] items = {getString(R.string.min2),getString(R.string.min3),getString(R.string.min4),getString(R.string.min5)};
+//                int checked = 0;
+//                for(int i=0;i<milliseconds.length;i++){
+//                    if(String.valueOf(am.getIdleTime()).equals(milliseconds[i])){
+//                        checked = i;
+//                    }
+//                }
+//                AlertDialog.Builder builder = new AlertDialog.Builder(Settings.this);
+//                builder.setCancelable(true).setTitle(R.string.autoLogOut)
+//                        .setSingleChoiceItems(items,checked,new DialogInterface.OnClickListener() {
+//                            public void onClick(DialogInterface dialog, int item) {
+//                                am.saveIdleTime(milliseconds[item]);
+//                                dialog.dismiss();
+//                            }
+//                        }).setPositiveButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+//                    public void onClick(DialogInterface dialog, int id) {
+//                        dialog.dismiss();
+//                    }
+//                });
+//                gDialog = builder.show();
+//                break;
+//        }
+//    }
 
     private void reveal() {
         try {
@@ -262,24 +382,24 @@ public class Settings extends BaseAct implements ResponseListener, VolleyRespons
         }
     }
 
-    public void DisplayCLPBTN(View view) {
-        if(!am.getFirstTimeUser()){
-            CTPLayout.setVisibility(View.GONE);
-            DisplayCTPBTN.setVisibility(View.VISIBLE);
-        }
-        DisplayCLPBTN.setVisibility(View.GONE);
-        CLPLayout.setVisibility(View.VISIBLE);
-    }
+//    public void DisplayCLPBTN(View view) {
+//        if(!am.getFirstTimeUser()){
+//            CTPLayout.setVisibility(View.GONE);
+//            DisplayCTPBTN.setVisibility(View.VISIBLE);
+//        }
+//        DisplayCLPBTN.setVisibility(View.GONE);
+//        CLPLayout.setVisibility(View.VISIBLE);
+//    }
 
-    public void CLPCloseBTN(View view) {
-        if(am.getFirstTimeUser()){
-            confirm();
-        } else {
-            resetViews();
-        }
-    }
+//    public void CLPCloseBTN(View view) {
+//        if(am.getFirstTimeUser()){
+//            confirm();
+//        } else {
+//            resetViews();
+//        }
+//    }
 
-    public void CLPChangeBTN(View view) {
+    public void CLPChangeBTN() {
         if (Validation(ETOldLPin.getText().toString().trim(),ETNewLPin.getText().toString().trim(),ETConfirmLPin.getText().toString().trim())) {
             am.myDialog(Settings.this, getString(R.string.alert), getString(R.string.notAccPin));
         } else {
@@ -305,18 +425,18 @@ public class Settings extends BaseAct implements ResponseListener, VolleyRespons
         }
     }
 
-    public void DisplayCTPBTN(View view) {
-        CLPLayout.setVisibility(View.GONE);
-        DisplayCTPBTN.setVisibility(View.GONE);
-        CTPLayout.setVisibility(View.VISIBLE);
-        DisplayCLPBTN.setVisibility(View.VISIBLE);
-    }
+//    public void DisplayCTPBTN(View view) {
+//        CLPLayout.setVisibility(View.GONE);
+//        DisplayCTPBTN.setVisibility(View.GONE);
+//        CTPLayout.setVisibility(View.VISIBLE);
+//        DisplayCLPBTN.setVisibility(View.VISIBLE);
+//    }
 
-    public void CTPCloseBTN(View view) {
-        resetViews();
-    }
+//    public void CTPCloseBTN(View view) {
+//        resetViews();
+//    }
 
-    public void CTPChangeBTN(View view) {
+    public void CTPChangeBTN() {
         if (Validation(ETOldTPin.getText().toString().trim(),ETNewTPin.getText().toString().trim(),ETConfirmTPin.getText().toString().trim())) {
             am.myDialog(Settings.this, getString(R.string.alert), getString(R.string.notAccPin));
         } else {
@@ -360,10 +480,10 @@ public class Settings extends BaseAct implements ResponseListener, VolleyRespons
         return check == 0;
     }
 
-    public void displayTheme(View view) {
-        resetViews();
-        startActivity(new Intent(this,ThemePreference.class));
-    }
+//    public void displayTheme(View view) {
+//        resetViews();
+//        startActivity(new Intent(this,ThemePreference.class));
+//    }
 
     private class themeListener implements SharedPreferences.OnSharedPreferenceChangeListener {
         @Override

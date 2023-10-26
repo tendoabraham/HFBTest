@@ -3,6 +3,10 @@
     <ANNOTATIONS>
       <root url="jar://$PROJECT_DIR$/../ptc_android_challenge_Agnes_Musyoka-development_mocklab/caches/transforms-2/files-2.1/f2f3915d0d4d4d323a07887cd81bd730/jetified-ucrop-2.2.2/annotations.zip!/" />
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/65370c9e0b860b58e7131b53634d7a42/jetified-ucrop-2.2.2/annotations.zip!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/ca41e4d88d1e69a7fbc92b8b21b79738/transformed/jetified-ucrop-2.2.2/annotations.zip!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/f9bd4e144c3232dd5705d009c8056f55/transformed/jetified-ucrop-2.2.2/annotations.zip!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/10047cb105f77d1640b17658712cc36e/transformed/jetified-ucrop-2.2.2/annotations.zip!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/cddf532cc3b03d66feb00f7889a619b5/transformed/jetified-ucrop-2.2.2/annotations.zip!/" />
     </ANNOTATIONS>
     <CLASSES>
       <root url="jar://$PROJECT_DIR$/../ptc_android_challenge_Agnes_Musyoka-development_mocklab/caches/transforms-2/files-2.1/f2f3915d0d4d4d323a07887cd81bd730/jetified-ucrop-2.2.2/jars/classes.jar!/" />
@@ -11,6 +15,18 @@
       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/65370c9e0b860b58e7131b53634d7a42/jetified-ucrop-2.2.2/res" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/65370c9e0b860b58e7131b53634d7a42/jetified-ucrop-2.2.2/AndroidManifest.xml" />
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/65370c9e0b860b58e7131b53634d7a42/jetified-ucrop-2.2.2/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/ca41e4d88d1e69a7fbc92b8b21b79738/transformed/jetified-ucrop-2.2.2/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/ca41e4d88d1e69a7fbc92b8b21b79738/transformed/jetified-ucrop-2.2.2/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/ca41e4d88d1e69a7fbc92b8b21b79738/transformed/jetified-ucrop-2.2.2/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/f9bd4e144c3232dd5705d009c8056f55/transformed/jetified-ucrop-2.2.2/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/f9bd4e144c3232dd5705d009c8056f55/transformed/jetified-ucrop-2.2.2/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/f9bd4e144c3232dd5705d009c8056f55/transformed/jetified-ucrop-2.2.2/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/10047cb105f77d1640b17658712cc36e/transformed/jetified-ucrop-2.2.2/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/10047cb105f77d1640b17658712cc36e/transformed/jetified-ucrop-2.2.2/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/10047cb105f77d1640b17658712cc36e/transformed/jetified-ucrop-2.2.2/jars/classes.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/cddf532cc3b03d66feb00f7889a619b5/transformed/jetified-ucrop-2.2.2/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/cddf532cc3b03d66feb00f7889a619b5/transformed/jetified-ucrop-2.2.2/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/cddf532cc3b03d66feb00f7889a619b5/transformed/jetified-ucrop-2.2.2/res" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$PROJECT_DIR$/../ptc_android_challenge_Agnes_Musyoka-development_mocklab/caches/modules-2/files-2.1/com.github.yalantis/ucrop/2.2.2/2fed192d3bbdf16ea0c579db2f7f398f2db36ac0/ucrop-2.2.2-javadoc.jar!/" />

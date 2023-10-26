@@ -163,11 +163,25 @@ public class ZAtmBranch extends AppCompatActivity implements
         } else {
             fm.getMapAsync(this);
         }
+
+        b_label.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getLocation();
+            }
+        });
+
+        list.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showHide();
+            }
+        });
     }
 
-    public void loc(View l){
-        getLocation();
-    }
+//    public void loc(View l){
+//        getLocation();
+//    }
 
     private void getLocation() {
         final String [] locationPermissions = {Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION};
@@ -393,7 +407,7 @@ public class ZAtmBranch extends AppCompatActivity implements
         }
     }
 
-    public void showHide (View vf){
+    public void showHide (){
         am.ToastMessage(this,getString(R.string.zoomtoselect));
         if(mBottomSheetBehavior.getState() != BottomSheetBehavior.STATE_EXPANDED) {
             mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);

@@ -455,7 +455,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                     selectedAccountID = accountIDs.get(checkedId);
                     ProductDescription = productDescription.get(checkedId);
                     termsUrl = listUrls.get(checkedId);
-                    Log.e("product description", ProductDescription);
+//                    Log.e("product description", ProductDescription);
                     decriptionPopup();
 
 
@@ -500,7 +500,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                                 if (position != 0) {
                                     currName = currselect.getSelectedItem().toString().trim();
                                     currencyURL = listCurrencyUrls.get(position);
-                                    Log.e("CurrencyURL", currencyURL);
+//                                    Log.e("CurrencyURL", currencyURL);
                                 } else {
                                     currName = "";
                                     currencyURL = "";
@@ -894,7 +894,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                         centesourceincome.addView(PeriodofEmployment);
                     }
 
-                    Log.e("userEmployee", userEmploymentType);
+//                    Log.e("userEmployee", userEmploymentType);
                 } else {
                     userEmploymentType = "";
 
@@ -1470,7 +1470,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                VolleyLog.e("Error: ", error.getMessage());
+//                VolleyLog.e("Error: ", error.getMessage());
             }
         });
 
@@ -1764,11 +1764,11 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                     .setQuality(20)
                     .compressToBitmap(mFile);
         } catch (Exception e) {
-            Log.e("error-whenusinglib", "" + e);
+//            Log.e("error-whenusinglib", "" + e);
         }
 
         if (bmp == null) {
-            Log.e("", "Bitmap not found");
+//            Log.e("", "Bitmap not found");
         }
 
         return bmp;
@@ -2616,7 +2616,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                             currentTask = "RAO";
                             new_request = RAO();
                             new Handler().postDelayed(() -> am.get(AccountOpenZMain.this, new_request, getString(R.string.loading), "RAO"), 400);
-                            Log.e("TEST", new_request);
+//                            Log.e("TEST", new_request);
                             break;
                         }
                         case "VerifyExisting":
@@ -3829,7 +3829,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                VolleyLog.e("Error: ", error.getMessage());
+//                VolleyLog.e("Error: ", error.getMessage());
             }
         });
 
@@ -3904,7 +3904,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                VolleyLog.e("Error: ", error.getMessage());
+//                VolleyLog.e("Error: ", error.getMessage());
             }
         });
 
@@ -3976,7 +3976,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                VolleyLog.e("Error: ", error.getMessage());
+//                VolleyLog.e("Error: ", error.getMessage());
             }
         });
 
@@ -3990,7 +3990,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
     }
 
     private void compareFaceId(String faceId1, String faceId2) {
-        Log.e("faceID",faceId1 + "-" + faceId2) ;
+//        Log.e("faceID",faceId1 + "-" + faceId2) ;
 
         String base_URL2 = "https://imageai.azurewebsites.net/CompareFace.aspx";
         JSONObject jsonObject = new JSONObject();
@@ -4009,7 +4009,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        Log.e("COMPARE",response.toString())  ;
+//                        Log.e("COMPARE",response.toString())  ;
                         am.progressDialog("0")   ;
 //                        Log.d("upload_compare_response", response.toString());
                         ;
@@ -4044,7 +4044,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                             }
 
                         } catch (JSONException e) {
-                            Log.e("ErrorV",response.toString()) ;
+//                            Log.e("ErrorV",response.toString()) ;
                             e.printStackTrace();
                         }
                     }
@@ -4052,7 +4052,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
             @Override
             public void onErrorResponse(VolleyError error) {
 //                Log.e("Test",error.toString()) ;
-                VolleyLog.e("Error: ", error.getMessage());
+//                VolleyLog.e("Error: ", error.getMessage());
             }
         });
 

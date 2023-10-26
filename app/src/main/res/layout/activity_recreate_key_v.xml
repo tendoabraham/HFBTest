@@ -92,13 +92,11 @@
                 <TextView
                     android:id="@+id/verify"
                     style="@style/Button_Yes"
-                    android:onClick="verification"
                     android:text="@string/verify"/>
 
                 <TextView
                     android:id="@+id/contactUs"
                     style="@style/Button_Yes"
-                    android:onClick="verification"
                     android:text="@string/contactUs"/>
 
             </LinearLayout>

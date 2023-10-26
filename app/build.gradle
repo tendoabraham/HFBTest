@@ -3,15 +3,21 @@ apply plugin: 'com.android.application'
 //apply plugin: 'dexprotector'
 
 android {
-    compileSdkVersion 30
-    buildToolsVersion '30.0.0'
-                                                                        
+    compileSdkVersion 34
+    buildToolsVersion '30.0.3'
+
     signingConfigs {
         release {
-            keyAlias 'elmaandroidkeystore'
-            keyPassword 'priya143'
-            storeFile file("/D:/ElmaAndroidKeyStore")
+            storeFile file("C:/Craft/Craft/AppDev/WazaElmaAndroidKeyStore")
             storePassword 'priya143'
+            keyAlias 'key0waza'
+            keyPassword 'priya143'
+            v1SigningEnabled false
+        }
+
+        compileOptions {
+            sourceCompatibility JavaVersion.VERSION_11
+            targetCompatibility JavaVersion.VERSION_11
         }
     }
 
@@ -19,11 +25,11 @@ android {
         //Todo: com.elmahousingfinanceug  LIVE
         applicationId "com.elmahousingfinanceug_test"
         multiDexEnabled true
-        minSdkVersion 16
-        targetSdkVersion 30
+        minSdkVersion 26
+        targetSdkVersion 34
         //TODO: increase version b4 upload
-        versionCode 140
-        versionName "140"
+        versionCode 146
+        versionName "146"
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
         signingConfig signingConfigs.release
     }
@@ -49,6 +55,7 @@ android {
             }
         }
     }
+    namespace 'com.elmahousingfinanceug_test'
 }
 
 dependencies {
@@ -88,6 +95,46 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+//    PlayCore update
+    implementation 'com.google.android.play:core:1.10.2'
     //uploading files as binary in ION
     implementation 'com.koushikdutta.ion:ion:3.1.0'
+
+//    implementation fileTree(dir: 'libs', include: ['*.jar'])
+//    implementation 'androidx.multidex:multidex:2.0.1'
+//    implementation 'androidx.annotation:annotation:1.6.0'
+//    implementation 'androidx.appcompat:appcompat:1.6.1'
+//    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+//    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+//    implementation 'androidx.vectordrawable:vectordrawable:1.1.0'
+//    implementation 'androidx.cardview:cardview:1.0.0'
+//    implementation 'com.android.volley:volley:1.2.1'
+//    implementation 'com.google.android.material:material:1.6.0'
+//    implementation 'com.google.android.gms:play-services-maps:18.1.0'
+//    implementation 'com.google.android.gms:play-services-location:21.0.1'
+//    implementation 'com.google.android.gms:play-services-auth-api-phone:18.0.1'
+//    implementation 'com.google.android.gms:play-services-auth:20.6.0'
+//    implementation 'com.amitshekhar.android:android-networking:1.0.2'
+//    implementation 'com.chaos.view:pinview:1.4.4'
+//    implementation 'com.daimajia.androidanimations:library:2.3@aar'
+//    implementation 'com.daimajia.easing:library:2.0@aar'
+//    implementation 'com.github.mumayank:AirLocation:1.3'
+//    implementation 'com.github.florent37:shapeofview:1.4.7'
+//    implementation 'com.github.bumptech.glide:glide:4.11.0'
+//    implementation 'com.github.yalantis:ucrop:2.2.2'
+//    implementation 'com.karumi:dexter:4.2.0'
+//    implementation 'com.madgag.spongycastle:core:1.54.0.0'
+//    implementation 'com.madgag.spongycastle:prov:1.54.0.0'
+//    implementation 'com.madgag.spongycastle:pkix:1.54.0.0'
+//    implementation 'com.madgag.spongycastle:pg:1.54.0.0'
+//    implementation 'com.nineoldandroids:library:2.4.0'
+//    implementation 'com.wang.avi:library:2.1.3'
+//    implementation 'de.hdodenhof:circleimageview:3.1.0'
+//    implementation 'id.zelory:compressor:2.1.1'
+//    implementation 'androidx.browser:browser:1.5.0'
+//    testImplementation 'junit:junit:4.13.2'
+//    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+//    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+//    //uploading files as binary in ION
+//    implementation 'com.koushikdutta.ion:ion:3.1.0'
 }

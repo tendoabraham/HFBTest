@@ -70,7 +70,6 @@ Fax: +256-414-232792"/>
                     style="@style/Button_Yes"
                     android:textAllCaps="false"
                     android:layout_weight="3"
-                    android:onClick="contactBank"
                     android:text="info@housingfinance.co.ug"/>
             </LinearLayout>
 
@@ -89,7 +88,6 @@ Fax: +256-414-232792"/>
                     android:id="@+id/call"
                     style="@style/Button_Yes"
                     android:layout_weight="3"
-                    android:onClick="contactBank"
                     android:text="0800211082"/>
 
             </LinearLayout>
@@ -110,7 +108,6 @@ Fax: +256-414-232792"/>
                     android:id="@+id/call2"
                     style="@style/Button_Yes"
                     android:layout_weight="3"
-                    android:onClick="contactBank"
                     android:text="+256200803000"/>
 
             </LinearLayout>
@@ -131,7 +128,6 @@ Fax: +256-414-232792"/>
                     style="@style/Button_Yes"
                     android:textAllCaps="false"
                     android:layout_weight="3"
-                    android:onClick="contactBank"
                     android:text="Housing Finance Bank"/>
             </LinearLayout>
 
@@ -151,7 +147,6 @@ Fax: +256-414-232792"/>
                     style="@style/Button_Yes"
                     android:textAllCaps="false"
                     android:layout_weight="3"
-                    android:onClick="contactBank"
                     android:text="\@housingfinanceU"/>
             </LinearLayout>
 
@@ -170,7 +165,6 @@ Fax: +256-414-232792"/>
                     android:id="@+id/whatsapp"
                     style="@style/Button_Yes"
                     android:layout_weight="3"
-                    android:onClick="contactBank"
                     android:text="+256771888755"/>
 
             </LinearLayout>
@@ -190,10 +184,28 @@ Fax: +256-414-232792"/>
                     android:id="@+id/website"
                     style="@style/Button_Yes"
                     android:layout_weight="3"
-                    android:onClick="contactBank"
                     android:textAllCaps="false"
                     android:text="www.housingfinance.co.ug"/>
 
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_weight="7"
+                    style="@style/Spinner_Text"
+                    android:text="@string/privacy"/>
+
+                <TextView
+                    android:id="@+id/privacy"
+                    style="@style/Button_Yes"
+                    android:textAllCaps="false"
+                    android:layout_weight="3"
+                    android:text="View Our Privacy Policy"/>
             </LinearLayout>
 
         </LinearLayout>

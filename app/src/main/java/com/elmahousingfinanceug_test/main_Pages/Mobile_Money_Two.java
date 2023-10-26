@@ -47,15 +47,15 @@ import java.util.List;
 import java.util.Objects;
 
 public class Mobile_Money_Two extends BaseAct implements ResponseListener, VolleyResponse {
-    TextView myNum, validateMTN, validateAirtel, airtelResponse;
-    Spinner accNum, serviceProvider;
+    TextView myNum, airtelResponse, validate, back, send;
+    Spinner accNum, serviceProvider, benSpinner;
     EditText otherNum, ETAmount, ETPin;
-    RadioGroup radioGroup;
-    RadioButton rMyAccount, rOtherAccount;
+    RadioGroup radioGroup, toOtherRadioGroup;
+    RadioButton rMyAccount, rOtherAccount, enterNumber, savedBen;
     LinearLayout othNumLayout, numChoice, after, validateLayout,airtelLayout;
     ImageView contactsVw;
     RecyclerView valRecycler;
-    String accNumString = "", sendPhoneStr = "", quest;
+    String accNumString = "", sendPhoneStr = "", quest, utilityID, benAcc, merchant;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,13 +77,19 @@ public class Mobile_Money_Two extends BaseAct implements ResponseListener, Volle
         numChoice = findViewById(R.id.numChoice);
         othNumLayout = findViewById(R.id.otherNumLayout);
         contactsVw = findViewById(R.id.contacts);
-        validateMTN = findViewById(R.id.validateMTN);
-        validateAirtel = findViewById(R.id.validateAirtel);
+        validate = findViewById(R.id.validate);
         after = findViewById(R.id.after);
         validateLayout = findViewById(R.id.validateLayout);
         valRecycler = findViewById(R.id.valRecycler);
         airtelResponse = findViewById(R.id.airtelResponse);
         airtelLayout = findViewById(R.id.airtelLayout);
+        enterNumber = findViewById(R.id.enterNumber);
+        savedBen = findViewById(R.id.savedBen);
+        benSpinner = findViewById(R.id.benSpinner);
+        toOtherRadioGroup = findViewById(R.id.toOtherRadioGroup);
+        back = findViewById(R.id.back);
+        send = findViewById(R.id.send);
+
 
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, am.getAliases());
         dataAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
@@ -107,6 +113,7 @@ public class Mobile_Money_Two extends BaseAct implements ResponseListener, Volle
         arrayList.add(getString(R.string.selectOne));
         arrayList.add(getString(R.string.mtn));
         arrayList.add(getString(R.string.airtel));
+        arrayList.add(getString(R.string.wendi));
         ArrayAdapter<String> dataAdapterSv = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, arrayList);
         dataAdapterSv.setDropDownViewResource(R.layout.spinner_dropdown_item);
         serviceProvider.setAdapter(dataAdapterSv);
@@ -120,16 +127,20 @@ public class Mobile_Money_Two extends BaseAct implements ResponseListener, Volle
                     after.setVisibility(View.GONE);
                     numChoice.setVisibility(View.VISIBLE);
                     rMyAccount.setChecked(true);
-                    validateMTN.setVisibility(View.VISIBLE);
-                    validateAirtel.setVisibility(View.GONE);
+                    validate.setVisibility(View.VISIBLE);
                     am.saveMerchantID("007001017");
                 } else if (position == 2) {
                     after.setVisibility(View.GONE);
                     numChoice.setVisibility(View.VISIBLE);
                     rMyAccount.setChecked(true);
-                    validateAirtel.setVisibility(View.VISIBLE);
-                    validateMTN.setVisibility(View.GONE);
+                    validate.setVisibility(View.VISIBLE);
                     am.saveMerchantID("007001016");
+                }else if (position == 3){
+                    after.setVisibility(View.GONE);
+                    numChoice.setVisibility(View.VISIBLE);
+                    rMyAccount.setChecked(true);
+                    validate.setVisibility(View.VISIBLE);
+                    am.saveMerchantID("HFBWENDI");
                 }
                 validateLayout.setVisibility(View.GONE);
                 ETPin.setText("");
@@ -148,53 +159,41 @@ public class Mobile_Money_Two extends BaseAct implements ResponseListener, Volle
                 ETPin.setText("");
                 validateLayout.setVisibility(View.GONE);
                 after.setVisibility(View.GONE);
-                if (serviceProvider.getSelectedItemPosition() == 1) {
-                    validateMTN.setVisibility(View.VISIBLE);
-                    validateAirtel.setVisibility(View.GONE);
-                }else{
-                    validateAirtel.setVisibility(View.VISIBLE);
-                    validateMTN.setVisibility(View.GONE);
-                }
                 if (rMyAccount.isChecked()) {
                     othNumLayout.setVisibility(View.GONE);
                     myNum.setVisibility(View.VISIBLE);
                     am.animate_View(myNum);
+                    toOtherRadioGroup.setVisibility(View.GONE);
+                    enterNumber.setChecked(true);
                 } else if (rOtherAccount.isChecked()) {
                     othNumLayout.setVisibility(View.VISIBLE);
                     myNum.setVisibility(View.GONE);
                     am.animate_View(contactsVw);
+                    toOtherRadioGroup.setVisibility(View.VISIBLE);
+                    validate.setVisibility(View.VISIBLE);
                 }
             }
         });
 
         rMyAccount.setChecked(true);
-//        ETAmount.addTextChangedListener(new TextWatcher() {
-//            @Override
-//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//
-//            }
-//
-//            @Override
-//            public void onTextChanged(CharSequence s, int start, int before, int count) {
-//                String bal = am.getBal().replace(",", "");
-//                Double balance = Double.parseDouble(bal);
-//
-//                DecimalFormat formatter = new DecimalFormat("#,###,##0.00");//here 0.00 instead #.##
-//                //txtSelfieText.setText(formatter.format(cs_score)+"\nmatch");
-//                String inputedAmount = String.valueOf(s);
-//                if (!inputedAmount.equals("")&&(Double.parseDouble(inputedAmount)) >= balance) {
-//                    am.myDialog(Mobile_Money_Two.this, getString(R.string.alert), getString(R.string.insufficient_funds));
-//                    ETPin.setEnabled(false);
-//                }
-//
-//
-//            }
-//
-//            @Override
-//            public void afterTextChanged(Editable s) {
-//
-//            }
-//        });
+
+        toOtherRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                otherNum.setText("");
+                if (enterNumber.isChecked()){
+                    othNumLayout.setVisibility(View.VISIBLE);
+                    benSpinner.setVisibility(View.GONE);
+                    validate.setVisibility(View.VISIBLE);
+                    after.setVisibility(View.GONE);
+                } else if (savedBen.isChecked()){
+                    validate.setVisibility(View.GONE);
+                    othNumLayout.setVisibility(View.GONE);
+                    validateLayout.setVisibility(View.GONE);
+                    getBens();
+                }
+            }
+        });
 
         ETPin.addTextChangedListener(new TextWatcher() {
             @Override
@@ -214,115 +213,145 @@ public class Mobile_Money_Two extends BaseAct implements ResponseListener, Volle
         });
 
         valRecycler.setLayoutManager(new LinearLayoutManager(this));
-    }
 
-    public void transferBTN(View view) {
-        switch (view.getId()) {
-            case R.id.validateMTN:
-                if (rOtherAccount.isChecked() && otherNum.getText().length() < 4) {
-                    am.myDialog(this, getString(R.string.alert), getString(R.string.enterValidPhoneAcc));
-                    otherNum.setError(getString(R.string.enterValidPhoneAcc));
-                } else {
-                    if (rMyAccount.isChecked()) {
-                        sendPhoneStr = am.getUserPhone();
+        validate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (Objects.equals(am.getMerchantID(), "007001017")) {
+                    if (rOtherAccount.isChecked() && otherNum.getText().length() < 4) {
+                        am.myDialog(Mobile_Money_Two.this, getString(R.string.alert), getString(R.string.enterValidPhoneAcc));
+                        otherNum.setError(getString(R.string.enterValidPhoneAcc));
                     } else {
-                        am.saveSendPhone(otherNum.getText().toString().trim());
-                        sendPhoneStr = am.getSendPhone();
-                    }
+                        if (rMyAccount.isChecked()) {
+                            sendPhoneStr = am.getUserPhone();
+                        } else {
+                            am.saveSendPhone(otherNum.getText().toString().trim());
+                            sendPhoneStr = am.getSendPhone();
+                        }
 //                    String noSpaceMobile = sendPhoneStr.replaceAll("\\s+", "");
 //                    String noSpecialXters = noSpaceMobile.replaceAll("[^a-zA-Z0-9]", " ");
 //                    String strZipCodeRemovalPattern = "^256+(?!$)";
 //                    String cleanMobile = noSpecialXters.replaceAll(strZipCodeRemovalPattern, "0");
 
-                    quest = (
-                            "FORMID:M-:" +
-                                    "MERCHANTID:MMONEYUGMTN:" +
-                                    "ACCOUNTID:" + sendPhoneStr + ":" +
-                                    "BANKID:" + am.getBankID() + ":" +
-                                    "ACTION:GETNAME:"
-                    );
-                    //am.connectOldTwo(getString(R.string.validating),quest,this,"MTN");
-                    am.get(this, quest, getString(R.string.validating), "MTN");
-                }
-                break;
-
-            case R.id.validateAirtel:
-                if (rOtherAccount.isChecked() && otherNum.getText().length() < 4) {
-                    am.myDialog(this, getString(R.string.alert), getString(R.string.enterValidPhoneAcc));
-                    otherNum.setError(getString(R.string.enterValidPhoneAcc));
-                } else {
-                    if (rMyAccount.isChecked()) {
-                        sendPhoneStr = am.getUserPhone();
-                    } else {
-                        am.saveSendPhone(otherNum.getText().toString().trim());
-                        sendPhoneStr = am.getSendPhone();
+                        quest = (
+                                "FORMID:M-:" +
+                                        "MERCHANTID:MMONEYUGMTN:" +
+                                        "ACCOUNTID:" + sendPhoneStr + ":" +
+                                        "BANKID:" + am.getBankID() + ":" +
+                                        "ACTION:GETNAME:"
+                        );
+                        //am.connectOldTwo(getString(R.string.validating),quest,this,"MTN");
+                        am.get(Mobile_Money_Two.this, quest, getString(R.string.validating), "MTN");
                     }
-                    String noSpaceMobile = sendPhoneStr.replaceAll("\\s+", "");
-                    String noSpecialXters = noSpaceMobile.replaceAll("[^a-zA-Z0-9]", " ");
-                    String strZipCodeRemovalPattern = "^256+(?!$)";
-                    String cleanMobile = noSpecialXters.replaceAll(strZipCodeRemovalPattern, "0");
+                } else if (Objects.equals(am.getMerchantID(), "007001016")) {
+                    if (rOtherAccount.isChecked() && otherNum.getText().length() < 4) {
+                        am.myDialog(Mobile_Money_Two.this, getString(R.string.alert), getString(R.string.enterValidPhoneAcc));
+                        otherNum.setError(getString(R.string.enterValidPhoneAcc));
+                    } else {
+                        if (rMyAccount.isChecked()) {
+                            sendPhoneStr = am.getUserPhone();
+                        } else {
+                            am.saveSendPhone(otherNum.getText().toString().trim());
+                            sendPhoneStr = am.getSendPhone();
+                        }
+                        String noSpaceMobile = sendPhoneStr.replaceAll("\\s+", "");
+                        String noSpecialXters = noSpaceMobile.replaceAll("[^a-zA-Z0-9]", " ");
+                        String strZipCodeRemovalPattern = "^256+(?!$)";
+                        String cleanMobile = noSpecialXters.replaceAll(strZipCodeRemovalPattern, "0");
 //                    String strPattern = "^0+(?!$)";
 //                    String mobilenumber = cleanMobile.replaceAll(strPattern, "");
 
 
-                    quest = (
-                            "FORMID:M-:" +
-                                    "MERCHANTID:HFBMMONEY:" +
-                                    "INFOFIELD1:VALIDATE:" +
-                                    "INFOFIELD2:AIRTEL:" +
-                                    "ACCOUNTID:" + cleanMobile + ":" +
-                                    "SERVICEACCOUNTID:" + cleanMobile + ":" +
-                                    "COUNTRY:" + am.getCountry() + ":" +
-                                    "BANKNAME:HFB:" +
-                                    "BANKID:" + am.getBankID() + ":" +
-                                    "ACTION:GETNAME:"
-                    );
-                    am.get(this, quest, getString(R.string.validating), "AIRTEL");
+                        quest = (
+                                "FORMID:M-:" +
+                                        "MERCHANTID:HFBMMONEY:" +
+                                        "INFOFIELD1:VALIDATE:" +
+                                        "INFOFIELD2:AIRTEL:" +
+                                        "ACCOUNTID:" + cleanMobile + ":" +
+                                        "SERVICEACCOUNTID:" + cleanMobile + ":" +
+                                        "COUNTRY:" + am.getCountry() + ":" +
+                                        "BANKNAME:HFB:" +
+                                        "BANKID:" + am.getBankID() + ":" +
+                                        "ACTION:GETNAME:"
+                        );
+                        am.get(Mobile_Money_Two.this, quest, getString(R.string.validating), "AIRTEL");
+                    }
+                } else if (Objects.equals(am.getMerchantID(), "HFBWENDI")) {
+                    if (rOtherAccount.isChecked() && otherNum.getText().length() < 4) {
+                        am.myDialog(Mobile_Money_Two.this, getString(R.string.alert), getString(R.string.enterValidPhoneAcc));
+                        otherNum.setError(getString(R.string.enterValidPhoneAcc));
+                    } else {
+                        if (rMyAccount.isChecked()) {
+                            sendPhoneStr = am.getUserPhone();
+                        } else {
+                            am.saveSendPhone(otherNum.getText().toString().trim());
+                            sendPhoneStr = am.getSendPhone();
+                        }
+//                String noSpaceMobile = sendPhoneStr.replaceAll("\\s+", "");
+//                String noSpecialXters = noSpaceMobile.replaceAll("[^a-zA-Z0-9]", " ");
+//                String strZipCodeRemovalPattern = "^256+(?!$)";
+//                String cleanMobile = noSpecialXters.replaceAll(strZipCodeRemovalPattern, "0");
+//                String strPattern = "^0+(?!$)";
+//                String mobilenumber = cleanMobile.replaceAll(strPattern, "");
 
 
-                    //am.connectOldTwo(getString(R.string.validating),quest,this,"MTN");
+                        quest = (
+                                "FORMID:M-:" +
+                                        "MERCHANTID:HFBWENDY :" +
+                                        "INFOFIELD1:CUSTINQ:" +
+                                        "INFOFIELD3:" + sendPhoneStr + ":" +
+                                        "COUNTRY:" + am.getCountry() + ":" +
+                                        "BANKNAME:HFB:" +
+                                        "BANKID:" + am.getBankID() + ":" +
+                                        "ACTION:GETNAME:"
+                        );
+                        am.get(Mobile_Money_Two.this, quest, getString(R.string.validating), "WENDI");
+                    }
                 }
-                break;
-            case R.id.back:
+            }
+        });
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
                 ETPin.setText("");
                 validateLayout.setVisibility(View.GONE);
                 after.setVisibility(View.GONE);
                 airtelLayout.setVisibility(View.GONE);
-                if (serviceProvider.getSelectedItemPosition() == 1){
-                    validateMTN.setVisibility(View.VISIBLE);
-                    validateAirtel.setVisibility(View.GONE);
-                }else{
-                    validateAirtel.setVisibility(View.VISIBLE);
-                    validateMTN.setVisibility(View.GONE);
-                }
+            }
+        });
 
-                break;
-            case R.id.send:
-//
+        send.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
                 if (accNumString.equals("")) {
-                    am.myDialog(this, getString(R.string.alert), getString(R.string.selectAccDebited));
+                    am.myDialog(Mobile_Money_Two.this, getString(R.string.alert), getString(R.string.selectAccDebited));
                 } else if (am.getMerchantID().equals("")) {
-                    am.myDialog(this, getString(R.string.alert), getString(R.string.slctPrvdr));
+                    am.myDialog(Mobile_Money_Two.this, getString(R.string.alert), getString(R.string.slctPrvdr));
                 } else if (rMyAccount.isChecked() && accNumString.equals(myNum.getText().toString().trim())) {
-                    am.myDialog(this, getString(R.string.alert), getString(R.string.sameAccError));
-                } else if (rOtherAccount.isChecked() && otherNum.getText().length() < 4) {
-                    am.myDialog(this, getString(R.string.alert), getString(R.string.enterValidPhoneAcc));
+                    am.myDialog(Mobile_Money_Two.this, getString(R.string.alert), getString(R.string.sameAccError));
+                } else if (rOtherAccount.isChecked() && enterNumber.isChecked() && otherNum.getText().length() < 4) {
+                    am.myDialog(Mobile_Money_Two.this, getString(R.string.alert), getString(R.string.enterValidPhoneAcc));
                     otherNum.setError(getString(R.string.enterValidPhoneAcc));
                 } else if (rOtherAccount.isChecked() && accNumString.equals(otherNum.getText().toString().trim())) {
-                    am.myDialog(this, getString(R.string.alert), getString(R.string.sameAccError));
+                    am.myDialog(Mobile_Money_Two.this, getString(R.string.alert), getString(R.string.sameAccError));
                 } else if (ETAmount.getText().toString().trim().isEmpty()) {
-                    am.myDialog(this, getString(R.string.alert), getString(R.string.enterValidAmount));
+                    am.myDialog(Mobile_Money_Two.this, getString(R.string.alert), getString(R.string.enterValidAmount));
                 } else if (ETPin.getText().length() < 4) {
-                    am.myDialog(this, getString(R.string.alert), getString(R.string.enterValidPin));
+                    am.myDialog(Mobile_Money_Two.this, getString(R.string.alert), getString(R.string.enterValidPin));
                     ETPin.setError(getString(R.string.enterValidPin));
                 } else {
                     if (rMyAccount.isChecked()) {
                         sendPhoneStr = am.getUserPhone();
                     } else {
-                        am.saveSendPhone(otherNum.getText().toString().trim());
-                        sendPhoneStr = am.getSendPhone();
+                        if (enterNumber.isChecked()){
+                            am.saveSendPhone(otherNum.getText().toString().trim());
+                            sendPhoneStr = am.getSendPhone();
+                        } else if (savedBen.isChecked()){
+                            sendPhoneStr = benAcc;
+                        }
                     }
-                    gDialog = new Dialog(this);
+                    gDialog = new Dialog(Mobile_Money_Two.this);
                     //noinspection ConstantConditions
                     gDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                     gDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -364,7 +393,7 @@ public class Mobile_Money_Two extends BaseAct implements ResponseListener, Volle
                                                 "MESSAGE:MOBILE MONEY:" +
                                                 "ACTION:PAYBILL:"
                                 );
-                            }else{
+                            }else if (Objects.equals(merchantID, "007001016")){
                                 merchant = "AIRTEL";
 
                                 quest = (
@@ -381,8 +410,25 @@ public class Mobile_Money_Two extends BaseAct implements ResponseListener, Volle
                                                 "AMOUNT:" + ETAmount.getText().toString().trim() + ":" +
                                                 "TMPIN:" + ETPin.getText().toString().trim() + ":" +
                                                 "MESSAGE:MOBILE MONEY:" +
-//                                                "ACTION:GETNAME:"
                                                 "ACTION:PAYBILL:"
+                                );
+                            } else{
+                                merchant = "WENDI";
+
+                                quest = (
+                                        "FORMID:M-:" +
+                                                "MERCHANTID:HFBWENDYPAYMENT:" +
+                                                "BANKACCOUNTID:" + accNumString + ":" +
+                                                "INFOFIELD1:TRANSFER_CUST:" +
+                                                "INFOFIELD2:" + airtelResponse.getText().toString().trim() + ":" +
+                                                "INFOFIELD3:" + cleanMobile + ":" +
+                                                "INFOFIELD4:" + accNumString + ":" +
+                                                "ACCOUNTID:" + cleanMobile + ":" +
+                                                "AMOUNT:" + ETAmount.getText().toString().trim() + ":" +
+                                                "BANKID:23:" +
+                                                "TMPIN:" + ETPin.getText().toString().trim() + ":" +
+                                                "MESSAGE:MOBILE MONEY:" +
+                                                "ACTION:GETNAME:"
                                 );
                             }
 
@@ -411,9 +457,273 @@ public class Mobile_Money_Two extends BaseAct implements ResponseListener, Volle
                     });
                     gDialog.show();
                 }
-                break;
-        }
+            }
+        });
     }
+
+    private void getBens(){
+
+        if (Objects.equals(am.getMerchantID(), "007001017")){
+            utilityID = "MTN Money";
+            quest = (
+                    "FORMID:O-GetUtilityAlias:" +
+                            "SERVICETYPE:MMONEY:" +
+                            "SERVICEID:" + "MMONEYUGMTN" + ":"
+            );
+        }else if (Objects.equals(am.getMerchantID(), "007001016")){
+            utilityID = "Airtel Money";
+            quest = (
+                    "FORMID:O-GetUtilityAlias:" +
+                            "SERVICETYPE:MMONEY:" +
+                            "SERVICEID:" + "MMONEYUGAIRTEL" + ":"
+            );
+        }else{
+            utilityID = "Wendi";
+            quest = (
+                    "FORMID:O-GetUtilityAlias:" +
+                            "SERVICETYPE:MMONEY:" +
+                            "SERVICEID:" + "HFBWENDI" + ":"
+            );
+        }
+        am.get_(this,quest,getString(R.string.fetchingBeneficiaries) + " " + getString(R.string.forWord) + " " + utilityID,"BEN");
+    }
+
+//    public void validatePhone(View view) {
+//        if (Objects.equals(am.getMerchantID(), "007001017")) {
+//            if (rOtherAccount.isChecked() && otherNum.getText().length() < 4) {
+//                am.myDialog(this, getString(R.string.alert), getString(R.string.enterValidPhoneAcc));
+//                otherNum.setError(getString(R.string.enterValidPhoneAcc));
+//            } else {
+//                if (rMyAccount.isChecked()) {
+//                    sendPhoneStr = am.getUserPhone();
+//                } else {
+//                    am.saveSendPhone(otherNum.getText().toString().trim());
+//                    sendPhoneStr = am.getSendPhone();
+//                }
+////                    String noSpaceMobile = sendPhoneStr.replaceAll("\\s+", "");
+////                    String noSpecialXters = noSpaceMobile.replaceAll("[^a-zA-Z0-9]", " ");
+////                    String strZipCodeRemovalPattern = "^256+(?!$)";
+////                    String cleanMobile = noSpecialXters.replaceAll(strZipCodeRemovalPattern, "0");
+//
+//                quest = (
+//                        "FORMID:M-:" +
+//                                "MERCHANTID:MMONEYUGMTN:" +
+//                                "ACCOUNTID:" + sendPhoneStr + ":" +
+//                                "BANKID:" + am.getBankID() + ":" +
+//                                "ACTION:GETNAME:"
+//                );
+//                //am.connectOldTwo(getString(R.string.validating),quest,this,"MTN");
+//                am.get(this, quest, getString(R.string.validating), "MTN");
+//            }
+//        } else if (Objects.equals(am.getMerchantID(), "007001016")) {
+//            if (rOtherAccount.isChecked() && otherNum.getText().length() < 4) {
+//                am.myDialog(this, getString(R.string.alert), getString(R.string.enterValidPhoneAcc));
+//                otherNum.setError(getString(R.string.enterValidPhoneAcc));
+//            } else {
+//                if (rMyAccount.isChecked()) {
+//                    sendPhoneStr = am.getUserPhone();
+//                } else {
+//                    am.saveSendPhone(otherNum.getText().toString().trim());
+//                    sendPhoneStr = am.getSendPhone();
+//                }
+//                String noSpaceMobile = sendPhoneStr.replaceAll("\\s+", "");
+//                String noSpecialXters = noSpaceMobile.replaceAll("[^a-zA-Z0-9]", " ");
+//                String strZipCodeRemovalPattern = "^256+(?!$)";
+//                String cleanMobile = noSpecialXters.replaceAll(strZipCodeRemovalPattern, "0");
+////                    String strPattern = "^0+(?!$)";
+////                    String mobilenumber = cleanMobile.replaceAll(strPattern, "");
+//
+//
+//                quest = (
+//                        "FORMID:M-:" +
+//                                "MERCHANTID:HFBMMONEY:" +
+//                                "INFOFIELD1:VALIDATE:" +
+//                                "INFOFIELD2:AIRTEL:" +
+//                                "ACCOUNTID:" + cleanMobile + ":" +
+//                                "SERVICEACCOUNTID:" + cleanMobile + ":" +
+//                                "COUNTRY:" + am.getCountry() + ":" +
+//                                "BANKNAME:HFB:" +
+//                                "BANKID:" + am.getBankID() + ":" +
+//                                "ACTION:GETNAME:"
+//                );
+//                am.get(this, quest, getString(R.string.validating), "AIRTEL");
+//            }
+//        } else if (Objects.equals(am.getMerchantID(), "HFBWENDI")) {
+//            if (rOtherAccount.isChecked() && otherNum.getText().length() < 4) {
+//                am.myDialog(this, getString(R.string.alert), getString(R.string.enterValidPhoneAcc));
+//                otherNum.setError(getString(R.string.enterValidPhoneAcc));
+//            } else {
+//                if (rMyAccount.isChecked()) {
+//                    sendPhoneStr = am.getUserPhone();
+//                } else {
+//                    am.saveSendPhone(otherNum.getText().toString().trim());
+//                    sendPhoneStr = am.getSendPhone();
+//                }
+////                String noSpaceMobile = sendPhoneStr.replaceAll("\\s+", "");
+////                String noSpecialXters = noSpaceMobile.replaceAll("[^a-zA-Z0-9]", " ");
+////                String strZipCodeRemovalPattern = "^256+(?!$)";
+////                String cleanMobile = noSpecialXters.replaceAll(strZipCodeRemovalPattern, "0");
+////                String strPattern = "^0+(?!$)";
+////                String mobilenumber = cleanMobile.replaceAll(strPattern, "");
+//
+//
+//                quest = (
+//                        "FORMID:M-:" +
+//                                "MERCHANTID:HFBWENDY :" +
+//                                "INFOFIELD1:CUSTINQ:" +
+//                                "INFOFIELD3:" + sendPhoneStr + ":" +
+//                                "COUNTRY:" + am.getCountry() + ":" +
+//                                "BANKNAME:HFB:" +
+//                                "BANKID:" + am.getBankID() + ":" +
+//                                "ACTION:GETNAME:"
+//                );
+//                am.get(this, quest, getString(R.string.validating), "WENDI");
+//            }
+//        }
+//    }
+
+//    public void transferBTN(View view) {
+//        switch (view.getId()) {
+//            case R.id.back:
+//                ETPin.setText("");
+//                validateLayout.setVisibility(View.GONE);
+//                after.setVisibility(View.GONE);
+//                airtelLayout.setVisibility(View.GONE);
+//
+//                break;
+//            case R.id.send:
+//                if (accNumString.equals("")) {
+//                    am.myDialog(this, getString(R.string.alert), getString(R.string.selectAccDebited));
+//                } else if (am.getMerchantID().equals("")) {
+//                    am.myDialog(this, getString(R.string.alert), getString(R.string.slctPrvdr));
+//                } else if (rMyAccount.isChecked() && accNumString.equals(myNum.getText().toString().trim())) {
+//                    am.myDialog(this, getString(R.string.alert), getString(R.string.sameAccError));
+//                } else if (rOtherAccount.isChecked() && enterNumber.isChecked() && otherNum.getText().length() < 4) {
+//                    am.myDialog(this, getString(R.string.alert), getString(R.string.enterValidPhoneAcc));
+//                    otherNum.setError(getString(R.string.enterValidPhoneAcc));
+//                } else if (rOtherAccount.isChecked() && accNumString.equals(otherNum.getText().toString().trim())) {
+//                    am.myDialog(this, getString(R.string.alert), getString(R.string.sameAccError));
+//                } else if (ETAmount.getText().toString().trim().isEmpty()) {
+//                    am.myDialog(this, getString(R.string.alert), getString(R.string.enterValidAmount));
+//                } else if (ETPin.getText().length() < 4) {
+//                    am.myDialog(this, getString(R.string.alert), getString(R.string.enterValidPin));
+//                    ETPin.setError(getString(R.string.enterValidPin));
+//                } else {
+//                    if (rMyAccount.isChecked()) {
+//                        sendPhoneStr = am.getUserPhone();
+//                    } else {
+//                       if (enterNumber.isChecked()){
+//                           am.saveSendPhone(otherNum.getText().toString().trim());
+//                           sendPhoneStr = am.getSendPhone();
+//                       } else if (savedBen.isChecked()){
+//                           sendPhoneStr = benAcc;
+//                       }
+//                    }
+//                    gDialog = new Dialog(this);
+//                    //noinspection ConstantConditions
+//                    gDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+//                    gDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+//                    gDialog.setContentView(R.layout.dialog_confirm);
+//                    final TextView txtMessage = gDialog.findViewById(R.id.dialog_message);
+//                    final TextView txtOk = gDialog.findViewById(R.id.yesBTN);
+//                    final TextView txtNo = gDialog.findViewById(R.id.noBTN);
+//
+//                    txtMessage.setText(String.format("%s %s %s %s %s %s.",
+//                            getText(R.string.sendMoneyto),
+//                            am.Amount_Thousands(ETAmount.getText().toString().trim()),
+//                            getText(R.string.fromAccNo),
+//                            accNumString,
+//                            getText(R.string.toAccNo),
+//                            sendPhoneStr));
+//
+//                    txtOk.setOnClickListener(new View.OnClickListener() {
+//                        @Override
+//                        public void onClick(View v) {
+//
+//                            String merchant = "";
+//                            String merchantID = am.getMerchantID();
+//
+//                            String noSpaceMobile = sendPhoneStr.replaceAll("\\s+", "");
+//                            String noSpecialXters = noSpaceMobile.replaceAll("[^a-zA-Z0-9]", " ");
+//                            String strZipCodeRemovalPattern = "^256+(?!$)";
+//                            String cleanMobile = noSpecialXters.replaceAll(strZipCodeRemovalPattern, "0");
+//
+//                            if (Objects.equals(merchantID, "007001017")){
+//                                merchant = "MTN";
+//
+//                                quest = (
+//                                        "FORMID:M-:" +
+//                                                "MERCHANTID:" + am.getMerchantID() + ":" +
+//                                                "BANKACCOUNTID:" + accNumString + ":" +
+//                                                "ACCOUNTID:" + sendPhoneStr + ":" +
+//                                                "AMOUNT:" + ETAmount.getText().toString().trim() + ":" +
+//                                                "TMPIN:" + ETPin.getText().toString().trim() + ":" +
+//                                                "MESSAGE:MOBILE MONEY:" +
+//                                                "ACTION:PAYBILL:"
+//                                );
+//                            }else if (Objects.equals(merchantID, "007001016")){
+//                                merchant = "AIRTEL";
+//
+//                                quest = (
+//                                        "FORMID:M-:" +
+////                                            "MERCHANTID:" + am.getMerchantID() + ":" +
+//                                                "MERCHANTID:HFBMMONEY:" +
+//                                                "BANKACCOUNTID:" + accNumString + ":" +
+//                                                "ACCOUNTID:" + cleanMobile + ":" +
+//                                                "INFOFIELD1:PAYMENT:" +
+//                                                "INFOFIELD2:" + merchant + ":" +
+//                                                "INFOFIELD3:B2C:" +
+//                                                "INFOFIELD4:" + accNumString + ":" +
+//                                                "INFOFIELD5:" + ETAmount.getText().toString().trim() + ":" +
+//                                                "AMOUNT:" + ETAmount.getText().toString().trim() + ":" +
+//                                                "TMPIN:" + ETPin.getText().toString().trim() + ":" +
+//                                                "MESSAGE:MOBILE MONEY:" +
+//                                                "ACTION:PAYBILL:"
+//                                );
+//                            } else{
+//                                merchant = "WENDI";
+//
+//                                quest = (
+//                                        "FORMID:M-:" +
+//                                                "MERCHANTID:HFBWENDYPAYMENT:" +
+//                                                "INFOFIELD1:TRANSFER_CUST:" +
+//                                                "INFOFIELD2:" + merchant + ":" +
+//                                                "INFOFIELD3:" + cleanMobile + ":" +
+//                                                "ACCOUNTID:" + accNumString + ":" +
+//                                                "AMOUNT:" + ETAmount.getText().toString().trim() + ":" +
+//                                                "ACTION:PAYBILL" +
+//                                                "TMPIN:" + ETPin.getText().toString().trim() + ":"
+//                                );
+//                            }
+//
+//                            //am.connectOldTwo(getString(R.string.processingTrx),quest,Mobile_Money_Two.this,"TRX");
+//
+////                          TODO: Uncomment before upload
+//                            am.get(Mobile_Money_Two.this, quest, getString(R.string.processingTrx), "TRX");
+////                            startActivity(new Intent(Mobile_Money_Two.this, OTP.class).putExtra("Merchant", am.getMerchantID()));
+//                            gDialog.cancel();
+//
+//
+//                        }
+//                    });
+//                    txtNo.setOnClickListener(new View.OnClickListener() {
+//                        @Override
+//                        public void onClick(View v) {
+//                            gDialog.cancel();
+//                        }
+//                    });
+//                    gDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+//                        @Override
+//                        public void onCancel(DialogInterface dialog) {
+////                            ETPin.setText("");
+//                            dialog.dismiss();
+//                        }
+//                    });
+//                    gDialog.show();
+//                }
+//                break;
+//        }
+//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -437,7 +747,7 @@ public class Mobile_Money_Two extends BaseAct implements ResponseListener, Volle
     @Override
     protected void onResume() {
         String status = am.getOTPStatus();
-        Log.e("STAT", status);
+//        Log.e("STAT", status);
         if (Objects.equals(status, "1")){
             otpTrxRequest();
             am.saveOTPStatus("0");
@@ -470,7 +780,6 @@ public class Mobile_Money_Two extends BaseAct implements ResponseListener, Volle
         }else {
             quest = (
                     "FORMID:M-:" +
-//                                            "MERCHANTID:" + am.getMerchantID() + ":" +
                             "MERCHANTID:HFBMMONEY:" +
                             "BANKACCOUNTID:" + accNumString + ":" +
                             "ACCOUNTID:" + cleanMobile + ":" +
@@ -483,7 +792,6 @@ public class Mobile_Money_Two extends BaseAct implements ResponseListener, Volle
                             "AMOUNT:" + ETAmount.getText().toString().trim() + ":" +
                             "TMPIN:" + ETPin.getText().toString().trim() + ":" +
                             "MESSAGE:MOBILE MONEY:" +
-//                                                "ACTION:GETNAME:"
                             "ACTION:PAYBILL:"
             );
         }
@@ -540,10 +848,12 @@ public class Mobile_Money_Two extends BaseAct implements ResponseListener, Volle
 //                break;
             case "AIRTEL":
             case "MTN":
-                validateAirtel.setVisibility(View.GONE);
+            case "WENDI":
+                validate.setVisibility(View.GONE);
                 validateLayout.setVisibility(View.VISIBLE);
                 airtelLayout.setVisibility(View.VISIBLE);
-                airtelResponse.setText(response);
+                String cleanName = response.replaceAll("[\".?]", "");
+                airtelResponse.setText(cleanName);
                 after.setVisibility(View.VISIBLE);
                 valRecycler.setVisibility(View.GONE);
                 break;
@@ -554,6 +864,34 @@ public class Mobile_Money_Two extends BaseAct implements ResponseListener, Volle
                 break;
             case "OTPTRX":
                 startActivity(new Intent(Mobile_Money_Two.this, OTP.class).putExtra("Merchant", am.getMerchantID()));
+                break;
+            case "BEN":
+                validate.setVisibility(View.GONE);
+                after.setVisibility(View.VISIBLE);
+                String [] benZ  = response.split(";");
+                final List <String> listMerchant = new ArrayList<>(),
+                        listAccOrPhones = new ArrayList<>(),
+                        listNames = new ArrayList<>();
+                for (String aBenZ : benZ) {
+                    String [] inside = aBenZ.split(",");
+                    listMerchant.add(inside[0]);
+                    listAccOrPhones.add(inside[1]);
+                    listNames.add(inside[2]);
+                }
+                ArrayAdapter<String> benZAdapter = new ArrayAdapter<>(this ,R.layout.spinner_dropdown_item, listNames);
+                benZAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
+                benSpinner.setAdapter(benZAdapter);
+                benSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                        benAcc = listAccOrPhones.get(position);
+                        merchant = listMerchant.get(position);
+                    }
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {}
+                });
+                othNumLayout.setVisibility(View.GONE);
+                benSpinner.setVisibility(View.VISIBLE);
                 break;
         }
     }

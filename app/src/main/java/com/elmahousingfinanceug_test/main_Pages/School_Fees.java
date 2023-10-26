@@ -34,7 +34,7 @@ public class School_Fees extends BaseAct implements ResponseListener, VolleyResp
     Spinner debitAcc;
     EditText studentId,studentAmount,pin;
     LinearLayout validateLayout;
-    TextView validate,schoolName;
+    TextView validate,schoolName, backIn, submit;
     RecyclerView valRecycler;
     String accSend="", studentName="", schoolCode="", paymentCode="", outstandingAmount="",
             partialpayment="", returnMessage="",processTimeStamp="", quest="";
@@ -54,6 +54,8 @@ public class School_Fees extends BaseAct implements ResponseListener, VolleyResp
         schoolName = findViewById(R.id.schoolName);
         studentAmount = findViewById(R.id.studentAmount);
         pin = findViewById(R.id.pin);
+        backIn = findViewById(R.id.backIn);
+        submit = findViewById(R.id.submit);
 
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, am.getAliases());
         dataAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
@@ -113,15 +115,14 @@ public class School_Fees extends BaseAct implements ResponseListener, VolleyResp
         });
 
         valRecycler.setLayoutManager(new LinearLayoutManager(this));
-    }
 
-    public void clicks(View c) {
-        switch (c.getId()){
-            case R.id.validate:
+        validate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
                 if(accSend.equals("")) {
-                    am.myDialog(this, getString(R.string.alert), getString(R.string.selectAccDebited));
+                    am.myDialog(School_Fees.this, getString(R.string.alert), getString(R.string.selectAccDebited));
                 } else if(studentId.getText().length()<5) {
-                    am.myDialog(this, getString(R.string.alert), getString(R.string.enterStudentId));
+                    am.myDialog(School_Fees.this, getString(R.string.alert), getString(R.string.enterStudentId));
                 } else {
                     //1000027362  1000027366
                     quest = (
@@ -144,24 +145,32 @@ public class School_Fees extends BaseAct implements ResponseListener, VolleyResp
                                     "INFOFIELD3:" + am.getUserName() + ":" +
                                     "ACTION:GETNAME:"*/
                     );
-                    am.get(this,quest,getString(R.string.validating),"VAL");
+                    am.get(School_Fees.this,quest,getString(R.string.validating),"VAL");
                 }
-                break;
-            case R.id.backIn:
+            }
+        });
+
+        backIn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
                 validate.setVisibility(View.VISIBLE);
                 validateLayout.setVisibility(View.GONE);
-                break;
-            case R.id.submit:
+            }
+        });
+
+        submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
                 if(accSend.equals("")) {
-                    am.myDialog(this, getString(R.string.alert), getString(R.string.selectAccDebited));
+                    am.myDialog(School_Fees.this, getString(R.string.alert), getString(R.string.selectAccDebited));
                 } else if (studentId.getText().toString().trim().isEmpty()) {
-                    am.myDialog(this, getString(R.string.alert), getString(R.string.enterStudentId));
+                    am.myDialog(School_Fees.this, getString(R.string.alert), getString(R.string.enterStudentId));
                 } else if (studentAmount.getText().toString().trim().isEmpty()) {
-                    am.myDialog(this, getString(R.string.alert), getString(R.string.enterValidAmount));
+                    am.myDialog(School_Fees.this, getString(R.string.alert), getString(R.string.enterValidAmount));
                 } else if (pin.getText().length() < 4) {
-                    am.myDialog(this, getString(R.string.alert), getString(R.string.enterValidPin));
+                    am.myDialog(School_Fees.this, getString(R.string.alert), getString(R.string.enterValidPin));
                 } else {
-                    gDialog = new Dialog(this);
+                    gDialog = new Dialog(School_Fees.this);
                     //noinspection ConstantConditions
                     gDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                     gDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -223,9 +232,121 @@ public class School_Fees extends BaseAct implements ResponseListener, VolleyResp
                     });
                     gDialog.show();
                 }
-                break;
-        }
+            }
+        });
     }
+
+//    public void clicks(View c) {
+//        switch (c.getId()){
+//            case R.id.validate:
+//                if(accSend.equals("")) {
+//                    am.myDialog(this, getString(R.string.alert), getString(R.string.selectAccDebited));
+//                } else if(studentId.getText().length()<5) {
+//                    am.myDialog(this, getString(R.string.alert), getString(R.string.enterStudentId));
+//                } else {
+//                    //1000027362  1000027366
+//                    quest = (
+//                            "FORMID:B-:" +
+//                                    "MERCHANTID:" + am.getMerchantID() + ":" +
+//                                    "BANKACCOUNTID:" + accSend + ":" +
+//                                    "ACCOUNTID:" +  studentId.getText().toString().trim() + ":" +
+//                                    "INFOFIELD1:" + studentId.getText().toString().trim() + ":" +
+//                                    "INFOFIELD2:" + am.getUserPhone()  + ":" +
+//                                    "INFOFIELD3:" + am.getUserName() + ":" +
+//                                    "INFOFIELD9:" + "VALIDATION" + ":" +
+//                                    "ACTION:GETNAME:"
+//
+//                            /*"FORMID:M-:" +
+//                                    "MERCHANTID:" + am.getMerchantID() + ":" +
+//                                    "BANKACCOUNTID:" + accSend + ":" +
+//                                    "ACCOUNTID:" +  studentId.getText().toString().trim() + ":" +
+//                                    "INFOFIELD1:" + "VALIDATION" + ":" +
+//                                    "INFOFIELD2:" + am.getUserPhone()  + ":" +
+//                                    "INFOFIELD3:" + am.getUserName() + ":" +
+//                                    "ACTION:GETNAME:"*/
+//                    );
+//                    am.get(this,quest,getString(R.string.validating),"VAL");
+//                }
+//                break;
+//            case R.id.backIn:
+//                validate.setVisibility(View.VISIBLE);
+//                validateLayout.setVisibility(View.GONE);
+//                break;
+//            case R.id.submit:
+//                if(accSend.equals("")) {
+//                    am.myDialog(this, getString(R.string.alert), getString(R.string.selectAccDebited));
+//                } else if (studentId.getText().toString().trim().isEmpty()) {
+//                    am.myDialog(this, getString(R.string.alert), getString(R.string.enterStudentId));
+//                } else if (studentAmount.getText().toString().trim().isEmpty()) {
+//                    am.myDialog(this, getString(R.string.alert), getString(R.string.enterValidAmount));
+//                } else if (pin.getText().length() < 4) {
+//                    am.myDialog(this, getString(R.string.alert), getString(R.string.enterValidPin));
+//                } else {
+//                    gDialog = new Dialog(this);
+//                    //noinspection ConstantConditions
+//                    gDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+//                    gDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+//                    gDialog.setContentView(R.layout.dialog_confirm);
+//                    final TextView txtMessage = gDialog.findViewById(R.id.dialog_message);
+//                    final TextView txtOk = gDialog.findViewById(R.id.yesBTN);
+//                    final TextView txtNo = gDialog.findViewById(R.id.noBTN);
+//                    txtMessage.setText(String.format("%s %s %s, %s %s %s %s %s %s",
+//                            getString(R.string.make),
+//                            getString(R.string.schoolFees),
+//                            getText(R.string.payFor),
+//                            studentName,
+//                            studentId.getText().toString().trim(),
+//                            getString(R.string.withAmount),
+//                            am.Amount_Thousands(studentAmount.getText().toString().trim()),
+//                            getText(R.string.fromAccNo),
+//                            accSend)
+//                    );
+//                    txtNo.setOnClickListener(v -> gDialog.cancel());
+//                    txtOk.setOnClickListener(v -> {
+//                        quest = (
+//                                "FORMID:B-:" +
+//                                        "MERCHANTID:" + am.getMerchantID() + ":" +
+//                                        "BANKACCOUNTID:" + accSend + ":" +
+//                                        "INFOFIELD1:" + studentId.getText().toString().trim() + ":" +
+//                                        "INFOFIELD2:" + paymentCode + ":" +
+//                                        "INFOFIELD3:" + schoolCode + ":" +
+//                                        "INFOFIELD4:" + outstandingAmount + ":" +
+//                                        "INFOFIELD5:" + partialpayment + ":" +
+//                                        "INFOFIELD6:" + returnMessage + ":" +
+//                                        "INFOFIELD7:" + processTimeStamp + ":" +
+//                                        "INFOFIELD8:" + studentAmount.getText().toString().trim() + ":" +
+//                                        "INFOFIELD9:" + "PAYMENT" + ":" +
+//                                        "ACCOUNTID:" + studentId.getText().toString().trim() + ":" +
+//                                        "AMOUNT:" + studentAmount.getText().toString().trim() + ":" +
+//                                        "TMPIN:" + pin.getText().toString().trim() + ":" +
+//                                        "ACTION:GETNAME:"
+//                                /*"FORMID:M-:" +
+//                                        "MERCHANTID:" + am.getMerchantID() + ":" +
+//                                        "BANKACCOUNTID:" + accSend + ":" +
+//                                        "INFOFILED1:" + paymentCode + ":" +
+//                                        "INFOFIELD2:" + schoolCode + ":" +
+//                                        "INFOFILED3:" + outstandingAmount + ":" +
+//                                        "INFOFIELD4:" + studentId.getText().toString().trim() + ":" +
+//                                        "INFOFILED5:" + partialpayment + ":" +
+//                                        "INFOFIELD6:" + returnMessage + ":" +
+//                                        "INFOFIELD7:" + processTimeStamp + ":" +
+//                                        "ACCOUNTID:" + studentId.getText().toString().trim() + ":" +
+//                                        "AMOUNT:" + studentAmount.getText().toString().trim() + ":" +
+//                                        "TMPIN:" + pin.getText().toString().trim() + ":" +
+//                                        "ACTION:GETNAME:"*/
+//                        );
+//                        am.get(School_Fees.this,quest,getString(R.string.processingTrx),"TRX");
+//                        gDialog.cancel();
+//                    });
+//                    gDialog.setOnCancelListener(dialog -> {
+//                        pin.setText("");
+//                        dialog.dismiss();
+//                    });
+//                    gDialog.show();
+//                }
+//                break;
+//        }
+//    }
 
     @Override
     protected void onResume() {

@@ -8,10 +8,11 @@ buildscript {
 //        TODO: Activate dex protector
         //flatDir dirs: 'E://AndroidAPPS/dexprotector-ent-11.0.79/dexprotector-ent-11.0.79'
 //        flatDir dirs: '/D:/dexprotector-ent-12.1.53'
+//        flatDir dirs: 'C://Craft/Craft/AppDev/dexprotector-ent-12.7.87'
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.0.2'
+        classpath 'com.android.tools.build:gradle:7.2.1'
         //        TODO: Activate dex protector
 //        classpath ':dexprotector-gradle-plugin'
 //        classpath ':dexprotector'

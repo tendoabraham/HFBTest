@@ -1,6 +1,6 @@
 <resources>
     <!--Todo: HFB Mobile Banking LIVE-->
-    <string name="app_name">HFB_test</string>
+    <string name="app_name">HFB Mobile Banking</string>
     <string name="onARooted">HFB Mobile Banking can not run on a rooted device.</string>
     <string name="debugDetected">Debug detected.</string>
     <string name="emulatorDetected">Emulator detected.</string>
@@ -472,13 +472,17 @@
     <string name="generatingOtp">Generating OTP…</string>
     <string name="otpCap">OTP</string>
     <string name="in">in</string>
+    <string name="pepDuration">During what period was the position held? </string>
+    <string name="pepPositionTxt">Select the senior government, political or military position held</string>
+    <string name="pepRelationshipTxt">Select your relationship with the politically exposed family member or close associate</string>
     <string name="didNot">Didn\'t receive ?</string>
     <string name="isPoliticallyExposed">Do you hold/have you ever held a senior government position (Executive Director of a state-owned agency, Permanent secretary), political or military position?
 </string>
     <string name="isFamPoliticallyExposed">Are you connected to a person who holds or has held a senior government position (Executive Director of a state-owned agency, Permanent secretary), political or military position?
 </string>
-    <string name="politicallyExposedDetails">Please state the name and position of your politically exposed family member.</string>
+    <string name="politicallyExposedDetails">What is the name of the politically exposed person you are a family member of?</string>
     <string name="data">Data Purchase</string>
+    <string name="pepTitle">Please enter the title of the position and country where the same was held</string>
     <string name="airtimeanddata">Airtime and Data</string>
     <string name="selectCategory">Select Category</string>
     <string name="selectBundle">Select Bundle</string>
@@ -486,4 +490,75 @@
     <string name="fetchBundles">fetching bundles</string>
     <string name="NAME">NAME</string>
     <string name="selectBouquet">Select Bouquet</string>
+    <string name="wendi">Wendi</string>
+    <string name="privacy">Privacy</string>
+    <string name="benMgt">Beneficiary Management</string>
+    <string name="add">Add</string>
+    <string name="view">View</string>
+    <string name="delete">Delete</string>
+    <string name="mm">Mobile Money</string>
+    <string name="bills">Bill Payments</string>
+    <string name="ift">Funds transfer</string>
+    <string name="enterPhoneNumber">Enter the benefeciary phone number</string>
+    <string name="meterDetails">Beneficiary Name</string>
+    <string name="fetchingBeneficiaries">Fetching Beneficiaries...</string>
+    <string name="responseError">Sorry. An error occurred while processing your request.</string>
+    <string name="addBenficiary">ADD BENEFICIARY</string>
+    <string name="enterNumber">Enter Phone Number</string>
+    <string name="enterAccount">Enter Account</string>
+    <string name="enterMeter">Enter Meter Number</string>
+    <string name="enterStudentNumber">Enter Student ID</string>
+    <string name="selectSavedBen">Select Saved Beneficiary</string>
+    <string name="selectSavedStdntID">Select Saved Student ID</string>
+
+    <string-array name="airtime_array">
+        <item>Select One</item>
+        <item>MTN</item>
+        <item>Airtel</item>
+    </string-array>
+
+    <string-array name="mm_array">
+        <item>Select One</item>
+        <item>MTN Money</item>
+        <item>Airtel Money</item>
+    </string-array>
+
+    <string-array name="bills_array">
+        <item>Select One</item>
+        <item>DSTV</item>
+        <item>GOTV</item>
+        <item>StarTimes</item>
+        <item>National Water</item>
+        <item>Umeme Yaka</item>
+        <item>Umeme Post-Paid</item>
+    </string-array>
+
+    <string-array name="PEP_Position">
+        <item>Select One</item>
+        <item>Head of state or head of government / President</item>
+        <item>Police commissioner / Inspector General / Police Director</item>
+        <item>Member of the executive council of government or member of Parliament</item>
+        <item>Cabinet Ministers and their Deputies Deputy Minister</item>
+        <item>Ambassador or attaché or counsellor of an ambassador </item>
+        <item>Military officer with a rank of general or above</item>
+        <item>Chiefs / Kings / Cultural leader</item>
+        <item>Chief Administrative officer / Town clerk / LC 5 Chairperson</item>
+        <item>Director of a state-owned company or a state-owned bank / corporations</item>
+        <item>Judge / Magistrate / state Attorney</item>
+        <item>Leader or president of a political party</item>
+        <item>Other</item>
+    </string-array>
+
+    <string-array name="PEP_Relationship">
+        <item>Select One</item>
+        <item>Close relative – Mother /Father / Child </item>
+        <item>Father</item>
+        <item>Child</item>
+        <item>close associate</item>
+        <item>Spouse or Common-Law Partner</item>
+        <item>Mother or Father of a spouse to a PEP</item>
+        <item>Sibling (Brother, Sister, Half-Sibling, Stepsibling, Adoptive Sibling)</item>
+        <item>Other</item>
+    </string-array>
+
 </resources>

@@ -443,7 +443,7 @@ public class AccountOpenZExistingCustomersMain extends AppCompatActivity impleme
                     selectedAccount = ProductAccout;
                     selectedAccountID = ProductID;
                     termsUrl = TermsURL;
-                    Log.e("URLTEAKI", selectedAccount);
+//                    Log.e("URLTEAKI", selectedAccount);
 
 //                    webView.loadUrl(termsUrl);
 //                    webView.setOnClickListener(view1-> {
@@ -1081,11 +1081,11 @@ public class AccountOpenZExistingCustomersMain extends AppCompatActivity impleme
                     .setQuality(20)
                     .compressToBitmap(mFile);
         } catch (Exception e) {
-            Log.e("error-whenusinglib", "" + e);
+//            Log.e("error-whenusinglib", "" + e);
         }
 
         if (bmp == null) {
-            Log.e("", "Bitmap not found");
+//            Log.e("", "Bitmap not found");
         }
 
         return bmp;
@@ -1470,7 +1470,7 @@ public class AccountOpenZExistingCustomersMain extends AppCompatActivity impleme
     @Override
     public void onResponse(String response, String step) {
         processData(response);
-        Log.e("Agnes", response);
+//        Log.e("Agnes", response);
         String Status = am.FindInArray(FieldIDs, FieldValues, "STATUS");
         String Message = am.FindInArray(FieldIDs, FieldValues, "MESSAGE");
         if (TextUtils.isEmpty(Message)) {

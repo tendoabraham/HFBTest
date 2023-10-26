@@ -93,8 +93,8 @@
             </LinearLayout>
 
             <TextView
+                android:id="@+id/submit"
                 style="@style/Button_Yes"
-                android:onClick="createBTN"
                 android:text="@string/submit" />
 
         </LinearLayout>

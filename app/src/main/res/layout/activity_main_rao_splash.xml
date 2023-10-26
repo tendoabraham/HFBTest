@@ -103,6 +103,7 @@
             android:id="@+id/submit"
             style="@style/Button_Yes"
             android:layout_margin="45dp"
+            android:filterTouchesWhenObscured="true"
             android:text="@string/let_apos_s_get_started_gt"
             android:textAllCaps="false"
             android:textSize="16sp"

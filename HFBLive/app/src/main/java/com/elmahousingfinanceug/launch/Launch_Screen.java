@@ -109,7 +109,7 @@ public class Launch_Screen extends AppCompatActivity {
             Task<AppUpdateInfo> appUpdateInfoTask = appUpdateManager.getAppUpdateInfo();
             // Checks that the platform will allow the specified type of update.
             appUpdateInfoTask.addOnSuccessListener(appUpdateInfo -> {
-                Log.e("AVAILABLE_VERSION_CODE", appUpdateInfo.availableVersionCode()+"");
+//                Log.e("AVAILABLE_VERSION_CODE", appUpdateInfo.availableVersionCode()+"");
                 if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
                         // For a flexible update, use AppUpdateType.FLEXIBLE
                         && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)) {
@@ -136,7 +136,7 @@ public class Launch_Screen extends AppCompatActivity {
                     }
                 }
             }).addOnFailureListener(e -> {
-                Log.e("Splash", "Failed update check");
+//                Log.e("Splash", "Failed update check");
                 e.printStackTrace();
                 if(am.getIMEI().equals("")) {
                     readDevice();

@@ -38,7 +38,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Mobile_Money extends BaseAct implements ResponseListener, VolleyResponse {
-    TextView myNum;
+    TextView myNum, sendMoney;
     Spinner accNum,serviceProvider;
     EditText ETOtherNum,ETAmount,ETPin;
     RadioGroup radioGroup;
@@ -67,6 +67,7 @@ public class Mobile_Money extends BaseAct implements ResponseListener, VolleyRes
         mobileNumbers = findViewById(R.id.mNums);
         othNumLayout = findViewById(R.id.othNumLyt);
         contactsVw= findViewById(R.id.contacts);
+        sendMoney = findViewById(R.id.sendMoney);
 
         mobileNumbers.setVisibility(View.GONE);
 
@@ -142,6 +143,93 @@ public class Mobile_Money extends BaseAct implements ResponseListener, VolleyRes
             @Override
             public void afterTextChanged(Editable s) {}
         });
+
+        sendMoney.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (accSend.equals("")) {
+                    am.myDialog(Mobile_Money.this, getString(R.string.alert), getString(R.string.selectAccDebited));
+                } else if (am.getMerchantID().equals("")) {
+                    am.myDialog(Mobile_Money.this, getString(R.string.alert), getString(R.string.slctPrvdr));
+                } else if (rMyPhone.isChecked() && accSend.equals(myNum.getText().toString().trim())){
+                    am.myDialog(Mobile_Money.this, getString(R.string.alert), getString(R.string.sameAccError));
+                } else if (rOtherPhone.isChecked() && ETOtherNum.getText().length() < 4){
+                    am.myDialog(Mobile_Money.this, getString(R.string.alert), getString(R.string.enterValidPhoneAcc));
+                } else if (rOtherPhone.isChecked() && accSend.equals(ETOtherNum.getText().toString().trim())){
+                    am.myDialog(Mobile_Money.this, getString(R.string.alert), getString(R.string.sameAccError));
+                } else if (ETAmount.getText().toString().trim().isEmpty()) {
+                    am.myDialog(Mobile_Money.this, getString(R.string.alert), getString(R.string.enterValidAmount));
+                } else if (ETPin.getText().length() < 4) {
+                    am.myDialog(Mobile_Money.this, getString(R.string.alert), getString(R.string.enterValidPin));
+                } else {
+                    if (rMyPhone.isChecked()) {
+                        phoneReceive = am.getUserPhone();
+                    } else {
+                        am.saveSendPhone(ETOtherNum.getText().toString().trim());
+                        phoneReceive = am.getSendPhone();
+                    }
+                    gDialog = new Dialog(Mobile_Money.this);
+                    //noinspection ConstantConditions
+                    gDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                    gDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                    gDialog.setContentView(R.layout.dialog_confirm);
+                    final TextView txtMessage = gDialog.findViewById(R.id.dialog_message);
+                    final TextView txtOk = gDialog.findViewById(R.id.yesBTN);
+                    final TextView txtNo = gDialog.findViewById(R.id.noBTN);
+                    txtMessage.setText(String.format("%s %s %s %s %s %s.",
+                            getText(R.string.sendMoneyto),
+                            am.Amount_Thousands(ETAmount.getText().toString().trim()),
+                            getText(R.string.fromAccNo),
+                            accSend,
+                            getText(R.string.toPhone),
+                            phoneReceive));
+                    txtOk.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if (AllMethods.isNumeric(am.getBal())) {
+                                Double balance = Double.parseDouble(am.getBal());
+                                DecimalFormat formatter = new DecimalFormat("#,###,##0.00");//here 0.00 instead #.##
+                                //txtSelfieText.setText(formatter.format(cs_score)+"\nmatch");
+
+                                if (Double.parseDouble((ETAmount.getText().toString())) >= balance) {
+
+                                    am.myDialog(Mobile_Money.this, getString(R.string.alert), getString(R.string.insufficient_funds));
+                                } else {
+                                    String quest = (
+                                            "FORMID:M-:" +
+                                                    "MERCHANTID:" + am.getMerchantID() + ":" +
+                                                    "BANKACCOUNTID:" + accSend + ":" +
+                                                    "ACCOUNTID:" + phoneReceive + ":" +
+                                                    "AMOUNT:" + ETAmount.getText().toString().trim() + ":" +
+                                                    "TMPIN:" + ETPin.getText().toString().trim() + ":" +
+                                                    "MESSAGE:MOBILE MONEY:" +
+                                                    "ACTION:PAYBILL:"
+                                    );
+                                    //am.connectOldTwo(getString(R.string.processingTrx),quest,Mobile_Money.this,"TRX");
+                                    am.get(Mobile_Money.this, quest, getString(R.string.processingTrx), "TRX");
+                                    gDialog.cancel();
+                                }
+
+                            }
+                        }
+                    });
+                    txtNo.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            gDialog.cancel();
+                        }
+                    });
+                    gDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                        @Override
+                        public void onCancel(DialogInterface dialog) {
+                            ETPin.setText("");
+                            dialog.dismiss();
+                        }
+                    });
+                    gDialog.show();
+                }
+            }
+        });
     }
 
     @Override
@@ -150,89 +238,89 @@ public class Mobile_Money extends BaseAct implements ResponseListener, VolleyRes
         super.onResume();
     }
 
-    public void sm$(View view) {
-        if (accSend.equals("")) {
-            am.myDialog(this, getString(R.string.alert), getString(R.string.selectAccDebited));
-        } else if (am.getMerchantID().equals("")) {
-            am.myDialog(this, getString(R.string.alert), getString(R.string.slctPrvdr));
-        } else if (rMyPhone.isChecked() && accSend.equals(myNum.getText().toString().trim())){
-            am.myDialog(this, getString(R.string.alert), getString(R.string.sameAccError));
-        } else if (rOtherPhone.isChecked() && ETOtherNum.getText().length() < 4){
-            am.myDialog(this, getString(R.string.alert), getString(R.string.enterValidPhoneAcc));
-        } else if (rOtherPhone.isChecked() && accSend.equals(ETOtherNum.getText().toString().trim())){
-            am.myDialog(this, getString(R.string.alert), getString(R.string.sameAccError));
-        } else if (ETAmount.getText().toString().trim().isEmpty()) {
-            am.myDialog(this, getString(R.string.alert), getString(R.string.enterValidAmount));
-        } else if (ETPin.getText().length() < 4) {
-            am.myDialog(this, getString(R.string.alert), getString(R.string.enterValidPin));
-        } else {
-            if (rMyPhone.isChecked()) {
-                phoneReceive = am.getUserPhone();
-            } else {
-                am.saveSendPhone(ETOtherNum.getText().toString().trim());
-                phoneReceive = am.getSendPhone();
-            }
-            gDialog = new Dialog(this);
-            //noinspection ConstantConditions
-            gDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            gDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            gDialog.setContentView(R.layout.dialog_confirm);
-            final TextView txtMessage = gDialog.findViewById(R.id.dialog_message);
-            final TextView txtOk = gDialog.findViewById(R.id.yesBTN);
-            final TextView txtNo = gDialog.findViewById(R.id.noBTN);
-            txtMessage.setText(String.format("%s %s %s %s %s %s.",
-                    getText(R.string.sendMoneyto),
-                    am.Amount_Thousands(ETAmount.getText().toString().trim()),
-                    getText(R.string.fromAccNo),
-                    accSend,
-                    getText(R.string.toPhone),
-                    phoneReceive));
-            txtOk.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (AllMethods.isNumeric(am.getBal())) {
-                        Double balance = Double.parseDouble(am.getBal());
-                        DecimalFormat formatter = new DecimalFormat("#,###,##0.00");//here 0.00 instead #.##
-                        //txtSelfieText.setText(formatter.format(cs_score)+"\nmatch");
-
-                        if (Double.parseDouble((ETAmount.getText().toString())) >= balance) {
-
-                            am.myDialog(Mobile_Money.this, getString(R.string.alert), getString(R.string.insufficient_funds));
-                        } else {
-                            String quest = (
-                                    "FORMID:M-:" +
-                                            "MERCHANTID:" + am.getMerchantID() + ":" +
-                                            "BANKACCOUNTID:" + accSend + ":" +
-                                            "ACCOUNTID:" + phoneReceive + ":" +
-                                            "AMOUNT:" + ETAmount.getText().toString().trim() + ":" +
-                                            "TMPIN:" + ETPin.getText().toString().trim() + ":" +
-                                            "MESSAGE:MOBILE MONEY:" +
-                                            "ACTION:PAYBILL:"
-                            );
-                            //am.connectOldTwo(getString(R.string.processingTrx),quest,Mobile_Money.this,"TRX");
-                            am.get(Mobile_Money.this, quest, getString(R.string.processingTrx), "TRX");
-                            gDialog.cancel();
-                        }
-
-                    }
-                }
-            });
-            txtNo.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    gDialog.cancel();
-                }
-            });
-            gDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-                @Override
-                public void onCancel(DialogInterface dialog) {
-                    ETPin.setText("");
-                    dialog.dismiss();
-                }
-            });
-            gDialog.show();
-        }
-    }
+//    public void sm$(View view) {
+//        if (accSend.equals("")) {
+//            am.myDialog(this, getString(R.string.alert), getString(R.string.selectAccDebited));
+//        } else if (am.getMerchantID().equals("")) {
+//            am.myDialog(this, getString(R.string.alert), getString(R.string.slctPrvdr));
+//        } else if (rMyPhone.isChecked() && accSend.equals(myNum.getText().toString().trim())){
+//            am.myDialog(this, getString(R.string.alert), getString(R.string.sameAccError));
+//        } else if (rOtherPhone.isChecked() && ETOtherNum.getText().length() < 4){
+//            am.myDialog(this, getString(R.string.alert), getString(R.string.enterValidPhoneAcc));
+//        } else if (rOtherPhone.isChecked() && accSend.equals(ETOtherNum.getText().toString().trim())){
+//            am.myDialog(this, getString(R.string.alert), getString(R.string.sameAccError));
+//        } else if (ETAmount.getText().toString().trim().isEmpty()) {
+//            am.myDialog(this, getString(R.string.alert), getString(R.string.enterValidAmount));
+//        } else if (ETPin.getText().length() < 4) {
+//            am.myDialog(this, getString(R.string.alert), getString(R.string.enterValidPin));
+//        } else {
+//            if (rMyPhone.isChecked()) {
+//                phoneReceive = am.getUserPhone();
+//            } else {
+//                am.saveSendPhone(ETOtherNum.getText().toString().trim());
+//                phoneReceive = am.getSendPhone();
+//            }
+//            gDialog = new Dialog(this);
+//            //noinspection ConstantConditions
+//            gDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+//            gDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+//            gDialog.setContentView(R.layout.dialog_confirm);
+//            final TextView txtMessage = gDialog.findViewById(R.id.dialog_message);
+//            final TextView txtOk = gDialog.findViewById(R.id.yesBTN);
+//            final TextView txtNo = gDialog.findViewById(R.id.noBTN);
+//            txtMessage.setText(String.format("%s %s %s %s %s %s.",
+//                    getText(R.string.sendMoneyto),
+//                    am.Amount_Thousands(ETAmount.getText().toString().trim()),
+//                    getText(R.string.fromAccNo),
+//                    accSend,
+//                    getText(R.string.toPhone),
+//                    phoneReceive));
+//            txtOk.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    if (AllMethods.isNumeric(am.getBal())) {
+//                        Double balance = Double.parseDouble(am.getBal());
+//                        DecimalFormat formatter = new DecimalFormat("#,###,##0.00");//here 0.00 instead #.##
+//                        //txtSelfieText.setText(formatter.format(cs_score)+"\nmatch");
+//
+//                        if (Double.parseDouble((ETAmount.getText().toString())) >= balance) {
+//
+//                            am.myDialog(Mobile_Money.this, getString(R.string.alert), getString(R.string.insufficient_funds));
+//                        } else {
+//                            String quest = (
+//                                    "FORMID:M-:" +
+//                                            "MERCHANTID:" + am.getMerchantID() + ":" +
+//                                            "BANKACCOUNTID:" + accSend + ":" +
+//                                            "ACCOUNTID:" + phoneReceive + ":" +
+//                                            "AMOUNT:" + ETAmount.getText().toString().trim() + ":" +
+//                                            "TMPIN:" + ETPin.getText().toString().trim() + ":" +
+//                                            "MESSAGE:MOBILE MONEY:" +
+//                                            "ACTION:PAYBILL:"
+//                            );
+//                            //am.connectOldTwo(getString(R.string.processingTrx),quest,Mobile_Money.this,"TRX");
+//                            am.get(Mobile_Money.this, quest, getString(R.string.processingTrx), "TRX");
+//                            gDialog.cancel();
+//                        }
+//
+//                    }
+//                }
+//            });
+//            txtNo.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    gDialog.cancel();
+//                }
+//            });
+//            gDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+//                @Override
+//                public void onCancel(DialogInterface dialog) {
+//                    ETPin.setText("");
+//                    dialog.dismiss();
+//                }
+//            });
+//            gDialog.show();
+//        }
+//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

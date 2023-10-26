@@ -209,18 +209,18 @@ public class CryptLib {
      * 				Desired length
      * * @return
      */
-    public static String generateRandomIV(int length) {
-        SecureRandom ranGen = new SecureRandom();
-        byte[] aesKey = new byte[16];
-        ranGen.nextBytes(aesKey);
-        StringBuilder result = new StringBuilder();
-        for (byte b : aesKey) {
-            result.append(String.format("%02x", b)); //convert to hex
-        }
-        if(length> result.toString().length()) {
-            return result.toString();
-        } else {
-            return result.toString().substring(0, length);
-        }
-    }
+//    public static String generateRandomIV(int length) {
+//        SecureRandom ranGen = new SecureRandom();
+//        byte[] aesKey = new byte[16];
+//        ranGen.nextBytes(aesKey);
+//        StringBuilder result = new StringBuilder();
+//        for (byte b : aesKey) {
+//            result.append(String.format("%02x", b)); //convert to hex
+//        }
+//        if(length> result.toString().length()) {
+//            return result.toString();
+//        } else {
+//            return result.toString().substring(0, length);
+//        }
+//    }
 }

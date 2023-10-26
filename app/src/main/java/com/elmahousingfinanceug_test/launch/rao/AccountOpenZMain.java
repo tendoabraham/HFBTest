@@ -51,6 +51,7 @@ import android.widget.ViewFlipper;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatCheckBox;
 
@@ -109,25 +110,27 @@ import id.zelory.compressor.Compressor;
 import mumayank.com.airlocationlibrary.AirLocation;
 
 public class AccountOpenZMain extends AppCompatActivity implements ResponseListener, View.OnClickListener {
-    TextView title, prev, next, otpcountdown, tv_resend_otp, show_response, textView2, textView3,textViewPEP;
+    TextView title, prev, next, otpcountdown, tv_resend_otp, show_response, textView2, textView3,textViewPEP, pepRelationshipTxt, isFamPE;
     ProgressBar determinateBar, progressBar1;
     Bitmap bitmapImageFront, bitmapImageBack, bitmapImageSelfie;
     ViewFlipper flipper;
     WebView webView;
-    String nationality = "", sex, surName = "", CardNumber = "", DateOfExpiry = "", NIN = "", dob = "", Name = "", faceId1 = "", imageURL = "", faceId2 = "";
+    String nationality = "", sex, surName = "", CardNumber = "", DateOfExpiry = "", NIN = "", dob = "", Name = "", faceId1 = "", imageURL = "", faceId2 = "",
+            FirstName="", LastName="", Relationship="", Position="";
     String status = "", message = "", fields = "", idNumberObject = "", fullName = "", issueDate = "", idSerial = "", birthdate = "";
     ImagePick front, backpick, selfie, signature;
     Spinner currselect, branchselect, employmentType, political_spin, occupation_spin, proffession_status, regionselect, districtName,
-            countyName, subCountyName, parishName, villageName, eAName, spinnerMulti, alternativeBank;
-    LinearLayout ccg, currencyLayout, centeidsdetails, centeparentinfo, centesourceincome, centenextofkin, centepoliticallyexposedinfo,
-            centecontacts, centeextras, centehearusfrom, new_Lay, existing_lay, aMr, bMrs, cMiss, alternativeDeposite;
+            countyName, subCountyName, parishName, villageName, eAName, spinnerMulti, alternativeBank,pepPositionSpin, pepRelationshipSpin;
+    LinearLayout ccg, currencyLayout, centeidsdetails, centeparentinfo, centesourceincome, centenextofkin, centepoliticallyexposedinfo,pepPeriod, pepDetails,
+            centecontacts, centeextras, centehearusfrom, new_Lay, existing_lay, aMr, bMrs, cMiss, alternativeDeposite,PEPDet, otherRelationship, otherPosition;
     ScrollView pan_pin_in;
     cicEditText staffPhoneNumber, accountNumber, name, sname, otherNames, nationalID, nationalIDCardNo, DOBEdit, FatherFirstName, phoneregName, phoneregLastName,
             FatherMiddleName, FatherLastName, MotherFirstName, MotherMiddleName, MotherLastName, Address, YearsAtAddress,
             PoliticallyExposed, IncomeperAnnum, MonthlySalary, EmploymentType, Occupation, yearOfEmployment, PlaceofWork, NatureofBussiness,
             PeriodofEmployment, EmployerName, NatureofEmployment, NextofKinFirstName, NextofKinMiddleName,
-            NextofKinLastName, NextofKinPhoneNumber, NextofKinAltPhoneNumber, NextofKinAddress, EmailAddress, PEPFirstName, PEPLastName, PEPPosition,
-            PhoneNumber, AlternatePhoneNumber, ActualAddress, country, zipCode, c4, c44, c45, c5, alternativeAccountNumber, bankName, branchName, accountName, PhoneNumberMobile;
+            NextofKinLastName, NextofKinPhoneNumber, NextofKinAltPhoneNumber, NextofKinAddress, EmailAddress, PEPFirstName, PEPLastName, PEPInitial,
+            PEPTitle, PEPCountry, PEPStartYear, PEPEndYear, PEPOtherPosition, PEPOtherRelationship, PhoneNumber, AlternatePhoneNumber, ActualAddress,
+            country, zipCode, c4, c44, c45, c5, alternativeAccountNumber, bankName, branchName, accountName, PhoneNumberMobile;
 
     EditText et_acc, et_pan, et_pin, et_phone;
     RadioGroup addressPeriod, employPeriod, accountsGroup, radioGroup, genderGroup, RGroupM, RGroupCon, PEGroup, FPEGroup;
@@ -234,6 +237,11 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
         yesFPE = findViewById(R.id.yesFPE);
         noPE = findViewById(R.id.noPE);
         noFPE = findViewById(R.id.noFPE);
+        PEPDet = findViewById(R.id.PEPDet);
+        pepRelationshipTxt = findViewById(R.id.pepRelationshipTxt);
+        isFamPE = findViewById(R.id.isFamPE);
+        otherRelationship = findViewById(R.id.otherRelationship);
+        otherPosition = findViewById(R.id.otherPosition);
 
         currselect = findViewById(R.id.currselect);
         spinnerMulti = findViewById(R.id.spinnerMulti);
@@ -278,6 +286,10 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
         bankstaff = findViewById(R.id.bankstaff);
         HFBCustomer = findViewById(R.id.HFBCustomer);
         Agent = findViewById(R.id.Agent);
+        pepPeriod = findViewById(R.id.pepPeriod);
+        pepDetails = findViewById(R.id.pepDetails);
+        pepPositionSpin = findViewById(R.id.pepPositionSpin);
+        pepRelationshipSpin = findViewById(R.id.pepRelationshipSpin);
 
         ccg = findViewById(R.id.ccg);
         centeidsdetails = findViewById(R.id.centeidsdetails);
@@ -372,6 +384,59 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
             proceedFromWhereYouLeftOff();
         }
         registerReceiver(populateProducts, new IntentFilter("populate"));
+        updatePEPSpinners();
+
+        pepPositionSpin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                String selectedItem = adapterView.getItemAtPosition(i).toString();
+                if (selectedItem.equals("Other")){
+                    otherPosition.setVisibility(View.VISIBLE);
+                }else   {
+                    Position = selectedItem;
+                    otherPosition.setVisibility(View.GONE);
+                }
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        pepRelationshipSpin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                String selectedItem = adapterView.getItemAtPosition(i).toString();
+                if (selectedItem.equals("Other")){
+                    otherRelationship.setVisibility(View.VISIBLE);
+                }else   {
+                    Relationship = selectedItem;
+                    otherRelationship.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+    }
+
+    public void updatePEPSpinners(){
+        ArrayAdapter<CharSequence> itemAdapter;
+        itemAdapter = ArrayAdapter.createFromResource(this,
+                R.array.PEP_Position, android.R.layout.simple_spinner_item);
+        itemAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        pepPositionSpin.setAdapter(itemAdapter);
+
+        ArrayAdapter<CharSequence> itemAdapter2;
+        itemAdapter2 = ArrayAdapter.createFromResource(this,
+                R.array.PEP_Relationship, android.R.layout.simple_spinner_item);
+        itemAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        pepRelationshipSpin.setAdapter(itemAdapter2);
     }
 
     private final BroadcastReceiver populateProducts = new BroadcastReceiver() {
@@ -476,7 +541,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                     selectedAccountID = accountIDs.get(checkedId);
                     ProductDescription = productDescription.get(checkedId);
                     termsUrl = listUrls.get(checkedId);
-                    Log.e("product description", ProductDescription);
+//                    Log.e("product description", ProductDescription);
                     decriptionPopup();
 
 
@@ -521,7 +586,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                                 if (position != 0) {
                                     currName = currselect.getSelectedItem().toString().trim();
                                     currencyURL = listCurrencyUrls.get(position);
-                                    Log.e("CurrencyURL", currencyURL);
+//                                    Log.e("CurrencyURL", currencyURL);
                                 } else {
                                     currName = "";
                                     currencyURL = "";
@@ -864,20 +929,41 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
         PEGroup.setOnCheckedChangeListener((group, checkedId) -> {
             if (yesPE.isChecked()) {
                 PEPexposure = "Yes";
+                Relationship = "Self";
+                FirstName = name.getText();
+                LastName = sname.getText();
+                PEPDet.setVisibility(View.VISIBLE);
+                centepoliticallyexposedinfo.setVisibility(View.GONE);
+                textViewPEP.setVisibility(View.GONE);
+                pepRelationshipSpin.setVisibility(View.GONE);
+                pepRelationshipTxt.setVisibility(View.GONE);
+                isFamPE.setVisibility(View.GONE);
+                FPEGroup.setVisibility(View.GONE);
+                FPEGroup.clearCheck();
             } else if (noPE.isChecked()){
                 PEPexposure = "No";
+                PEPDet.setVisibility(View.GONE);
+                isFamPE.setVisibility(View.VISIBLE);
+                FPEGroup.setVisibility(View.VISIBLE);
             }
         });
 
         FPEGroup.setOnCheckedChangeListener((group, checkedId) -> {
             if (yesFPE.isChecked()) {
                 FPEPexposure = "Yes";
+                PEPexposure = "Yes";
                 textViewPEP.setVisibility(View.VISIBLE);
                 centepoliticallyexposedinfo.setVisibility(View.VISIBLE);
+                PEPDet.setVisibility(View.VISIBLE);
+                centepoliticallyexposedinfo.setVisibility(View.VISIBLE);
+                textViewPEP.setVisibility(View.VISIBLE);
+                pepRelationshipSpin.setVisibility(View.VISIBLE);
+                pepRelationshipTxt.setVisibility(View.VISIBLE);
             } else if (noFPE.isChecked()) {
                 FPEPexposure = "No";
                 textViewPEP.setVisibility(View.GONE);
                 centepoliticallyexposedinfo.setVisibility(View.GONE);
+                PEPDet.setVisibility(View.GONE);
             }
         });
 
@@ -935,7 +1021,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                         centesourceincome.addView(PeriodofEmployment);
                     }
 
-                    Log.e("userEmployee", userEmploymentType);
+//                    Log.e("userEmployee", userEmploymentType);
                 } else {
                     userEmploymentType = "";
 
@@ -1134,7 +1220,13 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
         //Politically exposed Details
         PEPFirstName = new cicEditText(this, VAR.TEXT, "First name ", " John");
         PEPLastName = new cicEditText(this, VAR.TEXT, "Last name ", " Kawooya");
-        PEPPosition = new cicEditText(this, VAR.TEXT, "Position", " Position");
+        PEPInitial = new cicEditText(this, VAR.TEXT, "Initial", " Initial");
+        PEPTitle = new cicEditText(this, VAR.TEXT, "Title of Position Held ", " Title");
+        PEPCountry = new cicEditText(this, VAR.TEXT, "Country where the position was held? ", " Country");
+        PEPStartYear = new cicEditText(this, VAR.NUMBER, "Starting year ", " Year");
+        PEPEndYear = new cicEditText(this, VAR.NUMBER, "Ending year ", " Year");
+        PEPOtherPosition = new cicEditText(this, VAR.TEXT, "Specify position held ", " Position");
+        PEPOtherRelationship = new cicEditText(this, VAR.TEXT, "Specify your relationship with this person ", " Relationship");
 
         addressPeriod = new RadioGroup(this);
         addressPeriod.setOrientation(RadioGroup.HORIZONTAL);
@@ -1186,7 +1278,16 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
 
         centepoliticallyexposedinfo.addView(PEPFirstName);
         centepoliticallyexposedinfo.addView(PEPLastName);
-        centepoliticallyexposedinfo.addView(PEPPosition);
+        centepoliticallyexposedinfo.addView(PEPInitial);
+
+        pepDetails.addView(PEPTitle);
+        pepDetails.addView(PEPCountry);
+
+        pepPeriod.addView(PEPStartYear);
+        pepPeriod.addView(PEPEndYear);
+
+        otherPosition.addView(PEPOtherPosition);
+        otherRelationship.addView(PEPOtherRelationship);
 
         //Political  stuff dropdown
         /*PoliticallyExposed.setVisibility(View.GONE);
@@ -1351,6 +1452,38 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
 
     //OCR request with ID image
 
+    private void OCR(){
+        new_request = "FORMID:M-:" +
+                "MERCHANTID:OCR:" +
+                "InfoField1:" + PhoneNumber.getCountryCode() + PhoneNumber.getText() + ":" +
+                "InfoField2:NATIONALID:" +
+                "InfoField3:" + ":" +
+//                "InfoField4:" + ":" +
+//                "InfoField5:" + ":" +
+//                "InfoField6:" + ":" +
+                "InfoField4:" + am.getSavedData("encodedImageFront") + ":" +
+//                "InfoField5:" + am.getSavedData("encodedImageBack") + ":" +
+//                "InfoField6:" + am.getSavedData("encodedImageSelfie") + ":" +
+                "InfoField7:" + ":" +
+                "ACTION:GETNAME:";
+        am.get(AccountOpenZMain.this, new_request, getString(R.string.loading), "OCR");
+    }
+
+    private void OCRConfirm(String FaceID){
+        new_request = "FORMID:M-:" +
+                "MERCHANTID:OCR:" +
+                "InfoField1:" + PhoneNumber.getText() + ":" +
+                "InfoField2:NATIONALID:" +
+                "InfoField3:" + ":" +
+                "InfoField4:" + am.getSavedData("encodedImageFront") + ":" +
+                "InfoField5:" + am.getSavedData("encodedImageBack") + ":" +
+                "InfoField6:" + am.getSavedData("encodedImageSelfie") + ":" +
+                "InfoField7:" + FaceID + ":" +
+                "InfoField8:OcrConfirm:" +
+                "ACTION:GETNAME:";
+        am.get(AccountOpenZMain.this, new_request, getString(R.string.loading), "OCR1Confirm");
+    }
+
 
     ///ImageUpload
 
@@ -1483,7 +1616,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                     @Override
                     public void onResponse(JSONObject response) {
                         am.progressDialog("1");
-                        Log.e("Tunapata", response.toString());
+//                        Log.e("Tunapata", response.toString());
 //                        {
 //   "status":"000",
 //   "message":"Success",
@@ -1533,7 +1666,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                VolleyLog.e("Error: ", error.getMessage());
+//                VolleyLog.e("Error: ", error.getMessage());
             }
 
 
@@ -1567,6 +1700,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
         am.progressDialog("1");
         JsonObjectRequest req = new JsonObjectRequest(Request.Method.POST, base_URL2, jsonObject,
                 new Response.Listener<JSONObject>() {
+                    @RequiresApi(api = Build.VERSION_CODES.O)
                     @Override
                     public void onResponse(JSONObject response) {
                         am.progressDialog("0");
@@ -1600,146 +1734,6 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                             }else{
                                 surName= Name;
                             }
-
-
-//                            String message = response.getString("Message");
-
-//                            String fields = response.getString("fields");
-//
-//                            JSONArray jsonArrayFields = new JSONArray(fields);
-//                            for (int j = 0; j < jsonArrayFields.length(); j++) {
-//                                JSONObject jsonFields = jsonArrayFields.getJSONObject(j);
-//
-//                                if (jsonFields.has("Nationality")) {
-//
-//                                    String genderArray = response.getString("Nationality");
-//
-//                                    JSONArray jsonArrayGender = new JSONArray(genderArray);
-//                                    for (int k = 0; k < jsonArrayGender.length(); k++) {
-//                                        JSONObject jsonGender = jsonArrayGender.getJSONObject(k);
-//
-//                                        if (jsonGender.has("text")) {
-//                                            nationality = jsonGender.getString("text");
-//                                        }
-//                                    }
-//
-//                                }
-//
-//                                if (jsonFields.has("Sex")) {
-//
-//                                    String idNumberArray = jsonFields.getString("Sex");
-//
-//                                    JSONArray jsonArrayID = new JSONArray(idNumberArray);
-//                                    for (int l = 0; l < jsonArrayID.length(); l++) {
-//
-//                                        JSONObject sex = jsonArrayID.getJSONObject(l);
-//
-//                                    }
-//
-//                                }
-//
-//                                if (jsonFields.has("Surname")) {
-//
-//                                    String issueDateArray = jsonFields.getString("Surname");
-//
-//                                    JSONArray jsonArrayIssueDate = new JSONArray(issueDateArray);
-//                                    for (int m = 0; m < jsonArrayIssueDate.length(); m++) {
-//
-//
-//                                        JSONObject jsonIssueDate = jsonArrayIssueDate.getJSONObject(m);
-//                                        if (jsonIssueDate.has("text")) {
-//                                            surName = jsonIssueDate.getString("text");
-//                                        }
-//                                    }
-//
-//                                }
-//
-//                                if (jsonFields.has("CardNumber")) {
-//
-//                                    String IdSerialArray = jsonFields.getString("CardNumber");
-//
-//                                    JSONArray jsonArrayIDSerial = new JSONArray(IdSerialArray);
-//                                    for (int n = 0; n < jsonArrayIDSerial.length(); n++) {
-//
-//                                        JSONObject jsonSerialNumber = jsonArrayIDSerial.getJSONObject(n);
-//                                        if (jsonSerialNumber.has("text")) {
-//                                            CardNumber = jsonSerialNumber.getString("text");
-//                                        }
-//                                    }
-//
-//
-//                                }
-//
-//                                if (jsonFields.has("DateOfExpiry")) {
-//
-//                                    String idNumberArray = jsonFields.getString("DateOfExpiry");
-//
-//                                    JSONArray jsonArrayID = new JSONArray(idNumberArray);
-//                                    for (int l = 0; l < jsonArrayID.length(); l++) {
-//
-//                                        JSONObject jsonIDNumber = jsonArrayID.getJSONObject(l);
-//                                        if (jsonIDNumber.has("text")) {
-//                                            DateOfExpiry = jsonIDNumber.getString("text");
-//                                        }
-//                                    }
-//
-//
-//                                }
-//                                if (jsonFields.has("NIN")) {
-//
-//                                    String idNumberArray = jsonFields.getString("NIN");
-//
-//                                    JSONArray jsonArrayID = new JSONArray(idNumberArray);
-//                                    for (int l = 0; l < jsonArrayID.length(); l++) {
-//
-//                                        JSONObject jsonIDNumber = jsonArrayID.getJSONObject(l);
-//                                        if (jsonIDNumber.has("text")) {
-//                                            NIN = jsonIDNumber.getString("text");
-//                                        }
-//                                    }
-//
-//                                }
-//
-//                                if (jsonFields.has("DateOfBirth")) {
-//                                    String birthDateArray = jsonFields.getString("DateOfBirth");
-//
-//                                    JSONArray jsonArrayBirthDate = new JSONArray(birthDateArray);
-//                                    for (int q = 0; q < jsonArrayBirthDate.length(); q++) {
-//
-//                                        JSONObject jsonBirthDateDate = jsonArrayBirthDate.getJSONObject(q);
-//                                        if (jsonBirthDateDate.has("text")) {
-//                                            birthdate = jsonBirthDateDate.getString("text");
-//                                        }
-//                                        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
-//                                        SimpleDateFormat outFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-//
-//                                        try {
-//                                            Date date = sdf.parse(birthdate);
-//                                            dob = outFormat.format(date);
-//                                        } catch (ParseException e) {
-//                                            e.printStackTrace();
-//                                        }
-//                                    }
-//
-//                                }
-//
-//                                if (jsonFields.has("Name")) {
-//
-//                                    String idNumberArray = jsonFields.getString("Name");
-//
-//                                    JSONArray jsonArrayID = new JSONArray(idNumberArray);
-//                                    for (int l = 0; l < jsonArrayID.length(); l++) {
-//
-//                                        JSONObject jsonIDNumber = jsonArrayID.getJSONObject(l);
-//                                        if (jsonIDNumber.has("text")) {
-//                                            Name = jsonIDNumber.getString("text");
-//                                        }
-//                                    }
-//
-//                                }
-//
-//                            }
-
 
                             if (status.equals("000")) {
 
@@ -1836,11 +1830,11 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                     .setQuality(20)
                     .compressToBitmap(mFile);
         } catch (Exception e) {
-            Log.e("error-whenusinglib", "" + e);
+//            Log.e("error-whenusinglib", "" + e);
         }
 
         if (bmp == null) {
-            Log.e("", "Bitmap not found");
+//            Log.e("", "Bitmap not found");
         }
 
         return bmp;
@@ -1994,6 +1988,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                             front.setImage(bitmap);
                             bitmapImageFront = BitmapCompressionWithZ(this, mFile);
                             encodedImageFront = ConvertImageToBase64(bitmap);
+                            Log.e("Image", encodedImageFront);
 
                             am.putSavedData("encodedImageFront", encodedImageFront);
                             break;
@@ -2279,6 +2274,10 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                 case "OK":
                 case "00":
                     switch (step) {
+                        case "OCR":
+                            Log.e("Response", response);
+                            Log.e("Message", message);
+                            break;
                         case "ValidateBankStaff":
                             accountBranchChoice();
                             break;
@@ -2690,7 +2689,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                             currentTask = "RAO";
                             new_request = RAO();
                             new Handler().postDelayed(() -> am.get(AccountOpenZMain.this, new_request, getString(R.string.loading), "RAO"), 400);
-                            Log.e("TEST", new_request);
+//                            Log.e("TEST", new_request);
                             break;
                         }
                         case "VerifyExisting":
@@ -2710,7 +2709,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                             break;
                         case "RAO":
                             show_response.setText(Message);
-                            Log.e("Message", message);
+//                            Log.e("Message", message);
                             success_failed.setVisibility(View.VISIBLE);
                             //STATUS:000:MESSAGE:Dear Customer We have received your application, we shall respond with the status of your Application with in 24hrs call 0800200555/0800335344 for more info or send an email to cente_mobile@centenarybank.co.ug.~You can Deposit to this Account Using;~
                             //Wallet to Bank Transactions (Momo and Airtel Money)| url~ ATM Deposit| url~ Agent Banking| url~T.Ts| url~Wire Transfer| url~Western Union| url~At any HFB Bank Branch countrywide (Uganda).| url
@@ -3167,6 +3166,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                         am.putSaveTitlePosition(singleTitle.getViewTitleID());
 //                        submitImages();
                         uploadImage(byteArray, "IDFRONT");
+//                        OCR();
 
                     }
                 } else if (step_ == 3) {
@@ -3405,16 +3405,34 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                     otpPinView.setEnabled(true);
                     int selectedRadioButtonId = PEGroup.getCheckedRadioButtonId();
                     int selectedRadioButtonId2 = FPEGroup.getCheckedRadioButtonId();
+                    String selectedPos = pepPositionSpin.getSelectedItem().toString();
+                    String selectedRel = pepRelationshipSpin.getSelectedItem().toString();
                     if (selectedRadioButtonId == -1) {
                         ErrorAlert("Please state if you're politically exposed");
-                    } else if (selectedRadioButtonId2 == -1){
+                    } else if (noPE.isChecked() && selectedRadioButtonId2 == -1){
                         ErrorAlert("Please state if you are connected to someone who is politically exposed");
                     } else if (yesFPE.isChecked() && TextUtils.isEmpty(PEPFirstName.getText().trim())) {
-                        ErrorAlert("Please fill in the First Name of your politically exposed relative");
+                        ErrorAlert("Please fill in the first name of your politically exposed relative");
                     } else if (yesFPE.isChecked() && TextUtils.isEmpty(PEPLastName.getText().trim())) {
-                        ErrorAlert("Please fill in the Last Name of your politically exposed relative");
-                    }else if (yesFPE.isChecked() && TextUtils.isEmpty(PEPPosition.getText().trim())) {
-                        ErrorAlert("Please fill in the position of your politically exposed relative");
+                        ErrorAlert("Please fill in the last name of your politically exposed relative");
+                    }else if ((yesPE.isChecked() || yesFPE.isChecked()) && TextUtils.isEmpty(PEPTitle.getText().trim())) {
+                        ErrorAlert("Please fill in the title of the senior government, political or military position held");
+                    } else if ((yesPE.isChecked() || yesFPE.isChecked()) && TextUtils.isEmpty(PEPCountry.getText().trim())) {
+                        ErrorAlert("Please fill in the country where the senior government, political or military position was held");
+                    }else if ((yesPE.isChecked() || yesFPE.isChecked()) && TextUtils.isEmpty(PEPStartYear.getText().trim())) {
+                        ErrorAlert("Please fill in the starting year ");
+                    }else if ((yesPE.isChecked() || yesFPE.isChecked()) && TextUtils.isEmpty(PEPEndYear.getText().trim())) {
+                        ErrorAlert("Please fill in the ending year");
+                    }else if (Integer.parseInt(PEPEndYear.getText()) < Integer.parseInt(PEPStartYear.getText())) {
+                        ErrorAlert("Ending year cannot be older than Starting year");
+                    }else if ((yesPE.isChecked() || yesFPE.isChecked()) && selectedPos.equals("Select One")) {
+                        ErrorAlert("Please select the senior government, political or military position held");
+                    }else if (yesFPE.isChecked() && selectedRel.equals("Select One")) {
+                        ErrorAlert("Please select your relationship with your senior government, political or military relative");
+                    } else if (selectedPos.equals("Other") && TextUtils.isEmpty(PEPOtherPosition.getText().trim())) {
+                        ErrorAlert("Please specify the senior government, political or military position held");
+                    } else if (selectedRel.equals("Other") && TextUtils.isEmpty(PEPOtherRelationship.getText().trim())) {
+                        ErrorAlert("Please specify your relationship with your senior government, political or military relative");
                     }else {
                         step_++;
                         prev.setVisibility(View.VISIBLE);
@@ -3584,6 +3602,31 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                         } else if (Usertitle.equals("Mrs") || Usertitle.equals("Miss")) {
                             gender = "F";
                         }
+
+                        if (yesFPE.isChecked()){
+                            FirstName = PEPFirstName.getText();
+                            LastName = PEPLastName.getText();
+
+                            String selectedRelationship = pepRelationshipSpin.getSelectedItem().toString();
+                            if (selectedRelationship.equals("Other")){
+                                Relationship = PEPOtherRelationship.getText();
+                            }else{
+                                Relationship = selectedRelationship;
+                            }
+
+                        }
+
+                        String selectedPosition = pepPositionSpin.getSelectedItem().toString();
+                        if (selectedPosition.equals("Other")){
+                            Position = PEPOtherPosition.getText();
+                        }else{
+                            if (noPE.isChecked() && noFPE.isChecked() ){
+                                Position = "";
+                            }else{
+                                Position = selectedPosition;
+                            }
+                        }
+
 //                        if (alternativeSecurityDeposit.equals("Bank Account")) {
 //                            alternativeDeposite.addView(alternativeAccountNumber);
 //                            alternativeDeposite.addView(accountName);
@@ -3630,7 +3673,9 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                         /*if(am.getCountry().equals("UGANDATEST")){
                             INFOFIELD3 = "INFOFIELD3:CURRENT_LOCATION|"+ c5.getText() +"|ADDRESS|"+ ActualAddress.getText() +"|HOME_DISTRICT|"+ Address.getText() +"|YEARS_AT_ADDRESS|"+ YearsAtAddress.getText().concat(periodAddressString)+"|POLITICALLY_EXPOSED|"+StringPoliticallyExposed+"|CITY|"+city.getText()+"|ZIPCODE|"+zipCode.getText();
                         }*/
-                        INFOFIELD3 = "INFOFIELD3:CURRENT_LOCATION|" + c5.getText() + "|ADDRESS|" + ActualAddress.getText() + "|HOME_DISTRICT|" + Address.getText() + "|YEARS_AT_ADDRESS|" + YearsAtAddress.getText().concat(periodAddressString) + "|POLITICALLY_EXPOSED|" + PEPexposure + "|MARITALSTATUS|" + maritalStatus + "|ZIPCODE|" + zipCode.getText();
+                        INFOFIELD3 = "INFOFIELD3:CURRENT_LOCATION|" + c5.getText() + "|ADDRESS|" + ActualAddress.getText() + "|HOME_DISTRICT|" + Address.getText() + "|YEARS_AT_ADDRESS|" + YearsAtAddress.getText().concat(periodAddressString) +
+                                "|POLITICALLY_EXPOSED|" + PEPexposure + "|POLITICALLY_EXPOSED_FIRSTNAME|" + FirstName + "|POLITICALLY_EXPOSED_LASTNAME|" + LastName + "|POLITICALLY_EXPOSED_POSITION|" + Position + "|POLITICALLY_EXPOSED_INITIAL|" + PEPInitial.getText() + "|POLITICALLY_EXPOSED_RELATIONSHIP|" + Relationship + "|POLITICALLY_EXPOSED_TITLE|" + PEPTitle.getText() + "|POLITICALLY_EXPOSED_COUNTRY|" + PEPCountry.getText() + "|POLITICALLY_EXPOSED_START_YEAR|" + PEPStartYear.getText() + "|POLITICALLY_EXPOSED_END_YEAR|" + PEPEndYear.getText() +
+                                "|MARITALSTATUS|" + maritalStatus + "|ZIPCODE|" + zipCode.getText();
 
                         /*if(am.getCountry().equals("UGANDATEST")){
                             INFOFIELD4 = "INFOFIELD4:INCOME_PER_ANUM|"+ IncomeperAnnum.getText() +"|EMPLOYMENT_TYPE|"+ professionIDString +"|OCCUPATION|"+ occupationIDString +"|PLACE_OF_WORK|"+ PlaceofWork.getText() +"|NATURE_OF_BUSINESS_SECTOR|"+ NatureofBussiness.getText() +"|PERIOD_OF_EMPLOYMENT|"+ PeriodofEmployment.getText().concat(periodWorkString) +"|EMPLOYER_NAME|"+ EmployerName.getText() +"|NATURE|"+ NatureofEmployment.getText();
@@ -3928,7 +3973,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                VolleyLog.e("Error: ", error.getMessage());
+//                VolleyLog.e("Error: ", error.getMessage());
             }
         });
 
@@ -4003,7 +4048,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                VolleyLog.e("Error: ", error.getMessage());
+//                VolleyLog.e("Error: ", error.getMessage());
             }
         });
 
@@ -4075,7 +4120,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                VolleyLog.e("Error: ", error.getMessage());
+//                VolleyLog.e("Error: ", error.getMessage());
             }
         });
 
@@ -4088,7 +4133,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
     }
 
     private void compareFaceId(String faceId1, String faceId2) {
-        Log.e("faceID", faceId1 + "-" + faceId2);
+//        Log.e("faceID", faceId1 + "-" + faceId2);
 
         String base_URL2 = "https://imageai.azurewebsites.net/CompareFace.aspx";
         JSONObject jsonObject = new JSONObject();
@@ -4107,7 +4152,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        Log.e("COMPARE", response.toString());
+//                        Log.e("COMPARE", response.toString());
                         am.progressDialog("0");
 //                        Log.d("upload_compare_response", response.toString());
                         ;
@@ -4142,7 +4187,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                             }
 
                         } catch (JSONException e) {
-                            Log.e("ErrorV", response.toString());
+//                            Log.e("ErrorV", response.toString());
                             e.printStackTrace();
                         }
                     }
@@ -4150,7 +4195,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
             @Override
             public void onErrorResponse(VolleyError error) {
 //                Log.e("Test",error.toString()) ;
-                VolleyLog.e("Error: ", error.getMessage());
+//                VolleyLog.e("Error: ", error.getMessage());
             }
         });
 

@@ -288,7 +288,6 @@
             <TextView
                 android:id="@+id/sendFunds"
                 style="@style/Button_Yes"
-                android:onClick="fT"
                 android:text="@string/fundsTransfer"/>
 
         </LinearLayout>

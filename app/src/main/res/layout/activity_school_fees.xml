@@ -65,8 +65,7 @@
                 <TextView
                     android:id="@+id/validate"
                     style="@style/Button_Yes"
-                    android:text="@string/validate"
-                    android:onClick="clicks"/>
+                    android:text="@string/validate"/>
 
             </LinearLayout>
 
@@ -97,8 +96,7 @@
                 <TextView
                     android:id="@+id/backIn"
                     style="@style/Button_Yes"
-                    android:text="@string/back"
-                    android:onClick="clicks"/>
+                    android:text="@string/back"/>
 
                 <TextView
                     style="@style/Black_Text"
@@ -124,8 +122,7 @@
                 <TextView
                     android:id="@+id/submit"
                     style="@style/Button_Yes"
-                    android:text="@string/submit"
-                    android:onClick="clicks"/>
+                    android:text="@string/submit"/>
 
             </LinearLayout>
 

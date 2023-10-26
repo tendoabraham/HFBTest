@@ -2,15 +2,15 @@
   <library name="Gradle: com.github.florent37:shapeofview:1.4.7@aar">
     <ANNOTATIONS>
       <root url="jar://$PROJECT_DIR$/../ptc_android_challenge_Agnes_Musyoka-development_mocklab/caches/transforms-2/files-2.1/2b8f40c80932e2337cc14a50016f2e56/jetified-shapeofview-1.4.7/annotations.zip!/" />
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/2b8f40c80932e2337cc14a50016f2e56/jetified-shapeofview-1.4.7/annotations.zip!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/52b1168aac854fa92df97f5a78fb4f5b/transformed/jetified-shapeofview-1.4.7/annotations.zip!/" />
     </ANNOTATIONS>
     <CLASSES>
       <root url="jar://$PROJECT_DIR$/../ptc_android_challenge_Agnes_Musyoka-development_mocklab/caches/transforms-2/files-2.1/2b8f40c80932e2337cc14a50016f2e56/jetified-shapeofview-1.4.7/jars/classes.jar!/" />
       <root url="file://$PROJECT_DIR$/../ptc_android_challenge_Agnes_Musyoka-development_mocklab/caches/transforms-2/files-2.1/2b8f40c80932e2337cc14a50016f2e56/jetified-shapeofview-1.4.7/res" />
       <root url="file://$PROJECT_DIR$/../ptc_android_challenge_Agnes_Musyoka-development_mocklab/caches/transforms-2/files-2.1/2b8f40c80932e2337cc14a50016f2e56/jetified-shapeofview-1.4.7/AndroidManifest.xml" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/2b8f40c80932e2337cc14a50016f2e56/jetified-shapeofview-1.4.7/AndroidManifest.xml" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/2b8f40c80932e2337cc14a50016f2e56/jetified-shapeofview-1.4.7/res" />
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/2b8f40c80932e2337cc14a50016f2e56/jetified-shapeofview-1.4.7/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/52b1168aac854fa92df97f5a78fb4f5b/transformed/jetified-shapeofview-1.4.7/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/52b1168aac854fa92df97f5a78fb4f5b/transformed/jetified-shapeofview-1.4.7/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/52b1168aac854fa92df97f5a78fb4f5b/transformed/jetified-shapeofview-1.4.7/res" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>

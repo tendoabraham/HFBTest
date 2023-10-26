@@ -68,7 +68,7 @@ public class OTP extends AppCompatActivity implements ResponseListener {
         });
 
         RegisterNewListener();
-//        generate();
+        generate();
 
         setSupportActionBar(toolbar);
         //noinspection ConstantConditions
@@ -80,25 +80,32 @@ public class OTP extends AppCompatActivity implements ResponseListener {
                 finish();
             }
         });
-    }
 
-    public void oneTime(View w) {
-        generate();
-
-        /*
-        switch (w.getId()) {
-            case R.id.send:
-                if (edtOTP.getText().length() < 6) {
-                    am.myDialog(this, getString(R.string.alert), getString(R.string.otpCap).concat(" ").concat(getString(R.string.required)));
-                } else {
-                    verification();
-                }
-                break;
-            case R.id.resend:
+        resend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
                 generate();
-                break;
-        }*/
+            }
+        });
     }
+
+//    public void oneTime(View w) {
+//        generate();
+//
+//        /*
+//        switch (w.getId()) {
+//            case R.id.send:
+//                if (edtOTP.getText().length() < 6) {
+//                    am.myDialog(this, getString(R.string.alert), getString(R.string.otpCap).concat(" ").concat(getString(R.string.required)));
+//                } else {
+//                    verification();
+//                }
+//                break;
+//            case R.id.resend:
+//                generate();
+//                break;
+//        }*/
+//    }
 
     private void generate() {
         quest = (
@@ -119,6 +126,15 @@ public class OTP extends AppCompatActivity implements ResponseListener {
 //                ":BANKID:"+ am.getBankID()  +
 //                ":CUSTOMERID:" + am.getCustomerID()+
 //                ":TRXSOURCE:APP"
+
+//                "FORMID:O-OTPCREATE" +
+//                        ":SERVICENAME:" + am.getMerchantID() +
+//                        ":INFOFIELD7:" + am.getMerchantID() +
+//                        ":EMAILID:tendoabraham@gmail.com" +
+//                        ":CUSTOMERMOBILENUMBER:" + am.getUserPhone() +
+//                        ":BANKID:" + am.getBankID() + ":"
+
+
 
                 "FORMID:O-OTPCREATE" +
                         ":SERVICENAME:" + am.getMerchantID() +

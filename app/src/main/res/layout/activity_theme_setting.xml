@@ -38,7 +38,6 @@
                     android:layout_margin="10dp"
                     android:layout_width="0dp"
                     android:layout_weight="1"
-                    android:onClick="white"
                     android:gravity="center"
                     android:orientation="vertical"
                     android:layout_height="match_parent"
@@ -61,7 +60,6 @@
                     android:layout_height="match_parent"
                     android:background="@drawable/bckgrd_sections"
                     android:gravity="center"
-                    android:onClick="orange"
                     android:orientation="vertical">
 
                     <ImageView
@@ -81,7 +79,6 @@
                     android:layout_height="match_parent"
                     android:background="@drawable/bckgrd_sections"
                     android:gravity="center"
-                    android:onClick="blue"
                     android:orientation="vertical">
 
                     <ImageView
@@ -107,7 +104,6 @@
                     android:layout_margin="10dp"
                     android:layout_width="0dp"
                     android:layout_weight="1"
-                    android:onClick="light_grey"
                     android:gravity="center"
                     android:orientation="vertical"
                     android:layout_height="match_parent"
@@ -127,7 +123,6 @@
                     android:layout_margin="10dp"
                     android:layout_width="0dp"
                     android:layout_weight="1"
-                    android:onClick="oOrange"
                     android:gravity="center"
                     android:orientation="vertical"
                     android:layout_height="match_parent"
@@ -147,7 +142,6 @@
                     android:layout_margin="10dp"
                     android:layout_width="0dp"
                     android:layout_weight="1"
-                    android:onClick="lLBlue"
                     android:gravity="center"
                     android:orientation="vertical"
                     android:layout_height="match_parent"

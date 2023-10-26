@@ -6,6 +6,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -19,6 +20,7 @@ public class RecreateKey_Verify extends AppCompatActivity implements ResponseLis
     private AllMethods am;
     private EditText eTKey;
     private String quest="";
+    TextView verify, contactUs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +28,11 @@ public class RecreateKey_Verify extends AppCompatActivity implements ResponseLis
         setContentView(R.layout.activity_recreate_key_v);
         am = new AllMethods(this);
         am.disableScreenShot(this);
+
         eTKey = findViewById(R.id.eTKey);
+        verify = findViewById(R.id.verify);
+        contactUs = findViewById(R.id.contactUs);
+
         eTKey.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
@@ -45,11 +51,10 @@ public class RecreateKey_Verify extends AppCompatActivity implements ResponseLis
             @Override
             public void afterTextChanged(Editable s) {}
         });
-    }
 
-    public void verification(View t) {
-        switch (t.getId()){
-            case R.id.verify:
+        verify.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
                 if (eTKey.getText().length() < 6) {
                     eTKey.setError(getString(R.string.invalidInput));
                 } else {
@@ -61,12 +66,37 @@ public class RecreateKey_Verify extends AppCompatActivity implements ResponseLis
                     //am.connectOldTwo(getString(R.string.verifying),quest,RecreateKey_Verify.this,"RV");
                     am.get(RecreateKey_Verify.this,quest,getString(R.string.verifying),"RV");
                 }
-                break;
-            case R.id.contactUs:
-                startActivity(new Intent(this, Contact_Us.class));
-                break;
-        }
+            }
+        });
+
+        contactUs.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(RecreateKey_Verify.this, Contact_Us.class));
+            }
+        });
     }
+
+//    public void verification(View t) {
+//        switch (t.getId()){
+//            case R.id.verify:
+//                if (eTKey.getText().length() < 6) {
+//                    eTKey.setError(getString(R.string.invalidInput));
+//                } else {
+//                    quest = (
+//                            "FORMID:VERIFYRECREATEKEY:" +
+//                                    "MOBILENUMBER:" + am.getUserPhone() + ":" +
+//                                    "KEY:"+ eTKey.getText().toString().trim()+ ":"
+//                    );
+//                    //am.connectOldTwo(getString(R.string.verifying),quest,RecreateKey_Verify.this,"RV");
+//                    am.get(RecreateKey_Verify.this,quest,getString(R.string.verifying),"RV");
+//                }
+//                break;
+//            case R.id.contactUs:
+//                startActivity(new Intent(this, Contact_Us.class));
+//                break;
+//        }
+//    }
 
     @Override
     protected void onResume() {

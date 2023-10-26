@@ -96,7 +96,6 @@
                             android:layout_weight="1"
                             android:background="@drawable/bckgrd_sections_trans"
                             android:gravity="center"
-                            android:onClick="bills"
                             android:orientation="vertical">
 
                             <ImageView
@@ -120,7 +119,6 @@
                             android:layout_weight="1"
                             android:background="@drawable/bckgrd_sections_trans"
                             android:gravity="center"
-                            android:onClick="bills"
                             android:orientation="vertical">
 
                             <ImageView
@@ -153,7 +151,6 @@
                             android:layout_weight="1"
                             android:background="@drawable/bckgrd_sections_trans"
                             android:gravity="center"
-                            android:onClick="bills"
                             android:orientation="vertical">
 
                             <ImageView
@@ -177,7 +174,6 @@
                             android:layout_weight="1"
                             android:background="@drawable/bckgrd_sections_trans"
                             android:gravity="center"
-                            android:onClick="bills"
                             android:orientation="vertical">
 
                             <ImageView
@@ -201,7 +197,6 @@
                             android:layout_weight="1"
                             android:background="@drawable/bckgrd_sections_trans"
                             android:gravity="center"
-                            android:onClick="bills"
                             android:orientation="vertical">
 
                             <ImageView
@@ -236,7 +231,6 @@
                             android:layout_weight="1"
                             android:background="@drawable/bckgrd_sections_trans"
                             android:gravity="center"
-                            android:onClick="bills"
                             android:orientation="vertical">
 
                             <ImageView
@@ -263,7 +257,6 @@
                             android:layout_weight="1"
                             android:background="@drawable/bckgrd_sections"
                             android:gravity="center"
-                            android:onClick="bills"
                             android:orientation="vertical">
 
                             <ImageView
@@ -291,7 +284,6 @@
                             android:layout_weight="1"
                             android:background="@drawable/bckgrd_sections"
                             android:gravity="center"
-                            android:onClick="bills"
                             android:orientation="vertical">
 
                             <ImageView

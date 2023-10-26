@@ -40,6 +40,7 @@ public class Funds_Transfer_External extends BaseAct implements ResponseListener
     RadioGroup radioGroupType;
     RadioButton eft,rtgs;
     ProgressBar load;
+    TextView sendFunds;
     LinearLayout branchNameIn, BenInLay;
     String  bankCode, bSwift, bIFSC, branchCode, selectedBranchName="", selectedShortCode="", srcAcc ="",quest="";
     Boolean bankSet = false;
@@ -68,6 +69,7 @@ public class Funds_Transfer_External extends BaseAct implements ResponseListener
         load = findViewById(R.id.load);
         ETAmount = findViewById(R.id.ETAmount);
         ETMessage = findViewById(R.id.messaage);
+        sendFunds = findViewById(R.id.sendFunds);
         ETPin = findViewById(R.id.eTPin);
 
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item, am.getAliases());
@@ -148,6 +150,89 @@ public class Funds_Transfer_External extends BaseAct implements ResponseListener
             @Override
             public void afterTextChanged(Editable s) {}
         });
+
+        sendFunds.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (srcAcc.equals("")) {
+                    am.myDialog(Funds_Transfer_External.this, getString(R.string.alert), getString(R.string.selectAccDebited));
+                } else if (ETAccount.getText().toString().trim().isEmpty()) {
+                    am.myDialog(Funds_Transfer_External.this, getString(R.string.alert), getString(R.string.enterBen));
+                } else if (ETBenName.getText().toString().trim().isEmpty()) {
+                    am.myDialog(Funds_Transfer_External.this, getString(R.string.alert), getString(R.string.enterBenName));
+                } else if (rtgs.isChecked() && ETBenAddress.getText().toString().trim().isEmpty()) {
+                    am.myDialog(Funds_Transfer_External.this, getString(R.string.alert), getString(R.string.enterBenAddress));
+                }  else if (ETAmount.getText().toString().trim().isEmpty()) {
+                    am.myDialog(Funds_Transfer_External.this, getString(R.string.alert), getString(R.string.enterValidAmount));
+                } else if (ETMessage.getText().toString().trim().isEmpty()) {
+                    am.myDialog(Funds_Transfer_External.this, getString(R.string.alert), getString(R.string.descReq));
+                } else if (ETPin.getText().toString().trim().isEmpty()) {
+                    am.myDialog(Funds_Transfer_External.this, getString(R.string.alert), getString(R.string.enterValidPin));
+                } else {
+                /*if (ETAddress.getText().toString().trim().isEmpty()) {
+                    ETAddress.setText(R.string.uganda);
+                }*/
+                    gDialog = new Dialog(Funds_Transfer_External.this);
+                    //noinspection ConstantConditions
+                    gDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                    gDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                    gDialog.setContentView(R.layout.dialog_confirm);
+                    final TextView txtMessage = gDialog.findViewById(R.id.dialog_message);
+                    final TextView txtOk = gDialog.findViewById(R.id.yesBTN);
+                    final TextView txtNo = gDialog.findViewById(R.id.noBTN);
+                    txtMessage.setText(String.format("%s %s %s %s %s %s %s %s %s %s %s %s.",
+                            getText(R.string.doEFT),
+                            am.getMerchantID(),
+                            getText(R.string.transfer_worth),
+                            am.Amount_Thousands(ETAmount.getText().toString().trim()),
+                            getText(R.string.fromAccNo),
+                            srcAcc,
+                            getText(R.string.to),
+                            bankName.getSelectedItem().toString().trim(),
+                            getText(R.string.accountNum),
+                            ETAccount.getText().toString().trim(),
+                            getText(R.string.branch),
+                            selectedBranchName));
+                    txtOk.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            quest = (
+                                    "FORMID:B-:" +
+                                            "MERCHANTID:" + am.getMerchantID() + ":" +
+                                            "BANKACCOUNTID:" + srcAcc + ":" +
+                                            "INFOFIELD1:" + selectedShortCode + ":" +
+                                            "INFOFIELD2:" + bankCode + ":" +
+                                            "INFOFIELD3:" + branchCode + ":" +
+                                            "INFOFIELD4:" + ETBenName.getText().toString().trim()  + ":" +
+                                            "INFOFIELD5:" + selectedBranchName + ":" +
+                                            "INFOFIELD6:" +  ETBenAddress.getText().toString().trim()  + ":" +
+                                            "TOACCOUNT:" + ETAccount.getText().toString().trim() + ":" +
+                                            "AMOUNT:" + ETAmount.getText().toString().trim() + ":" +
+                                            "MESSAGE:" + ETMessage.getText().toString().trim() + ":" +
+                                            "TMPIN:" + ETPin.getText().toString().trim() + ":"
+                            );
+                            //am.connectOldTwo(getString(R.string.processingTrx), quest, Funds_Transfer_External.this, "TRX");
+                            am.get(Funds_Transfer_External.this,quest,getString(R.string.processingTrx),"TRX");
+                            gDialog.cancel();
+                        }
+                    });
+                    txtNo.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            gDialog.cancel();
+                        }
+                    });
+                    gDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                        @Override
+                        public void onCancel(DialogInterface dialog) {
+//                        ETPin.setText("");
+                            dialog.dismiss();
+                        }
+                    });
+                    gDialog.show();
+                }
+            }
+        });
     }
 
     @Override
@@ -163,7 +248,7 @@ public class Funds_Transfer_External extends BaseAct implements ResponseListener
         }
 
         String status = am.getOTPStatus();
-        Log.e("STAT", status);
+//        Log.e("STAT", status);
         if (Objects.equals(status, "1")){
             otpTrxRequest();
             am.saveOTPStatus("0");
@@ -206,148 +291,87 @@ public class Funds_Transfer_External extends BaseAct implements ResponseListener
         gDialog.cancel();
     }
 
-    public void fT(View t) {
-        if (t.getId() == R.id.sendFunds) {
-            if (srcAcc.equals("")) {
-                am.myDialog(this, getString(R.string.alert), getString(R.string.selectAccDebited));
-            } else if (ETAccount.getText().toString().trim().isEmpty()) {
-                am.myDialog(this, getString(R.string.alert), getString(R.string.enterBen));
-            } else if (ETBenName.getText().toString().trim().isEmpty()) {
-                am.myDialog(this, getString(R.string.alert), getString(R.string.enterBenName));
-            } else if (rtgs.isChecked() && ETBenAddress.getText().toString().trim().isEmpty()) {
-                am.myDialog(this, getString(R.string.alert), getString(R.string.enterBenAddress));
-            }  else if (ETAmount.getText().toString().trim().isEmpty()) {
-                am.myDialog(this, getString(R.string.alert), getString(R.string.enterValidAmount));
-            } else if (ETMessage.getText().toString().trim().isEmpty()) {
-                am.myDialog(this, getString(R.string.alert), getString(R.string.descReq));
-            } else if (ETPin.getText().toString().trim().isEmpty()) {
-                am.myDialog(this, getString(R.string.alert), getString(R.string.enterValidPin));
-            } else {
-                /*if (ETAddress.getText().toString().trim().isEmpty()) {
-                    ETAddress.setText(R.string.uganda);
-                }*/
-                gDialog = new Dialog(this);
-                //noinspection ConstantConditions
-                gDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                gDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                gDialog.setContentView(R.layout.dialog_confirm);
-                final TextView txtMessage = gDialog.findViewById(R.id.dialog_message);
-                final TextView txtOk = gDialog.findViewById(R.id.yesBTN);
-                final TextView txtNo = gDialog.findViewById(R.id.noBTN);
-                txtMessage.setText(String.format("%s %s %s %s %s %s %s %s %s %s %s %s.",
-                        getText(R.string.doEFT),
-                        am.getMerchantID(),
-                        getText(R.string.transfer_worth),
-                        am.Amount_Thousands(ETAmount.getText().toString().trim()),
-                        getText(R.string.fromAccNo),
-                        srcAcc,
-                        getText(R.string.to),
-                        bankName.getSelectedItem().toString().trim(),
-                        getText(R.string.accountNum),
-                        ETAccount.getText().toString().trim(),
-                        getText(R.string.branch),
-                        selectedBranchName));
-                txtOk.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        // TODO: 11/13/2020
-                        //<RequestMessage><Header><MTI>9200</MTI>
-                        //<PC>800030</PC><TDT>20170330055308</TDT>
-                        //<SSIC>CBX</SSIC></Header><Payload><PC>800030</PC>
-                        //<USERID>ELMAUSR</USERID><UserOption>A</UserOption>
-                        //<BranchCode>1</BranchCode>
-                        //<EntryDate>14-12-2016</EntryDate>
-                        //<BatchDate>14-12-2016</BatchDate>
-                        //<ServiceCode>9841</ServiceCode>
-                        //<OrderIFSC>HFINUGKAXXX</OrderIFSC>
-                        //<OrderName>HOUSING FINANCE BANK LTD</OrderName>
-                        //<OrderAdd1>KAMPALA</OrderAdd1>
-                        //<ValueDate>14-12-2016</ValueDate>
-                        //<RemitMode>1</RemitMode>
-                        //<CustAccountnumber>0100560494</CustAccountnumber>
-                        //<CustAccountType>CORP1</CustAccountType>
-                        //<PaymtCurr>UGX</PaymtCurr>
-                        //<PaymtAmt>3710</PaymtAmt>
-                        //<CustName>BHAS LIMITED</CustName>
-                        //<CustAdd1>P.O BOX 4143 KAMP</CustAdd1>
-                        //<ChequeNum></ChequeNum><PaymtOption>62</PaymtOption>
-                        //<BenfIFSC>UGBAUGKAXXX</BenfIFSC>
-                        //<EftType>2</EftType><BenBkCode>1</BenBkCode>
-                        //<BenBrnCode>1</BenBrnCode>
-                        //<BenfAcnum>0100482279</BenfAcnum>
-                        //<BenfAcType>10</BenfAcType>
-                        //<BenfName>COMMISSIONER FOR DOMESTIC REVENUE</BenfName>
-                        //<BenfAdd1>UG</BenfAdd1><SendRecvInfo>/URA/</SendRecvInfo>
-                        //<Remarks>paymnt transfer</Remarks>
-                        //<ExternalRefNo>TR300317175240</ExternalRefNo>
-                        //<Cross_con_rate>3710</Cross_con_rate>
-                        //<TfrCurr>USD</TfrCurr><TfrAmt>1</TfrAmt>
-                        //<PaymentDetail>MM</PaymentDetail>
-                        //</Payload></RequestMessage>
-
-                        //InfoField1
-                        //Data to pass :
-                        //InfoField1
-                        //CustAccountnumber|""|PaymtAmt|""|PaymtCurr|""|CustName|""|CustAdd1|""|BenfIFSC|""|BenBkCode|""|BenBrnCode|""|BenfAcnum|""|BenfName|""| BenfAdd1|""| ExternalRefNo|""| Cross_con_rate|""| TfrCurr|""| TfrAmt|""| PaymentDetail|""| CustAccountType|""|
-                        //CustAccountnumber|""|PaymtAmt|""|PaymtCurr|""|CustName|""|CustAdd1|""|BenfIFSC|""|BenBkCode|""|BenBrnCode|""|BenfAcnum|""|BenfName|""| BenfAdd1|""| ExternalRefNo|""| Cross_con_rate|""| TfrCurr|""| TfrAmt|""| PaymentDetail|""| CustAccountType|""|
-
-                        //Account: 0100152002
-                        //Bank: CITI Bank
-                        //Beneficiary: UETCL
-                        quest = (
-                                "FORMID:B-:" +
-                                        "MERCHANTID:" + am.getMerchantID() + ":" +
-                                        "BANKACCOUNTID:" + srcAcc + ":" +
-                                        /*"INFOFIELD2:" + "CustAccountnumber|" + srcAcc +
-                                                        "|PaymtAmt|" + ETAmount.getText().toString().trim() +
-                                                        "|PaymtCurr|UGX" +
-                                                        "|CustName|" + am.getUserName() +
-                                                        "|CustAdd1|" + ""*//*ETAddress.getText().toString().trim()*//* +
-                                                        "|BenfIFSC|" + bSwift +
-                                                        "|BenBkCode|" + bankCode +
-                                                        "|BenBrnCode|" + branchCode +
-                                                        "|BenfAcnum|" + ETAccount.getText().toString().trim() +
-                                                        "|BenfName|" + ETBenName.getText().toString().trim() +
-                                                        "|BenfAdd1|" + ETBenAddress.getText().toString().trim() +
-                                                        "|ExternalRefNo|"+
-                                                        "|Cross_con_rate|" + "1" +
-                                                        "|TfrCurr|UGX" +
-                                                        "|TfrAmt|"+ ETAmount.getText().toString().trim() +
-                                                        "|PaymentDetail|" + ETMessage.getText().toString().trim() +
-                                                        "|CustAccountType|" + ":" +*/
-                                        "INFOFIELD1:" + selectedShortCode + ":" +
-                                        "INFOFIELD2:" + bankCode + ":" +
-                                        "INFOFIELD3:" + branchCode + ":" +
-                                        "INFOFIELD4:" + ETBenName.getText().toString().trim()  + ":" +
-                                        "INFOFIELD5:" + selectedBranchName + ":" +
-                                        "INFOFIELD6:" +  ETBenAddress.getText().toString().trim()  + ":" +
-                                        "TOACCOUNT:" + ETAccount.getText().toString().trim() + ":" +
-                                        "AMOUNT:" + ETAmount.getText().toString().trim() + ":" +
-                                        "MESSAGE:" + ETMessage.getText().toString().trim() + ":" +
-                                        "TMPIN:" + ETPin.getText().toString().trim() + ":"
-                        );
-                        //am.connectOldTwo(getString(R.string.processingTrx), quest, Funds_Transfer_External.this, "TRX");
-                        am.get(Funds_Transfer_External.this,quest,getString(R.string.processingTrx),"TRX");
-                        gDialog.cancel();
-                    }
-                });
-                txtNo.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        gDialog.cancel();
-                    }
-                });
-                gDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-                    @Override
-                    public void onCancel(DialogInterface dialog) {
-//                        ETPin.setText("");
-                        dialog.dismiss();
-                    }
-                });
-                gDialog.show();
-            }
-        }
-    }
+//    public void fT(View t) {
+//        if (t.getId() == R.id.sendFunds) {
+//            if (srcAcc.equals("")) {
+//                am.myDialog(this, getString(R.string.alert), getString(R.string.selectAccDebited));
+//            } else if (ETAccount.getText().toString().trim().isEmpty()) {
+//                am.myDialog(this, getString(R.string.alert), getString(R.string.enterBen));
+//            } else if (ETBenName.getText().toString().trim().isEmpty()) {
+//                am.myDialog(this, getString(R.string.alert), getString(R.string.enterBenName));
+//            } else if (rtgs.isChecked() && ETBenAddress.getText().toString().trim().isEmpty()) {
+//                am.myDialog(this, getString(R.string.alert), getString(R.string.enterBenAddress));
+//            }  else if (ETAmount.getText().toString().trim().isEmpty()) {
+//                am.myDialog(this, getString(R.string.alert), getString(R.string.enterValidAmount));
+//            } else if (ETMessage.getText().toString().trim().isEmpty()) {
+//                am.myDialog(this, getString(R.string.alert), getString(R.string.descReq));
+//            } else if (ETPin.getText().toString().trim().isEmpty()) {
+//                am.myDialog(this, getString(R.string.alert), getString(R.string.enterValidPin));
+//            } else {
+//                /*if (ETAddress.getText().toString().trim().isEmpty()) {
+//                    ETAddress.setText(R.string.uganda);
+//                }*/
+//                gDialog = new Dialog(this);
+//                //noinspection ConstantConditions
+//                gDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+//                gDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+//                gDialog.setContentView(R.layout.dialog_confirm);
+//                final TextView txtMessage = gDialog.findViewById(R.id.dialog_message);
+//                final TextView txtOk = gDialog.findViewById(R.id.yesBTN);
+//                final TextView txtNo = gDialog.findViewById(R.id.noBTN);
+//                txtMessage.setText(String.format("%s %s %s %s %s %s %s %s %s %s %s %s.",
+//                        getText(R.string.doEFT),
+//                        am.getMerchantID(),
+//                        getText(R.string.transfer_worth),
+//                        am.Amount_Thousands(ETAmount.getText().toString().trim()),
+//                        getText(R.string.fromAccNo),
+//                        srcAcc,
+//                        getText(R.string.to),
+//                        bankName.getSelectedItem().toString().trim(),
+//                        getText(R.string.accountNum),
+//                        ETAccount.getText().toString().trim(),
+//                        getText(R.string.branch),
+//                        selectedBranchName));
+//                txtOk.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        quest = (
+//                                "FORMID:B-:" +
+//                                        "MERCHANTID:" + am.getMerchantID() + ":" +
+//                                        "BANKACCOUNTID:" + srcAcc + ":" +
+//                                        "INFOFIELD1:" + selectedShortCode + ":" +
+//                                        "INFOFIELD2:" + bankCode + ":" +
+//                                        "INFOFIELD3:" + branchCode + ":" +
+//                                        "INFOFIELD4:" + ETBenName.getText().toString().trim()  + ":" +
+//                                        "INFOFIELD5:" + selectedBranchName + ":" +
+//                                        "INFOFIELD6:" +  ETBenAddress.getText().toString().trim()  + ":" +
+//                                        "TOACCOUNT:" + ETAccount.getText().toString().trim() + ":" +
+//                                        "AMOUNT:" + ETAmount.getText().toString().trim() + ":" +
+//                                        "MESSAGE:" + ETMessage.getText().toString().trim() + ":" +
+//                                        "TMPIN:" + ETPin.getText().toString().trim() + ":"
+//                        );
+//                        //am.connectOldTwo(getString(R.string.processingTrx), quest, Funds_Transfer_External.this, "TRX");
+//                        am.get(Funds_Transfer_External.this,quest,getString(R.string.processingTrx),"TRX");
+//                        gDialog.cancel();
+//                    }
+//                });
+//                txtNo.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        gDialog.cancel();
+//                    }
+//                });
+//                gDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+//                    @Override
+//                    public void onCancel(DialogInterface dialog) {
+////                        ETPin.setText("");
+//                        dialog.dismiss();
+//                    }
+//                });
+//                gDialog.show();
+//            }
+//        }
+//    }
 
 
     private void utilBank(final String threadBank) {
@@ -430,7 +454,7 @@ public class Funds_Transfer_External extends BaseAct implements ResponseListener
     public void onResponse(String response, String step) {
         switch (step) {
             case "CBK":
-                Log.e("RESPONSE",response) ;
+//                Log.e("RESPONSE",response) ;
                 utilBank(response);
                 break;
             case "BRH":

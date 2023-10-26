@@ -61,8 +61,8 @@ public final class PubKeyManager implements X509TrustManager {
                 .toString(16);
 
         //Pin it!
-        Log.d("Vibe :", publicKey);
-        Log.d("Vibe :", encoded);
+//        Log.d("Vibe :", publicKey);
+//        Log.d("Vibe :", encoded);
         final boolean expected = publicKey.equalsIgnoreCase(encoded);
         // fail if expected public key is different from our public key
         if (!expected) {

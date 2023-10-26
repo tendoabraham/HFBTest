@@ -75,7 +75,7 @@ public class Airtime_And_Data_Options extends BaseAct implements ResponseListene
                             response = response.replace("STATUS:00:MESSAGE:","");
                             response = response.replace("STATUS:OK:MESSAGE:","");
                             am.saveStaticData(response);
-                            Log.e("RESPONSE111", response);
+//                            Log.e("RESPONSE111", response);
                             startActivity(new Intent(this,Data.class));
                             break;
                         default:

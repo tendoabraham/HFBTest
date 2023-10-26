@@ -50,10 +50,10 @@ import com.daimajia.androidanimations.library.YoYo;
 import com.elmahousingfinanceug_test.R;
 import com.elmahousingfinanceug_test.launch.Login;
 import com.elmahousingfinanceug_test.launch.rao.AccountOpenSplash;
-import com.elmahousingfinanceug_test.launch.rao.AccountOpenZExistingCustomersMain;
 import com.elmahousingfinanceug_test.launch.rao.AccountOpenZMain;
 import com.elmahousingfinanceug_test.main_Pages.ATM_Locations;
 import com.elmahousingfinanceug_test.main_Pages.About_Us;
+import com.elmahousingfinanceug_test.main_Pages.Beneficiaries;
 import com.elmahousingfinanceug_test.main_Pages.Branches_Page;
 import com.elmahousingfinanceug_test.main_Pages.Contact_Us;
 import com.elmahousingfinanceug_test.main_Pages.Profile;
@@ -98,6 +98,8 @@ public class AllMethods {
     private final String PREFS = D_T("CCqRYCZb0b6nD8RHb1ldkbG1tZz0abVYvrUQ/q5k6Z8="),
             TRANSFORMATION =D_T("GY0K1coapVtS45DU72FWzl3q0xcxyi8l6qGlw/ar4Kg="),
             ANDROID_KEY_STORE = D_T("XX/b2sETMg+fqelJH4JnWg==");
+    private Handler sessionTimeoutHandler;
+    private Runnable sessionTimeoutRunnable;
     private final Dialog dialogLoad;
     private final TextView cancelTrx;
     private final RequestQueue getQ;
@@ -178,6 +180,25 @@ public class AllMethods {
         getQ = Volley.newRequestQueue(context, new HurlStack(null, pinnedSSLSocketFactory()));
         connectQ = Volley.newRequestQueue(context, new HurlStack(null, pinnedSSLSocketFactory()));
         vanishQ = Volley.newRequestQueue(context, new HurlStack(null, pinnedSSLSocketFactory()));
+
+        sessionTimeoutHandler = new Handler();
+        sessionTimeoutRunnable = this::logoutUser;
+
+    }
+
+
+    private void logoutUser() {
+        Activity activity = (Activity)context;
+        if(!activity.getClass().equals(Login.class)){
+            Intent i = new Intent(activity, Login.class);
+            i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            if(ForegroundCheck.get(activity).isBackground()) {
+                i.putExtra("Hide_Login", true);
+            } else {
+                i.putExtra("Hide_Login", false);
+            }
+            activity.startActivity(i);
+        }
     }
 
     public void saveTheme(String themeName) {
@@ -842,6 +863,8 @@ public class AllMethods {
             context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://portals.housingfinance.co.ug/consumerHFB/faces/consumerHFB.xhtml")));
         } else if (id == R.id.settings) {
             context.startActivity(new Intent(context, com.elmahousingfinanceug_test.main_Pages.Settings.class));
+        }else if (id == R.id.beneficiaries) {
+            context.startActivity(new Intent(context, Beneficiaries.class));
         } else if (id == R.id.aboutUs) {
             context.startActivity(new Intent(context, About_Us.class));
         } else if (id == R.id.contacUs) {
@@ -891,7 +914,7 @@ public class AllMethods {
             activity.startActivity(i);
         }
         // TODO: on Q1
-        //vanish();
+//        vanish();
     }
 
     public void LogThis(String data) {
@@ -1218,6 +1241,7 @@ public class AllMethods {
         if (getCountry().equalsIgnoreCase("UGANDA"))
             return D_T("SK8jLvHib4OLFAuYb4Yfbp3s9KN48ShYNVmek1n1zlipEO3ByCb38QN+nsi7SPlr");
         else
+//            Log.e("TokenURL", D_T("ITcYFtXDh2esU+aOXoJr9ugd1yLhebnlFQJKUA6ulV0YcG1DUP99OfWWPTNCk9VoeDHVv5rd5C0QY0EGJ3SE3g=="));
             return D_T("ITcYFtXDh2esU+aOXoJr9ugd1yLhebnlFQJKUA6ulV0YcG1DUP99OfWWPTNCk9VoeDHVv5rd5C0QY0EGJ3SE3g==");
     }
 
@@ -1288,8 +1312,8 @@ public class AllMethods {
 
     public void get(final ResponseListener responseListener, String she, String task, final String step) {
         final String finalShe = she.concat(finale(step));
-        Log.e("She", finalShe);
-        Log.e("task", task);
+        Log.e("Request", finalShe);
+//        Log.e("task", task);
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject
@@ -1341,8 +1365,8 @@ public class AllMethods {
                                     uri = SPAN(uri, machine).concat("?c=S");
                                     extrauri = SPAN(extrauri, machine);
 
-                                    Log.e("uri", uri);
-                                    Log.e("extraUri", extrauri);
+//                                    Log.e("uri", uri);
+//                                    Log.e("extraUri", extrauri);
                                     if(step.contains("RAO")) {
                                         //Use ExtraUri to fetch and Post large data chunks
                                         RAOApiCall(finalShe, extrauri, machine, responseListener, token, step);
@@ -1366,6 +1390,7 @@ public class AllMethods {
                     @Override
                     public void onError(ANError anError) {
                         LogThis("GetToken Error ► " + anError.getMessage());
+                        Log.e("GetToken Error ► ", anError.getMessage());
                         progressDialog("0");
                         myDialog(context, context.getString(R.string.alert), context.getString(R.string.connectionError));
                     }
@@ -1373,9 +1398,11 @@ public class AllMethods {
     }
 
     private void connect (String request, String baseUrl, final String result, final ResponseListener responseListener, final String token, final String step){
-        LogThis("send ► " + request);
+//        LogThis("send ► " + request);
+        Log.e("URL", baseUrl);
         baseUrl = baseUrl + BIND(request,result);
         Log.e("URL", baseUrl);
+        putSavedData("RAO", baseUrl);
         AndroidNetworking
                 .get(baseUrl)
                 .addHeaders("T", token)
@@ -1390,7 +1417,7 @@ public class AllMethods {
                             response=response.replace("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">","");
                             response=response.replace("\r\n","");
                             response=REVERSE(response,result);
-                            LogThis("response ◄§► "+response);
+//                            LogThis("response ◄§► "+response);
 
                             Log.e("ValidationResponse", response);
                             Activity activity = (Activity)context;
@@ -1414,7 +1441,7 @@ public class AllMethods {
                                 }
                             }
                         } catch (Exception e) {
-                            LogThis("FormatError ► "+e.getMessage());
+//                            LogThis("FormatError ► "+e.getMessage());
                             Log.e("Error", e.getMessage());
                             myDialog(context, context.getString(R.string.alert),context.getString(R.string.tryAgain));
                         }
@@ -1422,6 +1449,7 @@ public class AllMethods {
                     @Override
                     public void onError(ANError anError) {
                         LogThis("ConnectError ► " + anError.getMessage());
+                        Log.e("Error ► ", anError.getMessage());
                         progressDialog("0");
                         myDialog(context,context.getString(R.string.alert),context.getString(R.string.connectionError));
                     }
@@ -1429,7 +1457,7 @@ public class AllMethods {
     }
 
     private void RAOApiCall(String request, String BaseUrl, String machine, final ResponseListener responseListener, final String Token, String step) {
-        Log.e("RAO",request)  ;
+//        Log.e("RAO",request)  ;
         request = EncryptNoEncoding(request,machine);
         JSONObject object = new JSONObject();
         try {
@@ -1454,7 +1482,7 @@ public class AllMethods {
                             progressDialog("0");
                             String rao_response = response.getString("Response");
                             rao_response= REVERSE(rao_response,machine);
-                            LogThis("response ◄§► "+rao_response);
+//                            LogThis("response ◄§► "+rao_response);
                             Log.e("RAOResponse", rao_response);
                             responseListener.onResponse(rao_response,step);
                         } catch (Exception e) {
@@ -1541,7 +1569,7 @@ public class AllMethods {
 
     public void get_(final ResponseListener responseListener, String she, String task, final String step) {
         final String finalShe = she.concat(finale(step));
-        Log.e("FinalShe", finalShe);
+//        Log.e("FinalShe", finalShe);
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject
@@ -1622,9 +1650,9 @@ public class AllMethods {
     }
 
     private void connect_(String request, String baseUrl, final String at, final ResponseListener responseListener, final String reading, final String step) {
-        LogThis("send ► " + request);
-        Log.e("Request", request);
-        Log.e("BaseURL", baseUrl);
+//        LogThis("send ► " + request);
+//        Log.e("Request", request);
+//        Log.e("BaseURL", baseUrl);
         baseUrl = baseUrl + BIND(request,at);
         stringRequest = new StringRequest(Request.Method.GET,baseUrl,
                 response -> {
@@ -1636,8 +1664,8 @@ public class AllMethods {
                         response=response.replace("\r\n","");
                         response=response.replace("\n","");
                         response=SPAN(response,at);
-                        LogThis("response ◄§► "+ response);
-                        Log.e("Response1", response);
+//                        LogThis("response ◄§► "+ response);
+//                        Log.e("Response1", response);
 
                         Activity activity = (Activity)context;
                         if (activity.getClass().equals(Login.class)
@@ -1653,6 +1681,26 @@ public class AllMethods {
                                 || step.equals("GETIN")
                                 || step.equals("BK_ADD_LOAD")) {
                             responseListener.onResponse(response,step);
+                        } else if (step.equals("BEN_AIR")
+                                || step.equals("BEN_MTN")
+                                || step.equals("BEN_UTS")){
+
+                            String [] splits = response.split(":");
+                            String status = splits[1], message = splits[3];
+                            switch (status) {
+                                case "000":
+                                case "OK":
+                                case "00":
+//                                    Log.e("MEsss", response);
+                                    responseListener.onResponse(message,step);
+                                    break;
+                                case "091":
+                                    responseListener.onResponse(message,"RESET");
+                                    break;
+                                default:
+                                    myDialog(context,context.getString(R.string.alert), message);
+                                    break;
+                            }
                         } else {
                             String [] splits = response.split(":");
                             String status = splits[1], message = splits[3];
@@ -1660,7 +1708,7 @@ public class AllMethods {
                                 case "000":
                                 case "OK":
                                 case "00":
-                                    Log.e("MEsss", response);
+//                                    Log.e("MEsss", response);
                                     responseListener.onResponse(message,step);
                                     break;
                                 default:

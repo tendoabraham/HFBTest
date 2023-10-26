@@ -22,6 +22,11 @@
         android:title="@string/settings"/>
 
     <item
+        android:id="@+id/beneficiaries"
+        android:icon="@drawable/benmgt"
+        android:title="@string/benMgt"/>
+
+    <item
         android:id="@+id/contacUs"
         android:icon="@drawable/contact_us"
         android:title="@string/contactUs"/>

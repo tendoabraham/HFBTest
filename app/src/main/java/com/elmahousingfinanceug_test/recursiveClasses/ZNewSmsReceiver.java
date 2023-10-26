@@ -28,22 +28,22 @@ public class ZNewSmsReceiver extends BroadcastReceiver {
                     case CommonStatusCodes.SUCCESS:
                         String message = (String) extras.get(SmsRetriever.EXTRA_SMS_MESSAGE);
                         String newmsgbody = message;
-                        Log.d("LSO", Objects.requireNonNull(message));
+//                        Log.d("LSO", Objects.requireNonNull(message));
                         String [] msgarray = newmsgbody.split(":");
                         if (msgarray.length > 1) {
                             newmsgbody = msgarray[1].substring(0, 6);
                             Intent k = new Intent("SMSReceived");
-                            Log.d("LSO Code", newmsgbody);
+//                            Log.d("LSO Code", newmsgbody);
                             k.putExtra("STATUS","000");
                             k.putExtra("SMSbody", newmsgbody);
-                            Log.d("LSO","message body " + newmsgbody);
+//                            Log.d("LSO","message body " + newmsgbody);
                             context.sendBroadcast(k);
                         }
                         break;
                     case CommonStatusCodes.TIMEOUT:
                         Intent k = new Intent("SMSReceived");
                         k.putExtra("STATUS","091");
-                        Log.d("LSO","SMS timeout");
+//                        Log.d("LSO","SMS timeout");
                         k.putExtra("SMSbody", "Sorry. The SMS retrieval service timed out. Attempting to restart it.");
                         context.sendBroadcast(k);
                         break;
@@ -52,7 +52,7 @@ public class ZNewSmsReceiver extends BroadcastReceiver {
                 chapa.printStackTrace();
                 Intent k = new Intent("SMSReceived");
                 k.putExtra("STATUS", "092");
-                Log.d("LSO", "Code fallen");
+//                Log.d("LSO", "Code fallen");
                 k.putExtra("SMSbody","Sorry. Unable to retrieve the SMS.");
                 context.sendBroadcast(k);
             }

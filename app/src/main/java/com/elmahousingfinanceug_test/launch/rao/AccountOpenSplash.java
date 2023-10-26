@@ -87,7 +87,7 @@ public class AccountOpenSplash extends AppCompatActivity implements ResponseList
 
     @Override
     public void onResponse(String response, String step) {
-        Log.e("RAORESS", response);
+//        Log.e("RAORESS", response);
         String[] howLong = response.split(":");
         String[] fieldIds = new String[howLong.length/2];
         String[] fieldValues = new String[howLong.length/2];
