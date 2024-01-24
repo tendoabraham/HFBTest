@@ -318,6 +318,10 @@ public class Mobile_Money_Two extends BaseAct implements ResponseListener, Volle
                 validateLayout.setVisibility(View.GONE);
                 after.setVisibility(View.GONE);
                 airtelLayout.setVisibility(View.GONE);
+                otherNum.setKeyListener(new EditText(getApplicationContext()).getKeyListener());
+                validate.setVisibility(View.VISIBLE);
+                otherNum.setBackgroundResource(R.drawable.bckgrd_text_fields);
+
             }
         });
 
@@ -856,6 +860,8 @@ public class Mobile_Money_Two extends BaseAct implements ResponseListener, Volle
                 airtelResponse.setText(cleanName);
                 after.setVisibility(View.VISIBLE);
                 valRecycler.setVisibility(View.GONE);
+                otherNum.setKeyListener(null);
+                otherNum.setBackgroundColor(getResources().getColor(R.color.light_grey3));
                 break;
             case "TRX":
                 am.saveDoneTrx(true);

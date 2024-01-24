@@ -22,7 +22,7 @@ public class joeSingleChoice extends RelativeLayout {
     TextView option, option2, option3, option4;
     ImageView imga,imgb,imgc,imgd;
     LinearLayout aMr, bMrs, cMiss, dOther;
-    EditText otherEditText;
+    public EditText otherEditText;
     private String selectedTitle = "Mr";
     private int selectedTitleViewID = 0;
 

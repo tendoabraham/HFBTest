@@ -16,6 +16,15 @@
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/ef5caf70d3203d504ac8b33de189a5c1/transformed/jetified-android-networking-1.0.2/jars/classes.jar!/" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/ef5caf70d3203d504ac8b33de189a5c1/transformed/jetified-android-networking-1.0.2/res" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/ef5caf70d3203d504ac8b33de189a5c1/transformed/jetified-android-networking-1.0.2/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/1b71999cb3a7d56477232ea41cad54ae/transformed/jetified-android-networking-1.0.2/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/1b71999cb3a7d56477232ea41cad54ae/transformed/jetified-android-networking-1.0.2/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/1b71999cb3a7d56477232ea41cad54ae/transformed/jetified-android-networking-1.0.2/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/a32cefd801c4556322d47aeb49e6462a/transformed/jetified-android-networking-1.0.2/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/a32cefd801c4556322d47aeb49e6462a/transformed/jetified-android-networking-1.0.2/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/a32cefd801c4556322d47aeb49e6462a/transformed/jetified-android-networking-1.0.2/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/91889e57ffb9fd118600fd09adbb32e2/transformed/jetified-android-networking-1.0.2/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/91889e57ffb9fd118600fd09adbb32e2/transformed/jetified-android-networking-1.0.2/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/91889e57ffb9fd118600fd09adbb32e2/transformed/jetified-android-networking-1.0.2/res" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$PROJECT_DIR$/../ptc_android_challenge_Agnes_Musyoka-development_mocklab/caches/modules-2/files-2.1/com.amitshekhar.android/android-networking/1.0.2/866743b4b91a1e598595ed7dd365add8d38f94be/android-networking-1.0.2-javadoc.jar!/" />

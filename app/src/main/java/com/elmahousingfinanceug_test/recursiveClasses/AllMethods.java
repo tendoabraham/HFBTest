@@ -6,7 +6,6 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
@@ -53,7 +52,6 @@ import com.elmahousingfinanceug_test.launch.rao.AccountOpenSplash;
 import com.elmahousingfinanceug_test.launch.rao.AccountOpenZMain;
 import com.elmahousingfinanceug_test.main_Pages.ATM_Locations;
 import com.elmahousingfinanceug_test.main_Pages.About_Us;
-import com.elmahousingfinanceug_test.main_Pages.Beneficiaries;
 import com.elmahousingfinanceug_test.main_Pages.Branches_Page;
 import com.elmahousingfinanceug_test.main_Pages.Contact_Us;
 import com.elmahousingfinanceug_test.main_Pages.Profile;
@@ -64,6 +62,7 @@ import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
@@ -93,48 +92,32 @@ import javax.crypto.spec.GCMParameterSpec;
 import javax.net.ssl.SSLSocketFactory;
 
 public class AllMethods {
-    private Context context;
+    private final Context context;
     private static final String AreaCode = "256";
     private final String PREFS = D_T("CCqRYCZb0b6nD8RHb1ldkbG1tZz0abVYvrUQ/q5k6Z8="),
             TRANSFORMATION =D_T("GY0K1coapVtS45DU72FWzl3q0xcxyi8l6qGlw/ar4Kg="),
             ANDROID_KEY_STORE = D_T("XX/b2sETMg+fqelJH4JnWg==");
-    private Handler sessionTimeoutHandler;
-    private Runnable sessionTimeoutRunnable;
     private final Dialog dialogLoad;
     private final TextView cancelTrx;
     private final RequestQueue getQ;
     private final RequestQueue connectQ;
     private final RequestQueue vanishQ;
-    private TextView progressMessage;
+    private final TextView progressMessage;
     private StringRequest stringRequest = null;
     private JsonObjectRequest jsonObjectRequest = null;
-    private Handler cancelHandler =  new Handler();
-    private Runnable cancelRunnable = new Runnable() {
+    private final Handler cancelHandler =  new Handler();
+    private final Runnable cancelRunnable = new Runnable() {
         @Override
         public void run() {
             cancelTrx.setVisibility(View.VISIBLE);
             animate_Text(cancelTrx);
         }
     };
-
-    public static boolean isNumeric(String str) {
-        try {
-            Double.parseDouble(str);
-            return true;
-        } catch(NumberFormatException e){
-            return false;
-        }
-    }
     public Dialog mDialog = null, netDialog = null;
     private KeyStore keyStore;
 
     public final Handler idleHandler = new Handler();
-    public final Runnable idleRunnable = new Runnable() {
-        @Override
-        public void run() {
-            nJe();
-        }
-    };
+    public final Runnable idleRunnable = this::nJe;
 
     ForegroundCheck.Listener fore_Back_Listener = new ForegroundCheck.Listener(){
         public void onBecameForeground(){
@@ -148,56 +131,41 @@ public class AllMethods {
     public AllMethods(final Context context) {
         this.context = context;
         dialogLoad = new Dialog(context);
-        //noinspection ConstantConditions
         dialogLoad.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialogLoad.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialogLoad.setContentView(R.layout.dialog_loading);
         dialogLoad.setCancelable(false);
         progressMessage = dialogLoad.findViewById(R.id.messageText);
         cancelTrx = dialogLoad.findViewById(R.id.cancelReq);
-        cancelTrx.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ToastMessageLong(context,context.getString(R.string.cancelRequest));
-                dialogLoad.cancel();
-            }
+        cancelTrx.setOnClickListener(v -> {
+            ToastMessageLong(context,context.getString(R.string.cancelRequest));
+            dialogLoad.cancel();
         }); cancelTrx.setVisibility(View.GONE);
 
-        dialogLoad.setOnCancelListener(new DialogInterface.OnCancelListener() {
-            @Override
-            public void onCancel(DialogInterface dialog) {
-                if(stringRequest!=null) stringRequest.cancel();
-                stringRequest = null;
-                if(jsonObjectRequest!=null) jsonObjectRequest.cancel();
-                jsonObjectRequest = null;
-                AndroidNetworking.cancelAll();
-                cancelHandler.removeCallbacks(cancelRunnable);
-                cancelTrx.setVisibility(View.GONE);
-                dialog.dismiss();
-            }
+        dialogLoad.setOnCancelListener(dialog -> {
+            if(stringRequest!=null) stringRequest.cancel();
+            stringRequest = null;
+            if(jsonObjectRequest!=null) jsonObjectRequest.cancel();
+            jsonObjectRequest = null;
+            AndroidNetworking.cancelAll();
+            cancelHandler.removeCallbacks(cancelRunnable);
+            cancelTrx.setVisibility(View.GONE);
+            dialog.dismiss();
         });
 
         getQ = Volley.newRequestQueue(context, new HurlStack(null, pinnedSSLSocketFactory()));
         connectQ = Volley.newRequestQueue(context, new HurlStack(null, pinnedSSLSocketFactory()));
         vanishQ = Volley.newRequestQueue(context, new HurlStack(null, pinnedSSLSocketFactory()));
 
-        sessionTimeoutHandler = new Handler();
-        sessionTimeoutRunnable = this::logoutUser;
 
     }
 
-
-    private void logoutUser() {
-        Activity activity = (Activity)context;
-        if(!activity.getClass().equals(Login.class)){
-            Intent i = new Intent(activity, Login.class);
-            i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            if(ForegroundCheck.get(activity).isBackground()) {
-                i.putExtra("Hide_Login", true);
-            } else {
-                i.putExtra("Hide_Login", false);
-            }
-            activity.startActivity(i);
+    public static boolean isNumeric(String str) {
+        try {
+            Double.parseDouble(str);
+            return true;
+        } catch(NumberFormatException e){
+            return false;
         }
     }
 
@@ -237,6 +205,14 @@ public class AllMethods {
         SP("APPNAME","HFBUG");
     }
 
+    public String getOTPStatus() {
+        return gSP("OTPSTATUS");
+    }
+
+    public void saveOTPStatus(String uP) {
+        SP("OTPSTATUS", uP);
+    }
+
     public String getBankID() {
         return gSP("BANKID");
     }
@@ -244,26 +220,18 @@ public class AllMethods {
     public void saveBankID() {
         SP("BANKID","23");
     }
-
-    public long getA() {
-        long h = 0;
-        try {
-            h = Long.parseLong(gSP("AT"));
-        } catch(Exception o) {
-            LogThis("Long ☼ " + o.getMessage());
-        }
-        return h;
+    public String getSavedBranch() {
+        return gSP("savedbranch");
+    }
+    public void putSavedBranch(String bundle) {
+        SP("savedbranch", bundle);
     }
 
-    public void saveA(String t) {
-        SP("AT", t);
+    public String getSavedData(String label) {
+        return gSP(label);
     }
-
-    public String getATMB() {
-        return gSP("BTM");
-    }
-    public void saveATMB(String t) {
-        SP("BTM",t);
+    public void putSavedData(String label,String data) {
+        SP(label, data);
     }
 
     public String getIfFirstDownload() {
@@ -282,7 +250,6 @@ public class AllMethods {
         String temp = "";
         SharedPreferences mySharedPreferences = context.getSharedPreferences(PREFS, Activity.MODE_PRIVATE);
         temp = mySharedPreferences.getString("CUSTOMERID", "");
-        assert temp != null;
         if(!temp.equals("")) temp = decryptOldApp(temp);
         if(temp.equalsIgnoreCase("Cipher error")) temp = "";
         return temp;
@@ -340,9 +307,9 @@ public class AllMethods {
         SP("USERNAME", uN);
     }
 
-    public String getBankName() {
-        return gSP("BANKNAME");
-    }
+//    public String getBankName() {
+//        return gSP("BANKNAME");
+//    }
 
     public void saveBankName(String bN) {
         SP("BANKNAME",bN);
@@ -438,22 +405,6 @@ public class AllMethods {
         SP("USERPIC", uP);
     }
 
-    public String getOTPStatus() {
-        return gSP("OTPSTATUS");
-    }
-
-    public void saveOTPStatus(String uP) {
-        SP("OTPSTATUS", uP);
-    }
-
-    public String getOTP() {
-        return gSP("OTP");
-    }
-
-    public void saveOTP(String uP) {
-        SP("OTP", uP);
-    }
-
     Boolean getChangePin() {
         return gBool("PINCHANGED");
     }
@@ -534,131 +485,6 @@ public class AllMethods {
         SP("THREAD", system);
     }
 
-    public String getSavedBundle() {
-        return gSP("savedoptions");
-    }
-    public void putSavedBundle(String bundle) {
-        SP("savedoptions", bundle);
-    }
-
-    public String getSavedBranch() {
-        return gSP("savedbranch");
-    }
-    public void putSavedBranch(String bundle) {
-        SP("savedbranch", bundle);
-    }
-
-    public String getSavedData(String label) {
-        return gSP(label);
-    }
-    public void putSavedData(String label,String data) {
-        SP(label, data);
-    }
-
-    public Integer getSavedPreviousStep() {
-        return getSavedInt("PreviousStep");
-    }
-    public void putSavedPreviousStep(int data) {
-        saveInt("PreviousStep", data);
-    }
-
-    public Integer getCustomerCategory() {
-        return getSavedInt("CustomerCategory");
-    }
-    public void putSaveCustomerCategory(int CustomerCategory) {
-        saveInt("CustomerCategory", CustomerCategory);
-    }
-
-    public Integer getAccountTypePosition() {
-        return getSavedInt("AccountTypePosition");
-    }
-    public void putSaveSelectedAccountTypePosition(int AccountTypePosition) {
-        saveInt("AccountTypePosition", AccountTypePosition);
-    }
-
-    public Integer getBranchPosition() {
-        return getSavedInt("BranchPosition");
-    }
-    public void putSaveSelectedBranchPosition(int mPosition) {
-        saveInt("BranchPosition", mPosition);
-    }
-
-    public Integer getCurrencyPosition() {
-        return getSavedInt("CurrencyPosition");
-    }
-    public void putSaveSelectedCurrencyPosition(int mPosition) {
-        saveInt("CurrencyPosition", mPosition);
-    }
-
-    public Integer getTitlePosition() {
-        return getSavedInt("TitlePosition");
-    }
-    public void putSaveTitlePosition(int mPosition) {
-        saveInt("TitlePosition", mPosition);
-    }
-
-    public Integer getParentsDurationAddress() {
-        return getSavedInt("ParentsDurationAddress");
-    }
-    public void putSaveParentsDurationAddress(int mPosition) {
-        saveInt("ParentsDurationAddress", mPosition);
-    }
-
-    public Integer getPeriodEmployment() {
-        return getSavedInt("PeriodEmployment");
-    }
-    public void putSavePeriodEmployment(int mPosition) {
-        saveInt("PeriodEmployment", mPosition);
-    }
-
-    public Integer getNextofKinCountryPosition() {
-        return getSavedInt("NextofKinCountry");
-    }
-    public void putSaveNextofKinCountry(int mPosition) {
-        saveInt("NextofKinCountry", mPosition);
-    }
-
-    public Integer getAltNextofKinCountryPosition() {
-        return getSavedInt("AltNextofKinCountry");
-    }
-    public void putSaveAltNextofKinCountry(int mPosition) {
-        saveInt("AltNextofKinCountry", mPosition);
-    }
-
-    public Integer getCustomerCountryPosition() {
-        return getSavedInt("CustomerCountryPosition");
-    }
-    public void putSaveCustomerCountryPosition(int mPosition) {
-        saveInt("CustomerCountryPosition", mPosition);
-    }
-
-    public Integer getAlterCustomerCountryPosition() {
-        return getSavedInt("AltCustomerCountryPosition");
-    }
-    public void putSaveAlterCustomerCountryPosition(int mPosition) {
-        saveInt("AltCustomerCountryPosition", mPosition);
-    }
-
-    public Integer getBankStaffCountryPosition() {
-        return getSavedInt("BankStaffCountryPosition");
-    }
-    public void putBankStaffCountryPosition(int mPosition) {
-        saveInt("BankStaffCountryPosition", mPosition);
-    }
-
-    public Integer getRegionPosition() {
-        return getSavedInt("RegionPosition");
-    }
-    public void putRegionPosition(int mPosition) {
-        saveInt("RegionPosition", mPosition);
-    }
-
-    public Integer getMediumRadio() {
-        return getSavedInt("mediumRadio");
-    }
-    public void putMediumRadio(int medium) {
-        saveInt("mediumRadio", medium);
-    }
 
     public int getCount() {
         int c = 0;
@@ -686,12 +512,17 @@ public class AllMethods {
     public void saveDoneTrx (Boolean bool) {
         SP_BOOL("DTRX",bool);
     }
-
     public boolean getProceed() {
         return gBool("proceed");
     }
     public void putProceed(boolean proceed) {
         SP_BOOL("proceed",proceed);
+    }
+    public void putSavedBundle(String bundle) {
+        SP("savedoptions", bundle);
+    }
+    public String getSavedBundle() {
+        return gSP("savedoptions");
     }
 
     private Boolean gBool(String z){
@@ -707,7 +538,7 @@ public class AllMethods {
         editor.apply();
     }
 
-    private String gSP(String z){
+    private String gSP(String z) {
         SharedPreferences mySharedPreferences = context.getSharedPreferences(PREFS, Activity.MODE_PRIVATE);
         z = E_P(z);
         return D_T(mySharedPreferences.getString(z,""));
@@ -717,19 +548,6 @@ public class AllMethods {
         SharedPreferences mySharedPreferences = context.getSharedPreferences(PREFS, Activity.MODE_PRIVATE);
         SharedPreferences.Editor editor = mySharedPreferences.edit();
         editor.putString(E_P(k), E_P(v));
-        editor.apply();
-    }
-
-    private Integer getSavedInt(String z) {
-        SharedPreferences mySharedPreferences = context.getSharedPreferences(PREFS, Activity.MODE_PRIVATE);
-        z = E_P(z);
-        return mySharedPreferences.getInt(z,0);
-    }
-
-    private void saveInt(String k,int v) {
-        SharedPreferences mySharedPreferences = context.getSharedPreferences(PREFS, Activity.MODE_PRIVATE);
-        SharedPreferences.Editor editor = mySharedPreferences.edit();
-        editor.putInt(E_P(k), v);
         editor.apply();
     }
 
@@ -758,37 +576,37 @@ public class AllMethods {
         return DataToEncrypt;
     }
 
-    public String ENCODE(String t) {
-        String at = "";
-        try {
-            CryptLib c = new CryptLib();
-            String y = CryptLib.SHA256("KbPmng&1977dsfds%");
-            at = c.encrypt(t, y);
-            at = at.replaceAll("\\r\\n|\\r|\\n", "");
+//    public String ENCODE(String t) {
+//        String at = "";
+//        try {
+//            CryptLib c = new CryptLib();
+//            String y = CryptLib.SHA256("KbPmng&1977dsfds%");
+//            at = c.encrypt(t, y);
+//            at = at.replaceAll("\\r\\n|\\r|\\n", "");
+//
+//            try {
+//                at = URLEncoder.encode(at, "UTF-8");
+//            } catch (UnsupportedEncodingException e) {
+//                e.printStackTrace();
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        return at;
+//    }
 
-            try {
-                at = URLEncoder.encode(at, "UTF-8");
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return at;
-    }
-
-    private String EncryptNoEncoding(String t, String y) {
-        String at = "";
-        try {
-            CryptLib c = new CryptLib();
-            String e = CryptLib.SHA256(y);
-            at = c.encrypt(t, e);
-            at = at.replaceAll("\\r\\n|\\r|\\n", "");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return at;
-    }
+//    private String RUN(String t, String y) {
+//        String at = "";
+//        try {
+//            CryptLib c = new CryptLib();
+//            String e = CryptLib.SHA256(y);
+//            at = c.encrypt(t, e);
+//            at = at.replaceAll("\\r\\n|\\r|\\n", "");
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        return at;
+//    }
 
     private String BIND (String x, String vice) {
         String a = "";
@@ -807,7 +625,7 @@ public class AllMethods {
         return a;
     }
 
-    public String REVERSE(String t, String y) {
+    private String REVERSE(String t, String y) {
         String at = "";
         try {
             CryptLib c = new CryptLib();
@@ -863,8 +681,6 @@ public class AllMethods {
             context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://portals.housingfinance.co.ug/consumerHFB/faces/consumerHFB.xhtml")));
         } else if (id == R.id.settings) {
             context.startActivity(new Intent(context, com.elmahousingfinanceug_test.main_Pages.Settings.class));
-        }else if (id == R.id.beneficiaries) {
-            context.startActivity(new Intent(context, Beneficiaries.class));
         } else if (id == R.id.aboutUs) {
             context.startActivity(new Intent(context, About_Us.class));
         } else if (id == R.id.contacUs) {
@@ -906,20 +722,14 @@ public class AllMethods {
         if(!activity.getClass().equals(Login.class)){
             Intent i = new Intent(activity, Login.class);
             i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            if(ForegroundCheck.get(activity).isBackground()) {
-                i.putExtra("Hide_Login", true);
-            } else {
-                i.putExtra("Hide_Login", false);
-            }
+            i.putExtra("Hide_Login", ForegroundCheck.get(activity).isBackground());
             activity.startActivity(i);
         }
-        // TODO: on Q1
-//        vanish();
+
+        vanish();
     }
 
     public void LogThis(String data) {
-        //TODO: comment
-        Log.d("HFB...", data);
     }
 
     public void Set_Items_2_Animate(List<LinearLayout> arrayList) {
@@ -957,7 +767,6 @@ public class AllMethods {
 
     public void myDialog(Context DialogContext, String Title, String Message) {
         mDialog = new Dialog(DialogContext);
-        //noinspection ConstantConditions
         mDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         mDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         mDialog.setContentView(R.layout.dialog_info);
@@ -1078,7 +887,7 @@ public class AllMethods {
     };
 
     public void disableScreenShot(Activity activity){
-        if(getCountry().equals("UGANDA")) activity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE,WindowManager.LayoutParams.FLAG_SECURE);
+        activity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE,WindowManager.LayoutParams.FLAG_SECURE);
     }
 
     void delayedIdle() {
@@ -1089,15 +898,8 @@ public class AllMethods {
     public void promptUser(final Activity alertActivity){
         AlertDialog.Builder builder = new AlertDialog.Builder(alertActivity);
         builder.setCancelable(true).setTitle(R.string.internetError).setMessage(R.string.internetEnable)
-                .setPositiveButton(alertActivity.getString(R.string.settings), new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        alertActivity.startActivity(new Intent(android.provider.Settings.ACTION_SETTINGS));
-                    }})
-                .setNeutralButton(alertActivity.getString(R.string.cancel), new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.dismiss();
-                    }
-                });
+                .setPositiveButton(alertActivity.getString(R.string.settings), (dialog, id) -> alertActivity.startActivity(new Intent(Settings.ACTION_SETTINGS)))
+                .setNeutralButton(alertActivity.getString(R.string.cancel), (dialog, id) -> dialog.dismiss());
         netDialog = builder.show();
     }
 
@@ -1124,28 +926,40 @@ public class AllMethods {
         try {
             RESULTS = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
         } catch (Exception e) {
-            LogThis("SecureException ► " + e.getMessage());
+            e.getMessage();
         }
         return RESULTS;
     }
 
-    public String HashLatest(String word) {
-        String input = word + D_T("73RWvh50akerG5emdzSFkQ==");
+
+    private String EncryptNoEncoding(String t, String y) {
+        String at = "";
+        try {
+            CryptLib c = new CryptLib();
+            String e = CryptLib.SHA256(y);
+            at = c.encrypt(t, e);
+            at = at.replaceAll("\\r\\n|\\r|\\n", "");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return at;
+    }
+
+    private String HashLatest(String Password) {
+        String input = Password + "ElmaHash";
         MessageDigest digest = null;
         try {
             digest = MessageDigest.getInstance("SHA-256");
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
-        byte [] encodedhash = new byte[0];
-        try {
-            assert digest != null;
-            encodedhash = digest.digest(input.getBytes(context.getString(R.string.utf)));
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
+
+        byte[] encodedHash = new byte[0];
+        assert digest != null;
+        encodedHash = digest.digest(input.getBytes(Charset.forName("UTF-8")));
+
         StringBuilder hexString = new StringBuilder();
-        for (byte anEncodedhash : encodedhash) {
+        for (byte anEncodedhash : encodedHash) {
             String hex = Integer.toHexString(0xff & anEncodedhash);
             if (hex.length() == 1) hexString.append('0');
             hexString.append(hex);
@@ -1153,20 +967,17 @@ public class AllMethods {
         return hexString.toString();
     }
 
-    public String E_P0117(String x) {
-        // TODO: 1/30/2020 remove live
-        //LOGINMPIN,TMPIN,OLDPIN,NEWPIN,KEY,DEVICEID,TRX1432019
-        //PARAM0117
-        String a = "";
-        try {
-            CryptLib crypt = new CryptLib();
-            a = crypt.encrypt(x,CryptLib.SHA256("KBSB&er3bflx9%"));
-            a = a.replaceAll("\\r\\n|\\r|\\n", "");
-        } catch (Exception e) {
-            LogThis("Cry ☼ "+e.getMessage());
-        }
-        return a;
-    }
+//    public String E_P0117(String x) {
+//        String a = "";
+//        try {
+//            CryptLib crypt = new CryptLib();
+//            a = crypt.encrypt(x,CryptLib.SHA256("KBSB&er3bflx9%"));
+//            a = a.replaceAll("\\r\\n|\\r|\\n", "");
+//        } catch (Exception e) {
+//            e.getMessage();
+//        }
+//        return a;
+//    }
 
     public void goToStore() {
         final String appPackageName = context.getPackageName();
@@ -1177,8 +988,6 @@ public class AllMethods {
         }
     }
 
-
-    @TargetApi(Build.VERSION_CODES.KITKAT)
     public void Binder(final String textToEncrypt)
             throws NoSuchAlgorithmException,
             NoSuchProviderException, NoSuchPaddingException, InvalidKeyException,
@@ -1212,7 +1021,6 @@ public class AllMethods {
         return keyGenerator.generateKey();
     }
 
-    @TargetApi(Build.VERSION_CODES.KITKAT)
     public String dumpsys(final byte [] encryptedData, final byte [] encryptionIv)
             throws UnrecoverableEntryException, NoSuchAlgorithmException, KeyStoreException,
             NoSuchPaddingException, InvalidKeyException,
@@ -1239,19 +1047,17 @@ public class AllMethods {
 
     private String getToken() {
         if (getCountry().equalsIgnoreCase("UGANDA"))
-            return D_T("SK8jLvHib4OLFAuYb4Yfbp3s9KN48ShYNVmek1n1zlipEO3ByCb38QN+nsi7SPlr");
+            return "https://app.craftsilicon.com/AuthServ/api/auth/apps";
         else
-//            Log.e("TokenURL", D_T("ITcYFtXDh2esU+aOXoJr9ugd1yLhebnlFQJKUA6ulV0YcG1DUP99OfWWPTNCk9VoeDHVv5rd5C0QY0EGJ3SE3g=="));
             return D_T("ITcYFtXDh2esU+aOXoJr9ugd1yLhebnlFQJKUA6ulV0YcG1DUP99OfWWPTNCk9VoeDHVv5rd5C0QY0EGJ3SE3g==");
     }
 
     private String vanishing() {
         if (getCountry().equalsIgnoreCase("UGANDA"))
-            return D_T("SK8jLvHib4OLFAuYb4Yfbp3s9KN48ShYNVmek1n1zliCJkhTEfUU43udJ93WOMeu");
+            return "https://app.craftsilicon.com/AuthServ/api/auth/away";
         else
             return D_T("ITcYFtXDh2esU+aOXoJr9ugd1yLhebnlFQJKUA6ulV0YcG1DUP99OfWWPTNCk9VoDTUEMtqoDVh/ysPJVPD1zw==");
     }
-
 
     private SSLSocketFactory pinnedSSLSocketFactory() {
         try {
@@ -1311,9 +1117,10 @@ public class AllMethods {
     }
 
     public void get(final ResponseListener responseListener, String she, String task, final String step) {
+//        Log.e("Req", she);
+//        Log.e("Req1", task);
+
         final String finalShe = she.concat(finale(step));
-        Log.e("Request", finalShe);
-//        Log.e("task", task);
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject
@@ -1325,9 +1132,8 @@ public class AllMethods {
                     .put("appName", getAppName())
                     .put("codeBase", "ANDROID");
         } catch (final JSONException e) {
-            LogThis("JSONException : " + e.getMessage());
+            e.getMessage();
         }
-
         setProgressMessage(task);
         progressDialog("1");
         AndroidNetworking
@@ -1337,10 +1143,9 @@ public class AllMethods {
                 .doNotCacheResponse()
                 .build()
                 .getAsJSONObject(new JSONObjectRequestListener() {
-
                     @Override
                     public void onResponse(JSONObject response) {
-                        Log.e("response", response.toString());
+
                         try {
                             String status = response.getString("respCode");
                             switch (status) {
@@ -1353,7 +1158,7 @@ public class AllMethods {
                                     JSONObject jPayload = new JSONObject(payLoad);
                                     String machine = jPayload.getString("Device"),
                                             uri = jPayload.getString("Uri"),
-                                            extrauri = jPayload.getString("ExtraUri");;
+                                            extrauri = jPayload.getString("ExtraUri");
                                     arrayData = arrayData.replace("[", "");
                                     arrayData = arrayData.replace("]", "");
                                     String[] indexValues = arrayData.split(",");
@@ -1367,13 +1172,22 @@ public class AllMethods {
 
 //                                    Log.e("uri", uri);
 //                                    Log.e("extraUri", extrauri);
+
                                     if(step.contains("RAO")) {
                                         //Use ExtraUri to fetch and Post large data chunks
                                         RAOApiCall(finalShe, extrauri, machine, responseListener, token, step);
-                                        LogThis("AGNESRAO"+ "AKIFIKA");
+                                        LogThis("AGNESRAO1  "+ extrauri);
+                                    }else if(step.contains("OCRCPMP")) {
+                                        //Use ExtraUri to fetch and Post large data chunks
+                                        RAOApiCall(finalShe, extrauri, machine, responseListener, token, step);
+
+                                    } else if(step.contains("OCR-COMPARISON")) {
+                                        //Use ExtraUri to fetch and Post large data chunks
+                                        RAOApiCall(finalShe, extrauri, machine, responseListener, token, step);
+
                                     } else {
                                         connect(finalShe, uri, machine, responseListener, token, step);
-                                    }         LogThis("AGNESRAO"+ uri);
+                                    }
                                     break;
                                 default:
                                     progressDialog("0");
@@ -1381,7 +1195,7 @@ public class AllMethods {
                                     break;
                             }
                         } catch (JSONException e) {
-                            LogThis("JSONResponse Error ► " + e.getMessage());
+                            e.getMessage();
                             progressDialog("0");
                             ToastMessageLong(context, context.getString(R.string.tokenTryLater));
                         }
@@ -1389,19 +1203,19 @@ public class AllMethods {
 
                     @Override
                     public void onError(ANError anError) {
-                        LogThis("GetToken Error ► " + anError.getMessage());
-                        Log.e("GetToken Error ► ", anError.getMessage());
+                        anError.getMessage();
                         progressDialog("0");
                         myDialog(context, context.getString(R.string.alert), context.getString(R.string.connectionError));
                     }
                 });
+
     }
 
     private void connect (String request, String baseUrl, final String result, final ResponseListener responseListener, final String token, final String step){
-//        LogThis("send ► " + request);
-        Log.e("URL", baseUrl);
+//                  Log.e("SendEFT",request) ;
         baseUrl = baseUrl + BIND(request,result);
-        Log.e("URL", baseUrl);
+//        Log.e("BASEURL", baseUrl);
+//        Log.e("Request", request);
         putSavedData("RAO", baseUrl);
         AndroidNetworking
                 .get(baseUrl)
@@ -1417,9 +1231,9 @@ public class AllMethods {
                             response=response.replace("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">","");
                             response=response.replace("\r\n","");
                             response=REVERSE(response,result);
-//                            LogThis("response ◄§► "+response);
 
-                            Log.e("ValidationResponse", response);
+
+//                            Log.e("Response", response);
                             Activity activity = (Activity)context;
                             if (activity.getClass().equals(Login.class) || activity.getClass().equals(AccountOpenSplash.class) || activity.getClass().equals(AccountOpenZMain.class) || step.equals("CON")) {
                                 responseListener.onResponse(response,step);
@@ -1430,7 +1244,11 @@ public class AllMethods {
                                     case "000":
                                     case "OK":
                                     case "00":
-                                        responseListener.onResponse(message,step);
+                                        if (step.equals("ABD")){
+                                            responseListener.onResponse(response,step);
+                                        }else{
+                                            responseListener.onResponse(message,step);
+                                        }
                                         break;
                                     case "096":
                                         responseListener.onResponse(message,"OTPTRX");
@@ -1441,15 +1259,13 @@ public class AllMethods {
                                 }
                             }
                         } catch (Exception e) {
-//                            LogThis("FormatError ► "+e.getMessage());
-                            Log.e("Error", e.getMessage());
+//                            Log.e("ERR", e.getMessage());
                             myDialog(context, context.getString(R.string.alert),context.getString(R.string.tryAgain));
                         }
                     }
                     @Override
                     public void onError(ANError anError) {
-                        LogThis("ConnectError ► " + anError.getMessage());
-                        Log.e("Error ► ", anError.getMessage());
+
                         progressDialog("0");
                         myDialog(context,context.getString(R.string.alert),context.getString(R.string.connectionError));
                     }
@@ -1457,15 +1273,18 @@ public class AllMethods {
     }
 
     private void RAOApiCall(String request, String BaseUrl, String machine, final ResponseListener responseListener, final String Token, String step) {
-//        Log.e("RAO",request)  ;
-        request = EncryptNoEncoding(request,machine);
+
+        request = EncryptNoEncoding(request.trim(),machine);
         JSONObject object = new JSONObject();
         try {
             object.put("Data", "")
-                    .put("ExtraData", "S" + request);
+                    .put("ExtraData", "S" + request)
+                    .put("UniqueID", UUID());
         } catch (final JSONException e) {
             e.printStackTrace();
         }
+        LogThis("response ◄§► " + object);
+//        appendLog(String.valueOf(object));
         AndroidNetworking
                 .post(BaseUrl)
                 .addJSONObjectBody(object)
@@ -1477,95 +1296,48 @@ public class AllMethods {
                 .getAsJSONObject(new JSONObjectRequestListener() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        LogThis("RESPOSERAO"+response.toString());
                         try {
                             progressDialog("0");
                             String rao_response = response.getString("Response");
-                            rao_response= REVERSE(rao_response,machine);
-//                            LogThis("response ◄§► "+rao_response);
-                            Log.e("RAOResponse", rao_response);
-                            responseListener.onResponse(rao_response,step);
+                            rao_response = REVERSE(rao_response, machine);
+                            LogThis("response ◄§► " + rao_response);
+
+                            responseListener.onResponse(rao_response, step);
+
+
                         } catch (Exception e) {
                             e.printStackTrace();
-                            myDialog(context, context.getString(R.string.alert),context.getString(R.string.tryAgain));
+                            myDialog(context, context.getString(R.string.alert), context.getString(R.string.tryAgain));
                         }
                     }
 
                     @Override
                     public void onError(ANError anError) {
-                        LogThis("ConnectError ► " + anError.getMessage());
+                        Log.e("NetworkRequestError", "Request: " + anError.getErrorBody());
+                        Log.e("NetworkRequestError", "Error Detail: " + anError.getErrorDetail());
+                        Log.e("NetworkRequestError", "Error Code: " + anError.getErrorCode());
+                        Log.e("NetworkRequestError", "Connect Error: " + anError.getMessage());
+
                         progressDialog("0");
-                        myDialog(context,context.getString(R.string.alert),context.getString(R.string.connectionError));
-                    }
-                });
 
-        /*RequestQueue queue = Volley.newRequestQueue(context);
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
-                BaseUrl, object,
-                response -> {
-                    progressDialog("0");
-                    responseListener.onResponse(response.toString(),step);
-                },
-                error -> {
-                    LogThis("ConnectError ► " + error.getMessage());
-                    progressDialog("0");
-                    myDialog(context,context.getString(R.string.alert),context.getString(R.string.connectionError));
-                }
-        ) {
-            @Override
-            public String getBodyContentType() {
-                return "application/json";
-            }
-
-            @Override
-            public Map<String, String> getHeaders() {
-                Map<String, String> params = new HashMap<>();
-                params.put("Content-Type", "application/json");
-                params.put("T", Token);
-                return params;
-            }
-        };
-        jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(
-                180000,
-                -1,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        queue.add(jsonObjectRequest);*/
-    }
-
-    private void vanish() {
-        JSONObject jsonObject = new JSONObject();
-        try {
-            jsonObject
-                    .put("MobileNumber",getUserPhone())
-                    .put("Device",getIMEI())
-                    .put("lat",getLatitude())
-                    .put("longit",getLongitude())
-                    .put("rashi","")
-                    .put("appName",getAppName())
-                    .put("codeBase","ANDROID");
-        } catch (final JSONException e) {
-            LogThis("JSONException : "+ e.getMessage());
-        }
-        AndroidNetworking
-                .post(vanishing())
-                .addJSONObjectBody(jsonObject)
-                .doNotCacheResponse()
-                .build()
-                .getAsJSONObject(new JSONObjectRequestListener() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        try {
-                            ToastMessageLong(context,context.getString(R.string.app_name)+" "+response.getString("message"));
-                        } catch (JSONException e) {
-                            LogThis("JSONVan Error : "+e.getMessage());
+                        if (anError.getErrorCode() == 500) {
+                            // Server error handling
+                            myDialog(context, context.getString(R.string.alert), context.getString(R.string.serverError));
+                        } else {
+                            // Generic error handling
+                            myDialog(context, context.getString(R.string.alert), context.getString(R.string.connectionError));
                         }
                     }
-                    @Override
-                    public void onError(ANError anError) {
-                        LogThis("Networking Error : "+anError.getMessage());
-                    }
                 });
+
     }
+
+    public String UUID(){
+        UUID uuid= UUID.randomUUID();
+        String uid=uuid.toString();
+        return uid;
+    }
+
 
     public void get_(final ResponseListener responseListener, String she, String task, final String step) {
         final String finalShe = she.concat(finale(step));
@@ -1756,6 +1528,161 @@ public class AllMethods {
         progressMessage.setText(message);
     }
 
+    private void vanish() {
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject
+                    .put("MobileNumber",getUserPhone())
+                    .put("Device",getIMEI())
+                    .put("lat",getLatitude())
+                    .put("longit",getLongitude())
+                    .put("rashi","")
+                    .put("appName",getAppName())
+                    .put("codeBase","ANDROID");
+        } catch (final JSONException e) {
+            LogThis("JSONException : "+ e.getMessage());
+        }
+        AndroidNetworking
+                .post(vanishing())
+                .addJSONObjectBody(jsonObject)
+                .doNotCacheResponse()
+                .build()
+                .getAsJSONObject(new JSONObjectRequestListener() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            ToastMessageLong(context,context.getString(R.string.app_name)+" "+response.getString("message"));
+                        } catch (JSONException e) {
+                            e.getMessage();
+                        }
+                    }
+                    @Override
+                    public void onError(ANError anError) {
+                        anError.getMessage();
+                    }
+                });
+    }
+
+
+
+    private Integer getSavedInt(String z) {
+        SharedPreferences mySharedPreferences = context.getSharedPreferences(PREFS, Activity.MODE_PRIVATE);
+        z = E_P(z);
+        return mySharedPreferences.getInt(z,0);
+    }
+
+    private void saveInt(String k,int v) {
+        SharedPreferences mySharedPreferences = context.getSharedPreferences(PREFS, Activity.MODE_PRIVATE);
+        SharedPreferences.Editor editor = mySharedPreferences.edit();
+        editor.putInt(E_P(k), v);
+        editor.apply();
+    }
+
+    public Integer getSavedPreviousStep() {
+        return getSavedInt("PreviousStep");
+    }
+    public void putSavedPreviousStep(int data) {
+        saveInt("PreviousStep", data);
+    }
+
+    public Integer getCustomerCategory() {
+        return getSavedInt("CustomerCategory");
+    }
+    public void putSaveCustomerCategory(int CustomerCategory) {
+        saveInt("CustomerCategory", CustomerCategory);
+    }
+
+    public Integer getAccountTypePosition() {
+        return getSavedInt("AccountTypePosition");
+    }
+    public void putSaveSelectedAccountTypePosition(int AccountTypePosition) {
+        saveInt("AccountTypePosition", AccountTypePosition);
+    }
+
+    public Integer getBranchPosition() {
+        return getSavedInt("BranchPosition");
+    }
+    public void putSaveSelectedBranchPosition(int mPosition) {
+        saveInt("BranchPosition", mPosition);
+    }
+
+    public Integer getCurrencyPosition() {
+        return getSavedInt("CurrencyPosition");
+    }
+    public void putSaveSelectedCurrencyPosition(int mPosition) {
+        saveInt("CurrencyPosition", mPosition);
+    }
+
+    public Integer getTitlePosition() {
+        return getSavedInt("TitlePosition");
+    }
+    public void putSaveTitlePosition(int mPosition) {
+        saveInt("TitlePosition", mPosition);
+    }
+
+//    public Integer getParentsDurationAddress() {
+//        return getSavedInt("ParentsDurationAddress");
+//    }
+//    public void putSaveParentsDurationAddress(int mPosition) {
+//        saveInt("ParentsDurationAddress", mPosition);
+//    }
+
+    public Integer getPeriodEmployment() {
+        return getSavedInt("PeriodEmployment");
+    }
+    public void putSavePeriodEmployment(int mPosition) {
+        saveInt("PeriodEmployment", mPosition);
+    }
+
+    public Integer getNextofKinCountryPosition() {
+        return getSavedInt("NextofKinCountry");
+    }
+    public void putSaveNextofKinCountry(int mPosition) {
+        saveInt("NextofKinCountry", mPosition);
+    }
+
+    public Integer getAltNextofKinCountryPosition() {
+        return getSavedInt("AltNextofKinCountry");
+    }
+    public void putSaveAltNextofKinCountry(int mPosition) {
+        saveInt("AltNextofKinCountry", mPosition);
+    }
+
+    public Integer getCustomerCountryPosition() {
+        return getSavedInt("CustomerCountryPosition");
+    }
+    public void putSaveCustomerCountryPosition(int mPosition) {
+        saveInt("CustomerCountryPosition", mPosition);
+    }
+
+    public Integer getAlterCustomerCountryPosition() {
+        return getSavedInt("AltCustomerCountryPosition");
+    }
+    public void putSaveAlterCustomerCountryPosition(int mPosition) {
+        saveInt("AltCustomerCountryPosition", mPosition);
+    }
+
+    public Integer getBankStaffCountryPosition() {
+        return getSavedInt("BankStaffCountryPosition");
+    }
+    public void putBankStaffCountryPosition(int mPosition) {
+        saveInt("BankStaffCountryPosition", mPosition);
+    }
+
+//    public Integer getRegionPosition() {
+//        return getSavedInt("RegionPosition");
+//    }
+//    public void putRegionPosition(int mPosition) {
+//        saveInt("RegionPosition", mPosition);
+//    }
+
+    public Integer getMediumRadio() {
+        return getSavedInt("mediumRadio");
+    }
+    public void putMediumRadio(int medium) {
+        saveInt("mediumRadio", medium);
+    }
+
     public void setBal(String bal) {
         SP("Bal", bal);
     }
@@ -1763,4 +1690,175 @@ public class AllMethods {
     public String getBal() {
         return gSP("Bal");
     }
+
+//    public void get_(final ResponseListener responseListener, String she, String task, final String step) {
+//        final String finalShe = she.concat(finale(step));
+////        Log.e("FinalShe", finalShe);
+//        JSONObject jsonObject = new JSONObject();
+//        try {
+//            jsonObject
+//                    .put("MobileNumber",getUserPhone())
+//                    .put("Device",getIMEI())
+//                    .put("lat",getLatitude())
+//                    .put("longit",getLongitude())
+//                    .put("rashi",HashLatest(finalShe))
+//                    .put("appName",getAppName())
+//                    .put("codeBase","ANDROID");
+//        } catch (final JSONException e) {
+//            LogThis("JSONException ► "+ e.getMessage());
+//        }
+//        if(!step.contains("_LOAD")){
+//            setProgressDialogMessage(task);
+//        }
+//        progressDialog("1");
+//        jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, get_T(), jsonObject,
+//                response -> {
+//                    try {
+//                        switch (response.getString("respCode")) {
+//                            case "000":
+//                            case "OK":
+//                            case "00":
+//                                String token = response.getString("token"),
+//                                        payload = response.getString("payload"),
+//                                        array_data=response.getString("data");
+//                                JSONObject jOPayload = new JSONObject(payload);
+//                                String machine = jOPayload.getString("Device"),
+//                                        uri = jOPayload.getString("Uri"),
+//                                        extraUri = jOPayload.getString("ExtraUri");
+//                                array_data=array_data.replace("[","");
+//                                array_data=array_data.replace("]","");
+//                                String [] indexValues = array_data.split(",");
+//                                char [] viceArray = machine.toCharArray();
+//                                machine="";
+//                                for (String anIndexValue : indexValues) {
+//                                    machine = String.format("%s%s", machine, viceArray[Integer.parseInt(anIndexValue)]);
+//                                }
+//                                uri=SPAN(uri,machine)+"?c=S";
+////                                extraUri = SPAN(extraUri, machine);
+//                                if (step.equals("sendImg")) {
+////                                        sendImages(finalShe, extraUri, machine, responseListener, token, step);
+//                                } else {
+//                                    connect_(finalShe, uri, machine, responseListener, token, step);
+//                                }
+//                                break;
+//                            default:
+//                                progressDialog("0");
+//                                ToastMessageLong(context, response.getString("message"));
+//                                break;
+//                        }
+//                    } catch (Exception e) {
+//                        LogThis("JSONResponseError ► "+e.getMessage());
+//                        progressDialog("0");
+//                        ToastMessageLong(context, context.getString(R.string.tokenTryLater));
+//                    }
+//                },
+//                error -> {
+////                    LogThis("VolleyErrorToken ► "+ error.getMessage());
+////                    Log.e("Error", error.getMessage());
+//                    progressDialog("0");
+//                    myDialog(context, context.getString(R.string.alert),context.getString(R.string.connectionError));
+//                }
+//        )
+//        {
+//            @Override
+//            public Priority getPriority() {
+//                return Priority.IMMEDIATE;
+//            }
+//            @Override
+//            public String getBodyContentType() {
+//                return "application/json";
+//            }
+//        };
+//        jsonObjectRequest.setShouldCache(false);
+//        jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(55000,0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+//        getQ.add(jsonObjectRequest);
+//    }
+
+//    private void connect_(String request, String baseUrl, final String at, final ResponseListener responseListener, final String reading, final String step) {
+////        LogThis("send ► " + request);
+////        Log.e("Request", request);
+////        Log.e("BaseURL", baseUrl);
+//        baseUrl = baseUrl + BIND(request,at);
+//        stringRequest = new StringRequest(Request.Method.GET,baseUrl,
+//                response -> {
+//                    try {
+//                        if(!step.contains("_LOAD")){
+//                            progressDialog("0");
+//                        }
+//                        response=response.replace("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">","");
+//                        response=response.replace("\r\n","");
+//                        response=response.replace("\n","");
+//                        response=SPAN(response,at);
+//                        LogThis("response ◄§► "+ response);
+////                        Log.e("Response1", response);
+//
+//                        Activity activity = (Activity)context;
+//                        if (activity.getClass().equals(Login.class)
+//                                || step.equals("DET")
+//                                || step.equals("CHZ")
+//                                || step.equals("chkPhone")
+//                                || step.equals("reqOTP")
+//                                || step.equals("verifyOTP")
+//                                || step.equals("reqNewAcc")
+//                                || step.equals("sendImg")
+//                                || step.equals("CON")
+//                                || step.equals("ABD")
+//                                || step.equals("GETIN")
+//                                || step.equals("BK_ADD_LOAD")) {
+//                            responseListener.onResponse(response,step);
+//                        } else {
+//                            String [] splits = response.split(":");
+//                            String status = splits[1], message = splits[3];
+//                            switch (status) {
+//                                case "000":
+//                                case "OK":
+//                                case "00":
+//                                    responseListener.onResponse(message,step);
+//                                    break;
+//                                default:
+//                                    myDialog(context,context.getString(R.string.alert), message);
+//                                    break;
+//                            }
+//                        }
+//                    }  catch (Exception e) {
+//                        LogThis("FormatError ► "+ e.getMessage());
+//                        myDialog(context, context.getString(R.string.alert),context.getString(R.string.tryLater));
+//                    }
+//                },
+//                error -> {
+////                    LogThis("VolleyErrorConnect ► " + error.getMessage());
+////                    Log.e("Error", error.getMessage());
+//                    progressDialog("0");
+//                    myDialog(context,context.getString(R.string.alert),context.getString(R.string.connectionError));
+//                })
+//        {
+//            @Override
+//            public Priority getPriority() {
+//                return Priority.HIGH;
+//            }
+//            @Override
+//            public Map<String, String> getHeaders() {
+//                Map<String,String> params = new HashMap<>();
+//                params.put("T", reading);
+//                return params;
+//            }
+//        };
+//        stringRequest.setShouldCache(false);
+//        stringRequest.setRetryPolicy(new DefaultRetryPolicy (55000,0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+//        connectQ.add(stringRequest);
+//    }
+//
+//    private String get_T() {
+//        if(getCountry().equalsIgnoreCase("UGANDA"))
+//            //return D_T("i08xK31BsSJc3T1ddzDDdAnzV0OaGMAoD7cptUntZMestLhbjjOgG5XkBCUkuXb2WyBywHoeBQSGxu1c6y9/Yw==");
+//            //return D_T("SK8jLvHib4OLFAuYb4Yfbp3s9KN48ShYNVmek1n1zlipEO3ByCb38QN+nsi7SPlr");
+//            return "https://app.craftsilicon.com/AuthServ/api/auth/apps";
+//        else
+//            return D_T("ITcYFtXDh2esU+aOXoJr9ugd1yLhebnlFQJKUA6ulV0YcG1DUP99OfWWPTNCk9VoeDHVv5rd5C0QY0EGJ3SE3g==");
+//    }
+//
+//    private void setProgressDialogMessage(String message) {
+//        progressMessage.setText(message);
+//    }
+
 }

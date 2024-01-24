@@ -268,6 +268,9 @@
     <string name="min3">3 minutes</string>
     <string name="min4">4 minutes</string>
     <string name="min5">5 minutes</string>
+    <string name="serverError">Server Error</string>
+    <string name="pepDefinition">PEP: “Politically Exposed Person” means individual (s) who is or has been entrusted with prominent functions of a country, with examples under office &amp; position description below as well as family members or close associates of such individuals.</string>
+
     <string name="schoolFees">School Fees</string>
     <string name="interbankFt">Interbank Transfer</string>
     <string name="comingSoon">Coming Soon</string>

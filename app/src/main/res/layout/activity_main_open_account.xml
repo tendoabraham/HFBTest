@@ -63,12 +63,15 @@
             android:progress="0"
             android:progressDrawable="@drawable/progress_h" />
 
+
         <ViewFlipper
             android:id="@+id/flipper"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:orientation="vertical">
+
+
 
             <include layout="@layout/customer_category" />
 
@@ -137,6 +140,32 @@
 
     </LinearLayout>
 
+    <androidx.cardview.widget.CardView
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        app:cardCornerRadius="12dp"
+        android:id="@+id/front_image_card"
+        android:layout_margin="10dp">
+
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:id="@+id/frontId"
+            android:layout_margin="2dp"/>
+
+    </androidx.cardview.widget.CardView>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:scaleType="centerCrop"
+        android:visibility="gone"
+        android:id="@+id/back_id"
+        android:layout_margin="2dp"/>
+
     <RelativeLayout
         android:visibility="gone"
         android:id="@+id/success_failed"
@@ -191,6 +220,9 @@
             </LinearLayout>
 
         </ScrollView>
+
+
+
 
         <TextView
             android:id="@+id/done"

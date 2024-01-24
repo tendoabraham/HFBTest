@@ -49,6 +49,9 @@
             android:exported="false"
             android:theme="@style/AppTheme" />
         <activity
+            android:name=".launch.rao.OcrResults"
+            android:exported="false" />
+        <activity
             android:name=".main_Pages.Data"
             android:exported="false" />
         <activity
@@ -133,6 +136,11 @@
         <activity
             android:name=".main_Pages.ATM_Locations"
             android:screenOrientation="fullSensor" />
+        <activity
+            android:name="com.canhub.cropper.CropImageActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Base.Theme.AppCompat"
+            tools:ignore="LockedOrientationActivity" />
         <activity android:name=".recursiveClasses.SuccessDialogPage" />
         <activity android:name=".recursiveClasses.BaseAct" />
         <activity android:name=".main_Pages.Main_Menu" />

@@ -37,6 +37,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.HorizontalScrollView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
@@ -834,22 +835,6 @@ public class AccountOpenZExistingCustomersMain extends AppCompatActivity impleme
         centeparentinfo.addView(addressPeriod);
         centeparentinfo.addView(PoliticallyExposed);
 
-        //Political  stuff dropdown
-        /*PoliticallyExposed.setVisibility(View.GONE);
-        getLayoutInflater().inflate(R.layout.political, centeparentinfo,true);
-        political_spin = findViewById(R.id.political_spin);*/
-
-//        //Existing HFB Account
-//        accountNumber= new cicEditText(this, VAR.NUMBER,"Your Existing HFB Account Number" ," 01001216399");
-//        accountNumber.setPadding(25,0,25,0);
-//        ccg.addView(accountNumber);
-//        accountNumber.setVisibility(View.GONE);
-
-//        //STAFF  Details
-//        staffPhoneNumber =  new cicEditText(this, VAR.PHONENUMBER,"Bank Staff Phone Number "+getString(R.string.mandatory_field)," 7000000001");
-//        staffPhoneNumber.setPadding(25,0,25,0);
-//        ccg.addView(staffPhoneNumber);
-//        staffPhoneNumber.setVisibility(View.GONE);
     }
 
 
@@ -1613,14 +1598,6 @@ public class AccountOpenZExistingCustomersMain extends AppCompatActivity impleme
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
-                            /*String [] regions = Message.split("~");
-                            regionsIds.add(0,"Select One");
-                            regionNames.add(0,"Select One");
-                            for (String aRegion : regions) {
-                                processDataPipe(aRegion);
-                                regionsIds.add(constants.FindInArray(FieldIDs, FieldValues, "CODE"));
-                                regionNames.add(constants.FindInArray(FieldIDs, FieldValues, "NAME"));
-                            }*/
                             ArrayAdapter<String> spinnerArrayAdapterB = new ArrayAdapter<>(this, R.layout.spinner_item, regionNames);
                             spinnerArrayAdapterB.setDropDownViewResource(R.layout.spinner_item);
                             regionselect.setAdapter(spinnerArrayAdapterB);
@@ -1658,14 +1635,6 @@ public class AccountOpenZExistingCustomersMain extends AppCompatActivity impleme
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
-                            /*String [] districts = Message.split("~");
-                            districtIds.add(0,"Select One");
-                            districtNames.add(0,"Select One");
-                            for (String aDistrict : districts) {
-                                processDataPipe(aDistrict);
-                                districtIds.add(constants.FindInArray(FieldIDs, FieldValues, "CODE"));
-                                districtNames.add(constants.FindInArray(FieldIDs, FieldValues, "NAME"));
-                            }*/
                             ArrayAdapter<String> spinnerArrayAdapterB = new ArrayAdapter<>(this, R.layout.spinner_item, districtNames);
                             spinnerArrayAdapterB.setDropDownViewResource(R.layout.spinner_item);
                             districtName.setAdapter(spinnerArrayAdapterB);
@@ -1703,14 +1672,6 @@ public class AccountOpenZExistingCustomersMain extends AppCompatActivity impleme
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
-                            /*String [] counties = Message.split("~");
-                            countyIds.add(0,"Select One");
-                            countylistNames.add(0,"Select One");
-                            for (String aCounty : counties) {
-                                processDataPipe(aCounty);
-                                countyIds.add(constants.FindInArray(FieldIDs, FieldValues, "CODE"));
-                                countylistNames.add(constants.FindInArray(FieldIDs, FieldValues, "NAME"));
-                            }*/
                             ArrayAdapter<String> spinnerArrayAdapterB = new ArrayAdapter<>(this, R.layout.spinner_item, countylistNames);
                             spinnerArrayAdapterB.setDropDownViewResource(R.layout.spinner_item);
                             countyName.setAdapter(spinnerArrayAdapterB);
@@ -1748,12 +1709,6 @@ public class AccountOpenZExistingCustomersMain extends AppCompatActivity impleme
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
-                           /* String [] counties = Message.split("~");
-                            for (String aCounty : counties) {
-                                processDataPipe(aCounty);
-                                subcountyIds.add(constants.FindInArray(FieldIDs, FieldValues, "CODE"));
-                                subcountylistNames.add(constants.FindInArray(FieldIDs, FieldValues, "NAME"));
-                            }*/
                             ArrayAdapter<String> spinnerArrayAdapterB = new ArrayAdapter<>(this, R.layout.spinner_item, subcountylistNames);
                             spinnerArrayAdapterB.setDropDownViewResource(R.layout.spinner_item);
                             subCountyName.setAdapter(spinnerArrayAdapterB);
@@ -1791,12 +1746,6 @@ public class AccountOpenZExistingCustomersMain extends AppCompatActivity impleme
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
-                            /*String [] parish = Message.split("~");
-                            for (String oneParish : parish) {
-                                processDataPipe(oneParish);
-                                parishIds.add(constants.FindInArray(FieldIDs, FieldValues, "CODE"));
-                                parishlistNames.add(constants.FindInArray(FieldIDs, FieldValues, "NAME"));
-                            }*/
                             ArrayAdapter<String> spinnerArrayAdapterB = new ArrayAdapter<>(this, R.layout.spinner_item, parishlistNames);
                             spinnerArrayAdapterB.setDropDownViewResource(R.layout.spinner_item);
                             parishName.setAdapter(spinnerArrayAdapterB);
@@ -1834,12 +1783,6 @@ public class AccountOpenZExistingCustomersMain extends AppCompatActivity impleme
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
-                            /*String [] villages = Message.split("~");
-                            for (String aVillage : villages) {
-                                processDataPipe(aVillage);
-                                villageIds.add(constants.FindInArray(FieldIDs, FieldValues, "CODE"));
-                                villagelistNames.add(constants.FindInArray(FieldIDs, FieldValues, "NAME"));
-                            }*/
                             ArrayAdapter<String> spinnerArrayAdapterB = new ArrayAdapter<>(this, R.layout.spinner_item, villagelistNames);
                             spinnerArrayAdapterB.setDropDownViewResource(R.layout.spinner_item);
                             villageName.setAdapter(spinnerArrayAdapterB);
@@ -1902,25 +1845,6 @@ public class AccountOpenZExistingCustomersMain extends AppCompatActivity impleme
                             });
                             break;
                         }
-//                        case "RequestOTP":
-//                            if (step_ == 2 /*&& tv_resend_otp.getVisibility()==View.GONE*/) {
-//                                step_++;
-//                                flipViewIt(step_);
-//                                flipper.showNext();
-//                                startStimer();
-//                            }
-//                            Toast.makeText(AccountOpenZExistingCustomersMain.this, Message, Toast.LENGTH_LONG).show();
-//                            break;
-//                        case "ResentRequestOTP":
-//                            startStimer();
-//                            Toast.makeText(AccountOpenZExistingCustomersMain.this, Message, Toast.LENGTH_LONG).show();
-//                            break;
-//                        case "VerifyOTP": {
-//                            currentTask = "RAO";
-//                            new_request = RAO();
-//                            new Handler().postDelayed(() -> am.get(AccountOpenZExistingCustomersMain.this, new_request, getString(R.string.loading), currentTask), 400);
-//                            break;
-//                        }
                         case "VerifyExisting":
                             am.myDialog(AccountOpenZExistingCustomersMain.this, getString(R.string.alert), getString(R.string.exists));
                             break;
@@ -2096,24 +2020,6 @@ public class AccountOpenZExistingCustomersMain extends AppCompatActivity impleme
                     e.printStackTrace();
                 }
             }
-
-            /*if (politicsIDs.isEmpty()) {
-                if(am.getCountry().equals("UGANDATEST")) getPoliticalExposed();
-            }*/
-
-            /*new Handler().postDelayed(() -> {
-                if (occupationIds.isEmpty()) {
-                    if(am.getCountry().equals("UGANDATEST")) getCustomParam("OCCUPATION","FetchOccupation");
-                }
-            },5000);*/
-
-            //Was Address dropdown
-            /* new Handler().postDelayed(() -> {
-                if (regionsIds.isEmpty()) {
-                    if(am.getCountry().equals("UGANDATEST")) getAddressParam("REGION","FetchRegion", "");
-                }
-            },10000);*/
-
             flipViewIt(step_);
 
             dialog.dismiss();
