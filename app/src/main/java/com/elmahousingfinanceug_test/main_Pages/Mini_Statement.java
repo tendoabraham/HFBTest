@@ -2,6 +2,7 @@ package com.elmahousingfinanceug_test.main_Pages;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,7 @@ import com.elmahousingfinanceug_test.recursiveClasses.ResponseListener;
 import com.elmahousingfinanceug_test.recursiveClasses.VolleyResponse;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Mini_Statement extends BaseAct implements ResponseListener, VolleyResponse {
     Spinner accountNumber;
@@ -89,6 +91,15 @@ public class Mini_Statement extends BaseAct implements ResponseListener, VolleyR
 
     @Override
     public void onResponse(String response, String step) {
+        Log.e("RESSSSS", response);
+
+        List<Transaction> transactions = ResponseParser.parseToTransactions(response);
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(layoutManager);
+        TransactionAdapter adapter = new TransactionAdapter(transactions);
+        mRecyclerView.setAdapter(adapter);
+
         //STATUS:OK:DATA:18/06/21 CHARGES DR          4600.00
         //18/06/21 MB:RTGS DR         80000.00
         //18/06/21 CHARGES DR          4600.00
@@ -99,33 +110,33 @@ public class Mini_Statement extends BaseAct implements ResponseListener, VolleyR
         //18/06/21 MB:RTGS DR         80000.00
         //18/06/21 CHARGES DR          4600.00
         //18/06/21 MB:RTGS DR         80000.00
-        myDataSet.clear();
-        response = response.replace("\r","~");
-        String[] Maindata = response.split("~");
-        int i = 0;
-        for (String s: Maindata){
-            try {
-                String date = Maindata[i].substring(0,8),
-                        desc = Maindata[i].substring(9,16),
-                        type = Maindata[i].substring(17,19),
-                        amount =  Maindata[i].substring(19,36);
-                if(date.trim().isEmpty()) date = "N/A";
-                if(desc.trim().isEmpty()) desc = "N/A";
-                if(type.trim().isEmpty()) type = "N/A";
-                if(amount.trim().isEmpty()) {
-                    amount = "N/A";
-                } else {
-                    amount = am.Amount_Thousands(amount.trim());
-                }
-                s = date + "|" + desc + "|" + type + "|" + amount ;
-            } catch (Exception sE){
-                am.LogThis("StringIndex Error : "+sE.getMessage());
-            }
-            myDataSet.add(s);
-            mAdapter.notifyDataSetChanged();
-            mRecyclerView.setAdapter(mAdapter);
-            i++;
-        }
+//        myDataSet.clear();
+//        response = response.replace("\r","~");
+//        String[] Maindata = response.split("~");
+//        int i = 0;
+//        for (String s: Maindata){
+//            try {
+//                String date = Maindata[i].substring(0,8),
+//                        desc = Maindata[i].substring(9,16),
+//                        type = Maindata[i].substring(17,19),
+//                        amount =  Maindata[i].substring(19,36);
+//                if(date.trim().isEmpty()) date = "N/A";
+//                if(desc.trim().isEmpty()) desc = "N/A";
+//                if(type.trim().isEmpty()) type = "N/A";
+//                if(amount.trim().isEmpty()) {
+//                    amount = "N/A";
+//                } else {
+//                    amount = am.Amount_Thousands(amount.trim());
+//                }
+//                s = date + "|" + desc + "|" + type + "|" + amount ;
+//            } catch (Exception sE){
+//                am.LogThis("StringIndex Error : "+sE.getMessage());
+//            }
+//            myDataSet.add(s);
+//            mAdapter.notifyDataSetChanged();
+//            mRecyclerView.setAdapter(mAdapter);
+//            i++;
+//        }
         accountInfoLayout.setVisibility(View.VISIBLE);
     }
 

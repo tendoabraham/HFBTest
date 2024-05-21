@@ -1049,6 +1049,7 @@ public class AllMethods {
         if (getCountry().equalsIgnoreCase("UGANDA"))
             return "https://app.craftsilicon.com/AuthServ/api/auth/apps";
         else
+//            return "https://elmaauthserver.azurewebsites.net/AuthServ/api/auth/apps";
             return D_T("ITcYFtXDh2esU+aOXoJr9ugd1yLhebnlFQJKUA6ulV0YcG1DUP99OfWWPTNCk9VoeDHVv5rd5C0QY0EGJ3SE3g==");
     }
 
@@ -1117,8 +1118,8 @@ public class AllMethods {
     }
 
     public void get(final ResponseListener responseListener, String she, String task, final String step) {
-//        Log.e("Req", she);
-//        Log.e("Req1", task);
+        Log.e("Req", she);
+        Log.e("Req1", task);
 
         final String finalShe = she.concat(finale(step));
         JSONObject jsonObject = new JSONObject();
@@ -1136,6 +1137,8 @@ public class AllMethods {
         }
         setProgressMessage(task);
         progressDialog("1");
+        Log.e("JS", jsonObject.toString());
+        Log.e("EP", getToken());
         AndroidNetworking
                 .post(getToken())
                 .addJSONObjectBody(jsonObject)
@@ -1145,7 +1148,7 @@ public class AllMethods {
                 .getAsJSONObject(new JSONObjectRequestListener() {
                     @Override
                     public void onResponse(JSONObject response) {
-
+                        Log.e("RESS", response.toString());
                         try {
                             String status = response.getString("respCode");
                             switch (status) {
@@ -1170,8 +1173,8 @@ public class AllMethods {
                                     uri = SPAN(uri, machine).concat("?c=S");
                                     extrauri = SPAN(extrauri, machine);
 
-//                                    Log.e("uri", uri);
-//                                    Log.e("extraUri", extrauri);
+                                    Log.e("uri", uri);
+                                    Log.e("extraUri", extrauri);
 
                                     if(step.contains("RAO")) {
                                         //Use ExtraUri to fetch and Post large data chunks
@@ -1212,10 +1215,10 @@ public class AllMethods {
     }
 
     private void connect (String request, String baseUrl, final String result, final ResponseListener responseListener, final String token, final String step){
-//                  Log.e("SendEFT",request) ;
+                  Log.e("SendEFT",request) ;
         baseUrl = baseUrl + BIND(request,result);
-//        Log.e("BASEURL", baseUrl);
-//        Log.e("Request", request);
+        Log.e("BASEURL", baseUrl);
+        Log.e("Request", request);
         putSavedData("RAO", baseUrl);
         AndroidNetworking
                 .get(baseUrl)
@@ -1226,6 +1229,7 @@ public class AllMethods {
                 .getAsString(new StringRequestListener() {
                     @Override
                     public void onResponse(String response) {
+                        Log.e("Response", response);
                         try {
                             progressDialog("0");
                             response=response.replace("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">","");
@@ -1233,7 +1237,7 @@ public class AllMethods {
                             response=REVERSE(response,result);
 
 
-//                            Log.e("Response", response);
+                            Log.e("Response", response);
                             Activity activity = (Activity)context;
                             if (activity.getClass().equals(Login.class) || activity.getClass().equals(AccountOpenSplash.class) || activity.getClass().equals(AccountOpenZMain.class) || step.equals("CON")) {
                                 responseListener.onResponse(response,step);

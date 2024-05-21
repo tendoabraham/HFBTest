@@ -293,13 +293,17 @@ public class Main_Menu extends BaseAct implements NavigationView.OnNavigationIte
     @Override
     public void onResponse(String response, String step) {
         //STATUS:OK:DATA:BankHFBBalance;UGXActual;6,562,661.06Available/Unused limit;6,552,661.06
-        String[] values = response.replace("/Unused limit","").split(";");
-        String currency = values[1].replace("Actual","");
-        String total = values[2].replace("Available","");
-        String credit = values[3].trim();
-        accountTotal.setText(am.Amount_Thousands(total));
-        accountCredit.setText(am.Amount_Thousands(credit));
-        am.setBal(credit);
+//        String[] values = response.replace("/Unused limit","").split(";");
+//        String currency = values[1].replace("Actual","");
+//        String total = values[2].replace("Available","");
+//        String credit = values[3].trim();
+//        accountTotal.setText(am.Amount_Thousands(total));
+//        accountCredit.setText(am.Amount_Thousands(credit));
+//        am.setBal(credit);
+
+        accountTotal.setText(am.Amount_Thousands(response));
+        accountCredit.setText(am.Amount_Thousands(response));
+        am.setBal(response);
         am.saveDoneTrx(false);
     }
 }

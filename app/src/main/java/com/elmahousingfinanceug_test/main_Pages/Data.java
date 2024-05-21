@@ -210,12 +210,24 @@ public class Data extends BaseAct implements ResponseListener, VolleyResponse {
                     quest = (
                             "FORMID:M-:" +
                                     "MERCHANTID:MMONEYUGMTN:" +
+                                    "INFOFIELD1:VALIDATE:" +
+                                    "INFOFIELD2:MTN:" +
+//                                        "TOACCOUNTID:" + sendPhoneStr + ":" +
                                     "ACCOUNTID:" + sendPhoneStr + ":" +
                                     "BANKID:" + am.getBankID() + ":" +
                                     "ACTION:GETNAME:"
                     );
                     //am.connectOldTwo(getString(R.string.validating),quest,this,"MTN");
                     am.get(Data.this, quest, getString(R.string.validating), "MTN2");
+//                    quest = (
+//                            "FORMID:M-:" +
+//                                    "MERCHANTID:MMONEYUGMTN:" +
+//                                    "ACCOUNTID:" + sendPhoneStr + ":" +
+//                                    "BANKID:" + am.getBankID() + ":" +
+//                                    "ACTION:GETNAME:"
+//                    );
+//                    //am.connectOldTwo(getString(R.string.validating),quest,this,"MTN");
+//                    am.get(Data.this, quest, getString(R.string.validating), "MTN2");
                 }
             }
         });
@@ -360,13 +372,14 @@ public class Data extends BaseAct implements ResponseListener, VolleyResponse {
         quest = (
                 "FORMID:M-:" +
                         "MERCHANTID:" + "MTNDB:" +
+                        "SERVICENAME:" + "DATAMTNUG:" +
                         "INFOFIELD1:" + bundleIDString+ ":" +
                         "INFOFIELD9:" + phoneReceive  + ":" +
                         "ACCOUNTID:" + phoneReceive  + ":" +
                         "BANKID:" + am.getBankID() + ":" +
                         "ACTION:GETNAME:"
         );
-        am.get_(this, quest,getString(R.string.loading),"AMT");
+        am.get(this, quest,getString(R.string.loading),"AMT");
     }
 
     public void getStaticData(){
@@ -403,7 +416,7 @@ public class Data extends BaseAct implements ResponseListener, VolleyResponse {
                                 "PROVIDER:" + "MTN:" +
                                 "CATEGORY:" + mtnCategotyIDs.get(position) + ":"
                 );
-                am.get_(Data.this, quest,getString(R.string.fetchBundles),"DBC");
+                am.get(Data.this, quest,getString(R.string.fetchBundles),"DBC");
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {

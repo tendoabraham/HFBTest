@@ -45,7 +45,7 @@ public class Funds_Transfer extends BaseAct implements ResponseListener, VolleyR
     RadioButton RBTNMyAccount,RBTNOtherAccount, enterAccount, savedAccount;
     LinearLayout validateLayout, input;
     private RecyclerView valRecycler;
-    String accSend="",accReceive="",recipient="",quest="", benAcc="", bankCode="", branchCode="";
+    String accSend="",accReceive="",recipient="",quest="", benAcc="", bankCode="", branchCode="", sendMode="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -178,10 +178,9 @@ public class Funds_Transfer extends BaseAct implements ResponseListener, VolleyR
                     am.myDialog(Funds_Transfer.this, getString(R.string.alert), getString(R.string.sameAccError));
                 } else {
                     quest = (
-                            "FORMID:M-:" +
-                                    "MERCHANTID:VALIDATEACCOUNTBANK:" +
-                                    "ACCOUNTID:" + ETAccount.getText().toString().trim() + ":" +
-                                    "ACTION:GETNAME:"
+                            "FORMID:B-:" +
+                                    "MERCHANTID:ACCOUNTVALIDATION:" +
+                                    "TOACCOUNT:" + ETAccount.getText().toString().trim() + ":"
                     );
                     //am.connectOldTwo(getString(R.string.validating),quest,Funds_Transfer.this,"VAL");
                     am.get(Funds_Transfer.this,quest,getString(R.string.validating),"VAL");
@@ -211,8 +210,10 @@ public class Funds_Transfer extends BaseAct implements ResponseListener, VolleyR
                 } else {
                     if (RBTNMyAccount.isChecked()) {
                         recipient = accReceive;
+                        sendMode = "IFTOWN";
                     } else {
                         recipient = ETAccount.getText().toString().trim();
+                        sendMode = "IFTOTHER";
                     }
                     gDialog = new Dialog(Funds_Transfer.this);
                     //noinspection ConstantConditions
@@ -237,6 +238,7 @@ public class Funds_Transfer extends BaseAct implements ResponseListener, VolleyR
                                             "MERCHANTID:TRANSFER:" +
                                             "BANKACCOUNTID:" + accSend + ":" +
                                             "TOACCOUNT:" + recipient + ":" +
+                                            "INFOFIELD3:" + sendMode + ":" +
                                             "AMOUNT:" + ETAmount.getText().toString().trim() + ":" +
                                             "MESSAGE:" + ETMessage.getText().toString().trim() + ":" +
                                             "TMPIN:" + ETPin.getText().toString().trim() + ":"
@@ -271,7 +273,7 @@ public class Funds_Transfer extends BaseAct implements ResponseListener, VolleyR
                         "BENFTYPE:" + "INTERNAL" + ":" +
                         "BANKID:" + am.getBankID() + ":"
         );
-        am.get_(this,quest,getString(R.string.fetchingBeneficiaries) ,"GETIN");
+        am.get(this,quest,getString(R.string.fetchingBeneficiaries) ,"GETIN");
     }
 
     private void populateSpinners2() {

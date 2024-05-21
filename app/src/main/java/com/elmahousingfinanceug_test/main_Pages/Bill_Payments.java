@@ -126,13 +126,14 @@ public class Bill_Payments extends BaseAct implements ResponseListener, VolleyRe
                                 "FORMID:B-:" +
                                         "MERCHANTID:" + am.getMerchantID() + ":" +
                                         "BANKACCOUNTID:" + accSend + ":" +
-                                        "ACCOUNTID:" + meterNumber + ":" +
+                                        "TOACCOUNTID:" + meterNumber + ":" +
                                         "INFOFIELD1:" + areaString + ":" +
                                         "INFOFIELD2:" + "VALIDATION" + ":" +
                                         "INFOFIELD3:" + ETMeterAccNumber.getText().toString().trim() + ":" +
-                                        "INFOFIELD9:" + am.getUserPhone() + ":" +
-                                        "AMOUNT:" + "501" + ":" +
-                                        "ACTION:GETNAME:"
+                                        "INFOFIELD9:" + am.getUserPhone() + ":"
+//                                        +
+//                                        "AMOUNT:" + "501" + ":" +
+//                                        "ACTION:GETNAME:"
 
                                 /*"FORMID:M-:" + old
                                         "MERCHANTID:" + am.getMerchantID() + ":" +
@@ -141,11 +142,20 @@ public class Bill_Payments extends BaseAct implements ResponseListener, VolleyRe
                                         "INFOFIELD9:" + am.getUserPhone() + ":" +
                                         "ACTION:GETNAME:"*/
                         );
-                    } else {
+                    } else  if ("007001002".equals(am.getMerchantID())) {
                         quest = (
                                 "FORMID:M-:" +
                                         "MERCHANTID:" + am.getMerchantID() + ":" +
-                                        "ACCOUNTID:" + meterNumber + ":" +
+                                        "SERVICEACCOUNTID:" + meterNumber + ":" +
+                                        "INFOFIELD1:" + pageTitle + ":" +
+                                        "INFOFIELD9:" + am.getUserPhone() + ":" +
+                                        "ACTION:GETNAME:"
+                        );
+                    }else {
+                        quest = (
+                                "FORMID:M-:" +
+                                        "MERCHANTID:" + am.getMerchantID() + ":" +
+                                        "TOACCOUNTID:" + meterNumber + ":" +
                                         "INFOFIELD1:" + pageTitle + ":" +
                                         "INFOFIELD9:" + am.getUserPhone() + ":" +
                                         "ACTION:GETNAME:"
@@ -214,7 +224,7 @@ public class Bill_Payments extends BaseAct implements ResponseListener, VolleyRe
                                                 "INFOFIELD2:" + "PAYMENT" + ":" +
                                                 "INFOFIELD3:" + ETMeterAccNumber.getText().toString().trim() + ":" +
                                                 "INFOFIELD9:" + am.getUserPhone() + ":"+
-                                                "ACCOUNTID:" + ETMeterAccNumber.getText().toString().trim() + ":" +
+                                                "TOACCOUNTID:" + ETMeterAccNumber.getText().toString().trim() + ":" +
                                                 "AMOUNT:" + ETAmount.getText().toString().trim() + ":" +
                                                 "TMPIN:" + ETPin.getText().toString().trim() + ":" +
                                                 "ACTION:GETNAME:"
@@ -239,7 +249,8 @@ public class Bill_Payments extends BaseAct implements ResponseListener, VolleyRe
                                                 "INFOFIELD1:" + billAccName + ":" +
                                                 "INFOFIELD2:" + billDueAmount + ":" +
                                                 "INFOFIELD3:" + am.getUserPhone() + ":"+
-                                                "ACCOUNTID:" + ETMeterAccNumber.getText().toString().trim() + ":" +
+//                                                "TOACCOUNTID:" + ETMeterAccNumber.getText().toString().trim() + ":" +
+                                                "SERVICEACCOUNTID:" + ETMeterAccNumber.getText().toString().trim() + ":" +
                                                 "AMOUNT:" + ETAmount.getText().toString().trim() + ":" +
                                                 "TMPIN:" + ETPin.getText().toString().trim() + ":" +
                                                 "ACTION:PAYBILL:"
@@ -251,7 +262,7 @@ public class Bill_Payments extends BaseAct implements ResponseListener, VolleyRe
                                                 "MERCHANTID:" + am.getMerchantID() + ":" +
                                                 "BANKACCOUNTID:" + accSend + ":" +
                                                 "INFOFIELD9:" + am.getUserPhone() + ":"+
-                                                "ACCOUNTID:" + ETMeterAccNumber.getText().toString().trim() + ":" +
+                                                "TOACCOUNTID:" + ETMeterAccNumber.getText().toString().trim() + ":" +
                                                 "AMOUNT:" + ETAmount.getText().toString().trim() + ":" +
                                                 "TMPIN:" + ETPin.getText().toString().trim() + ":" +
                                                 "ACTION:PAYBILL:"
@@ -434,7 +445,7 @@ public class Bill_Payments extends BaseAct implements ResponseListener, VolleyRe
                             "SERVICEID:UMEME Power:"
             );
         }
-        am.get_(this,quest,getString(R.string.fetchingBeneficiaries) + " " + getString(R.string.forWord) + " " + utilityID,"BEN");
+        am.get(this,quest,getString(R.string.fetchingBeneficiaries) + " " + getString(R.string.forWord) + " " + utilityID,"BEN");
     }
 
     public void getBouquets(String bouquet){
@@ -644,7 +655,7 @@ public class Bill_Payments extends BaseAct implements ResponseListener, VolleyRe
                                 "INFOFIELD3:" + ETMeterAccNumber.getText().toString().trim() + ":" +
                                 "INFOFIELD8:POSTOTPVALIDATE:" +
                                 "INFOFIELD9:" + am.getUserPhone() + ":"+
-                                "ACCOUNTID:" + ETMeterAccNumber.getText().toString().trim() + ":" +
+                                "TOACCOUNTID:" + ETMeterAccNumber.getText().toString().trim() + ":" +
                                 "AMOUNT:" + ETAmount.getText().toString().trim() + ":" +
                                 "TMPIN:" + ETPin.getText().toString().trim() + ":" +
                                 "ACTION:GETNAME:"
@@ -670,7 +681,7 @@ public class Bill_Payments extends BaseAct implements ResponseListener, VolleyRe
                                 "INFOFIELD2:" + billDueAmount + ":" +
                                 "INFOFIELD3:" + am.getUserPhone() + ":"+
                                 "INFOFIELD8:POSTOTPVALIDATE:" +
-                                "ACCOUNTID:" + ETMeterAccNumber.getText().toString().trim() + ":" +
+                                "TOACCOUNTID:" + ETMeterAccNumber.getText().toString().trim() + ":" +
                                 "AMOUNT:" + ETAmount.getText().toString().trim() + ":" +
                                 "TMPIN:" + ETPin.getText().toString().trim() + ":" +
                                 "ACTION:PAYBILL:"
@@ -683,7 +694,7 @@ public class Bill_Payments extends BaseAct implements ResponseListener, VolleyRe
                                 "BANKACCOUNTID:" + accSend + ":" +
                                 "INFOFIELD8:POSTOTPVALIDATE:" +
                                 "INFOFIELD9:" + am.getUserPhone() + ":"+
-                                "ACCOUNTID:" + ETMeterAccNumber.getText().toString().trim() + ":" +
+                                "TOACCOUNTID:" + ETMeterAccNumber.getText().toString().trim() + ":" +
                                 "AMOUNT:" + ETAmount.getText().toString().trim() + ":" +
                                 "TMPIN:" + ETPin.getText().toString().trim() + ":" +
                                 "ACTION:PAYBILL:"

@@ -23,18 +23,6 @@ public class OcrResults extends AppCompatActivity {
 
         new OCRState(this).save(ocrData);
         finish();
-
-//        String[] names = ocrData.getGivenName().split(" ");
-//        String firstName = ocrData.getGivenName();
-//        String  secondName = "";
-//
-//        if (names.length > 1)
-//            for (int i = 0; i < names.length; i++) {
-//                firstName = names[0];
-//                secondName=names[1];
-//            }
-
-
     }
 
 

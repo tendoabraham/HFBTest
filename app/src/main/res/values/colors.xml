@@ -32,5 +32,6 @@
 
     <color name="dim">#a5000000</color>
     <color name="transparent">#00000000</color>
+    <color name="colorAccent">#16007A</color>
 
 </resources>

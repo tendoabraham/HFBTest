@@ -241,7 +241,7 @@ public class Beneficiaries extends BaseAct implements ResponseListener {
                                     "BENFTYPE:" + serviceType + ":" +
                                     "BANKID:" + am.getBankID() + ":"
                     );
-                    am.get_(this,quest,getString(R.string.fetchingBeneficiaries),"BEN_GBI");
+                    am.get(this,quest,getString(R.string.fetchingBeneficiaries),"BEN_GBI");
 
                     numChoice.setVisibility(View.GONE);
                     numChoice2.setVisibility(View.GONE);
@@ -269,7 +269,7 @@ public class Beneficiaries extends BaseAct implements ResponseListener {
                                     "SERVICETYPE:" + serviceType + ":" +
                                     "SERVICEID:" + utilityID + ":"
                     );
-                    am.get_(Beneficiaries.this,quest,getString(R.string.fetchingBeneficiaries)  + " " + getString(R.string.forWord) + " " + utilityID,"BEN_UTS");
+                    am.get(Beneficiaries.this,quest,getString(R.string.fetchingBeneficiaries)  + " " + getString(R.string.forWord) + " " + utilityID,"BEN_UTS");
 
                     numChoice.setVisibility(View.GONE);
                     numChoice2.setVisibility(View.GONE);
@@ -393,7 +393,7 @@ public class Beneficiaries extends BaseAct implements ResponseListener {
                                 "SERVICETYPE:" + serviceType + ":" +
                                 "SERVICEID:" +  utilityID + ":"
                 );
-                am.get_(Beneficiaries.this,quest,getString(R.string.fetchingBeneficiaries) + " " + getString(R.string.forWord) + " " + utilityID,"BEN_AIR");
+                am.get(Beneficiaries.this,quest,getString(R.string.fetchingBeneficiaries) + " " + getString(R.string.forWord) + " " + utilityID,"BEN_AIR");
                 break;
 
             case "Airtel":
@@ -406,7 +406,7 @@ public class Beneficiaries extends BaseAct implements ResponseListener {
                                 "SERVICETYPE:" + serviceType + ":" +
                                 "SERVICEID:" +  utilityID + ":"
                 );
-                am.get_(Beneficiaries.this,quest,getString(R.string.fetchingBeneficiaries) + " " + getString(R.string.forWord) + " " + utilityID,"BEN_AIR");
+                am.get(Beneficiaries.this,quest,getString(R.string.fetchingBeneficiaries) + " " + getString(R.string.forWord) + " " + utilityID,"BEN_AIR");
                 break;
 
             case "MTN Money":
@@ -417,7 +417,7 @@ public class Beneficiaries extends BaseAct implements ResponseListener {
                                 "SERVICETYPE:" + serviceType + ":" +
                                 "SERVICEID:" + "MMONEYUGMTN" + ":"
                 );
-                am.get_(this,quest,getString(R.string.fetchingBeneficiaries),"BEN_MTN");
+                am.get(this,quest,getString(R.string.fetchingBeneficiaries),"BEN_MTN");
                 break;
             case "Airtel Money":
                 benTitle.setText("AIRTEL MONEY BENEFICIARIES");
@@ -427,7 +427,7 @@ public class Beneficiaries extends BaseAct implements ResponseListener {
                                 "SERVICETYPE:" + serviceType + ":" +
                                 "SERVICEID:" + "MMONEYUGAIRTEL" + ":"
                 );
-                am.get_(this,quest,getString(R.string.fetchingBeneficiaries),"BEN_MTN");
+                am.get(this,quest,getString(R.string.fetchingBeneficiaries),"BEN_MTN");
                 break;
             case "DSTV":
                 benTitle.setText("DSTV BENEFICIARIES");
@@ -437,7 +437,7 @@ public class Beneficiaries extends BaseAct implements ResponseListener {
                                 "SERVICETYPE:Utility:" +
                                 "SERVICEID:DSTV:"
                 );
-                am.get_(Beneficiaries.this,quest,getString(R.string.fetchingBeneficiaries)  + " " + getString(R.string.forWord) + " DSTV","BEN_UTS");
+                am.get(Beneficiaries.this,quest,getString(R.string.fetchingBeneficiaries)  + " " + getString(R.string.forWord) + " DSTV","BEN_UTS");
                 break;
             case "GOTV":
                 benTitle.setText("GOTV BENEFICIARIES");
@@ -447,7 +447,7 @@ public class Beneficiaries extends BaseAct implements ResponseListener {
                                 "SERVICETYPE:Utility:" +
                                 "SERVICEID:GOTV:"
                 );
-                am.get_(Beneficiaries.this,quest,getString(R.string.fetchingBeneficiaries)  + " " + getString(R.string.forWord) + " GOTV","BEN_UTS");
+                am.get(Beneficiaries.this,quest,getString(R.string.fetchingBeneficiaries)  + " " + getString(R.string.forWord) + " GOTV","BEN_UTS");
                 break;
             case "StarTimes":
                 benTitle.setText("STAR TIMES BENEFICIARIES");
@@ -457,7 +457,7 @@ public class Beneficiaries extends BaseAct implements ResponseListener {
                                 "SERVICETYPE:Utility:" +
                                 "SERVICEID:STAR TIMES:"
                 );
-                am.get_(Beneficiaries.this,quest,getString(R.string.fetchingBeneficiaries)  + " " + getString(R.string.forWord) + " Star Times","BEN_UTS");
+                am.get(Beneficiaries.this,quest,getString(R.string.fetchingBeneficiaries)  + " " + getString(R.string.forWord) + " Star Times","BEN_UTS");
                 break;
             case "National Water":
                 benTitle.setText("NATIONAL WATER BENEFICIARIES");
@@ -467,7 +467,7 @@ public class Beneficiaries extends BaseAct implements ResponseListener {
                                 "SERVICETYPE:Utility:" +
                                 "SERVICEID:National Water:"
                 );
-                am.get_(Beneficiaries.this,quest,getString(R.string.fetchingBeneficiaries)  + " " + getString(R.string.forWord) + " National Water","BEN_UTS");
+                am.get(Beneficiaries.this,quest,getString(R.string.fetchingBeneficiaries)  + " " + getString(R.string.forWord) + " National Water","BEN_UTS");
                 break;
             case "Umeme Yaka":
                 benTitle.setText("UMEME YAKA BENEFICIARIES");
@@ -477,7 +477,7 @@ public class Beneficiaries extends BaseAct implements ResponseListener {
                                 "SERVICETYPE:Utility:" +
                                 "SERVICEID:UMEME YAKA:"
                 );
-                am.get_(Beneficiaries.this,quest,getString(R.string.fetchingBeneficiaries)  + " " + getString(R.string.forWord) + " Umeme Yaka","BEN_UTS");
+                am.get(Beneficiaries.this,quest,getString(R.string.fetchingBeneficiaries)  + " " + getString(R.string.forWord) + " Umeme Yaka","BEN_UTS");
                 break;
             case "Umeme Post-Paid":
                 benTitle.setText("UMEME POST-PAID BENEFICIARIES");
@@ -487,7 +487,7 @@ public class Beneficiaries extends BaseAct implements ResponseListener {
                                 "SERVICETYPE:Utility:" +
                                 "SERVICEID:UMEME Power:"
                 );
-                am.get_(Beneficiaries.this,quest,getString(R.string.fetchingBeneficiaries)  + " " + getString(R.string.forWord) + " Umeme Post-Paid","BEN_UTS");
+                am.get(Beneficiaries.this,quest,getString(R.string.fetchingBeneficiaries)  + " " + getString(R.string.forWord) + " Umeme Post-Paid","BEN_UTS");
                 break;
         }
     }
@@ -621,7 +621,7 @@ public class Beneficiaries extends BaseAct implements ResponseListener {
                                 "UTILITYACCOUNTID:" + am.getSendPhone() + ":" +
                                 "UTILITYALIAS:" + benName.getText().toString().trim().replace(":","").replace("|","").replace("~","").replace(",","").replace(";","") + ":"
                 );
-                am.get_(this,quest,getString(R.string.processingReq),"BEN_ADD");
+                am.get(this,quest,getString(R.string.processingReq),"BEN_ADD");
                 break;
             case "007001017":
                                 am.saveSendPhone(phoneNum.getText().toString().trim());
@@ -632,7 +632,7 @@ public class Beneficiaries extends BaseAct implements ResponseListener {
                                                 "UTILITYACCOUNTID:" + am.getSendPhone() + ":" +
                                                 "UTILITYALIAS:" + benName.getText().toString().trim().replace(":","").replace("|","").replace("~","").replace(",","").replace(";","") + ":"
                                 );
-                                am.get_(this,quest,getString(R.string.processingReq),"BEN_ADD");
+                                am.get(this,quest,getString(R.string.processingReq),"BEN_ADD");
                 break;
             case "007001016":
                                 am.saveSendPhone(phoneNum.getText().toString().trim());
@@ -643,7 +643,7 @@ public class Beneficiaries extends BaseAct implements ResponseListener {
                                                 "UTILITYACCOUNTID:" + am.getSendPhone() + ":" +
                                                 "UTILITYALIAS:" + benName.getText().toString().trim().replace(":","").replace("|","").replace("~","").replace(",","").replace(";","") + ":"
                                 );
-                                am.get_(this,quest,getString(R.string.processingReq),"BEN_ADD");
+                                am.get(this,quest,getString(R.string.processingReq),"BEN_ADD");
                 break;
             case "TRANSFER":
                 quest = (
@@ -655,7 +655,7 @@ public class Beneficiaries extends BaseAct implements ResponseListener {
                                 "BENFBRANCH:" +  am.getBankID() + ":" +
                                 "BANKID:" + am.getBankID() + ":"
                 );
-                am.get_(this,quest,getString(R.string.processingReq),"BEN_ADD");
+                am.get(this,quest,getString(R.string.processingReq),"BEN_ADD");
                 break;
             case "007001001":
             case "007001014":
@@ -671,7 +671,7 @@ public class Beneficiaries extends BaseAct implements ResponseListener {
                                 "UTILITYALIAS:" + benName.getText().toString().trim().replace(":","").replace("|","").replace("~","").replace(",","").replace(";","") + ":" +
                                 "SERVICETYPE:Utility:"
                 );
-                am.get_(this,quest,getString(R.string.processingReq),"BEN_ADD");
+                am.get(this,quest,getString(R.string.processingReq),"BEN_ADD");
                 break;
         }
     }
@@ -684,7 +684,7 @@ public class Beneficiaries extends BaseAct implements ResponseListener {
                         "UTILITYACCOUNTID:" + benAcc + ":" +
                         "UTILITYALIAS:" + benefit.getSelectedItem().toString().trim() + ":"
         );
-        am.get_(this,quest,getString(R.string.processingReq),"BEN_DEL");
+        am.get(this,quest,getString(R.string.processingReq),"BEN_DEL");
     }
 
     @Override

@@ -265,59 +265,6 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
         }
     });
 
-//    private final ActivityResultLauncher<CropImageContractOptions> cropImage
-//            = registerForActivityResult(new CropImageContract(), result -> {
-//        if (result.isSuccessful()) {
-//            String uriFilePath = result.getUriFilePath(AccountOpenZMain.this, false);
-//            Log.e("Image", uriFilePath);
-//            Bitmap bitmap = getImageFromStorage(uriFilePath);
-//            if (bitmap != null) {
-//                try {
-//
-//                    if (image_checker.equals("selfie")) {
-//
-//                        //Bitmap bmp = ;
-//                        ByteArrayOutputStream stream1 = new ByteArrayOutputStream();
-//                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream1);
-//                        byteArray1 = stream1.toByteArray();
-//
-////                            bmp.recycle()
-//                            /*front.setImage(bitmap);
-//                            bitmapImageFront = BitmapCompressionWithZ(this, mFile);
-//                            encodedImageFront = ConvertImageToBase64(bitmap);
-//
-//                            am.putSavedData("encodedImageFront", encodedImageFront);*/
-//
-//                        selfie.setImage(bitmap);
-////                        bitmapImageSelfie = BitmapCompressionWithZ(this, mFile);
-//                        encodedImageSelfie = ConvertImageToBase64(bitmap);
-//                        am.putSavedData("encodedImageSelfie", encodedImageSelfie);
-////                            preferenceHelper.saveTakenSelfy(encodedImageSelfie);
-////                        selfie.setImage(bitmap);
-////                        encodedImageSelfie = ConvertImageToBase64(bitmap);
-//                    } else if (image_checker.equals("signature")) {
-//                        signature.setImage(bitmap);
-//                        encodedImageSignature = ConvertImageToBase64(bitmap);
-//                    }
-//
-//
-//                } catch (Exception e) {
-//                    Log.e("Image3rrr", "this:" + e);
-//                    e.printStackTrace();
-//
-//                }
-//
-//
-//            } else {
-//                Exception exception = result.getError();
-//                Toast.makeText(this, "Kindly check your Image", Toast.LENGTH_SHORT).show();
-//
-//
-//            }
-//        }
-//    });
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -435,10 +382,8 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
             }
         });
 
-        //Create Fields for user input
         generateForms();
 
-        //Condition hide new for existing customers
         if (am.getCustomerID().length() < 10) {
             new_Lay.setVisibility(View.VISIBLE);
         } else {
@@ -446,7 +391,6 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
         }
 
         title.setText(step0);
-
 
         branchselect.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -577,11 +521,6 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
             try {
 
                 String smsBody = iN.getStringExtra("Type");
-                //Get account details from StaticData response
-
-                //ProductID|2024|ProductName|Save plus Account|CurrencyID|UGX|Urls|https://www.housingfinance.co.ug/retail-banking/savings-account/save-plus-account/~
-                // ProductID|2024|ProductName|Save plus Account|CurrencyID|USD|Urls|https://www.housingfinance.co.ug/retail-banking/savings-account/save-plus-account/~
-                // ProductID|2024|ProductName|Save plus Account|CurrencyID|GBP|Urls|https://www.housingfinance.co.ug/retail-banking/savings-account/save-plus-account/~ProductID|2024|ProductName|Save plus Account|CurrencyID|EUR|Urls|https://www.housingfinance.co.ug/retail-banking/savings-account/save-plus-account/~ProductID|2024|ProductName|Easy Savings Account|CurrencyID|UGX|Urls|https://www.housingfinance.co.ug/retail-banking/savings-account/easy-savings-account/~ProductID|2024|ProductName|Easy Savings Account|CurrencyID|USD|Urls|https://www.housingfinance.co.ug/retail-banking/savings-account/easy-savings-account/~ProductID|2024|ProductName|Easy Savings Account|CurrencyID|GBP|Urls|https://www.housingfinance.co.ug/retail-banking/savings-account/easy-savings-account/~ProductID|2024|ProductName|Easy Savings Account|CurrencyID|EUR|Urls|https://www.housingfinance.co.ug/retail-banking/savings-account/easy-savings-account/~ProductID|2024|ProductName|U-Savers Account|CurrencyID|UGX|Urls|https://www.housingfinance.co.ug/retail-banking/savings-account/u-savers-account-student-account/~ProductID|2025|ProductName|Toto’s Treasure Account|CurrencyID|UGX|Urls|https://www.housingfinance.co.ug/retail-banking/savings-account/totos-treasure-account/~ProductID|2025|ProductName|Toto’s Treasure Account|CurrencyID|USD|Urls|https://www.housingfinance.co.ug/retail-banking/savings-account/totos-treasure-account/~ProductID|2025|ProductName|Toto’s Treasure Account|CurrencyID|GBP|Urls|https://www.housingfinance.co.ug/retail-banking/savings-account/totos-treasure-account/~ProductID|2025|ProductName|Toto’s Treasure Account|CurrencyID|EUR|Urls|https://www.housingfinance.co.ug/retail-banking/savings-account/totos-treasure-account/~ProductID|2030|ProductName|Salary Current Account|CurrencyID|UGX|Urls|https://www.housingfinance.co.ug/retail-banking/current-accounts/salary-current-account/~ProductID|2030|ProductName|Pearl Current Account|CurrencyID|UGX|Urls|https://www.housingfinance.co.ug/retail-banking/current-accounts/pearl-current-account/~ProductID|2030|ProductName|Pearl Current Account|CurrencyID|USD|Urls|https://www.housingfinance.co.ug/retail-banking/current-accounts/pearl-current-account/~ProductID|2030|ProductName|Pearl Current Account|CurrencyID|GBP|Urls|https://www.housingfinance.co.ug/retail-banking/current-accounts/pearl-current-account/~ProductID|2030|ProductName|Pearl Current Account|CurrencyID|EURO|Urls|https://www.housingfinance.co.ug/retail-banking/current-accounts/pearl-current-a
 
                 String[] Products = am.getSavedBundle().split("~");
                 accountIDs.clear();
@@ -626,20 +565,6 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                     }
                 }
 
-
-
-            /*JSONObject tact = new JSONObject(am.getSavedBundle());
-            accountProducts = tact.getJSONArray("OnlineAccountProduct");
-            branches = tact.getJSONArray("BankBranch");
-            for (int i = 0; i < accountProducts.length(); i++) {
-                JSONObject actor = accountProducts.getJSONObject(i);
-                if (!accountIDs.contains(actor.getString("ID"))) {
-                    accountIDs.add(actor.getString("ID"));
-                    accountNames.add(actor.getString("Description"));
-                    listUrls.add(actor.getString("Urls").replaceAll("\\\\",""));
-                }
-            }*/
-
                 float density = getResources().getDisplayMetrics().density;
                 int margin = (int) (6 * density);
                 RadioGroup.LayoutParams rp = new RadioGroup.LayoutParams((int) (115 * density), RadioGroup.LayoutParams.MATCH_PARENT, 1);
@@ -673,13 +598,10 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                     selectedAccountID = accountIDs.get(checkedId);
                     ProductDescription = productDescription.get(checkedId);
                     termsUrl = listUrls.get(checkedId);
-//                    Log.e("product description", ProductDescription);
                     decriptionPopup();
-
 
                     currencyNames.clear();
                     listCurrencyUrls.clear();
-
 
                     try {
 
@@ -692,18 +614,8 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                                 currencyNames.add(am.FindInArray(field_IDs, field_Values, "CurrencyID"));
                                 listCurrencyUrls.add(am.FindInArray(field_IDs, field_Values, "Urls"));
 
-
                             }
                         }
-
-                    /*accountProducts = tact.getJSONArray("OnlineAccountProduct");
-                    for (int i = 0; i < accountProducts.length(); i++) {
-                        JSONObject actor = accountProducts.getJSONObject(i);
-                        if(actor.getString("ID").matches(selectedAccountID)) {
-                            currencyNames.add(actor.getString("RelationID"));
-                        }
-                    }*/
-
                         currencyNames.add(0, "Select Currency");
                         listCurrencyUrls.add(0, "Select Currency");
                         ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<>(AccountOpenZMain.this, android.R.layout.simple_spinner_item, currencyNames);
@@ -711,14 +623,12 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                         currselect.setAdapter(spinnerArrayAdapter);
                         currencyLayout.setVisibility(View.VISIBLE);
 
-
                         currselect.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                             @Override
                             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                                 if (position != 0) {
                                     currName = currselect.getSelectedItem().toString().trim();
                                     currencyURL = listCurrencyUrls.get(position);
-//                                    Log.e("CurrencyURL", currencyURL);
                                 } else {
                                     currName = "";
                                     currencyURL = "";
@@ -731,15 +641,9 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                             }
                         });
 
-
                         if (customer_cat_.getSelectedCategory().equals("")) {
                             ErrorAlert("Select customer type.");
                         }
-
-                    /*if(selectedAccountID.equals("32219")){
-                        new_Lay.setVisibility(View.VISIBLE);
-                        staffPhoneNumber.setVisibility(View.VISIBLE);
-                    } else  staffPhoneNumber.setVisibility(View.GONE);*/
 
                         if (am.getCustomerID().length() < 10) {
                             new_Lay.setVisibility(View.VISIBLE);
@@ -758,11 +662,6 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                     am.putSaveSelectedAccountTypePosition(checkedId);
                 });
 
-                //BranchCode|07|BranchName|Arua~
-                // BranchCode|17|BranchName|Bank Operations~
-                // BranchCode|13|BranchName|Fortportal~BranchCode|10|BranchName|Gardencity~
-                // BranchCode|14|BranchName|Gulu~BranchCode|99|BranchName|HeadOffice~BranchCode|16|BranchName|Jinja~BranchCode|06|BranchName|Kikuubo~BranchCode|11|BranchName|Kololo~BranchCode|12|BranchName|Lira~BranchCode|20|BranchName|Malaba~BranchCode|08|BranchName|Mbale~BranchCode|05|BranchName|Mbarara~BranchCode|18|BranchName|Najjanankumbi~BranchCode|02|BranchName|Nakasero~BranchCode|03|BranchName|Namuwongo~BranchCode|15|BranchName|Ndeeba~BranchCode|04|BranchName|Ntinda~BranchCode|09|BranchName|Ovino~BranchCode|19|BranchName|Tororo~
-
                 String[] Branches = am.getSavedBranch().split("~");
 
                 for (String aBranch : Branches) {
@@ -775,14 +674,6 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                         listBranchNames.add(am.FindInArray(field_IDs, field_Values, "BranchName"));
                     }
                 }
-
-            /*for (int i = 0; i < branches.length(); i++) {
-                JSONObject actor = branches.getJSONObject(i);
-                if (!listBranchIDs.contains(actor.getString("ID"))) {
-                    listBranchIDs.add(actor.getString("ID"));
-                    listBranchNames.add(actor.getString("Description"));
-                }
-            }*/
 
                 listBranchNames.add(0, "Select Branch");
                 ArrayAdapter<String> spinnerArrayAdapterB = new ArrayAdapter<>(AccountOpenZMain.this, android.R.layout.simple_spinner_item, listBranchNames);
@@ -842,8 +733,6 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
     @SuppressLint("ResourceType")
     private void generateForms() {
 
-
-        //Contact Details  field inputs
         EmailAddress = new cicEditText(this, VAR.EMAIL, "Email Address " + getString(R.string.mandatory_field), " acb@domain.com");
         PhoneNumber = new cicEditText(this, VAR.PHONENUMBER, "Phone Number ", " 722222222");
         AlternatePhoneNumber = new cicEditText(this, VAR.PHONENUMBER, " Alternative Phone Number ", " 7333333");
@@ -851,29 +740,11 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
         country = new cicEditText(this, VAR.TEXT, "Country of residence", " Uganda");
         zipCode = new cicEditText(this, VAR.TEXT, "Country code", " 256");
 
-
         centecontacts.addView(EmailAddress);
         centecontacts.addView(PhoneNumber);
         centecontacts.addView(AlternatePhoneNumber);
 
-        //Was for address Drop down
-        /*if(am.getCountry().equals("UGANDATEST")) {
-            //ActualAddress.setVisibility(View.GONE);
-            getLayoutInflater().inflate(R.layout.address, centecontacts,true);
-        }
-        if(am.getCountry().equals("UGANDATEST")) {
-            regionselect = findViewById(R.id.regionselect);
-            districtName = findViewById(R.id.districtName);
-            countyName = findViewById(R.id.countyName);
-            subCountyName = findViewById(R.id.subCountyName);
-            parishName = findViewById(R.id.parishName);
-            villageName = findViewById(R.id.villageName);
-            eAName = findViewById(R.id.eAName);
-        }*/
-
         centecontacts.addView(country);
-//        centecontacts.addView(zipCode);
-//        centecontacts.addView(city);
         centecontacts.addView(ActualAddress);
 
 
@@ -1167,16 +1038,6 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
             }
         });
 
-
-        //Occupation Dropdowns
-        /*EmploymentType.setVisibility(View.GONE);
-        Occupation.setVisibility(View.GONE);
-        getLayoutInflater().inflate(R.layout.occuption, centesourceincome,true);
-        occupation_spin = findViewById(R.id.occupation_spin);
-        proffession_status = findViewById(R.id.proffession_status);*/
-
-
-        // hear us
         final TextView sstext = findViewById(R.id.sstext);
         c4 = new cicEditText(this, VAR.TEXT, "HFB Staff Name", " James Kabaku");
         c4.setVisibility(View.GONE);
@@ -1188,8 +1049,6 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
         c45.setVisibility(View.GONE);
         centehearusfrom.addView(c45);
         c5 = new cicEditText(this, VAR.TEXT, "Current Location ", " Kampala");
-//        centehearusfrom.addView(c5);
-
 
         final RadioGroup ssgroup = findViewById(R.id.ssgroup);
         radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
@@ -1237,9 +1096,6 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                 c45.setVisibility(View.GONE);
             }
         });
-
-
-        //Alternative bank dep detail
 
         alternativeAccountNumber = new cicEditText(this, VAR.NUMBER, "Alternative Account Number " + getString(R.string.mandatory_field), "00011100000");
         accountName = new cicEditText(this, VAR.TEXT, "Account Name " + getString(R.string.mandatory_field), "Saving plus");
@@ -1294,8 +1150,6 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                             }
                         });
                         RGroupM.check(0);
-//                        alternativeDeposite.addView(phoneregName);
-//                        alternativeDeposite.addView(phoneregLastName);
                         final RadioGroup mobile = findViewById(R.id.RGroupCon);
                         mobile.setOnCheckedChangeListener((group, checkedId) -> {
                             if (checkedId == R.id.yes) {
@@ -1335,7 +1189,6 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                 alternativeSecurityDeposit = "";
             }
         });
-
 
         //Parents details
         FatherFirstName = new cicEditText(this, VAR.TEXT, "Father's first name ", " John");
@@ -1421,11 +1274,6 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
         otherPosition.addView(PEPOtherPosition);
         otherRelationship.addView(PEPOtherRelationship);
 
-        //Political  stuff dropdown
-        /*PoliticallyExposed.setVisibility(View.GONE);
-        getLayoutInflater().inflate(R.layout.political, centeparentinfo,true);
-        political_spin = findViewById(R.id.political_spin);*/
-
         //Existing HFB Account
         accountNumber = new cicEditText(this, VAR.NUMBER, "Your Existing HFB Account Number", " 01001216399");
         accountNumber.setPadding(25, 0, 25, 0);
@@ -1437,21 +1285,6 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
         staffPhoneNumber.setPadding(25, 0, 25, 0);
         ccg.addView(staffPhoneNumber);
         staffPhoneNumber.setVisibility(View.GONE);
-    }
-
-
-    private void showImagePickerOptions() {
-        ImagePickerActivity.showImagePickerOptions(this, new ImagePickerActivity.PickerOptionListener() {
-            @Override
-            public void onTakeCameraSelected() {
-                launchCameraIntent();
-            }
-
-            @Override
-            public void onChooseGallerySelected() {
-                launchGalleryIntent();
-            }
-        });
     }
 
     private void flipViewIt(int i) {
@@ -1509,13 +1342,6 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                 title.setText(step11);
                 next.setVisibility(View.INVISIBLE);
                 break;
-//            case 12:
-//                title.setText(step11);
-//                break;
-//            case 13:
-//                title.setText(step12);
-//                startStimer();
-//                break;*/
         }
     }
 
@@ -1552,376 +1378,8 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
         startActivityForResult(intent, REQUEST_IMAGE);
     }
 
-    private void launchGalleryIntent() {
-        Intent intent = new Intent(AccountOpenZMain.this, ImagePickerActivity.class);
-        intent.putExtra(ImagePickerActivity.INTENT_IMAGE_PICKER_OPTION, ImagePickerActivity.REQUEST_GALLERY_IMAGE);
-        // setting aspect ratio
-        intent.putExtra(ImagePickerActivity.INTENT_LOCK_ASPECT_RATIO, true);
-        intent.putExtra(ImagePickerActivity.INTENT_ASPECT_RATIO_X, 2); // 16x9, 1x1, 3:4, 3:2
-        intent.putExtra(ImagePickerActivity.INTENT_ASPECT_RATIO_Y, 1);
-        startActivityForResult(intent, REQUEST_IMAGE);
-    }
-
-    private void showSettingsDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(AccountOpenZMain.this);
-        builder.setTitle(getString(R.string.dialog_permission_title));
-        builder.setMessage(getString(R.string.dialog_permission_message));
-        builder.setPositiveButton(getString(R.string.go_to_settings), (dialog, which) -> {
-            dialog.cancel();
-            AccountOpenZMain.this.openSettings();
-        });
-        builder.setNegativeButton(getString(android.R.string.cancel), (dialog, which) -> dialog.cancel());
-        builder.show();
-    }
-
-    // navigating user to app settings
-    private void openSettings() {
-        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-        Uri uri = Uri.fromParts("package", getPackageName(), null);
-        intent.setData(uri);
-        startActivityForResult(intent, 101);
-    }
-
-    //OCR request with ID image
-
-    private void OCR() {
-        new_request = "FORMID:M-:" +
-                "MERCHANTID:OCR:" +
-                "InfoField1:" + PhoneNumber.getCountryCode() + PhoneNumber.getText() + ":" +
-                "InfoField2:NATIONALID:" +
-                "InfoField3:" + ":" +
-//                "InfoField4:" + ":" +
-//                "InfoField5:" + ":" +
-//                "InfoField6:" + ":" +
-                "InfoField4:" + am.getSavedData("encodedImageFront") + ":" +
-//                "InfoField5:" + am.getSavedData("encodedImageBack") + ":" +
-//                "InfoField6:" + am.getSavedData("encodedImageSelfie") + ":" +
-                "InfoField7:" + ":" +
-                "ACTION:GETNAME:";
-        am.get(AccountOpenZMain.this, new_request, getString(R.string.loading), "OCR");
-    }
-
-    private void OCRConfirm(String FaceID) {
-        new_request = "FORMID:M-:" +
-                "MERCHANTID:OCR:" +
-                "InfoField1:" + PhoneNumber.getText() + ":" +
-                "InfoField2:NATIONALID:" +
-                "InfoField3:" + ":" +
-                "InfoField4:" + am.getSavedData("encodedImageFront") + ":" +
-                "InfoField5:" + am.getSavedData("encodedImageBack") + ":" +
-                "InfoField6:" + am.getSavedData("encodedImageSelfie") + ":" +
-                "InfoField7:" + FaceID + ":" +
-                "InfoField8:OcrConfirm:" +
-                "ACTION:GETNAME:";
-        am.get(AccountOpenZMain.this, new_request, getString(R.string.loading), "OCR1Confirm");
-    }
-
-
-    ///ImageUpload
-
-    String base_URL = "https://imageuploadv1.azurewebsites.net/api/ImageUpload_V1/?JSONData=";
-    String progressbar_title = "";
-    String progressbar_message = "";
-    String image_URL = "";
-
-    private void uploadImage(byte[] byteArray, String document) { //IDFRONT
-
-        String url_string = "{" + "\"FormID\":\"BANKIDFRONT\"," +
-                "\"Key\":\"PORTAL-FF7B-4CCA-B884-98346D5EC385\"," +
-                "\"Country\":\"UGANDATEST\"," +
-                "\"FileType\":\"jpg\"," +
-                "\"MobileNumber\":\"25600116\"," +
-                "\"EMailID\":\"craft@gmail.com\"," +
-                "\"ModuleID\":\"" + document + "\"," +
-                "\"BankID\":\"23\"}";
-
-        try {
-            image_URL = base_URL + URLEncoder.encode(url_string, "UTF-8");
-
-            Log.d("encoded_url_string", image_URL);
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-
-            Log.d("encoded_url_error", e.getMessage());
-        }
-
-
-        Log.d("image_url_front", image_URL);
-
-
-        int max = 100;
-
-        //showProgressBar(0, max);
-        //image_URL = base_URL + "%7B%22FormID%22%3A%22BANKIDFRONT%22%2C%22Key%22%3A%22PORTAL-FF7B-4CCA-B884-98346D5EC385%22%2C%22Country%22%3A%22"+preferenceHelper.getCountry()+"%22%2C%22FileType%22%3A%22jpg%22%2C%22MobileNumber%22%3A%22"+preferenceHelper.getDriverMobileNumber()+"%22%2C%22EMailID%22%3A%22"+preferenceHelper.getEmail()+"%22%2C%22ModuleID%22%3A%22CREATECUSTOMER%22%2C%22BankID%22%3A%22"+bank_id+"%22%7D";
-        Ion.with(AccountOpenZMain.this)
-                .load("POST", image_URL)
-                .uploadProgressHandler((uploaded, total) -> runOnUiThread(() -> {
-                    Log.d("mercedes_progress-1", uploaded + " of " + total);
-                    Double progress = (double) uploaded / (double) total;
-                    Log.d("mercedes_progress-2", progress + " / " + max);
-                    progress = progress * max;
-                    Log.d("mercedes_progress-3", progress + " / " + max);
-                    //showProgressBar(progress.intValue(), max);
-
-                    am.progressDialog("1");
-
-                }))
-                .setByteArrayBody(byteArray)
-                .asString()
-                .setCallback((e, result) -> {
-                    //{"Status":"091","Message":"Invalid Form Details 1.0","ImageURL":null}
-                    //dismisDialog();
-                    if (result != null) {
-                        //Upload Success
-                        Log.d("mercedes-result", "1" + result);
-
-                    } else {
-                        //Upload Failed
-                        Log.d("mercedes-else", "2");
-                    }
-                    if (e != null) {
-                        Log.d("mercedes-error", "1" + e.getMessage());
-                    }
-
-
-                    //let me put it outside the result is null check so that when images fail they can still proceed
-                    try {
-                        removeDialogs();
-
-                        // {"Status":"000","Message":"Data Saved","ImageURL":"https://littleimages.blob.core.windows.net/documents/6F005297-5883-4EAE-A30F-5C9F058CF3E7"}
-                        Log.d("upload_id_response", result);
-
-                        Log.d("response_", result);
-                        JSONObject jsonObject = new JSONObject(result);
-                        String status = jsonObject.getString("Status");
-                        String message = jsonObject.getString("Message");
-
-                        if (status.equals("000")) {
-
-                            if (jsonObject.has("ImageURL")) {
-                                imageURL = jsonObject.getString("ImageURL");
-
-                                Log.d("response_idurl", result);
-                                validateImageSubmited(imageURL);
-
-//                                imgCheck.setVisibility(View.VISIBLE);
-//
-//                                BusinessDocumentsModel businessDocumentsModel = new BusinessDocumentsModel(imageURL, document);
-//                                lstDocumentsUrl.add(businessDocumentsModel);
-
-                            }
-
-                        } else if (status.equals("091")) {
-                            ErrorAlert(message);
-                        }
-
-                    } catch (Exception exception) {
-                        Log.d("mercedes-result", "signature-> " + exception.getMessage());
-
-                        am.progressDialog("0");
-
-                    }
-                });
-    }
-
-    private void validateImageSubmited(String imageURL) {
-        am.progressDialog("1");
-
-        String base_URL2 = "https://aicraftsilicon.azurewebsites.net/CraftSiliconAI/SubmitDocument_V1";
-
-        JSONObject jsonObject1 = new JSONObject();
-        try {
-            jsonObject1.put("Country", "UGANDA");
-            jsonObject1.put("ImageID", "NATIONALID");
-            jsonObject1.put("ImageURL", imageURL);
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-
-        Log.d("upload_idval_call", jsonObject1.toString());
-
-
-        JsonObjectRequest req = new JsonObjectRequest(Request.Method.POST, base_URL2, jsonObject1,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        am.progressDialog("1");
-//                        Log.e("Tunapata", response.toString());
-//                        {
-//   "status":"000",
-//   "message":"Success",
-//   "requestID":"8f2c67aa-d065-4074-8fb9-6ec3a56752cd",
-//   "processID":"5F4079E1-251C-4DAF-9F26-581BA9BA92E5"
-//}
-                        try {
-                            JSONObject jsonObject = new JSONObject(response.toString());
-                            String status = jsonObject.getString("status");
-                            String message = jsonObject.getString("message");
-
-                            Log.d("upload_idval_resp", jsonObject1.toString());
-
-
-                            if (status.equals("000")) {
-
-
-                                if (jsonObject.has("processID")) {
-                                    processID = jsonObject.getString("processID");
-                                    Log.d("response_ProcessID", processID);
-                                    final Handler handler = new Handler(Looper.getMainLooper());
-                                    handler.postDelayed(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            //Do something after 100ms
-                                            submitImage();
-                                        }
-                                    }, 10000);
-
-
-                                }
-
-                            } else if (status.equals("091")) {
-                                ErrorAlert(message);
-                            }
-
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-
-
-                }, new Response.ErrorListener() {
-
-
-            @Override
-            public void onErrorResponse(VolleyError error) {
-//                VolleyLog.e("Error: ", error.getMessage());
-            }
-
-
-        }) {
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("Content-Type", "application/json");
-                params.put("APIKey", "8CC9432C-B5AD-471C-A77D-28088C695916");
-                return params;
-            }
-
-        };
-        // add the request object to the queue to be executed
-
-        RequestQueue queue = Volley.newRequestQueue(AccountOpenZMain.this);
-        queue.add(req);
-        Log.d("IMAGEURL", req.toString());
-    }
-
-    private void submitImage() {
-        String base_URL2 = "https://aicraftsilicon.azurewebsites.net/CraftSiliconAI/GetDocumentDetails";
-        JSONObject jsonObject = new JSONObject();
-        try {
-            jsonObject.put("Country", "UGANDA");
-//            jsonObject.put("ProcessID","0647510C-C6DF-4B9E-8BCD-4EA80BCF9AF8");
-            jsonObject.put("ProcessID", processID);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        am.progressDialog("1");
-        JsonObjectRequest req = new JsonObjectRequest(Request.Method.POST, base_URL2, jsonObject,
-                new Response.Listener<JSONObject>() {
-                    @RequiresApi(api = Build.VERSION_CODES.O)
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        am.progressDialog("0");
-                        Log.d("IMEFIKA", response.toString());
-//                        {    "Status": "000",    "Nationality": "UGA",    "Nationality_s": "0.969",    "Gender": "M",    "Gender_s": "0.995",    "Surname": "MWEBE",    "Surname_s": "0.995",    "CardNumber": "020821698",    "CardNumber_s": "0.995",    "ExpDate": "12.02.2031",    "ExpDate_s": "0.995",    "NIN": "CM8602410E64QG",    "NIN_s": "0.995",    "BirthDate": "11.10.1986",    "BirthDate_s": "0.989",    "Name": "JOHN BOSCO",    "Name_s": "0.995"}
-//                :[{"Nationality":[{"text":"UGA","confidence":"0.995"}],"Sex":[{"text":"M","confidence":"0.989"}],"Surname":[{"text":"BIGIRWA","confidence":"0.995"}],"CardNumber":[{"text":"010394857","confidence":"0.995"}],"DateOfExpiry":[{"text":"06.06.2025","confidence":"0.995"}],"NIN":[{"text":"CM86004106Z49G","confidence":"0.983"}],"DateOfBirth":[{"text":"10.08.1986","confidence":"0.995"}],"Name":[{"text":"ISAAC","confidence":"0.978"}]}]}]
-                        try {
-                            SimpleDateFormat inputFormatter = new SimpleDateFormat("yyyyMMddHHmmss");
-                            SimpleDateFormat outputFormatter = new SimpleDateFormat("yyyy-MM-dd");
-
-                            String status = response.getString("Status");
-                            nationality = response.getString("Nationality");
-                            sex = response.getString("Gender");
-                            CardNumber = response.getString("CardNumber");
-                            DateOfExpiry = response.getString("ExpDate");
-                            // Parse the birth date string to a LocalDate object
-                            String birthDateStr = response.getString("BirthDate");
-                            LocalDate birthDate = LocalDate.parse(birthDateStr, DateTimeFormatter.ofPattern("dd.MM.yyyy"));
-
-                            // Format the birth date to yyyy-MM-dd
-                            String formattedBirthDate = birthDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-
-                            // Set the updated birth date back to the Person object
-                            dob = formattedBirthDate;
-
-//                            dob = response.getString("BirthDate");
-                            NIN = response.getString("NIN");
-                            Name = response.getString("Name");
-                            if (response.has("Surname")) {
-                                surName = response.getString("Surname");
-                            } else {
-                                surName = Name;
-                            }
-
-                            if (status.equals("000")) {
-
-
-                                sname.setText(surName);
-                                name.setText(Name);
-                                nationalID.setText(NIN);
-                                DOBEdit.setText(dob);
-                                nationalIDCardNo.setText(CardNumber);
-                                otherNames.setText(Name);
-                                uploadSelfyImage(byteArray1, "SELF");
-                                flipViewIt(step_);
-                            } else {
-                                am.myDialog(AccountOpenZMain.this, getString(R.string.unrecognized_ID), getString(R.string.sure_clear));
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
-
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-            }
-        }) {
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("Content-Type", "application/json");
-                params.put("APIKey", "8CC9432C-B5AD-471C-A77D-28088C695916");
-                return params;
-            }
-
-        };
-        Log.d("SUBMIT", jsonObject.toString());
-
-        RequestQueue queue = Volley.newRequestQueue(AccountOpenZMain.this);
-        queue.add(req);
-
-
-    }
 
     private void niraValidation(OCRData ocrData) {
-        String surname;
-//        if(sname.getText().contains("")) {
-//           surname = sname.getText().replace(" ","-") ;
-//        } else{
-//            surname  = sname.getText().toString();
-//   sname.setText(surName);
-//                                name.setText(Name);
-//                                nationalID.setText(NIN);
-//                                DOBEdit.setText(dob);
-//                                nationalIDCardNo.setText(CardNumber);
-//                                otherNames.setText(Name);
-//        }
         new_request = "FORMID:M-:" +
                 "MERCHANTID:NIRA:" + "ACCOUNTID:" + nationalID.getText() + ":" +
                 "INFOFIELD1:" + ocrData.getSurname() + ":" +
@@ -1947,78 +1405,12 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
         return generatedBase64;
     }
 
-    public static int getBatteryPercentage(Context context) {
-        IntentFilter iFilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
-        Intent batteryStatus = context.registerReceiver(null, iFilter);
-        int level = batteryStatus != null ? batteryStatus.getIntExtra(BatteryManager.EXTRA_LEVEL, -1) : -1;
-        int scale = batteryStatus != null ? batteryStatus.getIntExtra(BatteryManager.EXTRA_SCALE, -1) : -1;
-        float batteryPct = level / (float) scale;
-        return (int) (batteryPct * 100);
-    }
-
-    static public Bitmap BitmapCompressionWithZ(Activity activity, File mFile) {
-        Bitmap bmp = null;
-        try {
-            bmp = new Compressor(activity)
-                    /*.setMaxWidth(291)
-                    .setMaxHeight(218)*/
-                    .setMaxWidth(150)
-                    .setMaxHeight(112)
-                    .setQuality(20)
-                    .compressToBitmap(mFile);
-        } catch (Exception e) {
-//            Log.e("error-whenusinglib", "" + e);
-        }
-
-        if (bmp == null) {
-//            Log.e("", "Bitmap not found");
-        }
-
-        return bmp;
-    }
-
-    public static String sizeOf(Bitmap bitmap) {
-        double mbs = 0;
-        if (bitmap == null) {
-            mbs = 0;
-        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            mbs = bitmap.getAllocationByteCount();
-        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR1) {
-            mbs = bitmap.getByteCount();
-        } else {
-            mbs = bitmap.getRowBytes() * bitmap.getHeight();
-        }
-        //return android.text.format.Formatter.formatFileSize(getActivity(), mbs);
-        return Double.toString(mbs / 1024);
-    }
-
     private void removeDialogs() {
         am.progressDialog("0");
     }
 
-    private void alertLoading(String message) {
-        am.progressDialog("1");
-    }
-
     public void ErrorAlert(String Message) {
         am.myDialog(this, getString(R.string.alert), Message);
-    }
-
-    private void callServer(StringRequest stringRequest) {
-
-        MS.getInstance(this).addToRequestQueue(stringRequest);
-
-    }
-
-    private void callServer2(JsonObjectRequest jsonObjectRequest) {
-
-        MS.getInstance(this).addToRequestQueue(jsonObjectRequest);
-
-    }
-
-    public String Toa(String str) {
-        str = str.substring(0, str.length() - 2);
-        return str + "\"B-0\":\"RIGHT THUMB\"" + "}";
     }
 
     private void getLocationAddress(Location location) {
@@ -2094,151 +1486,6 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
         }
     };
 
-//    @Override
-//    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-//        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-//        airLocation.onRequestPermissionsResult(requestCode, permissions, grantResults);
-//    }
-
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        if (requestCode == REQUEST_IMAGE) {
-//            if (resultCode == Activity.RESULT_OK) {
-//                Uri uri = data.getParcelableExtra("path");
-//                try {
-//                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
-//                    File mFile = new File(uri.getPath());
-//                    switch (REQUEST_IMAGEX) {
-//                        case 1:
-//
-////                            Try something like this:
-////
-//                            //Bitmap bmp = ;
-//
-//
-//                            ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-//                            bitmap.compress(Bitmap.CompressFormat.PNG, 100, bytes);
-//                            byteArray = bytes.toByteArray();
-//
-////                            bmp.recycle()
-//                            front.setImage(bitmap);
-//                            bitmapImageFront = BitmapCompressionWithZ(this, mFile);
-//                            encodedImageFront = ConvertImageToBase64(bitmap);
-//                            Log.e("Image", encodedImageFront);
-//
-//                            am.putSavedData("encodedImageFront", encodedImageFront);
-//                            break;
-//                        case 2:
-//
-//                            //Bitmap bmp = ;
-//                            ByteArrayOutputStream stream1 = new ByteArrayOutputStream();
-//                            bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream1);
-//                            byteArray1 = stream1.toByteArray();
-//
-////                            bmp.recycle()
-//                            /*front.setImage(bitmap);
-//                            bitmapImageFront = BitmapCompressionWithZ(this, mFile);
-//                            encodedImageFront = ConvertImageToBase64(bitmap);
-//
-//                            am.putSavedData("encodedImageFront", encodedImageFront);*/
-//
-//                            selfie.setImage(bitmap);
-//                            bitmapImageSelfie = BitmapCompressionWithZ(this, mFile);
-//                            encodedImageSelfie = ConvertImageToBase64(bitmap);
-//                            am.putSavedData("encodedImageSelfie", encodedImageSelfie);
-//                            break;
-//                        case 3:
-//                            backpick.setImage(bitmap);
-//                            bitmapImageBack = BitmapCompressionWithZ(this, mFile);
-//                            encodedImageBack = ConvertImageToBase64(bitmap);
-//                            am.putSavedData("encodedImageBack", encodedImageBack);
-//                            break;
-//                        case 4:
-//                            signature.setImage(bitmap);
-//                            bitmapImageBack = BitmapCompressionWithZ(this, mFile);
-//                            encodedImageSignature = ConvertImageToBase64(bitmap);
-//                            am.putSavedData("encodedImageSignature", encodedImageSignature);
-//                            break;
-//                        default:
-//                            selfie.setImage(bitmap);
-//                            break;
-//                    }
-//                    ImagePickerActivity.clearCache(this);
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        } else if (requestCode == REQUEST_ID_AIRLOCATION) {
-//            airLocation.onActivityResult(requestCode, resultCode, data);
-//        }
-//
-//    }
-
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        if (requestCode == REQUEST_IMAGE) {
-//            if (resultCode == Activity.RESULT_OK) {
-//
-//
-//
-//                Uri uri = data.getParcelableExtra("path");
-//                try {
-//                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
-//                    File mFile = new File(uri.toString());
-//                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
-//                    switch (REQUEST_IMAGEX) {
-//
-//                        case 2:
-//
-//                            //                            Try something like this:
-////
-//                            //Bitmap bmp = ;
-//                            ByteArrayOutputStream stream1 = new ByteArrayOutputStream();
-//                            bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream1);
-//                            byteArray1 = stream1.toByteArray();
-//
-////                            bmp.recycle()
-//                            /*front.setImage(bitmap);
-//                            bitmapImageFront = BitmapCompressionWithZ(this, mFile);
-//                            encodedImageFront = ConvertImageToBase64(bitmap);
-//
-//                            am.putSavedData("encodedImageFront", encodedImageFront);*/
-//
-//                            selfie.setImage(bitmap);
-//                            bitmapImageSelfie = BitmapCompressionWithZ(this, mFile);
-//                            encodedImageSelfie = ConvertImageToBase64(bitmap);
-//                            am.putSavedData("encodedImageSelfie", encodedImageSelfie);
-////                            preferenceHelper.saveTakenSelfy(encodedImageSelfie);
-//
-////                            am.putSavedData("encodedImageFront", encodedImageFront);
-//                            break;
-////
-//
-//                        case 3:
-//                            signature.setImage(bitmap);
-//                            bitmapImageBack = BitmapCompressionWithZ(this, mFile);
-//                            encodedImageSignature = ConvertImageToBase64(bitmap);
-//                            am.putSavedData("encodedImageSignature", encodedImageSignature);
-//                            break;
-//                        default:
-//                            selfie.setImage(bitmap);
-//                            break;
-//                    }
-//                    ImagePickerActivity.clearCache(this);
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//
-//                }
-//            }
-//        } else if (requestCode == REQUEST_ID_AIRLOCATION) {
-////            airLocation.onActivityResult(requestCode, resultCode, data);
-//        }
-//
-//    }
-
-
     private void getCustomParam(String paramName, String task) {
         am.get(this, "FORMID:O-GETCUSTOMPARAMS:" +
                 "PARAMETERNAME:" + paramName + ":" +
@@ -2260,39 +1507,6 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                 "BANKID:" + am.getBankID() + ":", getString(R.string.loading), currentTask);
     }
 
-    private void getPersonalDetailsExisting(String task) {
-        am.get(this, "FORMID:O-GetCustomerPersonalDetails:" +
-                "BANKID:" + am.getBankID() + ":", getString(R.string.loading), task);
-    }
-
-    private void validateExisting(String existingAccount) {
-        am.get(this, "FORMID:M-:" +
-                // TODO: 2/2/2022 on Live
-                //"MERCHANTID:VALIDATEACCOUNTBANK:" +
-                "MERCHANTID:VALIDATEACCOUNT:" +
-                "ACCOUNTID:" + existingAccount + ":" +
-                "ACTION:GETNAME:", getString(R.string.validating), "VAL_EXIST");
-    }
-
-    private void cardDetailsExisting(String accNum, String cardNum, String auth, String checkNum) {
-        currentTask = "cardDetailsExisting";
-        am.get(this, "FORMID:B-:MERCHANTID:SELFREG:" +
-                "BANKACCOUNTID:" + accNum + ":" +
-                "INFOFIELD1:" + cardNum.replaceAll("\\s+", "") + ":" +
-                "INFOFIELD2:" + auth + ":" +
-                "INFOFIELD3:" + checkNum + ":" +
-                //"INFOFIELD5:DEVICEMISMATCH:" +
-                "INFOFIELD6:" + am.getIMEI() + ":" +
-                "BANKID:" + am.getBankID() + ":", getString(R.string.loading), currentTask);
-    }
-
-    private void getPoliticalExposed() {
-        currentTask = "FetchPolitics";
-        am.get(this, "FORMID:O-GetStaticData:" +
-                "SYSTEMCODE:" + "CSPEP" + ":" +
-                "BANKID:" + am.getBankID() + ":", getString(R.string.loading), currentTask);
-    }
-
     private void getAddressParam(String paramName, String task, String paramValue) {
         currentTask = task;
         am.get(this, "FORMID:O-GETCUSTOMADDRESS:" +
@@ -2302,21 +1516,6 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
     }
 
     public void RAO() {
-//        public String RAO() {
-//
-//            return (
-//
-//                    "FORMID:M-:" +
-//                            "MERCHANTID:SELFRAO:" + INFOFIELD1 + ":" + INFOFIELD2 + ":" + INFOFIELD3 + ":" + INFOFIELD4 + ":" + INFOFIELD5 + ":" +
-//                            "INFOFIELD6:" + encodedImageFront + ":" +
-//                            "INFOFIELD7:" + encodedImageSelfie + ":" +
-//                            "INFOFIELD8:" + encodedImageSignature + ":" +
-//                            "INFOFIELD9:" + encodedImageBack + ":" +
-//                            "BANKACCOUNTID:" + am.getCustomerID() + ":" +
-//                            "ACTION:GETNAME:"
-//            );
-//
-//        }
         String test = "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";
         new_request =
 
@@ -2351,11 +1550,6 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                         "EMAILID:" + EmailAddress.getText().trim() + ":";
 
                 am.get(AccountOpenZMain.this, new_request, getString(R.string.loading), currentTask);
-                /*if(PhoneNumber.getCountryCode().equals("256")){
-                    otpPinView.setEnabled(false);
-                } else {
-                    otpPinView.requestFocus();
-                }*/
                 otpPinView.setEnabled(true);
                 otpPinView.requestFocus();
             }, 300);
@@ -2516,75 +1710,10 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                     ErrorAlert(Message);
                 }
 
-
-//                case "OCR-COMPARISON":
-//                    show_response.setText(Message);
-//                    Log.e("Message", message);
-//                    Log.e("ocrpmResponse", response);
-//                    success_failed.setVisibility(View.VISIBLE);
-////
-//
-//                    break;
-
-                // Handle the extracted data as needed.
-
             } catch (JSONException e) {
                 e.printStackTrace();
                 // Handle the exception, such as invalid JSON.
             }
-//            try {
-//                String jsonResponse = response;
-//                JSONObject json = new JSONObject(jsonResponse);
-//
-//                // Now you can access individual fields like this:
-//                String status = json.getString("Status");
-//                String Message = json.getString("Message");
-//                if (status.equals("000")) {
-//                    String idNumber = json.getString("IdNumber");
-//                    String surName = json.getString("SurName");
-//                    String givenName = json.getString("GivenName");
-//                    String dateOfBirth = json.getString("DateOfBirth");
-//                    String gender = json.getString("Gender");
-//                    String expiryDate = json.getString("ExpiryDate");
-//                    String faceId = json.getString("FaceID");
-//                    // Parse the input date with the correct format
-//                    LocalDate birthDate = LocalDate.parse(dateOfBirth, DateTimeFormatter.ofPattern("dd-MM-yyyy"));
-//
-//                    // Format the birth date to yyyy-MM-dd
-//                    String formattedBirthDate = birthDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-//
-//                    // Set the updated birth date back to the Person object (replace "dob" with your variable)
-//                    String dob = formattedBirthDate;
-
-////                    Log.e("Message", message);
-////                    Log.e("ocrpmResponse", response);
-//
-//
-//                    updateImage(faceId);
-//
-//
-////                case "OCR-COMPARISON":
-////                    show_response.setText(Message);
-////                    Log.e("Message", message);
-////                    Log.e("ocrpmResponse", response);
-////                    success_failed.setVisibility(View.VISIBLE);
-////                          niraValidation(OCRData);
-////
-////                    break;
-//
-//                    // Handle the extracted data as needed.
-//
-//                } else if (status.equals("091")) {
-//                    am.progressDialog("0");
-//                    ErrorAlert(Message);
-//                }
-//
-//
-//            } catch (JSONException e) {
-//                e.printStackTrace();
-//                // Handle the exception, such as invalid JSON.
-//            }
-//            {"Status":"000","Message":"0.53415","IdNumber":null,"SurName":null,"GivenName":null,"DateOfBirth":null,"Gender":null,"ExpiryDate":null,"NIN":null,"ExtraData":null,"FaceID":null}
         } else if (step.equals("OCR-COMPARISON")) {
 
             try {
@@ -2619,18 +1748,6 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                     am.progressDialog("0");
                     ErrorAlert(Message);
                 }
-
-
-//                case "OCR-COMPARISON":
-//                    show_response.setText(Message);
-//                    Log.e("Message", message);
-//                    Log.e("ocrpmResponse", response);
-//                    success_failed.setVisibility(View.VISIBLE);
-////
-//
-//                    break;
-
-                // Handle the extracted data as needed.
 
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -2746,14 +1863,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }
-                            /*String [] regions = Message.split("~");
-                            regionsIds.add(0,"Select One");
-                            regionNames.add(0,"Select One");
-                            for (String aRegion : regions) {
-                                processDataPipe(aRegion);
-                                regionsIds.add(constants.FindInArray(FieldIDs, FieldValues, "CODE"));
-                                regionNames.add(constants.FindInArray(FieldIDs, FieldValues, "NAME"));
-                            }*/
+
                                 ArrayAdapter<String> spinnerArrayAdapterB = new ArrayAdapter<>(this, R.layout.spinner_item, regionNames);
                                 spinnerArrayAdapterB.setDropDownViewResource(R.layout.spinner_item);
                                 regionselect.setAdapter(spinnerArrayAdapterB);
@@ -2791,14 +1901,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }
-                            /*String [] districts = Message.split("~");
-                            districtIds.add(0,"Select One");
-                            districtNames.add(0,"Select One");
-                            for (String aDistrict : districts) {
-                                processDataPipe(aDistrict);
-                                districtIds.add(constants.FindInArray(FieldIDs, FieldValues, "CODE"));
-                                districtNames.add(constants.FindInArray(FieldIDs, FieldValues, "NAME"));
-                            }*/
+
                                 ArrayAdapter<String> spinnerArrayAdapterB = new ArrayAdapter<>(this, R.layout.spinner_item, districtNames);
                                 spinnerArrayAdapterB.setDropDownViewResource(R.layout.spinner_item);
                                 districtName.setAdapter(spinnerArrayAdapterB);
@@ -2836,14 +1939,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }
-                            /*String [] counties = Message.split("~");
-                            countyIds.add(0,"Select One");
-                            countylistNames.add(0,"Select One");
-                            for (String aCounty : counties) {
-                                processDataPipe(aCounty);
-                                countyIds.add(constants.FindInArray(FieldIDs, FieldValues, "CODE"));
-                                countylistNames.add(constants.FindInArray(FieldIDs, FieldValues, "NAME"));
-                            }*/
+
                                 ArrayAdapter<String> spinnerArrayAdapterB = new ArrayAdapter<>(this, R.layout.spinner_item, countylistNames);
                                 spinnerArrayAdapterB.setDropDownViewResource(R.layout.spinner_item);
                                 countyName.setAdapter(spinnerArrayAdapterB);
@@ -2881,12 +1977,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }
-                           /* String [] counties = Message.split("~");
-                            for (String aCounty : counties) {
-                                processDataPipe(aCounty);
-                                subcountyIds.add(constants.FindInArray(FieldIDs, FieldValues, "CODE"));
-                                subcountylistNames.add(constants.FindInArray(FieldIDs, FieldValues, "NAME"));
-                            }*/
+
                                 ArrayAdapter<String> spinnerArrayAdapterB = new ArrayAdapter<>(this, R.layout.spinner_item, subcountylistNames);
                                 spinnerArrayAdapterB.setDropDownViewResource(R.layout.spinner_item);
                                 subCountyName.setAdapter(spinnerArrayAdapterB);
@@ -2924,12 +2015,6 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }
-                            /*String [] parish = Message.split("~");
-                            for (String oneParish : parish) {
-                                processDataPipe(oneParish);
-                                parishIds.add(constants.FindInArray(FieldIDs, FieldValues, "CODE"));
-                                parishlistNames.add(constants.FindInArray(FieldIDs, FieldValues, "NAME"));
-                            }*/
                                 ArrayAdapter<String> spinnerArrayAdapterB = new ArrayAdapter<>(this, R.layout.spinner_item, parishlistNames);
                                 spinnerArrayAdapterB.setDropDownViewResource(R.layout.spinner_item);
                                 parishName.setAdapter(spinnerArrayAdapterB);
@@ -2967,12 +2052,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }
-                            /*String [] villages = Message.split("~");
-                            for (String aVillage : villages) {
-                                processDataPipe(aVillage);
-                                villageIds.add(constants.FindInArray(FieldIDs, FieldValues, "CODE"));
-                                villagelistNames.add(constants.FindInArray(FieldIDs, FieldValues, "NAME"));
-                            }*/
+
                                 ArrayAdapter<String> spinnerArrayAdapterB = new ArrayAdapter<>(this, R.layout.spinner_item, villagelistNames);
                                 spinnerArrayAdapterB.setDropDownViewResource(R.layout.spinner_item);
                                 villageName.setAdapter(spinnerArrayAdapterB);
@@ -3010,12 +2090,6 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }
-                            /*String [] villages = Message.split("~");
-                            for (String aVillage : villages) {
-                                processDataPipe(aVillage);
-                                eAIds.add(constants.FindInArray(FieldIDs, FieldValues, "CODE"));
-                                eAlistNames.add(constants.FindInArray(FieldIDs, FieldValues, "NAME"));
-                            }*/
                                 ArrayAdapter<String> spinnerArrayAdapterB = new ArrayAdapter<>(this, R.layout.spinner_item, eAlistNames);
                                 spinnerArrayAdapterB.setDropDownViewResource(R.layout.spinner_item);
                                 eAName.setAdapter(spinnerArrayAdapterB);
@@ -3041,9 +2115,6 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
 //                            STATUS:000:DATA:SURNAME|SHAFIQUE|GIVEN NAMES|KABALI|NIN|CM89105106DLMK|CARD NUMBER|010413271|DOB|7/11/1989 12 00 00 AM
 
                                 if (step_ == 3/*&& tv_resend_otp.getVisibility()==View.GONE*/) {
-//                                show_response.setText(Message);
-
-//                                depositMethodes(Message);
                                     step_++;
                                     flipViewIt(step_);
                                     flipper.showNext();
@@ -3087,10 +2158,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                                 break;
                             case "RAO":
                                 show_response.setText(Message);
-//                            Log.e("Message", message);
                                 success_failed.setVisibility(View.VISIBLE);
-                                //STATUS:000:MESSAGE:Dear Customer We have received your application, we shall respond with the status of your Application with in 24hrs call 0800200555/0800335344 for more info or send an email to cente_mobile@centenarybank.co.ug.~You can Deposit to this Account Using;~
-                                //Wallet to Bank Transactions (Momo and Airtel Money)| url~ ATM Deposit| url~ Agent Banking| url~T.Ts| url~Wire Transfer| url~Western Union| url~At any HFB Bank Branch countrywide (Uganda).| url
                                 break;
                             default:
                                 Toast.makeText(AccountOpenZMain.this, Message, Toast.LENGTH_LONG).show();
@@ -3133,19 +2201,6 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                 }
             }
         }
-    }
-
-    private void updateImage(String FaceID) {
-
-        new_request = "FORMID:M-:" +
-                "MERCHANTID:OCR:" +
-                "INFOFIELD6:" + encodedImageSelfie + ":" +
-                "INFOFIELD7:" + encStringfront + ":" +
-                "ACTION:GETNAME:";
-        new Handler().postDelayed(() -> am.get(AccountOpenZMain.this, new_request, getString(R.string.loading), "OCR-COMPARISON"), 400);
-////                            Log.e("TEST", new_request);
-//
-//        am.get(AccountOpenZMain.this, new_request, getString(R.string.loading), "OCR-COMPARISON");
     }
 
     public void proceedFromWhereYouLeftOff() {
@@ -3253,34 +2308,11 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                                 e.printStackTrace();
                             }
                             break;
-                        /*case 8:
-                            if(!selectedAccountID.equals("32219")){
-                                chkMobileBanking.setChecked(true);
-                                chkAgencyBanking.setChecked(true);
-                            }
-                            break;*/
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
-
-            /*if (politicsIDs.isEmpty()) {
-                if(am.getCountry().equals("UGANDATEST")) getPoliticalExposed();
-            }*/
-
-            /*new Handler().postDelayed(() -> {
-                if (occupationIds.isEmpty()) {
-                    if(am.getCountry().equals("UGANDATEST")) getCustomParam("OCCUPATION","FetchOccupation");
-                }
-            },5000);*/
-
-            //Was Address dropdown
-            /* new Handler().postDelayed(() -> {
-                if (regionsIds.isEmpty()) {
-                    if(am.getCountry().equals("UGANDATEST")) getAddressParam("REGION","FetchRegion", "");
-                }
-            },10000);*/
 
             flipViewIt(step_);
 
@@ -3506,11 +2538,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                                     termsConditopnChoiceNew();
                                     break;
                                 case "Existing Customer":
-//                                accountBranchChoice();
                                     termsConditopnChoice();
-                                    //getPersonalDetailsExisting("GetCustomerPersonal");
-                                    //0100121637
-                                    //validateExisting(accountNumber.getText());
                                     break;
                             }
                         }
@@ -3563,14 +2591,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                             Usertitle = singleTitle.otherEditText.getText().toString().trim();
                         am.putSaveTitlePosition(singleTitle.getViewTitleID());
 
-
-                        //settingimage
-//
                         submitImages(new OCRState(this).ocrData());
-
-//                        uploadImage(byteArray, "IDFRONT");
-//                        OCR();
-
                     }
                 } else if (step_ == 3) {
                     if (TextUtils.isEmpty(name.getText())) {
@@ -3601,12 +2622,6 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                         step_++;
                         flipViewIt(step_);
                         flipper.showNext();
-
-//
-//                        //Was for political dropdown
-                        /*if(politicsIDs.isEmpty()) {
-                            if(am.getCountry().equals("UGANDATEST")) getPoliticalExposed();
-                        }*/
                     }
                 } else if (step_ == 4) {
                     String phoneNum = NextofKinPhoneNumber.getText();
@@ -3631,25 +2646,6 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                         flipViewIt(step_);
                         flipper.showNext();
 
-                        //Was for Occupation drop down
-                        /*if(occupationIds.isEmpty()) {
-                            getCustomParam("OCCUPATION","FetchOccupation");
-                        }*/
-
-                        //Was for address drop down
-                        /*if(regionsIds.isEmpty()){
-                            if(am.getCountry().equals("UGANDATEST")) getAddressParam("REGION","FetchRegion", "");
-
-                              centesourceincome.addView(IncomeperAnnum);
-                        centesourceincome.addView(NatureofEmployment);
-                        centesourceincome.addView(NatureofBussiness);
-                        centesourceincome.removeView(EmployerName);
-                        centesourceincome.removeView(Occupation);
-                        centesourceincome.removeView(PlaceofWork);
-                        centesourceincome.removeView(MonthlySalary);
-                        centesourceincome.removeView(PeriodofEmployment);
-                        centesourceincome.removeView(employPeriod);
-                        }*/
                     }
                 } else if (step_ == 5) {
                     if (userEmploymentType.equals("")) {
@@ -3686,101 +2682,9 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                         step_++;
                         flipViewIt(step_);
                         flipper.showNext();
-                    /*switch (CustomerCategory) {
-                        case "New Customer":
-                            step++;
-                            switchIt(step);
-                            flipper.showNext();
-                            break;
-                        case "Existing Customer":
-                            webView.setVisibility(View.GONE);
-                            radiob.setVisibility(View.GONE);
-                            if(pan_pin_in.getVisibility()==View.VISIBLE) {
-                                if (et_acc.getText().toString().trim().length() < 5) {
-                                    ErrorAlert("Bank Account number required!");
-                                } else if (et_pan.getText().toString().trim().length() < 16) {
-                                    ErrorAlert("ATM Card Number required!");
-                                } else if (et_pin.getText().toString().trim().length() < 1) {
-                                    ErrorAlert("ATM Card Pin required!");
-                                } else if (et_phone.getText().toString().length() < 6) {
-                                    ErrorAlert("Phone Number required!");
-                                } else {
-                                    personalDetailsExisting(et_acc.getText().toString().trim(),
-                                            et_pan.getText().toString().trim(),
-                                            et_pin.getText().toString().trim(),
-                                            et_phone.getText().toString().trim());
-                                }
-                            }
-                            if(pan_pin_in.getVisibility()==View.GONE) pan_pin_in.setVisibility(View.VISIBLE);
-                            break;
-                    }*/
+
                     }
                 }
-
-                /*else if(step_ == 7){
-                    if(!tv.isChecked() && !ss.isChecked() && !bankstaff.isChecked() && !HFBCustomer.isChecked() && !Agent.isChecked()){
-                        ErrorAlert("Recommended by Mediums required");
-                    } else if(tv.isChecked() && TextUtils.isEmpty(c4.getText())){
-                        ErrorAlert("TV/Radio station required");
-                    } else if(ss.isChecked() && !FaceBook.isChecked() && !Twitter.isChecked() && !Instagram.isChecked()){
-                        ErrorAlert("Social media platform required");
-                    } else if(bankstaff.isChecked() && TextUtils.isEmpty(c4.getText())){
-                        ErrorAlert("Staff name required");
-                    } else if(bankstaff.isChecked() && TextUtils.isEmpty(c44.getText())){
-                        ErrorAlert("Staff's branch required");
-                    } else if(HFBCustomer.isChecked() && TextUtils.isEmpty(c4.getText())){
-                        ErrorAlert("Customer name required");
-                    } else if(HFBCustomer.isChecked() && TextUtils.isEmpty(c45.getText())){
-                        ErrorAlert("Customer phone number required");
-                    } else if(Agent.isChecked() && TextUtils.isEmpty(c4.getText())){
-                        ErrorAlert("Agent name and number required");
-                    } else {
-                        am.putMediumRadio(radioGroup.getCheckedRadioButtonId());
-                        step_++;
-                        flipViewIt(step_);
-                        flipper.showNext();
-                    }
-
-                    *//*if(TextUtils.isEmpty(FatherFirstName.getText())){
-                        ErrorAlert("Father's first name required");
-                    }
-                    else if(TextUtils.isEmpty(FatherLastName.getText())){
-                        ErrorAlert("Father's last name required");
-                    }
-                    else if(TextUtils.isEmpty(MotherFirstName.getText())){
-                        ErrorAlert("Mother's first name required");
-                    }
-                    else if(TextUtils.isEmpty(MotherLastName.getText())){
-                        ErrorAlert("Mother's last name required");
-                    }
-                    else if(TextUtils.isEmpty(Address.getText())){
-                        ErrorAlert("Home district required");
-                    }
-                    else if(Address.getText().length()>25){
-                        ErrorAlert("Address length should not be above 25 characters");
-                    }
-                    else if(TextUtils.isEmpty(YearsAtAddress.getText())){
-                        ErrorAlert("Duration of living at that Address required");
-                    }
-                    else if(!am.getCountry().equals("UGANDATEST")  &&  TextUtils.isEmpty(PoliticallyExposed.getText())){
-                        ErrorAlert("Politically exposed required");
-                    }
-                    else if(am.getCountry().equals("UGANDATEST") && (StringPoliticallyExposed.isEmpty() || political_spin.getSelectedItemPosition()==0)) {
-                        ErrorAlert("Politically exposed category required");
-                    } else {
-                        am.putSaveParentsDurationAddress(addressPeriod.getCheckedRadioButtonId());
-                        step_++;
-                        flipViewIt(step_);
-                        flipper.showNext();
-                    }*//*
-                     alternativeDeposite.addView(alternativeAccountNumber);
-                        alternativeDeposite.addView(accountName);
-                        alternativeDeposite.addView(bankName);
-                        alternativeDeposite.addView(branchName);
-                        alternativeDeposite.removeView(AlternatePhoneNumber);
-                        alternativeDeposite.removeView(phoneregName);
-                        alternativeDeposite.removeView(phoneregLastName);
-                }*/
                 else if (step_ == 7) {
                     if (alternativeSecurityDeposit.isEmpty()) {
                         ErrorAlert("Select Alternative account");
@@ -3833,11 +2737,6 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                     } else if ((yesPE.isChecked() || yesFPE.isChecked()) && TextUtils.isEmpty(PEPEndYear.getText().trim())) {
                         ErrorAlert("Please fill in the ending year");
                     }
-//                    } else if (Integer.parseInt(PEPEndYear.getText()) < Integer.parseInt(PEPStartYear.getText())) {
-//                        ErrorAlert("Ending year cannot be older than Starting year");
-//                    } else if ((yesPE.isChecked() || yesFPE.isChecked()) && selectedPos.equals("Select One")) {
-//                        ErrorAlert("Please select the senior government, political or military position held");
-//                    }
                     else if (yesFPE.isChecked() && selectedRel.equals("Select One")) {
                         ErrorAlert("Please select your relationship with your senior government, political or military relative");
                     } else if (selectedPos.equals("Other") && TextUtils.isEmpty(PEPOtherPosition.getText().trim())) {
@@ -3862,11 +2761,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                         ErrorAlert("Invalid phone number");
                     } else if (/*!selectedAccountID.equals("32219") &&*/ !PhoneNumber.getCountryCode().equals("256") && TextUtils.isEmpty(EmailAddress.getText().trim())) {
                         ErrorAlert("Email address required outside Uganda");
-                    }  /*else if(TextUtils.isEmpty(eAIdString)) {  //was for address dropdowna
-                        ErrorAlert("EA Name required");}*/
-//                    else if(TextUtils.isEmpty(maritalStatus.getText())) {
-//                        ErrorAlert("Marital Status required");
-//                    }
+                    }
                     else if (TextUtils.isEmpty(ActualAddress.getText())) {
                         ErrorAlert("Address required");
                     } else if (ActualAddress.getText().length() > 25) {
@@ -3951,44 +2846,6 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                         String alternatePhone = AlternatePhoneNumber.getCountryCode() + AlternatePhoneNumber.getText();
 
                         String additional = "";
-                        /*if(chkMobileBanking.isChecked()){
-                            if(!TextUtils.isEmpty(additional)){
-                                additional = additional +",";
-                            }
-                            additional = additional+"Mobile Banking";
-                        }
-
-                        if(chkATM.isChecked()){
-                            if(!TextUtils.isEmpty(additional)){
-                                additional = additional +",";
-                            }
-                            additional = additional+"Master Card";
-                        }
-
-                        if(chkPos.isChecked()){
-                            if(!TextUtils.isEmpty(additional)){
-                                additional = additional +",";
-                            }
-                            additional = additional+"Bank Assurance";
-                        }
-                        if(chkChequeBook.isChecked()){
-                            if(!TextUtils.isEmpty(additional)){
-                                additional = additional +",";
-                            }
-                            additional = additional+"Cheque Book";
-                        }
-                        if(chkInternetBanking.isChecked()){
-                            if(!TextUtils.isEmpty(additional)){
-                                additional = additional +",";
-                            }
-                            additional = additional+"Internet Banking";
-                        }
-                        if(chkAgencyBanking.isChecked()){
-                            if(!TextUtils.isEmpty(additional)){
-                                additional = additional +",";
-                            }
-                            additional = additional+"Agent Banking";
-                        }*/
 
                         String recommendation = "";
 
@@ -4041,25 +2898,6 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                                 Position = selectedPosition;
                             }
                         }
-
-//                        if (alternativeSecurityDeposit.equals("Bank Account")) {
-//                            alternativeDeposite.addView(alternativeAccountNumber);
-//                            alternativeDeposite.addView(accountName);
-//                            alternativeDeposite.addView(bankName);
-//                            alternativeDeposite.addView(branchName);
-//                            alternativeDeposite.removeView(PhoneNumberMobile);
-//                            alternativeDeposite.removeView(phoneregName);
-//                            alternativeDeposite.removeView(phoneregLastName);
-//                            textView2.setVisibility(View.GONE);
-//                            RGroupM.setVisibility(View.GONE);
-//                            textView3.setVisibility(View.GONE);
-//                            RGroupCon.setVisibility(View.GONE);
-//                        } else if(alternativeSecurityDeposit.equals("Mobile Money")) {
-//                            alternativeDeposite.removeView(alternativeAccountNumber);
-//                            alternativeDeposite.removeView(accountName);
-//                            alternativeDeposite.removeView(bankName);
-//                            alternativeDeposite.removeView(branchName);
-//                            alternativeDeposite.addView(PhoneNumberMobile);
                         if (alternativeSecurityDeposit.equals("Bank Account")) {
                             INFOFIELD1 = "INFOFIELD1:ACCOUNTID|" + accountNumber.getText() + "|CUSTOMER_CATEGORY|" + CustomerCategory + "|ACCOUNT_TYPE|" + selectedAccount + "|FIRST_NAME|" + name.getText() +
                                     "|MIDDLE_NAME|" + otherNames.getText() + "|LAST_NAME|" + sname.getText() + "|DOB|" + DOBEdit.getText() + "|NATIONALID|" + nationalID.getText() +
@@ -4074,27 +2912,12 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                                     "|PHONE_NUMBER|" + customerMobilenNumber + "|ALTERNATE_PHONE_NUMBER|" + alternatePhone + "|EMAIL_ADDRESS|" + EmailAddress.getText().trim() + "|GENDER|" + gender + "|TITLE|" + Usertitle + "|CURRENCY|" + currName + "|BRANCH|" + branchID + "|PRODUCTID|" + selectedAccountID + "|ALTERNATE_ACCOUNT_NUMBER|" + "N/A" + "|ALTERNATE_ACCOUNT_NAME|" + "N/A" + "|ALTERNATE_BANKNAME|" + "N/A" + "|ALTERNATE_BRANCHNAME|" + "N/A" + "|MOBILE_MONEY_PROVIDER|" + mobileMoneyProvider + "|MOBILE_MONEY_PHONE_OWNER|" + "N/A" + "|MOBILE_MONEY_PHONE_NUMBER|" + PhoneNumberMobile.getText();
                         }
 
-//                        INFOFIELD1 = "INFOFIELD1:ACCOUNTID|"+ accountNumber.getText() +"|CUSTOMER_CATEGORY|"+CustomerCategory+"|ACCOUNT_TYPE|"+selectedAccount+"|FIRST_NAME|"+ name.getText() +
-//                                "|MIDDLE_NAME|"+ otherNames.getText() +"|LAST_NAME|"+ sname.getText() +"|DOB|"+DOBEdit.getText()+"|NATIONALID|"+ nationalID.getText() +
-//                                "|PHONE_NUMBER|"+customerMobilenNumber+"|ALTERNATE_PHONE_NUMBER|"+alternatePhone+"|EMAIL_ADDRESS|"+ EmailAddress.getText() +"|GENDER|"+gender+"|TITLE|"+Usertitle+"|CURRENCY|"+currName+"|BRANCH|"+branchID+"|PRODUCTID|"+selectedAccountID;
-////                                "|PHONE_NUMBER|"+customerMobilenNumber+"|ALTERNATE_PHONE_NUMBER|"+alternatePhone+"|EMAIL_ADDRESS|"+ EmailAddress.getText() +"|GENDER|"+gender+"|TITLE|"+Usertitle+"|CURRENCY|"+currName+"|BRANCH|"+branchID+"|PRODUCTID|"+selectedAccountID+"|MARITALSTATUS|"+maritalStatus;
-
-                        /*if(am.getCountry().equals("UGANDATEST")){
-                            INFOFIELD2 = "INFOFIELD2:FATHER_FIRST_NAME|"+ FatherFirstName.getText() +"|FATHER_MIDDLE_NAME|"+ FatherMiddleName.getText() +"|FATHER_LAST_NAME|"+ FatherLastName.getText() +"|MOTHER_FIRST_NAME|"+ MotherFirstName.getText() +"|MOTHER_MIDDLE_NAME|"+ MotherMiddleName.getText() +"|MOTHER_LAST_NAME|"+ MotherLastName.getText() +"|ADDRESSCODE|"+ eAIdString ;
-                        }*/
                         INFOFIELD2 = "INFOFIELD2:FATHER_FIRST_NAME|" + FatherFirstName.getText() + "|FATHER_MIDDLE_NAME|" + FatherMiddleName.getText() + "|FATHER_LAST_NAME|" + FatherLastName.getText() + "|MOTHER_FIRST_NAME|" + MotherFirstName.getText() + "|MOTHER_MIDDLE_NAME|" + MotherMiddleName.getText() + "|MOTHER_LAST_NAME|" + MotherLastName.getText();
 
 
-                        /*if(am.getCountry().equals("UGANDATEST")){
-                            INFOFIELD3 = "INFOFIELD3:CURRENT_LOCATION|"+ c5.getText() +"|ADDRESS|"+ ActualAddress.getText() +"|HOME_DISTRICT|"+ Address.getText() +"|YEARS_AT_ADDRESS|"+ YearsAtAddress.getText().concat(periodAddressString)+"|POLITICALLY_EXPOSED|"+StringPoliticallyExposed+"|CITY|"+city.getText()+"|ZIPCODE|"+zipCode.getText();
-                        }*/
                         INFOFIELD3 = "INFOFIELD3:CURRENT_LOCATION|" + c5.getText() + "|ADDRESS|" + ActualAddress.getText() + "|HOME_DISTRICT|" + Address.getText() + "|YEARS_AT_ADDRESS|" + YearsAtAddress.getText().concat(periodAddressString) +
                                 "|POLITICALLY_EXPOSED|" + PEPexposure + "|POLITICALLY_EXPOSED_FIRSTNAME|" + FirstName + "|POLITICALLY_EXPOSED_LASTNAME|" + LastName + "|POLITICALLY_EXPOSED_POSITION|" + Position + "|POLITICALLY_EXPOSED_INITIAL|" + PEPInitial.getText() + "|POLITICALLY_EXPOSED_RELATIONSHIP|" + Relationship + "|POLITICALLY_EXPOSED_TITLE|" + PEPTitle.getText() + "|POLITICALLY_EXPOSED_COUNTRY|" + PEPCountry.getText() + "|POLITICALLY_EXPOSED_START_YEAR|" + PEPStartYear.getText() + "|POLITICALLY_EXPOSED_END_YEAR|" + PEPEndYear.getText() +
                                 "|MARITALSTATUS|" + maritalStatus + "|ZIPCODE|" + zipCode.getText();
-
-                        /*if(am.getCountry().equals("UGANDATEST")){
-                            INFOFIELD4 = "INFOFIELD4:INCOME_PER_ANUM|"+ IncomeperAnnum.getText() +"|EMPLOYMENT_TYPE|"+ professionIDString +"|OCCUPATION|"+ occupationIDString +"|PLACE_OF_WORK|"+ PlaceofWork.getText() +"|NATURE_OF_BUSINESS_SECTOR|"+ NatureofBussiness.getText() +"|PERIOD_OF_EMPLOYMENT|"+ PeriodofEmployment.getText().concat(periodWorkString) +"|EMPLOYER_NAME|"+ EmployerName.getText() +"|NATURE|"+ NatureofEmployment.getText();
-                        }*/
 
                         if (employmentType.getSelectedItem().equals("Self-employed/Business")) {
                             INFOFIELD4 = "INFOFIELD4:INCOME_PER_ANUM|" + IncomeperAnnum.getText().toString() + "|EMPLOYMENT_TYPE|" + userEmploymentType + "|OCCUPATION|" + "N/A" + "|PLACE_OF_WORK|" + "N/A" + "|NATURE_OF_BUSINESS_SECTOR|" + NatureofBussiness.getText().toString() + "|PERIOD_OF_EMPLOYMENT|" + "N/A" + "|EMPLOYER_NAME|" + "N/A" + "|NATURE|" + "N/A" + "|BUSINESS_ADDRESS|" + NatureofEmployment.getText().toString();
@@ -4124,8 +2947,6 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                     }
                 }
 
-                /*else if(step_ == 10){
-                }*/
                 break;
             case R.id.front:
                 new IcebergSDK.Builder(AccountOpenZMain.this)
@@ -4134,89 +2955,13 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                         .ScanDoneClass(OcrResults.class)
                         .AppName(am.getAppName())
                         .init();
-//                Dexter.withActivity(AccountOpenZMain.this)
-//                        .withPermissions(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-//                        .withListener(new MultiplePermissionsListener() {
-//                            @Override
-//                            public void onPermissionsChecked(MultiplePermissionsReport report) {
-//                                REQUEST_IMAGEX = 1;
-//                                if (report.areAllPermissionsGranted()) {
-////                                    showImagePickerOptions();
-//                                    new IcebergSDK.Builder(AccountOpenZMain.this)
-//                                            .ActionType("idFront")
-//                                            .Country("UGANDA")
-//                                            .ScanDoneClass(OcrResults.class)
-//                                            .AppName(am.getAppName())
-//                                            .init();
-//                                }
-//                                if (report.isAnyPermissionPermanentlyDenied()) {
-//                                    showSettingsDialog();
-//                                }
-//                            }
-//
-//                            @Override
-//                            public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token) {
-//                                token.continuePermissionRequest();
-//                            }
-//                        }).check();
                 break;
             case R.id.selfie: {
-//                if (isStorageAvailable()) {
                 image_checker = "selfie";
                 cropImage.launch(ImageResultProviderKt.options());
-//                } else {
-//                    // Display an error message
-//                    Toast.makeText(getApplicationContext(), "Not enough storage space.", Toast.LENGTH_SHORT).show();
-//                }
-
-//                image_checker = "selfie";
-//                cropImage.launch(ImageResultProviderKt.options());
-
-//                Dexter.withContext(AccountOpenZMain.this)
-//                        .withPermissions(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-//                        .withListener(new MultiplePermissionsListener() {
-//                            @Override
-//                            public void onPermissionsChecked(MultiplePermissionsReport report) {
-//                                REQUEST_IMAGEX = 2;
-//                                if (report.areAllPermissionsGranted()) {
-//                                    //showImagePickerOptions();
-//                                    image_checker = "selfie";
-//                                    cropImage.launch(ImageResultProviderKt.options());
-//                                }
-//                                if (report.isAnyPermissionPermanentlyDenied()) {
-//                                    showSettingsDialog();
-//                                }
-//                            }
-//
-//                            @Override
-//                            public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token) {
-//                                token.continuePermissionRequest();
-//                            }
-//                        }).check();
                 break;
             }
             case R.id.backpick:
-
-//                Dexter.withActivity(AccountOpenZMain.this)
-//                        .withPermissions(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-//                        .withListener(new MultiplePermissionsListener() {
-//                            @Override
-//                            public void onPermissionsChecked(MultiplePermissionsReport report) {
-//                                REQUEST_IMAGEX = 3;
-//                                if (report.areAllPermissionsGranted()) {
-//                                    cropImage.launch(ImageResultProviderKt.options());
-////                                    showImagePickerOptions();
-//                                }
-//                                if (report.isAnyPermissionPermanentlyDenied()) {
-//                                    showSettingsDialog();
-//                                }
-//                            }
-//
-//                            @Override
-//                            public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token) {
-//                                token.continuePermissionRequest();
-//                            }
-//                        }).check();
                 break;
             case R.id.signature:
 
@@ -4227,29 +2972,6 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                     // Display an error message
                     Toast.makeText(getApplicationContext(), "Not enough storage space.", Toast.LENGTH_SHORT).show();
                 }
-//                image_checker = "selfie";
-//                cropImage.launch(ImageResultProviderKt.options());
-
-//                Dexter.withContext(AccountOpenZMain.this)
-//                        .withPermissions(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-//                        .withListener(new MultiplePermissionsListener() {
-//                            @Override
-//                            public void onPermissionsChecked(MultiplePermissionsReport report) {
-//                                REQUEST_IMAGEX = 4;
-//                                if (report.areAllPermissionsGranted()) {
-////                                    showImagePickerOptions();
-//                                    cropImage.launch(ImageResultProviderKt.options());
-//                                }
-//                                if (report.isAnyPermissionPermanentlyDenied()) {
-//                                    showSettingsDialog();
-//                                }
-//                            }
-//
-//                            @Override
-//                            public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token) {
-//                                token.continuePermissionRequest();
-//                            }
-//                        }).check();
                 break;
             case R.id.tv_resend_otp:
                 try {
@@ -4334,174 +3056,6 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
         }
     }
 
-    private void uploadSelfyImage(byte[] byteArray1, String self) {
-        String url_string = "{" + "\"FormID\":\"LITTLEBUSINESS\"," +
-                "\"FileType\":\"jpg\"," +
-                "\"ModuleID\":\"" + self + "\"," +
-                "\"BankID\":\"LITTLE\"}";
-
-        try {
-            image_URL = base_URL + URLEncoder.encode(url_string, "UTF-8");
-
-            Log.d("encoded_url_string", image_URL);
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-
-            Log.d("encoded_url_error", e.getMessage());
-        }
-
-
-        Log.d("image_url_front", image_URL);
-
-
-        int max = 100;
-
-        //showProgressBar(0, max);
-        //image_URL = base_URL + "%7B%22FormID%22%3A%22BANKIDFRONT%22%2C%22Key%22%3A%22PORTAL-FF7B-4CCA-B884-98346D5EC385%22%2C%22Country%22%3A%22"+preferenceHelper.getCountry()+"%22%2C%22FileType%22%3A%22jpg%22%2C%22MobileNumber%22%3A%22"+preferenceHelper.getDriverMobileNumber()+"%22%2C%22EMailID%22%3A%22"+preferenceHelper.getEmail()+"%22%2C%22ModuleID%22%3A%22CREATECUSTOMER%22%2C%22BankID%22%3A%22"+bank_id+"%22%7D";
-        Ion.with(AccountOpenZMain.this)
-                .load("POST", image_URL)
-                .uploadProgressHandler((uploaded, total) -> runOnUiThread(() -> {
-                    Log.d("mercedes_progress-1", uploaded + " of " + total);
-                    Double progress = (double) uploaded / (double) total;
-                    Log.d("mercedes_progress-2", progress + " / " + max);
-                    progress = progress * max;
-                    Log.d("mercedes_progress-3", progress + " / " + max);
-                    //showProgressBar(progress.intValue(), max);
-
-                    am.progressDialog("1");
-
-                }))
-                .setByteArrayBody(byteArray1)
-                .asString()
-                .setCallback((e, result) -> {
-                    //{"Status":"091","Message":"Invalid Form Details 1.0","ImageURL":null}
-                    //dismisDialog();
-                    if (result != null) {
-                        //Upload Success
-                        Log.d("mercedes-result", "1" + result);
-
-                    } else {
-                        //Upload Failed
-                        Log.d("mercedes-else", "2");
-                    }
-                    if (e != null) {
-                        Log.d("mercedes-error", "1" + e.getMessage());
-                    }
-
-
-                    //let me put it outside the result is null check so that when images fail they can still proceed
-                    try {
-                        removeDialogs();
-
-                        // {"Status":"000","Message":"Data Saved","ImageURL":"https://littleimages.blob.core.windows.net/documents/6F005297-5883-4EAE-A30F-5C9F058CF3E7"}
-
-                        Log.d("upload_selfie_response", result);
-                        JSONObject jsonObject = new JSONObject(result);
-                        String status = jsonObject.getString("Status");
-                        String message = jsonObject.getString("Message");
-
-                        if (status.equals("000")) {
-
-                            if (jsonObject.has("ImageURL")) {
-                                imageURL1 = jsonObject.getString("ImageURL");
-
-                                Log.d("response_idurl", result);
-                                validateImageSelfSubmited(imageURL1);
-
-//                                imgCheck.setVisibility(View.VISIBLE);
-//
-//                                BusinessDocumentsModel businessDocumentsModel = new BusinessDocumentsModel(imageURL, document);
-//                                lstDocumentsUrl.add(businessDocumentsModel);
-
-                            }
-
-                        } else if (status.equals("091")) {
-                            ErrorAlert(message);
-                        }
-
-                    } catch (Exception exception) {
-                        Log.d("mercedes-result", "signature-> " + exception.getMessage());
-
-                        am.progressDialog("0");
-
-                    }
-                });
-
-    }
-
-    private void validateImageSelfSubmited(String imageURL1) {
-
-        String base_URL2 = "https://imageai.azurewebsites.net/ReadDocument.aspx";
-
-        JSONObject jsonObject1 = new JSONObject();
-        try {
-            jsonObject1.put("RequestID", "SUBMITIMAGE");
-            jsonObject1.put("ImageID", "NATIONALID");
-            jsonObject1.put("ImageURL", imageURL1);
-            jsonObject1.put("Country", "UGANDA");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-
-        JsonObjectRequest req = new JsonObjectRequest(Request.Method.POST, base_URL2, jsonObject1,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        am.progressDialog("1");
-//                        {"Status":"Accepted","Message":"Accepted","RequestID":"37236775-bf86-4240-a1db-8baafc33cbd1","ProcessID":"4C22913D-CDEA-480F-B4B1-2A1F703F110C"}
-                        try {
-                            JSONObject jsonObject = new JSONObject(response.toString());
-                            String status = jsonObject.getString("Status");
-                            String message = jsonObject.getString("Message");
-
-                            if (status.equals("Accepted")) {
-
-                                if (jsonObject.has("ProcessID")) {
-                                    processID2 = jsonObject.getString("ProcessID");
-                                    Log.d("response_ProcessIDSELF", processID2);
-
-                                    final Handler handler = new Handler(Looper.getMainLooper());
-                                    handler.postDelayed(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            //Do something after 100ms
-                                            faceId1 = "";
-                                            submitImageSelf(processID2, imageURL1);
-                                        }
-                                    }, 10000);
-
-
-//                                imgCheck.setVisibility(View.VISIBLE);
-//
-//                                BusinessDocumentsModel businessDocumentsModel = new BusinessDocumentsModel(imageURL, document);
-//                                lstDocumentsUrl.add(businessDocumentsModel);
-
-                                }
-
-                            } else if (status.equals("091")) {
-                                ErrorAlert(message);
-                            }
-
-                        } catch (JSONException e) {
-//                            e.printStackTrace();
-                            Toast.makeText(AccountOpenZMain.this, "Could not retrieve cliient image from selife", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-//                VolleyLog.e("Error: ", error.getMessage());
-            }
-        });
-
-// add the request object to the queue to be executed
-        RequestQueue queue = Volley.newRequestQueue(AccountOpenZMain.this);
-        queue.add(req);
-        Log.d("IMAGEURL", req.toString());
-
-
-    }
 
     @Override
     protected void onResume() {
@@ -4514,14 +3068,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
             front.setImage(compressedFrontBitmap);
             ocrViewModel.setIsImageFront(ocrData.getEncodedImageFront());
 
-
-//            encodedImageFront = ConvertImageToBase64(bitmap);
-
             encodedImageFront = ConvertImageToBase64Ocr(compressAndResizeBitmap(decodedFrontBitmap, 400, 400,20));
-
-
-//
-//            encodedImageFront = encodeBitmapToBase64(compressedFrontBitmap);
 
             // Decode and compress the back image
             Bitmap decodedBackBitmap = decodeBase64ToBitmap(ocrData.getEncodedImageBack());
@@ -4534,12 +3081,6 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
         }
     }
 
-    //    private Bitmap compressBitmap(Bitmap bitmap, int compressionQuality) {
-//        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-//        bitmap.compress(Bitmap.CompressFormat.JPEG, compressionQuality, byteArrayOutputStream);
-//        byte[] compressedBytes = byteArrayOutputStream.toByteArray();
-//        return BitmapFactory.decodeByteArray(compressedBytes, 0, compressedBytes.length);
-//    }
     private Bitmap compressBitmap(Bitmap bitmap, int quality) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
@@ -4588,15 +3129,6 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
 
 
     private void submitImageSelf(String processID, String imageURL1) {
-
-//        {
-//            "RequestID":"GETFACE",
-//                "ImageID":"NATIONALID",
-//                "ProcessID":"F56F08A7-C678-4B10-82C9-C8E27601AAD8",
-//                "ImageURL":"https:\/\/littleimages.blob.core.windows.net\/bankdocuments\/\/0DBFAC18-7617-4627-8629-6A9E5DCC06D7",
-//                "Country":"UGANDA"
-//        }
-
         String base_URL2 = "https://imageai.azurewebsites.net/GetFaceFromImage.aspx";
         JSONObject jsonObject = new JSONObject();
         try {
@@ -4662,14 +3194,6 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
     }
 
     private void getNationalIdFaceID(String processID, String imageURL) {
-
-//        {
-//            "RequestID":"GETFACE",
-//                "ImageID":"NATIONALID",
-//                "ProcessID":"F56F08A7-C678-4B10-82C9-C8E27601AAD8",
-//                "ImageURL":"https:\/\/littleimages.blob.core.windows.net\/bankdocuments\/\/0DBFAC18-7617-4627-8629-6A9E5DCC06D7",
-//                "Country":"UGANDA"
-//        }
 
         String base_URL2 = "https://imageai.azurewebsites.net/GetFaceFromImage.aspx";
         JSONObject jsonObject = new JSONObject();
@@ -4808,57 +3332,6 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
 
     }
 
-//    private void popupDeposit() {
-//        final Dialog mDialog = new Dialog(AccountOpenZMain.this);
-//        //noinspection ConstantConditions
-//        mDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-//        mDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-//        mDialog.setContentView(R.layout.deposit_options);
-//        CheckBox check;
-//        final TextView txtTitle = mDialog.findViewById(R.id.message),
-//                txtMessage = mDialog.findViewById(R.id.show_response),
-//                txtOk = mDialog.findViewById(R.id.done);
-//        check = mDialog.findViewById(R.id.check) ;
-//        txtTitle.setText(R.string.registerd_n_successfully);
-//        txtMessage.setText(R.string.deposit_options);
-//
-//        txtOk.setOnClickListener(v1 -> {
-//            finish();
-//            mDialog.dismiss();
-//
-//
-//        });
-//        mDialog.show();
-//
-//    }
-
-    private void depositMethodes(String message) {
-
-        final Dialog mDialog = new Dialog(AccountOpenZMain.this);
-        //noinspection ConstantConditions
-        mDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        mDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        mDialog.setContentView(R.layout.dialog_info);
-        CheckBox check;
-        final TextView txtTitle = mDialog.findViewById(R.id.dialog_title),
-                txtMessage = mDialog.findViewById(R.id.dialog_message),
-                txtOk = mDialog.findViewById(R.id.dialog_BTN);
-        check = mDialog.findViewById(R.id.check);
-        txtTitle.setText(R.string.ok);
-        txtMessage.setText(message);
-
-        txtOk.setOnClickListener(v1 -> {
-            step_++;
-            flipViewIt(step_);
-            flipper.showNext();
-            mDialog.dismiss();
-
-
-        });
-        mDialog.show();
-
-    }
-
     private void termsConditopnChoiceNew() {
         final Dialog mDialog = new Dialog(AccountOpenZMain.this);
         //noinspection ConstantConditions
@@ -4932,10 +3405,6 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                         .putExtra("productName", selectedAccount)
                         .putExtra("termsURL", termsUrl)
                         .putExtra("currencyURL", currencyURL).putExtra("currency", currName).putExtra("branch", branchID));
-//                    selectedAccount = accountNames.get(checkedId);
-//                    selectedAccountID = accountIDs.get(checkedId);
-//                    termsUrl = listUrls.get(checkedId);
-
 
                 mDialog.dismiss();
             }

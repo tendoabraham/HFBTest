@@ -25,5 +25,4 @@ public class OCRState {
         return new OCRTypeConverter().covert(sharedPreferences.getString("data", ""));
     }
 
-
 }

@@ -118,16 +118,16 @@ public class Funds_Transfer_External extends BaseAct implements ResponseListener
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                String bal = am.getBal().replace(",", "");
-                Double balance = Double.parseDouble(bal);
-
-                DecimalFormat formatter = new DecimalFormat("#,###,##0.00");//here 0.00 instead #.##
-                //txtSelfieText.setText(formatter.format(cs_score)+"\nmatch");
-                String inputedAmount = String.valueOf(s);
-                if (!inputedAmount.equals("")&&(Double.parseDouble(inputedAmount)) >= balance) {
-                    am.myDialog(Funds_Transfer_External.this, getString(R.string.alert), getString(R.string.insufficient_funds));
-                    ETPin.setEnabled(false);
-                }
+//                String bal = am.getBal().replace(",", "");
+//                Double balance = Double.parseDouble(bal);
+//
+//                DecimalFormat formatter = new DecimalFormat("#,###,##0.00");//here 0.00 instead #.##
+//                //txtSelfieText.setText(formatter.format(cs_score)+"\nmatch");
+//                String inputedAmount = String.valueOf(s);
+//                if (!inputedAmount.equals("")&&(Double.parseDouble(inputedAmount)) >= balance) {
+//                    am.myDialog(Funds_Transfer_External.this, getString(R.string.alert), getString(R.string.insufficient_funds));
+//                    ETPin.setEnabled(false);
+//                }
 
 
             }
