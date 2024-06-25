@@ -56,7 +56,7 @@ public class Balance_Enquiry extends BaseAct implements ResponseListener, Volley
                                     "BANKACCOUNTID:" + am.getBankAccountID(position) + ":"
                     );
                     //am.connectOldTwo(getString(R.string.processingReq),quest,Balance_Enquiry.this,"BAL");
-                    am.get(Balance_Enquiry.this,quest,getString(R.string.processingReq),"BAL");
+                    am.get_(Balance_Enquiry.this,quest,getString(R.string.processingReq),"BAL");
                 }
             }
             @Override

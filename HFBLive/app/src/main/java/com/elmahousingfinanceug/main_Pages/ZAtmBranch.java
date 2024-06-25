@@ -277,7 +277,7 @@ public class ZAtmBranch extends AppCompatActivity implements
                             "TYPE:" + "AGENT" + ":" +
                             "BANKID:" + am.getBankID() + ":"
             );
-            am.get(ZAtmBranch.this, rush, getString(R.string.gettingNearest),"");
+            am.get_(ZAtmBranch.this, rush, getString(R.string.gettingNearest),"");
 
             mFusedLocationClient.removeLocationUpdates(mLocationCallback);
         }
@@ -533,7 +533,7 @@ public class ZAtmBranch extends AppCompatActivity implements
                                 "TYPE:" + "AGENT" + ":" +
                                 "BANKID:" + am.getBankID() + ":"
                 );
-                am.get(ZAtmBranch.this, rush,getString(R.string.findingBankBranch),"MIR");
+                am.get_(ZAtmBranch.this, rush,getString(R.string.findingBankBranch),"MIR");
 
                 /*now = new Date().getTime();
                 long diff = (now - am.getA()) / 60 / 60 / 60 / 18;

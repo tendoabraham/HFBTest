@@ -9,7 +9,6 @@ import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
-import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -68,7 +67,7 @@ public class AccountOpenSplash extends AppCompatActivity implements ResponseList
         });
 
         findViewById(R.id.submit).setOnClickListener(v -> {
-            am.get(this,
+            am.get_(this,
                     "FORMID:O-GetBankHFStaticData:" + //GetBankStaticData GetBankHFStaticData
                             "MOBILENUMBER:" + am.getUserPhone() + ":" +
                             "BANKID:" + am.getBankID() + ":",
@@ -111,7 +110,7 @@ public class AccountOpenSplash extends AppCompatActivity implements ResponseList
                             .replace("STATUS:00:DATA:", "");
                     if(step.equals("RAO_GSD")) {
                         am.putSavedBundle(replace);
-                        new Handler().postDelayed(() -> am.get(AccountOpenSplash.this,
+                        new Handler().postDelayed(() -> am.get_(AccountOpenSplash.this,
                                 "FORMID:O-GetBranchHFStaticData:" +  //GetBankStaticData  GetBranchHFStaticData
                                         "MOBILENUMBER:" + am.getUserPhone() + ":" +
                                         "BANKID:" + am.getBankID() + ":",

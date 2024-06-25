@@ -1,22 +1,11 @@
 <component name="libraryTable">
-  <library name="Gradle: androidx.legacy:legacy-support-v4:1.0.0@aar">
+  <library name="Gradle: androidx.legacy:legacy-support-v4:1.0.0@aar" external-system-id="GRADLE">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/../ptc_android_challenge_Agnes_Musyoka-development_mocklab/caches/transforms-2/files-2.1/f2bebeca849b3c1fc0bf348a9d3c5482/legacy-support-v4-1.0.0/jars/classes.jar!/" />
-      <root url="file://$PROJECT_DIR$/../ptc_android_challenge_Agnes_Musyoka-development_mocklab/caches/transforms-2/files-2.1/f2bebeca849b3c1fc0bf348a9d3c5482/legacy-support-v4-1.0.0/res" />
-      <root url="file://$PROJECT_DIR$/../ptc_android_challenge_Agnes_Musyoka-development_mocklab/caches/transforms-2/files-2.1/f2bebeca849b3c1fc0bf348a9d3c5482/legacy-support-v4-1.0.0/AndroidManifest.xml" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/f2bebeca849b3c1fc0bf348a9d3c5482/legacy-support-v4-1.0.0/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/9225ab8ae8ff37801217208e3990ebfa/legacy-support-v4-1.0.0/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/fad0631b695ac311211deded6099821f/transformed/legacy-support-v4-1.0.0/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/2ce9ada1a4f67244c93a999b3e84b24b/transformed/legacy-support-v4-1.0.0/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/34c3819cee2951fdcdce0cc29fa8544c/transformed/legacy-support-v4-1.0.0/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/14c6af77c7998efaac63b8c495a0735f/transformed/legacy-support-v4-1.0.0/res" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/5b7128a90a2bdf080a97a8b55e286d7c/transformed/legacy-support-v4-1.0.0/AndroidManifest.xml" />
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/5b7128a90a2bdf080a97a8b55e286d7c/transformed/legacy-support-v4-1.0.0/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/5b7128a90a2bdf080a97a8b55e286d7c/transformed/legacy-support-v4-1.0.0/res" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
-      <root url="jar://$PROJECT_DIR$/../ptc_android_challenge_Agnes_Musyoka-development_mocklab/caches/modules-2/files-2.1/androidx.legacy/legacy-support-v4/1.0.0/5b8f86fea035328fc9e8c660773037a3401ce25f/legacy-support-v4-1.0.0-sources.jar!/" />
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/androidx.legacy/legacy-support-v4/1.0.0/5b8f86fea035328fc9e8c660773037a3401ce25f/legacy-support-v4-1.0.0-sources.jar!/" />
     </SOURCES>
   </library>

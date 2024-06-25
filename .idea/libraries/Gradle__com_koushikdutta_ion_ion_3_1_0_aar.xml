@@ -1,25 +1,13 @@
 <component name="libraryTable">
-  <library name="Gradle: com.koushikdutta.ion:ion:3.1.0@aar">
+  <library name="Gradle: com.koushikdutta.ion:ion:3.1.0@aar" external-system-id="GRADLE">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/../ptc_android_challenge_Agnes_Musyoka-development_mocklab/caches/transforms-2/files-2.1/a2e8db4a8bb14e1b21f4dfc96fcddeba/jetified-ion-3.1.0/jars/classes.jar!/" />
-      <root url="file://$PROJECT_DIR$/../ptc_android_challenge_Agnes_Musyoka-development_mocklab/caches/transforms-2/files-2.1/a2e8db4a8bb14e1b21f4dfc96fcddeba/jetified-ion-3.1.0/res" />
-      <root url="file://$PROJECT_DIR$/../ptc_android_challenge_Agnes_Musyoka-development_mocklab/caches/transforms-2/files-2.1/a2e8db4a8bb14e1b21f4dfc96fcddeba/jetified-ion-3.1.0/AndroidManifest.xml" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/a2e8db4a8bb14e1b21f4dfc96fcddeba/jetified-ion-3.1.0/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/0909622e4b1723811a0165355514599a/jetified-ion-3.1.0/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/591535d97c26ec4ac44b31940e6dca77/transformed/jetified-ion-3.1.0/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/b4c9a0260c341529b0e3c8090f925340/transformed/jetified-ion-3.1.0/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/cb2cbf170ff36a1f112b167bef0c4ee1/transformed/jetified-ion-3.1.0/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/2189f7ac1a3b6b339676297a11805789/transformed/jetified-ion-3.1.0/res" />
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/933b03067c70e6311b172e532854ee55/transformed/jetified-ion-3.1.0/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/933b03067c70e6311b172e532854ee55/transformed/jetified-ion-3.1.0/res" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/933b03067c70e6311b172e532854ee55/transformed/jetified-ion-3.1.0/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC>
-      <root url="jar://$PROJECT_DIR$/../ptc_android_challenge_Agnes_Musyoka-development_mocklab/caches/modules-2/files-2.1/com.koushikdutta.ion/ion/3.1.0/86ed92f7de2a6489274b2d1af478ddcb45c9018f/ion-3.1.0-javadoc.jar!/" />
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.koushikdutta.ion/ion/3.1.0/86ed92f7de2a6489274b2d1af478ddcb45c9018f/ion-3.1.0-javadoc.jar!/" />
     </JAVADOC>
     <SOURCES>
-      <root url="jar://$PROJECT_DIR$/../ptc_android_challenge_Agnes_Musyoka-development_mocklab/caches/modules-2/files-2.1/com.koushikdutta.ion/ion/3.1.0/f901c20bf0a58c2d2d7e11487b9b514814a39ada/ion-3.1.0-sources.jar!/" />
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.koushikdutta.ion/ion/3.1.0/f901c20bf0a58c2d2d7e11487b9b514814a39ada/ion-3.1.0-sources.jar!/" />
     </SOURCES>
   </library>

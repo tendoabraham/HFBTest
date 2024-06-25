@@ -218,7 +218,7 @@ public class Data extends BaseAct implements ResponseListener, VolleyResponse {
                                     "ACTION:GETNAME:"
                     );
                     //am.connectOldTwo(getString(R.string.validating),quest,this,"MTN");
-                    am.get(Data.this, quest, getString(R.string.validating), "MTN2");
+                    am.get_(Data.this, quest, getString(R.string.validating), "MTN2");
 //                    quest = (
 //                            "FORMID:M-:" +
 //                                    "MERCHANTID:MMONEYUGMTN:" +
@@ -227,7 +227,7 @@ public class Data extends BaseAct implements ResponseListener, VolleyResponse {
 //                                    "ACTION:GETNAME:"
 //                    );
 //                    //am.connectOldTwo(getString(R.string.validating),quest,this,"MTN");
-//                    am.get(Data.this, quest, getString(R.string.validating), "MTN2");
+//                    am.get_(Data.this, quest, getString(R.string.validating), "MTN2");
                 }
             }
         });
@@ -291,7 +291,7 @@ public class Data extends BaseAct implements ResponseListener, VolleyResponse {
 //                                    "ACTION:GETNAME:"
 //                    );
 //                    //am.connectOldTwo(getString(R.string.validating),quest,this,"MTN");
-//                    am.get(this, quest, getString(R.string.validating), "MTN2");
+//                    am.get_(this, quest, getString(R.string.validating), "MTN2");
 //                }
 //                break;
 //
@@ -324,7 +324,7 @@ public class Data extends BaseAct implements ResponseListener, VolleyResponse {
 //                                    "BANKID:" + am.getBankID() + ":" +
 //                                    "ACTION:GETNAME:"
 //                    );
-//                    am.get(this, quest, getString(R.string.validating), "AIRTEL");
+//                    am.get_(this, quest, getString(R.string.validating), "AIRTEL");
 //
 //
 //                    //am.connectOldTwo(getString(R.string.validating),quest,this,"MTN");
@@ -379,7 +379,7 @@ public class Data extends BaseAct implements ResponseListener, VolleyResponse {
                         "BANKID:" + am.getBankID() + ":" +
                         "ACTION:GETNAME:"
         );
-        am.get(this, quest,getString(R.string.loading),"AMT");
+        am.get_(this, quest,getString(R.string.loading),"AMT");
     }
 
     public void getStaticData(){
@@ -416,7 +416,7 @@ public class Data extends BaseAct implements ResponseListener, VolleyResponse {
                                 "PROVIDER:" + "MTN:" +
                                 "CATEGORY:" + mtnCategotyIDs.get(position) + ":"
                 );
-                am.get(Data.this, quest,getString(R.string.fetchBundles),"DBC");
+                am.get_(Data.this, quest,getString(R.string.fetchBundles),"DBC");
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -596,13 +596,15 @@ public class Data extends BaseAct implements ResponseListener, VolleyResponse {
                                 "FORMID:M-:" +
                                         "MERCHANTID:" + am.getMerchantID() + ":" +
                                         "BANKACCOUNTID:" + accSend + ":" +
+                                        "INFOFIELD1:" + bundleIDString + ":" +
+                                        "INFOFIELD9:" + phoneReceive + ":" +
                                         "ACCOUNTID:" + phoneReceive + ":" +
                                         "AMOUNT:" + bundleAmountString + ":" +
                                         "TMPIN:" + eTPin.getText().toString().trim() + ":" +
                                         "ACTION:PAYBILL:"
                         );
                         //am.connectOldTwo(getString(R.string.processingTrx),quest,Airtime_Services.this,"TRX");
-                        am.get(Data.this, quest, getString(R.string.processingTrx), "TRX");
+                        am.get_(Data.this, quest, getString(R.string.processingTrx), "TRX");
                         gDialog.cancel();
                     }
                 });

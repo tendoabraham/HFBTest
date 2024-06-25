@@ -234,7 +234,7 @@ public class Settings extends BaseAct implements ResponseListener, VolleyRespons
                 );
             }
             am.saveChangeTrxPin(false);
-            am.get(this,quest,getString(R.string.processingReq),"CGE");
+            am.get_(this,quest,getString(R.string.processingReq),"CGE");
         }
     }
 
@@ -261,7 +261,7 @@ public class Settings extends BaseAct implements ResponseListener, VolleyRespons
                              "BANKID:" + am.getBankID() + ":"
             );
             am.saveChangeTrxPin(true);
-            am.get(this,quest,getString(R.string.processingReq),"CGE");
+            am.get_(this,quest,getString(R.string.processingReq),"CGE");
         }
     }
 
@@ -315,7 +315,7 @@ public class Settings extends BaseAct implements ResponseListener, VolleyRespons
                                     "LOGINMPIN:" + lCon.getText().toString().trim() + ":" +
                                     "LOGINTYPE:PIN:"
                     );
-                    am.get(this, quest,getString(R.string.loggingIn),"CON");
+                    am.get_(this, quest,getString(R.string.loggingIn),"CON");
                 }
                 break;
             case R.id.inactivity:

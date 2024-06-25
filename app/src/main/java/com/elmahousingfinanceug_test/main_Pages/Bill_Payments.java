@@ -123,14 +123,15 @@ public class Bill_Payments extends BaseAct implements ResponseListener, VolleyRe
 
                     if ("007001003".equals(am.getMerchantID())) {
                         quest = (
-                                "FORMID:B-:" +
+                                "FORMID:M-:" +
                                         "MERCHANTID:" + am.getMerchantID() + ":" +
                                         "BANKACCOUNTID:" + accSend + ":" +
-                                        "TOACCOUNTID:" + meterNumber + ":" +
+                                        "ACCOUNTID:" + meterNumber + ":" +
                                         "INFOFIELD1:" + areaString + ":" +
                                         "INFOFIELD2:" + "VALIDATION" + ":" +
                                         "INFOFIELD3:" + ETMeterAccNumber.getText().toString().trim() + ":" +
-                                        "INFOFIELD9:" + am.getUserPhone() + ":"
+                                        "INFOFIELD9:" + am.getUserPhone() + ":" +
+                                        "ACTION:GETNAME:"
 //                                        +
 //                                        "AMOUNT:" + "501" + ":" +
 //                                        "ACTION:GETNAME:"
@@ -161,7 +162,7 @@ public class Bill_Payments extends BaseAct implements ResponseListener, VolleyRe
                                         "ACTION:GETNAME:"
                         );
                     }
-                    am.get(Bill_Payments.this,quest,getString(R.string.validating),"VAL");
+                    am.get_(Bill_Payments.this,quest,getString(R.string.validating),"VAL");
                 }
             }
         });
@@ -188,7 +189,7 @@ public class Bill_Payments extends BaseAct implements ResponseListener, VolleyRe
             public void onClick(View view) {
                 if(accSend.equals("")){
                     am.myDialog(Bill_Payments.this, getString(R.string.alert), getString(R.string.selectAccDebited));
-                } else if (ETMeterAccNumber.getText().length() < 5) {
+                } else if (enterNumber.isChecked() && ETMeterAccNumber.getText().length() < 5) {
                     ETMeterAccNumber.setError(getString(R.string.invalidInput));
                     am.myDialog(Bill_Payments.this, getString(R.string.alert), getString(R.string.enterValidAccMet));
                 } else if (ETAmount.getText().toString().trim().isEmpty()) {
@@ -224,10 +225,10 @@ public class Bill_Payments extends BaseAct implements ResponseListener, VolleyRe
                                                 "INFOFIELD2:" + "PAYMENT" + ":" +
                                                 "INFOFIELD3:" + ETMeterAccNumber.getText().toString().trim() + ":" +
                                                 "INFOFIELD9:" + am.getUserPhone() + ":"+
-                                                "TOACCOUNTID:" + ETMeterAccNumber.getText().toString().trim() + ":" +
+                                                "ACCOUNTID:" + ETMeterAccNumber.getText().toString().trim() + ":" +
                                                 "AMOUNT:" + ETAmount.getText().toString().trim() + ":" +
                                                 "TMPIN:" + ETPin.getText().toString().trim() + ":" +
-                                                "ACTION:GETNAME:"
+                                                "ACTION:PAYBILL:"
 
                                         /*"FORMID:M-:" + old
                                                 "MERCHANTID:" + am.getMerchantID() + ":" +
@@ -269,7 +270,7 @@ public class Bill_Payments extends BaseAct implements ResponseListener, VolleyRe
                                 );
                                 break;
                         }
-                        am.get(Bill_Payments.this,quest,getString(R.string.processingTrx),"TRX");
+                        am.get_(Bill_Payments.this,quest,getString(R.string.processingTrx),"TRX");
                         gDialog.cancel();
                     });
                     txtNo.setOnClickListener(v -> gDialog.cancel());
@@ -445,7 +446,7 @@ public class Bill_Payments extends BaseAct implements ResponseListener, VolleyRe
                             "SERVICEID:UMEME Power:"
             );
         }
-        am.get(this,quest,getString(R.string.fetchingBeneficiaries) + " " + getString(R.string.forWord) + " " + utilityID,"BEN");
+        am.get_(this,quest,getString(R.string.fetchingBeneficiaries) + " " + getString(R.string.forWord) + " " + utilityID,"BEN");
     }
 
     public void getBouquets(String bouquet){
@@ -456,14 +457,14 @@ public class Bill_Payments extends BaseAct implements ResponseListener, VolleyRe
                         "FORMID:O-DataBundleConfig" +
                                 ":PROVIDER:" + bouquet + ":"
                 );
-                am.get(this,quest,getString(R.string.validating),"DSTV");
+                am.get_(this,quest,getString(R.string.validating),"DSTV");
                 break;
             case "GOTV":
                 quest = (
                         "FORMID:O-DataBundleConfig" +
                                 ":PROVIDER:" + bouquet + ":"
                 );
-                am.get(this,quest,getString(R.string.validating),"GOTV");
+                am.get_(this,quest,getString(R.string.validating),"GOTV");
                 break;
             default:
                 break;
@@ -522,7 +523,7 @@ public class Bill_Payments extends BaseAct implements ResponseListener, VolleyRe
 //                                        "ACTION:GETNAME:"
 //                        );
 //                    }
-//                    am.get(this,quest,getString(R.string.validating),"VAL");
+//                    am.get_(this,quest,getString(R.string.validating),"VAL");
 //                }
 //                break;
 //            case R.id.backIn:
@@ -616,7 +617,7 @@ public class Bill_Payments extends BaseAct implements ResponseListener, VolleyRe
 //                                );
 //                                break;
 //                        }
-//                        am.get(Bill_Payments.this,quest,getString(R.string.processingTrx),"TRX");
+//                        am.get_(Bill_Payments.this,quest,getString(R.string.processingTrx),"TRX");
 //                        gDialog.cancel();
 //                    });
 //                    txtNo.setOnClickListener(v -> gDialog.cancel());
@@ -655,10 +656,10 @@ public class Bill_Payments extends BaseAct implements ResponseListener, VolleyRe
                                 "INFOFIELD3:" + ETMeterAccNumber.getText().toString().trim() + ":" +
                                 "INFOFIELD8:POSTOTPVALIDATE:" +
                                 "INFOFIELD9:" + am.getUserPhone() + ":"+
-                                "TOACCOUNTID:" + ETMeterAccNumber.getText().toString().trim() + ":" +
+                                "ACCOUNTID:" + ETMeterAccNumber.getText().toString().trim() + ":" +
                                 "AMOUNT:" + ETAmount.getText().toString().trim() + ":" +
                                 "TMPIN:" + ETPin.getText().toString().trim() + ":" +
-                                "ACTION:GETNAME:"
+                                "ACTION:PAYBILL:"
 
                                         /*"FORMID:M-:" + old
                                                 "MERCHANTID:" + am.getMerchantID() + ":" +
@@ -701,7 +702,7 @@ public class Bill_Payments extends BaseAct implements ResponseListener, VolleyRe
                 );
                 break;
         }
-        am.get(Bill_Payments.this,quest,getString(R.string.processingTrx),"TRX");
+        am.get_(Bill_Payments.this,quest,getString(R.string.processingTrx),"TRX");
         ETPin.setText("");
         gDialog.cancel();
     }

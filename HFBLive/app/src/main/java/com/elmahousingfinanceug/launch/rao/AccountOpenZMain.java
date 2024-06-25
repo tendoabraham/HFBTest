@@ -1726,7 +1726,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                 "INFOFIELD3:" + DOBEdit.getText() + ":" +
                 "INFOFIELD4:" + nationalIDCardNo.getText() + ":" +
                 "ACTION:GETNAME:";
-        am.get(AccountOpenZMain.this, new_request, getString(R.string.loading), "NIRA");
+        am.get_(AccountOpenZMain.this, new_request, getString(R.string.loading), "NIRA");
 
 
     }
@@ -1970,7 +1970,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
     }
 
     private void getCustomParam(String paramName, String task) {
-        am.get(this, "FORMID:O-GETCUSTOMPARAMS:" +
+        am.get_(this, "FORMID:O-GETCUSTOMPARAMS:" +
                 "PARAMETERNAME:" + paramName + ":" +
                 "BANKID:" + am.getBankID() + ":", getString(R.string.loading), task);
 
@@ -1984,19 +1984,19 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
         } else {
             currentTask = "ValidateBankStaff";
         }
-        am.get(this, "FORMID:O-CheckCustomerExists:" +
+        am.get_(this, "FORMID:O-CheckCustomerExists:" +
                 "CUSTOMERMOBILENUMBER:" + checkNum + ":" +
                 "PRODUCTID:" + selectedAccountID + ":" +
                 "BANKID:" + am.getBankID() + ":", getString(R.string.loading), currentTask);
     }
 
     private void getPersonalDetailsExisting(String task) {
-        am.get(this, "FORMID:O-GetCustomerPersonalDetails:" +
+        am.get_(this, "FORMID:O-GetCustomerPersonalDetails:" +
                 "BANKID:" + am.getBankID() + ":", getString(R.string.loading), task);
     }
 
     private void validateExisting(String existingAccount) {
-        am.get(this, "FORMID:M-:" +
+        am.get_(this, "FORMID:M-:" +
                 // TODO: 2/2/2022 on Live
                 //"MERCHANTID:VALIDATEACCOUNTBANK:" +
                 "MERCHANTID:VALIDATEACCOUNT:" +
@@ -2006,7 +2006,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
 
     private void cardDetailsExisting(String accNum, String cardNum, String auth, String checkNum) {
         currentTask = "cardDetailsExisting";
-        am.get(this, "FORMID:B-:MERCHANTID:SELFREG:" +
+        am.get_(this, "FORMID:B-:MERCHANTID:SELFREG:" +
                 "BANKACCOUNTID:" + accNum + ":" +
                 "INFOFIELD1:" + cardNum.replaceAll("\\s+", "") + ":" +
                 "INFOFIELD2:" + auth + ":" +
@@ -2018,14 +2018,14 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
 
     private void getPoliticalExposed() {
         currentTask = "FetchPolitics";
-        am.get(this, "FORMID:O-GetStaticData:" +
+        am.get_(this, "FORMID:O-GetStaticData:" +
                 "SYSTEMCODE:" + "CSPEP" + ":" +
                 "BANKID:" + am.getBankID() + ":", getString(R.string.loading), currentTask);
     }
 
     private void getAddressParam(String paramName, String task, String paramValue) {
         currentTask = task;
-        am.get(this, "FORMID:O-GETCUSTOMADDRESS:" +
+        am.get_(this, "FORMID:O-GETCUSTOMADDRESS:" +
                 "PARAMETERNAME:" + paramName + ":" +
                 "PARAMVALUE:" + paramValue + ":" +
                 "BANKID:" + am.getBankID() + ":", getString(R.string.loading), currentTask);
@@ -2063,7 +2063,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                         "CUSTOMERMOBILENUMBER:" + customerMobilenNumber + ":" +
                         "EMAILID:" + EmailAddress.getText() + ":";
 
-                am.get(AccountOpenZMain.this, new_request, getString(R.string.loading), currentTask);
+                am.get_(AccountOpenZMain.this, new_request, getString(R.string.loading), currentTask);
                 /*if(PhoneNumber.getCountryCode().equals("256")){
                     otpPinView.setEnabled(false);
                 } else {
@@ -2094,7 +2094,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                 "CUSTOMERMOBILENUMBER:" + customerMobilenNumber + ":" +
                 "OTPKEY:" + raoOTP + ":" +
                 "EMAILID:" + EmailAddress.getText() + ":";
-        am.get(AccountOpenZMain.this, new_request, getString(R.string.loading), currentTask);
+        am.get_(AccountOpenZMain.this, new_request, getString(R.string.loading), currentTask);
     }
 
     private void accountBranchChoice() {
@@ -2615,7 +2615,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                         case "VerifyOTP": {
                             currentTask = "RAO";
                             new_request = RAO();
-                            new Handler().postDelayed(() -> am.get(AccountOpenZMain.this, new_request, getString(R.string.loading), "RAO"), 400);
+                            new Handler().postDelayed(() -> am.get_(AccountOpenZMain.this, new_request, getString(R.string.loading), "RAO"), 400);
 //                            Log.e("TEST", new_request);
                             break;
                         }

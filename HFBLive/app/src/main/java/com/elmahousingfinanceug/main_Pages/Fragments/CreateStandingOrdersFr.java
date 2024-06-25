@@ -181,7 +181,7 @@ public class CreateStandingOrdersFr extends Fragment {
                                             "ORDERNAME-" + OrderName.getText().toString().trim() + ":"
                             );
                             //((Standing_Orders)getActivity()).am.connectOldTwo(getString(R.string.processingReq),quest,((Standing_Orders)getActivity()),"");
-                            ((Standing_Orders)getActivity()).am.get(((Standing_Orders)getActivity()), quest, getString(R.string.processingReq),"");
+                            ((Standing_Orders)getActivity()).am.get_(((Standing_Orders)getActivity()), quest, getString(R.string.processingReq),"");
                             ((Standing_Orders)getActivity()).gDialog.cancel();
                         }
                     });

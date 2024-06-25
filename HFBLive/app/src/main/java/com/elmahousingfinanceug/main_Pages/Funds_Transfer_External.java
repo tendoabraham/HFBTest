@@ -129,7 +129,7 @@ public class Funds_Transfer_External extends BaseAct implements ResponseListener
                         "MODULENAME:" + am.getMerchantID() + ":" +
                         "BANKID:" + am.getBankID() + ":"
             );
-            am.get(this,quest,getString(R.string.fetchingBanks),"CBK");
+            am.get_(this,quest,getString(R.string.fetchingBanks),"CBK");
         }
         super.onResume();
     }
@@ -190,7 +190,7 @@ public class Funds_Transfer_External extends BaseAct implements ResponseListener
                                         "MESSAGE:" + ETMessage.getText().toString().trim() + ":" +
                                         "TMPIN:" + ETPin.getText().toString().trim() + ":"
                         );
-                        am.get(Funds_Transfer_External.this,quest,getString(R.string.processingTrx),"TRX");
+                        am.get_(Funds_Transfer_External.this,quest,getString(R.string.processingTrx),"TRX");
                         gDialog.cancel();
                     }
                 });

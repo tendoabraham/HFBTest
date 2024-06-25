@@ -1,5 +1,5 @@
 <component name="libraryTable">
-  <library name="Gradle: androidx.camera:camera-extensions:1.2.3@aar">
+  <library name="Gradle: androidx.camera:camera-extensions:1.2.3@aar" external-system-id="GRADLE">
     <ANNOTATIONS>
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/8039bca69bf9ae5d60f37b292235406f/transformed/jetified-camera-extensions-1.2.3/annotations.zip!/" />
     </ANNOTATIONS>

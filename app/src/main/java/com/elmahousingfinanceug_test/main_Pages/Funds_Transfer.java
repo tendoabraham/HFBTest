@@ -40,7 +40,7 @@ import java.util.Objects;
 public class Funds_Transfer extends BaseAct implements ResponseListener, VolleyResponse {
     Spinner accountNumber,accountNumber2, benSpinner;
     EditText ETAccount,ETAmount,ETMessage,ETPin;
-    TextView validate, sendFunds;
+    TextView validate, sendFunds, valName;
     RadioGroup radioGroup, toOtherRadioGroup;
     RadioButton RBTNMyAccount,RBTNOtherAccount, enterAccount, savedAccount;
     LinearLayout validateLayout, input;
@@ -72,6 +72,7 @@ public class Funds_Transfer extends BaseAct implements ResponseListener, VolleyR
         enterAccount = findViewById(R.id.enterAccount);
         savedAccount = findViewById(R.id.savedAccount);
         sendFunds = findViewById(R.id.sendFunds);
+        valName = findViewById(R.id.valName);
 
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item, am.getAliases());
         dataAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
@@ -120,7 +121,9 @@ public class Funds_Transfer extends BaseAct implements ResponseListener, VolleyR
                 ETAccount.setText("");
                 if (enterAccount.isChecked()){
                     ETAccount.setVisibility(View.VISIBLE);
+                    benSpinner.setVisibility(View.GONE);
                 } else if (savedAccount.isChecked()){
+                    ETAccount.setVisibility(View.GONE);
                     getBens();
                 }
             }
@@ -172,18 +175,29 @@ public class Funds_Transfer extends BaseAct implements ResponseListener, VolleyR
         validate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (RBTNOtherAccount.isChecked() && ETAccount.getText().toString().trim().length() < 5) {
+                if (RBTNOtherAccount.isChecked() && enterAccount.isChecked() && ETAccount.getText().toString().trim().length() < 5) {
                     am.myDialog(Funds_Transfer.this, getString(R.string.alert), getString(R.string.enterValidAcc));
-                } else if (RBTNOtherAccount.isChecked() && accSend.equals(ETAccount.getText().toString().trim())) {
+                } else if (RBTNOtherAccount.isChecked() && accSend.equals("")) {
+                    am.myDialog(Funds_Transfer.this, getString(R.string.alert), getString(R.string.selectAccDebited));
+                }else if (RBTNOtherAccount.isChecked() && accSend.equals(ETAccount.getText().toString().trim())) {
                     am.myDialog(Funds_Transfer.this, getString(R.string.alert), getString(R.string.sameAccError));
                 } else {
+
+                    String account = "";
+
+                    if (savedAccount.isChecked()){
+                        account = benAcc;
+                    }else {
+                        account = ETAccount.getText().toString().trim();
+                    }
+
                     quest = (
                             "FORMID:B-:" +
                                     "MERCHANTID:ACCOUNTVALIDATION:" +
-                                    "TOACCOUNT:" + ETAccount.getText().toString().trim() + ":"
+                                    "TOACCOUNT:" + account + ":"
                     );
                     //am.connectOldTwo(getString(R.string.validating),quest,Funds_Transfer.this,"VAL");
-                    am.get(Funds_Transfer.this,quest,getString(R.string.validating),"VAL");
+                    am.get_(Funds_Transfer.this,quest,getString(R.string.validating),"VAL");
                 }
             }
         });
@@ -244,7 +258,7 @@ public class Funds_Transfer extends BaseAct implements ResponseListener, VolleyR
                                             "TMPIN:" + ETPin.getText().toString().trim() + ":"
                             );
                             //am.connectOldTwo(getString(R.string.processingTrx), quest, Funds_Transfer.this, "TRX");
-                            am.get(Funds_Transfer.this,quest,getString(R.string.processingTrx),"TRX");
+                            am.get_(Funds_Transfer.this,quest,getString(R.string.processingTrx),"TRX");
                             gDialog.cancel();
                         }
                     });
@@ -273,7 +287,7 @@ public class Funds_Transfer extends BaseAct implements ResponseListener, VolleyR
                         "BENFTYPE:" + "INTERNAL" + ":" +
                         "BANKID:" + am.getBankID() + ":"
         );
-        am.get(this,quest,getString(R.string.fetchingBeneficiaries) ,"GETIN");
+        am.get_(this,quest,getString(R.string.fetchingBeneficiaries) ,"GETIN");
     }
 
     private void populateSpinners2() {
@@ -293,95 +307,6 @@ public class Funds_Transfer extends BaseAct implements ResponseListener, VolleyR
             public void onNothingSelected(AdapterView<?> parent) {}
         });
     }
-
-//    public void fT(View t) {
-//        if (t.getId() == R.id.validate) {
-//            if (RBTNOtherAccount.isChecked() && ETAccount.getText().toString().trim().length() < 5) {
-//                am.myDialog(this, getString(R.string.alert), getString(R.string.enterValidAcc));
-//            } else if (RBTNOtherAccount.isChecked() && accSend.equals(ETAccount.getText().toString().trim())) {
-//                am.myDialog(this, getString(R.string.alert), getString(R.string.sameAccError));
-//            } else {
-//                quest = (
-//                        "FORMID:M-:" +
-//                                "MERCHANTID:VALIDATEACCOUNTBANK:" +
-//                                "ACCOUNTID:" + ETAccount.getText().toString().trim() + ":" +
-//                                "ACTION:GETNAME:"
-//                );
-//                //am.connectOldTwo(getString(R.string.validating),quest,Funds_Transfer.this,"VAL");
-//                am.get(this,quest,getString(R.string.validating),"VAL");
-//            }
-//        } else if (t.getId() == R.id.sendFunds) {
-//            if (accSend.equals("")) {
-//                am.myDialog(this, getString(R.string.alert), getString(R.string.selectAccDebited));
-//            } else if (RBTNMyAccount.isChecked() && accReceive.equals("")) {
-//                am.myDialog(this, getString(R.string.alert), getString(R.string.selectAccCredited));
-//            } else if (RBTNMyAccount.isChecked() && accSend.equals(accReceive)) {
-//                am.myDialog(this, getString(R.string.alert), getString(R.string.sameAccError));
-//            } else if (RBTNOtherAccount.isChecked() && ETAccount.getText().toString().trim().length() < 5) {
-//                am.myDialog(this, getString(R.string.alert), getString(R.string.enterValidAcc));
-//            } else if (RBTNOtherAccount.isChecked() && accSend.equals(ETAccount.getText().toString().trim())) {
-//                am.myDialog(this, getString(R.string.alert), getString(R.string.sameAccError));
-//            } else if (ETAmount.getText().toString().trim().isEmpty()) {
-//                am.myDialog(this, getString(R.string.alert), getString(R.string.enterValidAmount));
-//            } else if (ETMessage.getText().toString().trim().isEmpty()) {
-//                am.myDialog(this, getString(R.string.alert), getString(R.string.descReq));
-//            } else if (ETPin.getText().toString().trim().isEmpty()) {
-//                am.myDialog(this, getString(R.string.alert), getString(R.string.enterValidPin));
-//            } else {
-//                if (RBTNMyAccount.isChecked()) {
-//                    recipient = accReceive;
-//                } else {
-//                    recipient = ETAccount.getText().toString().trim();
-//                }
-//                gDialog = new Dialog(this);
-//                //noinspection ConstantConditions
-//                gDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-//                gDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-//                gDialog.setContentView(R.layout.dialog_confirm);
-//                final TextView txtMessage = gDialog.findViewById(R.id.dialog_message);
-//                final TextView txtOk = gDialog.findViewById(R.id.yesBTN);
-//                final TextView txtNo = gDialog.findViewById(R.id.noBTN);
-//                txtMessage.setText(String.format("%s %s %s %s %s %s",
-//                        getText(R.string.doFundsTransfer),
-//                        am.Amount_Thousands(ETAmount.getText().toString().trim()),
-//                        getText(R.string.fromAccNo),
-//                        accSend,
-//                        getText(R.string.toAccNo),
-//                        recipient));
-//                txtOk.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        quest = (
-//                                "FORMID:B-:" +
-//                                        "MERCHANTID:TRANSFER:" +
-//                                        "BANKACCOUNTID:" + accSend + ":" +
-//                                        "TOACCOUNT:" + recipient + ":" +
-//                                        "AMOUNT:" + ETAmount.getText().toString().trim() + ":" +
-//                                        "MESSAGE:" + ETMessage.getText().toString().trim() + ":" +
-//                                        "TMPIN:" + ETPin.getText().toString().trim() + ":"
-//                        );
-//                        //am.connectOldTwo(getString(R.string.processingTrx), quest, Funds_Transfer.this, "TRX");
-//                        am.get(Funds_Transfer.this,quest,getString(R.string.processingTrx),"TRX");
-//                        gDialog.cancel();
-//                    }
-//                });
-//                txtNo.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        gDialog.cancel();
-//                    }
-//                });
-//                gDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-//                    @Override
-//                    public void onCancel(DialogInterface dialog) {
-////                        ETPin.setText("");
-//                        dialog.dismiss();
-//                    }
-//                });
-//                gDialog.show();
-//            }
-//        }
-//    }
 
     @Override
     protected void onResume() {
@@ -407,7 +332,7 @@ public class Funds_Transfer extends BaseAct implements ResponseListener, VolleyR
                         "TMPIN:" + ETPin.getText().toString().trim() + ":"
         );
         //am.connectOldTwo(getString(R.string.processingTrx), quest, Funds_Transfer.this, "TRX");
-        am.get(Funds_Transfer.this,quest,getString(R.string.processingTrx),"TRX");
+        am.get_(Funds_Transfer.this,quest,getString(R.string.processingTrx),"TRX");
         ETPin.setText("");
         gDialog.cancel();
     }
@@ -436,43 +361,77 @@ public class Funds_Transfer extends BaseAct implements ResponseListener, VolleyR
         switch (step) {
             case "GETIN":
             {
-                String [] splits = response.split(":");
-                String status = splits[1], message = splits[3];
-                switch (status) {
-                    case "000":
-                    case "OK":
-                    case "00":
-                        benSpinner.setVisibility(View.VISIBLE);
-                        String [] benItems = message.split("~");
-                        final List<String> listNumbers = new ArrayList<>(), benName = new ArrayList<>()
-                                , bankCodex = new ArrayList<>(), branchCodex = new ArrayList<>();
-                        for (String aBenItem : benItems) {
-                            String [] inside = aBenItem.split("\\|");
-                            listNumbers.add(inside[0]);
-                            benName.add(inside[1]);
-                            bankCodex.add(inside[2]);
-                            branchCodex.add(inside[3]);
-                        }
-                        ArrayAdapter<String> benAdapter = new ArrayAdapter<>(this,R.layout.spinner_dropdown_item, benName);
-                        benAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
-                        benSpinner.setAdapter(benAdapter);
-                        benSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                            @Override
-                            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                                benAcc = listNumbers.get(position);
-                                bankCode = bankCodex.get(position);
-                                branchCode = branchCodex.get(position);
-                            }
-                            @Override
-                            public void onNothingSelected(AdapterView<?> parent) {}
-                        });
-                        ETAccount.setVisibility(View.GONE);
-                        break;
-                    default:
-                        enterAccount.setChecked(true);
-                        am.ToastMessageLong(this, message);
-                        break;
+                benSpinner.setVisibility(View.VISIBLE);
+                String [] benItems = response.split("~");
+                final List<String> listNumbers = new ArrayList<>(), benName = new ArrayList<>()
+                        , bankCodex = new ArrayList<>(), branchCodex = new ArrayList<>();
+                for (String aBenItem : benItems) {
+                    String [] inside = aBenItem.split("\\|");
+                    listNumbers.add(inside[0]);
+                    benName.add(inside[1]);
+                    bankCodex.add(inside[2]);
+                    branchCodex.add(inside[3]);
                 }
+                ArrayAdapter<String> benAdapter = new ArrayAdapter<>(this,R.layout.spinner_dropdown_item, benName);
+                benAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
+                benSpinner.setAdapter(benAdapter);
+                benSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                        benAcc = listNumbers.get(position);
+                        bankCode = bankCodex.get(position);
+                        branchCode = branchCodex.get(position);
+
+                        toOtherRadioGroup.setVisibility(View.VISIBLE);
+                        enterAccount.setChecked(false);
+                        ETAccount.setVisibility(View.GONE);
+                        accountNumber2.setVisibility(View.GONE);
+                        validate.setVisibility(View.VISIBLE);
+                        input.setVisibility(View.GONE);
+                        validateLayout.setVisibility(View.GONE);
+                    }
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {}
+                });
+                ETAccount.setVisibility(View.GONE);
+//                Log.e("RESSSPO", response);
+//                String [] splits = response.split(":");
+//                String status = splits[1], message = splits[3];
+//                switch (status) {
+//                    case "000":
+//                    case "OK":
+//                    case "00":
+//                        benSpinner.setVisibility(View.VISIBLE);
+//                        String [] benItems = response.split("~");
+//                        final List<String> listNumbers = new ArrayList<>(), benName = new ArrayList<>()
+//                                , bankCodex = new ArrayList<>(), branchCodex = new ArrayList<>();
+//                        for (String aBenItem : benItems) {
+//                            String [] inside = aBenItem.split("\\|");
+//                            listNumbers.add(inside[0]);
+//                            benName.add(inside[1]);
+//                            bankCodex.add(inside[2]);
+//                            branchCodex.add(inside[3]);
+//                        }
+//                        ArrayAdapter<String> benAdapter = new ArrayAdapter<>(this,R.layout.spinner_dropdown_item, benName);
+//                        benAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
+//                        benSpinner.setAdapter(benAdapter);
+//                        benSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//                            @Override
+//                            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//                                benAcc = listNumbers.get(position);
+//                                bankCode = bankCodex.get(position);
+//                                branchCode = branchCodex.get(position);
+//                            }
+//                            @Override
+//                            public void onNothingSelected(AdapterView<?> parent) {}
+//                        });
+//                        ETAccount.setVisibility(View.GONE);
+//                        break;
+//                    default:
+//                        enterAccount.setChecked(true);
+//                        am.ToastMessageLong(this, message);
+//                        break;
+//                }
             }
             break;
             case "VAL":
@@ -482,6 +441,7 @@ public class Funds_Transfer extends BaseAct implements ResponseListener, VolleyR
                 am.separate(response,"|",field_IDs ,field_Values);
                 valRecycler.setAdapter(new AdapterKeyValue(field_IDs,field_Values));
                 validateLayout.setVisibility(View.VISIBLE);
+                valName.setText(response);
                 input.setVisibility(View.VISIBLE);
                 validate.setVisibility(View.GONE);
                 ETAccount.addTextChangedListener(new TextWatcher() {

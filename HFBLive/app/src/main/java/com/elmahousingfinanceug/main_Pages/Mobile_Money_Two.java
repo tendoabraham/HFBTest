@@ -189,7 +189,7 @@ public class Mobile_Money_Two extends BaseAct implements ResponseListener, Volle
                                     "ACTION:GETNAME:"
                     );
                     //am.connectOldTwo(getString(R.string.validating),quest,this,"MTN");
-                    am.get(this, quest, getString(R.string.validating),"MTN");
+                    am.get_(this, quest, getString(R.string.validating),"MTN");
                 }
                 break;
             case R.id.back:
@@ -253,7 +253,7 @@ public class Mobile_Money_Two extends BaseAct implements ResponseListener, Volle
                                             "ACTION:PAYBILL:"
                             );
                             //am.connectOldTwo(getString(R.string.processingTrx),quest,Mobile_Money_Two.this,"TRX");
-                            am.get(Mobile_Money_Two.this, quest, getString(R.string.processingTrx),"TRX");
+                            am.get_(Mobile_Money_Two.this, quest, getString(R.string.processingTrx),"TRX");
                             gDialog.cancel();
                         }
                     });

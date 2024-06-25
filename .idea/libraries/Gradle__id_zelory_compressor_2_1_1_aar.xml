@@ -1,22 +1,11 @@
 <component name="libraryTable">
-  <library name="Gradle: id.zelory:compressor:2.1.1@aar">
+  <library name="Gradle: id.zelory:compressor:2.1.1@aar" external-system-id="GRADLE">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/../ptc_android_challenge_Agnes_Musyoka-development_mocklab/caches/transforms-2/files-2.1/4f7d5253cf03613559331ed10c89ae7f/jetified-compressor-2.1.1/jars/classes.jar!/" />
-      <root url="file://$PROJECT_DIR$/../ptc_android_challenge_Agnes_Musyoka-development_mocklab/caches/transforms-2/files-2.1/4f7d5253cf03613559331ed10c89ae7f/jetified-compressor-2.1.1/res" />
-      <root url="file://$PROJECT_DIR$/../ptc_android_challenge_Agnes_Musyoka-development_mocklab/caches/transforms-2/files-2.1/4f7d5253cf03613559331ed10c89ae7f/jetified-compressor-2.1.1/AndroidManifest.xml" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/4f7d5253cf03613559331ed10c89ae7f/jetified-compressor-2.1.1/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/055a4396894b8148767c2acb67fbac8c/jetified-compressor-2.1.1/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/3b3fed22cc336f62702ce93dbcf51b78/transformed/jetified-compressor-2.1.1/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/c80c5743a49ea882a491186e26fe22b5/transformed/jetified-compressor-2.1.1/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/c5becacfbc2f66e2908fd7d20673edf5/transformed/jetified-compressor-2.1.1/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/83f4a7cecd883526cd69d952ac08de37/transformed/jetified-compressor-2.1.1/res" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/e0be943824a95832e32e608eaf83aa99/transformed/jetified-compressor-2.1.1/AndroidManifest.xml" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/e0be943824a95832e32e608eaf83aa99/transformed/jetified-compressor-2.1.1/res" />
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/e0be943824a95832e32e608eaf83aa99/transformed/jetified-compressor-2.1.1/jars/classes.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
-      <root url="jar://$PROJECT_DIR$/../ptc_android_challenge_Agnes_Musyoka-development_mocklab/caches/modules-2/files-2.1/id.zelory/compressor/2.1.1/baf8d05337f2b193c440605cebb3d027aeed8e2d/compressor-2.1.1-sources.jar!/" />
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/id.zelory/compressor/2.1.1/baf8d05337f2b193c440605cebb3d027aeed8e2d/compressor-2.1.1-sources.jar!/" />
     </SOURCES>
   </library>

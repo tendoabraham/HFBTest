@@ -87,7 +87,7 @@ public class ChequeRequest_Fragment extends Fragment implements ResponseListener
                                 "INFOFIELD1:"+ leavesStr +":"
                     );
                     //((Cheques)getActivity()).am.connectOldTwo(getString(R.string.processingReq), quest,ChequeRequest_Fragment.this,"");
-                    ((Cheques)getActivity()).am.get(ChequeRequest_Fragment.this, quest, getString(R.string.processingReq),"");
+                    ((Cheques)getActivity()).am.get_(ChequeRequest_Fragment.this, quest, getString(R.string.processingReq),"");
                 }
             }
         });

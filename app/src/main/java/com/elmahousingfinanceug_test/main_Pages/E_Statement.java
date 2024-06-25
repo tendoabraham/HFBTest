@@ -102,7 +102,7 @@ public class E_Statement extends BaseAct implements ResponseListener, VolleyResp
                                             "FIELD3:" + accSend + ":"
                             );
                             //am.connectOldTwo(getString(R.string.processingReq),quest,E_Statement.this,"FSB");
-                            am.get(E_Statement.this,quest,getString(R.string.processingReq),"FSB");
+                            am.get_(E_Statement.this,quest,getString(R.string.processingReq),"FSB");
                             gDialog.dismiss();
                         }
                     });
@@ -265,7 +265,7 @@ public class E_Statement extends BaseAct implements ResponseListener, VolleyResp
 //                                    "FIELD3:" + accSend + ":"
 //                    );
 //                    //am.connectOldTwo(getString(R.string.processingReq),quest,E_Statement.this,"FSB");
-//                    am.get(E_Statement.this,quest,getString(R.string.processingReq),"FSB");
+//                    am.get_(E_Statement.this,quest,getString(R.string.processingReq),"FSB");
 //                    gDialog.dismiss();
 //                }
 //            });

@@ -45,7 +45,7 @@ public class StopStandingOrdersFr extends Fragment {
                         "FORMID:O-StandingOrdersList:"
                 );
                 //((Standing_Orders)getActivity()).am.connectOldTwo(getString(R.string.processingReq),quest,((Standing_Orders)getActivity()),"W");
-                ((Standing_Orders)getActivity()).am.get(((Standing_Orders)getActivity()), quest, getString(R.string.processingReq),"");
+                ((Standing_Orders)getActivity()).am.get_(((Standing_Orders)getActivity()), quest, getString(R.string.processingReq),"");
             }
         });
 

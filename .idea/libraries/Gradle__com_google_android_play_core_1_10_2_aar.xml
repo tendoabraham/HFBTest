@@ -1,5 +1,5 @@
 <component name="libraryTable">
-  <library name="Gradle: com.google.android.play:core:1.10.2@aar">
+  <library name="Gradle: com.google.android.play:core:1.10.2@aar" external-system-id="GRADLE">
     <ANNOTATIONS>
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/f88c7149fae3857ea1e34f9051cae6d6/transformed/jetified-core-1.10.2/annotations.zip!/" />
     </ANNOTATIONS>

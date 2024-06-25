@@ -1,5 +1,5 @@
 <component name="libraryTable">
-  <library name="Gradle: androidx.camera:camera-lifecycle:1.2.3@aar">
+  <library name="Gradle: androidx.camera:camera-lifecycle:1.2.3@aar" external-system-id="GRADLE">
     <CLASSES>
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/e06c6654af6f2f07606ea93117c151c1/transformed/jetified-camera-lifecycle-1.2.3/AndroidManifest.xml" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/e06c6654af6f2f07606ea93117c151c1/transformed/jetified-camera-lifecycle-1.2.3/res" />

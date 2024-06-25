@@ -139,7 +139,7 @@ public class Login extends AppCompatActivity implements ResponseListener, Volley
                                     "LOGINMPIN:" + eTPin.getText().toString().trim() + ":" +
                                     "LOGINTYPE:PIN:"
                     );
-                    am.get(this,quest,getString(R.string.loggingIn),"IN");
+                    am.get_(this,quest,getString(R.string.loggingIn),"IN");
                     eTPin.setText("");
                 }
                 break;
@@ -362,7 +362,7 @@ public class Login extends AppCompatActivity implements ResponseListener, Volley
                         "LOGINMPIN:" + mRestrict() + ":" +
                         "LOGINTYPE:FINGERPRINT:"
         );
-        am.get(this, quest,getString(R.string.loggingIn),"IN");
+        am.get_(this, quest,getString(R.string.loggingIn),"IN");
         fingerInput.setVisibility(View.GONE);
     }
 

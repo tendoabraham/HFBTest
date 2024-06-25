@@ -73,7 +73,7 @@ public class ChequeStop_Fragment extends Fragment implements ResponseListener, V
                                     "INFOFIELD2:"+ toChq.getText().toString().trim() +":"
                     );
                     //((Cheques)getActivity()).am.connectOldTwo(getString(R.string.processingReq), quest,ChequeStop_Fragment.this,"");
-                    ((Cheques)getActivity()).am.get(ChequeStop_Fragment.this, quest, getString(R.string.processingReq),"");
+                    ((Cheques)getActivity()).am.get_(ChequeStop_Fragment.this, quest, getString(R.string.processingReq),"");
                 }
             }
         });

@@ -105,7 +105,7 @@ public class School_Fees extends BaseAct implements ResponseListener, VolleyResp
                                     "INFOFIELD9:" + "VALIDATION" + ":" +
                                     "ACTION:GETNAME:"
                     );
-                    am.get(this,quest,getString(R.string.validating),"VAL");
+                    am.get_(this,quest,getString(R.string.validating),"VAL");
                 }
                 break;
             case R.id.backIn:
@@ -161,7 +161,7 @@ public class School_Fees extends BaseAct implements ResponseListener, VolleyResp
                                         "TMPIN:" + pin.getText().toString().trim() + ":" +
                                         "ACTION:GETNAME:"
                         );
-                        am.get(School_Fees.this,quest,getString(R.string.processingTrx),"TRX");
+                        am.get_(School_Fees.this,quest,getString(R.string.processingTrx),"TRX");
                         gDialog.cancel();
                     });
                     gDialog.setOnCancelListener(dialog -> {

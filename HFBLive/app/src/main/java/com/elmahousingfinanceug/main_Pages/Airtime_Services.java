@@ -196,7 +196,7 @@ public class Airtime_Services extends BaseAct implements ResponseListener, Volle
                                     "ACTION:PAYBILL:"
                     );
                     //am.connectOldTwo(getString(R.string.processingTrx),quest,Airtime_Services.this,"TRX");
-                    am.get(Airtime_Services.this,quest,getString(R.string.processingTrx),"TRX");
+                    am.get_(Airtime_Services.this,quest,getString(R.string.processingTrx),"TRX");
                     gDialog.cancel();
                 }
             });

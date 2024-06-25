@@ -1,22 +1,11 @@
 <component name="libraryTable">
-  <library name="Gradle: androidx.multidex:multidex:2.0.1@aar">
+  <library name="Gradle: androidx.multidex:multidex:2.0.1@aar" external-system-id="GRADLE">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/../ptc_android_challenge_Agnes_Musyoka-development_mocklab/caches/transforms-2/files-2.1/2e1e682c0a69d202248ec935b23f49b2/multidex-2.0.1/jars/classes.jar!/" />
-      <root url="file://$PROJECT_DIR$/../ptc_android_challenge_Agnes_Musyoka-development_mocklab/caches/transforms-2/files-2.1/2e1e682c0a69d202248ec935b23f49b2/multidex-2.0.1/res" />
-      <root url="file://$PROJECT_DIR$/../ptc_android_challenge_Agnes_Musyoka-development_mocklab/caches/transforms-2/files-2.1/2e1e682c0a69d202248ec935b23f49b2/multidex-2.0.1/AndroidManifest.xml" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/2e1e682c0a69d202248ec935b23f49b2/multidex-2.0.1/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/c03022fd49be806cd13c8205a64bab08/multidex-2.0.1/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/dc07dd68c441adc5a2bca246b917c736/transformed/multidex-2.0.1/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/ee62240d143d55c41c4dae35dbcb88ff/transformed/multidex-2.0.1/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/1e6052f924d63738a26c3e620654d535/transformed/multidex-2.0.1/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/315749ed4d32ca52c2472f6c6154de01/transformed/multidex-2.0.1/res" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/f7da2c4e4f26931ca78233578e5a1733/transformed/multidex-2.0.1/AndroidManifest.xml" />
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/f7da2c4e4f26931ca78233578e5a1733/transformed/multidex-2.0.1/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/f7da2c4e4f26931ca78233578e5a1733/transformed/multidex-2.0.1/res" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
-      <root url="jar://$PROJECT_DIR$/../ptc_android_challenge_Agnes_Musyoka-development_mocklab/caches/modules-2/files-2.1/androidx.multidex/multidex/2.0.1/f3f4d0d014301dc9491afc5d4a0a91a385e32752/multidex-2.0.1-sources.jar!/" />
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/androidx.multidex/multidex/2.0.1/f3f4d0d014301dc9491afc5d4a0a91a385e32752/multidex-2.0.1-sources.jar!/" />
     </SOURCES>
   </library>

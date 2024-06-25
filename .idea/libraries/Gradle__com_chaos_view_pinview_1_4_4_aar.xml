@@ -1,5 +1,5 @@
 <component name="libraryTable">
-  <library name="Gradle: com.chaos.view:pinview:1.4.4@aar">
+  <library name="Gradle: com.chaos.view:pinview:1.4.4@aar" external-system-id="GRADLE">
     <CLASSES>
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/4f1838ddc60469b219415528485739fc/transformed/jetified-pinview-1.4.4/res" />
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/4f1838ddc60469b219415528485739fc/transformed/jetified-pinview-1.4.4/jars/classes.jar!/" />

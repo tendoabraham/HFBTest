@@ -3,8 +3,6 @@ package com.elmahousingfinanceug_test.launch.rao;
 import static com.elmahousingfinanceug_test.launch.rao.ocr.ImageResultProviderKt.getImageFromStorage;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -19,15 +17,12 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.net.Uri;
-import android.os.BatteryManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Environment;
 import android.os.Handler;
-import android.os.Looper;
 import android.os.StatFs;
-import android.provider.Settings;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -58,13 +53,11 @@ import android.widget.ViewFlipper;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatCheckBox;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -91,7 +84,6 @@ import com.example.icebergocr.utils.OCRData;
 import com.google.android.gms.auth.api.phone.SmsRetriever;
 import com.google.android.gms.auth.api.phone.SmsRetrieverClient;
 import com.google.android.gms.tasks.Task;
-import com.koushikdutta.ion.Ion;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -103,19 +95,14 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Pattern;
 
-import id.zelory.compressor.Compressor;
 import mumayank.com.airlocationlibrary.AirLocation;
 
 public class AccountOpenZMain extends AppCompatActivity implements ResponseListener, View.OnClickListener {
@@ -1387,7 +1374,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                 "INFOFIELD3:" + DOBEdit.getText() + ":" +
                 "INFOFIELD4:" + nationalIDCardNo.getText() + ":" +
                 "ACTION:GETNAME:";
-        am.get(AccountOpenZMain.this, new_request, getString(R.string.loading), "NIRA");
+        am.get_(AccountOpenZMain.this, new_request, getString(R.string.loading), "NIRA");
 
 
     }
@@ -1487,7 +1474,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
     };
 
     private void getCustomParam(String paramName, String task) {
-        am.get(this, "FORMID:O-GETCUSTOMPARAMS:" +
+        am.get_(this, "FORMID:O-GETCUSTOMPARAMS:" +
                 "PARAMETERNAME:" + paramName + ":" +
                 "BANKID:" + am.getBankID() + ":", getString(R.string.loading), task);
 
@@ -1501,7 +1488,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
         } else {
             currentTask = "ValidateBankStaff";
         }
-        am.get(this, "FORMID:O-CheckCustomerExists:" +
+        am.get_(this, "FORMID:O-CheckCustomerExists:" +
                 "CUSTOMERMOBILENUMBER:" + checkNum + ":" +
                 "PRODUCTID:" + selectedAccountID + ":" +
                 "BANKID:" + am.getBankID() + ":", getString(R.string.loading), currentTask);
@@ -1509,7 +1496,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
 
     private void getAddressParam(String paramName, String task, String paramValue) {
         currentTask = task;
-        am.get(this, "FORMID:O-GETCUSTOMADDRESS:" +
+        am.get_(this, "FORMID:O-GETCUSTOMADDRESS:" +
                 "PARAMETERNAME:" + paramName + ":" +
                 "PARAMVALUE:" + paramValue + ":" +
                 "BANKID:" + am.getBankID() + ":", getString(R.string.loading), currentTask);
@@ -1527,7 +1514,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                         "INFOFIELD9:" + encodedImageSignature + ":" +
                         "BANKACCOUNTID:" + am.getCustomerID() + ":" +
                         "ACTION:GETNAME:";
-        new Handler().postDelayed(() -> am.get(AccountOpenZMain.this, new_request, getString(R.string.loading), "RAO"), 800);
+        new Handler().postDelayed(() -> am.get_(AccountOpenZMain.this, new_request, getString(R.string.loading), "RAO"), 800);
         Log.e("OCR", new_request);
 
 
@@ -1549,7 +1536,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                         "CUSTOMERMOBILENUMBER:" + customerMobilenNumber + ":" +
                         "EMAILID:" + EmailAddress.getText().trim() + ":";
 
-                am.get(AccountOpenZMain.this, new_request, getString(R.string.loading), currentTask);
+                am.get_(AccountOpenZMain.this, new_request, getString(R.string.loading), currentTask);
                 otpPinView.setEnabled(true);
                 otpPinView.requestFocus();
             }, 300);
@@ -1575,7 +1562,7 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
                 "CUSTOMERMOBILENUMBER:" + customerMobilenNumber + ":" +
                 "OTPKEY:" + raoOTP + ":" +
                 "EMAILID:" + EmailAddress.getText().trim() + ":";
-        am.get(AccountOpenZMain.this, new_request, getString(R.string.loading), currentTask);
+        am.get_(AccountOpenZMain.this, new_request, getString(R.string.loading), currentTask);
     }
 
     private void accountBranchChoice() {
@@ -3029,9 +3016,8 @@ public class AccountOpenZMain extends AppCompatActivity implements ResponseListe
         writeToFile("ocrlogug.txt",new_request);
 
 
-
-
-        am.get(AccountOpenZMain.this, new_request, getString(R.string.loading), "OCRCPMP");
+        am.get_(AccountOpenZMain.this, new_request, getString(R.string.loading), "OCRCPMP");
+//        am.get(AccountOpenZMain.this, new_request, getString(R.string.loading), "OCRCPMP");
 
     }
 

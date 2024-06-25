@@ -1,19 +1,14 @@
 <component name="libraryTable">
-  <library name="Gradle: com.wang.avi:library:2.1.3@aar">
+  <library name="Gradle: com.wang.avi:library:2.1.3@aar" external-system-id="GRADLE">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/../ptc_android_challenge_Agnes_Musyoka-development_mocklab/caches/transforms-2/files-2.1/cbd433d0ce67199fd1b6df32f8eb48ae/jetified-library-2.1.3/jars/classes.jar!/" />
-      <root url="file://$PROJECT_DIR$/../ptc_android_challenge_Agnes_Musyoka-development_mocklab/caches/transforms-2/files-2.1/cbd433d0ce67199fd1b6df32f8eb48ae/jetified-library-2.1.3/res" />
-      <root url="file://$PROJECT_DIR$/../ptc_android_challenge_Agnes_Musyoka-development_mocklab/caches/transforms-2/files-2.1/cbd433d0ce67199fd1b6df32f8eb48ae/jetified-library-2.1.3/AndroidManifest.xml" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/7e9185debe57620b301da746c2792932/transformed/jetified-library-2.1.3/AndroidManifest.xml" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/7e9185debe57620b301da746c2792932/transformed/jetified-library-2.1.3/res" />
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/7e9185debe57620b301da746c2792932/transformed/jetified-library-2.1.3/jars/classes.jar!/" />
     </CLASSES>
     <JAVADOC>
-      <root url="jar://$PROJECT_DIR$/../ptc_android_challenge_Agnes_Musyoka-development_mocklab/caches/modules-2/files-2.1/com.wang.avi/library/2.1.3/f3ea0c1e56a7eb8b5c0f8ced5f0adde51d4b609e/library-2.1.3-javadoc.jar!/" />
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.wang.avi/library/2.1.3/f3ea0c1e56a7eb8b5c0f8ced5f0adde51d4b609e/library-2.1.3-javadoc.jar!/" />
     </JAVADOC>
     <SOURCES>
-      <root url="jar://$PROJECT_DIR$/../ptc_android_challenge_Agnes_Musyoka-development_mocklab/caches/modules-2/files-2.1/com.wang.avi/library/2.1.3/b24ad2ac7fd480af6dc1d0302f5328b46c586200/library-2.1.3-sources.jar!/" />
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.wang.avi/library/2.1.3/b24ad2ac7fd480af6dc1d0302f5328b46c586200/library-2.1.3-sources.jar!/" />
     </SOURCES>
   </library>

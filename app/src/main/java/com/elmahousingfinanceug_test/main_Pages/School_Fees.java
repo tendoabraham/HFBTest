@@ -129,7 +129,7 @@ public class School_Fees extends BaseAct implements ResponseListener, VolleyResp
                 } else {
                     //1000027362  1000027366
                     quest = (
-                            "FORMID:B-:" +
+                            "FORMID:M-:" +
                                     "MERCHANTID:" + am.getMerchantID() + ":" +
                                     "BANKACCOUNTID:" + accSend + ":" +
                                     "ACCOUNTID:" +  studentId.getText().toString().trim() + ":" +
@@ -148,7 +148,7 @@ public class School_Fees extends BaseAct implements ResponseListener, VolleyResp
                                     "INFOFIELD3:" + am.getUserName() + ":" +
                                     "ACTION:GETNAME:"*/
                     );
-                    am.get(School_Fees.this,quest,getString(R.string.validating),"VAL");
+                    am.get_(School_Fees.this,quest,getString(R.string.validating),"VAL");
                 }
             }
         });
@@ -199,12 +199,7 @@ public class School_Fees extends BaseAct implements ResponseListener, VolleyResp
                                         "MERCHANTID:" + am.getMerchantID() + ":" +
                                         "BANKACCOUNTID:" + accSend + ":" +
                                         "INFOFIELD1:" + studentId.getText().toString().trim() + ":" +
-//                                        "INFOFIELD2:" + paymentCode + ":" +
                                         "INFOFIELD3:" + schoolCode + ":" +
-//                                        "INFOFIELD4:" + outstandingAmount + ":" +
-//                                        "INFOFIELD5:" + partialpayment + ":" +
-//                                        "INFOFIELD6:" + returnMessage + ":" +
-//                                        "INFOFIELD7:" + processTimeStamp + ":" +
                                         "INFOFIELD8:" + studentAmount.getText().toString().trim() + ":" +
                                         "INFOFIELD9:" + "PAYMENT" + ":" +
                                         "ACCOUNTID:" + studentId.getText().toString().trim() + ":" +
@@ -213,7 +208,7 @@ public class School_Fees extends BaseAct implements ResponseListener, VolleyResp
                                         "ACTION:GETNAME:"
 
                         );
-                        am.get(School_Fees.this,quest,getString(R.string.processingTrx),"TRX");
+                        am.get_(School_Fees.this,quest,getString(R.string.processingTrx),"TRX");
                         gDialog.cancel();
                     });
                     gDialog.setOnCancelListener(dialog -> {

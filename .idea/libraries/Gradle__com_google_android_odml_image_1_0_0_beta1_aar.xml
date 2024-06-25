@@ -1,9 +1,7 @@
 <component name="libraryTable">
-  <library name="Gradle: com.google.android.odml:image:1.0.0-beta1@aar">
+  <library name="Gradle: com.google.android.odml:image:1.0.0-beta1@aar" external-system-id="GRADLE">
     <CLASSES>
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/6f946e253f703c98b0324427a45a16a0/transformed/jetified-image-1.0.0-beta1/res" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/f6ca58539866627ea6bb2ed98292a552/transformed/jetified-image-1.0.0-beta1/AndroidManifest.xml" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/f6ca58539866627ea6bb2ed98292a552/transformed/jetified-image-1.0.0-beta1/res" />
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/f6ca58539866627ea6bb2ed98292a552/transformed/jetified-image-1.0.0-beta1/jars/classes.jar!/" />
     </CLASSES>
     <JAVADOC>

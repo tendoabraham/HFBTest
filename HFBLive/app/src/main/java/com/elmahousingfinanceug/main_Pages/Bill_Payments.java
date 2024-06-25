@@ -182,7 +182,7 @@ public class Bill_Payments extends BaseAct implements ResponseListener, VolleyRe
                                         "ACTION:GETNAME:"
                         );
                     }
-                    am.get(this,quest,getString(R.string.validating),"VAL");
+                    am.get_(this,quest,getString(R.string.validating),"VAL");
                 }
                 break;
             case R.id.backIn:
@@ -276,7 +276,7 @@ public class Bill_Payments extends BaseAct implements ResponseListener, VolleyRe
                                 );
                                 break;
                         }
-                        am.get(Bill_Payments.this,quest,getString(R.string.processingTrx),"TRX");
+                        am.get_(Bill_Payments.this,quest,getString(R.string.processingTrx),"TRX");
                         gDialog.cancel();
                     });
                     txtNo.setOnClickListener(v -> gDialog.cancel());

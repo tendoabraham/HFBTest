@@ -107,7 +107,7 @@ public class Main_Menu extends BaseAct implements NavigationView.OnNavigationIte
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 selectedAccount = am.getDashBankAccountID(position);
-                am.get(Main_Menu.this,
+                am.get_(Main_Menu.this,
                         "FORMID:B-:" +
                                 "MERCHANTID:BALANCE:" +
                                 "BANKACCOUNTID:" + selectedAccount + ":",
@@ -189,7 +189,7 @@ public class Main_Menu extends BaseAct implements NavigationView.OnNavigationIte
     @Override
     protected void onResume() {
         if(am.getDoneTrx()){
-            am.get(Main_Menu.this,
+            am.get_(Main_Menu.this,
                     "FORMID:B-:" +
                             "MERCHANTID:BALANCE:" +
                             "BANKACCOUNTID:" + selectedAccount + ":",

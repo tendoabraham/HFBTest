@@ -1,5 +1,5 @@
 <component name="libraryTable">
-  <library name="Gradle: com.vanniktech:android-image-cropper:4.3.3@aar">
+  <library name="Gradle: com.vanniktech:android-image-cropper:4.3.3@aar" external-system-id="GRADLE">
     <CLASSES>
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/1a455067b38f84cd9755995284f6f5df/transformed/jetified-android-image-cropper-4.3.3/res" />
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/1a455067b38f84cd9755995284f6f5df/transformed/jetified-android-image-cropper-4.3.3/jars/classes.jar!/" />

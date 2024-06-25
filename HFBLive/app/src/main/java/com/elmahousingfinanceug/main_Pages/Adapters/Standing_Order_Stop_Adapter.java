@@ -114,7 +114,7 @@ public class Standing_Order_Stop_Adapter extends RecyclerView.Adapter<Standing_O
                                             "MERCHANTNAME:TRANSFER:"
                             );
                             //((Standing_Orders)context).am.connectOldTwo(context.getString(R.string.processingReq),((Standing_Orders)context).quest, ((Standing_Orders)context),"");
-                            ((Standing_Orders)context).am.get((ResponseListener) context, ((Standing_Orders)context).quest, context.getString(R.string.processingReq),"");
+                            ((Standing_Orders)context).am.get_((ResponseListener) context, ((Standing_Orders)context).quest, context.getString(R.string.processingReq),"");
                             ((Standing_Orders)context).gDialog.dismiss();
                         }
                     });

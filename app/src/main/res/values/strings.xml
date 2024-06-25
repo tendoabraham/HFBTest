@@ -513,6 +513,8 @@
     <string name="enterStudentNumber">Enter Student ID</string>
     <string name="selectSavedBen">Select Saved Beneficiary</string>
     <string name="selectSavedStdntID">Select Saved Student ID</string>
+    <string name="selectServiceProvider">Please select a service provider</string>
+    <string name="changePin">Change PIN</string>
 
     <string-array name="airtime_array">
         <item>Select One</item>

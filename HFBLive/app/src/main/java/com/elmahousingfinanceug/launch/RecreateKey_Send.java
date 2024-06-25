@@ -100,7 +100,7 @@ public class RecreateKey_Send extends AppCompatActivity implements ResponseListe
                                         "KEY:"+ eTKey.getText().toString().trim() + ":"
                         );
                         //am.connectOldTwo(getString(R.string.verifying),quest,this,"RV");
-                        am.get(this,quest,getString(R.string.verifying),"RV");
+                        am.get_(this,quest,getString(R.string.verifying),"RV");
                     } else {
                         rnD = new Dialog(this);
                         //noinspection ConstantConditions
@@ -128,7 +128,7 @@ public class RecreateKey_Send extends AppCompatActivity implements ResponseListe
                                                 "LOGINMPIN:" + eTPin.getText().toString().trim() + ":"
                                 );
                                 //am.connectOldTwo(getString(R.string.processingReq),quest,RecreateKey_Send.this,"RS");
-                                am.get(RecreateKey_Send.this,quest,getString(R.string.processingReq),"RS");
+                                am.get_(RecreateKey_Send.this,quest,getString(R.string.processingReq),"RS");
                                 rnD.cancel();
                             }
                         });

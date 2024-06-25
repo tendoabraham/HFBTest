@@ -81,7 +81,7 @@ public class Mini_Statement extends BaseAct implements ResponseListener, VolleyR
                                     "BANKACCOUNTID:" + am.getBankAccountID(position) + ":"
                     );
                     //am.connectOldTwo(getString(R.string.processingReq),quest,Mini_Statement.this,"TRX");
-                    am.get(Mini_Statement.this,quest,getString(R.string.processingReq),"TRX");
+                    am.get_(Mini_Statement.this,quest,getString(R.string.processingReq),"TRX");
                 }
             }
             @Override

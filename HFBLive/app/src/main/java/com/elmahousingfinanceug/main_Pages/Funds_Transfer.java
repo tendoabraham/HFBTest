@@ -145,7 +145,7 @@ public class Funds_Transfer extends BaseAct implements ResponseListener, VolleyR
                                 "ACTION:GETNAME:"
                 );
                 //am.connectOldTwo(getString(R.string.validating),quest,Funds_Transfer.this,"VAL");
-                am.get(this,quest,getString(R.string.validating),"VAL");
+                am.get_(this,quest,getString(R.string.validating),"VAL");
             }
         } else if (t.getId() == R.id.sendFunds) {
             if (accSend.equals("")) {
@@ -198,7 +198,7 @@ public class Funds_Transfer extends BaseAct implements ResponseListener, VolleyR
                                         "TMPIN:" + ETPin.getText().toString().trim() + ":"
                         );
                         //am.connectOldTwo(getString(R.string.processingTrx), quest, Funds_Transfer.this, "TRX");
-                        am.get(Funds_Transfer.this,quest,getString(R.string.processingTrx),"TRX");
+                        am.get_(Funds_Transfer.this,quest,getString(R.string.processingTrx),"TRX");
                         gDialog.cancel();
                     }
                 });

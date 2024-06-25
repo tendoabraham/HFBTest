@@ -40,7 +40,7 @@ public class RecreateKey_Verify extends AppCompatActivity implements ResponseLis
                                     "KEY:"+ eTKey.getText().toString().trim() + ":"
                     );
                     //am.connectOldTwo(getString(R.string.verifying),quest,RecreateKey_Verify.this,"RV");
-                    am.get(RecreateKey_Verify.this,quest,getString(R.string.verifying),"RV");
+                    am.get_(RecreateKey_Verify.this,quest,getString(R.string.verifying),"RV");
                 }
             }
             @Override
@@ -60,7 +60,7 @@ public class RecreateKey_Verify extends AppCompatActivity implements ResponseLis
                                     "KEY:"+ eTKey.getText().toString().trim()+ ":"
                     );
                     //.connectOldTwo(getString(R.string.verifying),quest,RecreateKey_Verify.this,"RV");
-                    am.get(RecreateKey_Verify.this,quest,getString(R.string.verifying),"RV");
+                    am.get_(RecreateKey_Verify.this,quest,getString(R.string.verifying),"RV");
                 }
                 break;
             case R.id.contactUs:

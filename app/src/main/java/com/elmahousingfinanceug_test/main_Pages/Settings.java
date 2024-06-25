@@ -41,10 +41,16 @@ import static android.os.Build.VERSION.SDK_INT;
 import static android.os.Build.VERSION_CODES.M;
 
 public class Settings extends BaseAct implements ResponseListener, VolleyResponse, FingerprintUiHelper.Callback{
-    EditText ETOldLPin,ETNewLPin,ETConfirmLPin,ETOldTPin,ETNewTPin,ETConfirmTPin, lCon;
-    LinearLayout CLPLayout,CTPLayout,appBar,fingerPrintStuff,pinCon,fingerInput;
-    TextView idle_Btn,DisplayCLPBTN,DisplayCTPBTN,displayThemes,fingerprint_status,
-            cancel, change, change2, close, go;
+    EditText ETOldLPin,ETNewLPin,ETConfirmLPin,
+//            ETOldTPin,ETNewTPin,ETConfirmTPin,
+            lCon;
+    LinearLayout CLPLayout,
+//            CTPLayout,
+            appBar,fingerPrintStuff,pinCon,fingerInput;
+    TextView idle_Btn,DisplayCLPBTN,
+//            DisplayCTPBTN, close,change2,
+            displayThemes,fingerprint_status,
+            cancel, change, go;
     SwitchCompat fingerSwitch;
     ImageView fingerprint_icon;
     Boolean scheduledRestart = false;
@@ -77,27 +83,27 @@ public class Settings extends BaseAct implements ResponseListener, VolleyRespons
         fingerprint_icon = findViewById(R.id.fingerprint_icon);
         fingerprint_status = findViewById(R.id.fingerprint_status);
         CLPLayout = findViewById(R.id.CLPLayout);
-        CTPLayout = findViewById(R.id.CTPLayout);
+//        CTPLayout = findViewById(R.id.CTPLayout);
 
         go = findViewById(R.id.go);
-        close = findViewById(R.id.close);
+//        close = findViewById(R.id.close);
         change = findViewById(R.id.change);
-        change2 = findViewById(R.id.change2);
+//        change2 = findViewById(R.id.change2);
         cancel = findViewById(R.id.cancel);
 
         idle_Btn = findViewById(R.id.inactivity);
         DisplayCLPBTN = findViewById(R.id.DisplayCLPBTN);
-        DisplayCTPBTN = findViewById(R.id.DisplayCTPBTN);
+//        DisplayCTPBTN = findViewById(R.id.DisplayCTPBTN);
         displayThemes = findViewById(R.id.DisplayThemes);
 
         ETOldLPin = findViewById(R.id.ETOldLPin);
-        ETOldTPin = findViewById(R.id.ETOldTPin);
+//        ETOldTPin = findViewById(R.id.ETOldTPin);
 
         ETNewLPin = findViewById(R.id.ETNewLPin);
-        ETNewTPin = findViewById(R.id.ETNewTPin);
+//        ETNewTPin = findViewById(R.id.ETNewTPin);
 
         ETConfirmLPin = findViewById(R.id.ETConfirmLPin);
-        ETConfirmTPin = findViewById(R.id.ETConfirmTPin);
+//        ETConfirmTPin = findViewById(R.id.ETConfirmTPin);
 
         if(am.getManLog()){
             fingerSwitch.setChecked(true);
@@ -150,18 +156,18 @@ public class Settings extends BaseAct implements ResponseListener, VolleyRespons
             public void afterTextChanged(Editable s) {}
         });
 
-        ETOldTPin.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                if(after>1) am.myDialog(Settings.this, getString(R.string.alert), getString(R.string.copyPaste));
-            }
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(count>1) ETOldTPin.setText("");
-            }
-            @Override
-            public void afterTextChanged(Editable s) {}
-        });
+//        ETOldTPin.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//                if(after>1) am.myDialog(Settings.this, getString(R.string.alert), getString(R.string.copyPaste));
+//            }
+//            @Override
+//            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//                if(count>1) ETOldTPin.setText("");
+//            }
+//            @Override
+//            public void afterTextChanged(Editable s) {}
+//        });
 
         ETConfirmLPin.addTextChangedListener(new TextWatcher() {
             @Override
@@ -176,18 +182,18 @@ public class Settings extends BaseAct implements ResponseListener, VolleyRespons
             public void afterTextChanged(Editable s) {}
         });
 
-        ETConfirmTPin.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                if(after>1) am.myDialog(Settings.this, getString(R.string.alert), getString(R.string.copyPaste));
-            }
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(count>1) ETConfirmTPin.setText("");
-            }
-            @Override
-            public void afterTextChanged(Editable s) {}
-        });
+//        ETConfirmTPin.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//                if(after>1) am.myDialog(Settings.this, getString(R.string.alert), getString(R.string.copyPaste));
+//            }
+//            @Override
+//            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//                if(count>1) ETConfirmTPin.setText("");
+//            }
+//            @Override
+//            public void afterTextChanged(Editable s) {}
+//        });
 
         idle_Btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -220,23 +226,23 @@ public class Settings extends BaseAct implements ResponseListener, VolleyRespons
             @Override
             public void onClick(View view) {
                 if(!am.getFirstTimeUser()){
-                    CTPLayout.setVisibility(View.GONE);
-                    DisplayCTPBTN.setVisibility(View.VISIBLE);
+//                    CTPLayout.setVisibility(View.GONE);
+//                    DisplayCTPBTN.setVisibility(View.VISIBLE);
                 }
                 DisplayCLPBTN.setVisibility(View.GONE);
                 CLPLayout.setVisibility(View.VISIBLE);
             }
         });
 
-        DisplayCTPBTN.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                CLPLayout.setVisibility(View.GONE);
-                DisplayCTPBTN.setVisibility(View.GONE);
-                CTPLayout.setVisibility(View.VISIBLE);
-                DisplayCLPBTN.setVisibility(View.VISIBLE);
-            }
-        });
+//        DisplayCTPBTN.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                CLPLayout.setVisibility(View.GONE);
+//                DisplayCTPBTN.setVisibility(View.GONE);
+//                CTPLayout.setVisibility(View.VISIBLE);
+//                DisplayCLPBTN.setVisibility(View.VISIBLE);
+//            }
+//        });
 
         displayThemes.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -264,19 +270,19 @@ public class Settings extends BaseAct implements ResponseListener, VolleyRespons
             }
         });
 
-        change2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                CTPChangeBTN();
-            }
-        });
+//        change2.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                CTPChangeBTN();
+//            }
+//        });
 
-        close.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                resetViews();
-            }
-        });
+//        close.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                resetViews();
+//            }
+//        });
 
         go.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -289,7 +295,7 @@ public class Settings extends BaseAct implements ResponseListener, VolleyRespons
                                     "LOGINMPIN:" + lCon.getText().toString().trim() + ":" +
                                     "LOGINTYPE:PIN:"
                     );
-                    am.get(Settings.this, quest,getString(R.string.loggingIn),"CON");
+                    am.get_(Settings.this, quest,getString(R.string.loggingIn),"CON");
                 }
             }
         });
@@ -306,9 +312,9 @@ public class Settings extends BaseAct implements ResponseListener, VolleyRespons
     private void resetViews() {
         if(!am.getFirstTimeUser()){
             CLPLayout.setVisibility(View.GONE);
-            CTPLayout.setVisibility(View.GONE);
+//            CTPLayout.setVisibility(View.GONE);
             DisplayCLPBTN.setVisibility(View.VISIBLE);
-            DisplayCTPBTN.setVisibility(View.VISIBLE);
+//            DisplayCTPBTN.setVisibility(View.VISIBLE);
             reveal();
         }
     }
@@ -324,7 +330,7 @@ public class Settings extends BaseAct implements ResponseListener, VolleyRespons
 //                                    "LOGINMPIN:" + lCon.getText().toString().trim() + ":" +
 //                                    "LOGINTYPE:PIN:"
 //                    );
-//                    am.get(this, quest,getString(R.string.loggingIn),"CON");
+//                    am.get_(this, quest,getString(R.string.loggingIn),"CON");
 //                }
 //                break;
 //            case R.id.inactivity:
@@ -408,7 +414,7 @@ public class Settings extends BaseAct implements ResponseListener, VolleyRespons
                         "FORMID:PINCHANGE:" +
                                 "OLDPIN:" + ETOldLPin.getText().toString().trim() /*am.E_P0117(ETOldLPin.getText().toString().trim())*/+ ":" +
                                 "NEWPIN:" + ETConfirmLPin.getText().toString().trim() /*am.E_P0117(ETConfirmLPin.getText().toString().trim())*/ + ":" +
-                                "PINTYPE:" + "CHANGEPIN" + ":" +
+                                "PINTYPE:" + "PIN" + ":" +
                                 "BANKID:" + am.getBankID() + ":"
                 );
             } else {
@@ -416,12 +422,12 @@ public class Settings extends BaseAct implements ResponseListener, VolleyRespons
                         "FORMID:PINCHANGE:" +
                                 "OLDPIN:" + ETOldLPin.getText().toString().trim() /*am.E_P0117(ETOldLPin.getText().toString().trim()) */+ ":" +
                                 "NEWPIN:" + ETConfirmLPin.getText().toString().trim() /*am.E_P0117(ETConfirmLPin.getText().toString().trim())*/ + ":" +
-                                "PINTYPE:" + "CHANGELPIN" + ":" +
+                                "PINTYPE:" + "PIN" + ":" +
                                 "BANKID:" + am.getBankID() + ":"
                 );
             }
             am.saveChangeTrxPin(false);
-            am.get(this,quest,getString(R.string.processingReq),"CGE");
+            am.get_(this,quest,getString(R.string.processingReq),"CGE");
         }
     }
 
@@ -436,21 +442,21 @@ public class Settings extends BaseAct implements ResponseListener, VolleyRespons
 //        resetViews();
 //    }
 
-    public void CTPChangeBTN() {
-        if (Validation(ETOldTPin.getText().toString().trim(),ETNewTPin.getText().toString().trim(),ETConfirmTPin.getText().toString().trim())) {
-            am.myDialog(Settings.this, getString(R.string.alert), getString(R.string.notAccPin));
-        } else {
-             quest = (
-                     "FORMID:PINCHANGE:" +
-                             "OLDPIN:" + ETOldTPin.getText().toString().trim()  /*am.E_P0117(ETOldTPin.getText().toString().trim())*/ + ":" +
-                             "NEWPIN:" + ETConfirmTPin.getText().toString().trim()  /*am.E_P0117(ETConfirmTPin.getText().toString().trim())*/ + ":" +
-                             "PINTYPE:" + "CHANGETPIN" + ":" +
-                             "BANKID:" + am.getBankID() + ":"
-            );
-            am.saveChangeTrxPin(true);
-            am.get(this,quest,getString(R.string.processingReq),"CGE");
-        }
-    }
+//    public void CTPChangeBTN() {
+//        if (Validation(ETOldTPin.getText().toString().trim(),ETNewTPin.getText().toString().trim(),ETConfirmTPin.getText().toString().trim())) {
+//            am.myDialog(Settings.this, getString(R.string.alert), getString(R.string.notAccPin));
+//        } else {
+//             quest = (
+//                     "FORMID:PINCHANGE:" +
+//                             "OLDPIN:" + ETOldTPin.getText().toString().trim()  /*am.E_P0117(ETOldTPin.getText().toString().trim())*/ + ":" +
+//                             "NEWPIN:" + ETConfirmTPin.getText().toString().trim()  /*am.E_P0117(ETConfirmTPin.getText().toString().trim())*/ + ":" +
+//                             "PINTYPE:" + "CHANGETPIN" + ":" +
+//                             "BANKID:" + am.getBankID() + ":"
+//            );
+//            am.saveChangeTrxPin(true);
+//            am.get_(this,quest,getString(R.string.processingReq),"CGE");
+//        }
+//    }
 
     public Boolean Validation(String OldPin, String NewPin, String ConfirmPin) {
         int check = 0;
@@ -505,9 +511,9 @@ public class Settings extends BaseAct implements ResponseListener, VolleyRespons
             fingerPrintStuff.setVisibility(View.GONE);
             idle_Btn.setVisibility(View.GONE);
             DisplayCLPBTN.setVisibility(View.GONE);
-            DisplayCTPBTN.setVisibility(View.GONE);
+//            DisplayCTPBTN.setVisibility(View.GONE);
             displayThemes.setVisibility(View.GONE);
-            CTPLayout.setVisibility(View.GONE);
+//            CTPLayout.setVisibility(View.GONE);
             CLPLayout.setVisibility(View.VISIBLE);
         } else if(scheduledRestart) {
             scheduledRestart = false;

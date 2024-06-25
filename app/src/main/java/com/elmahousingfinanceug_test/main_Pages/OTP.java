@@ -143,7 +143,7 @@ public class OTP extends AppCompatActivity implements ResponseListener {
                         ":BANKID:" + am.getBankID() + ":"
         );
 
-        am.get(this, quest, getString(R.string.generatingOtp),"OC");
+        am.get_(this, quest, getString(R.string.generatingOtp),"OC");
     }
 
     private void verification() {
@@ -155,7 +155,7 @@ public class OTP extends AppCompatActivity implements ResponseListener {
                         "OTPKEY:" + edtOTP.getText().toString().trim() + ":" +
                         "BANKID:" + am.getBankID() +":"
         );
-        am.get(this, quest, getString(R.string.verifying),"OV");
+        am.get_(this, quest, getString(R.string.verifying),"OV");
 
     }
 

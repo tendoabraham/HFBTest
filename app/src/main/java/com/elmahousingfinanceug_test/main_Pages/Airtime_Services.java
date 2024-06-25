@@ -164,9 +164,21 @@ public class Airtime_Services extends BaseAct implements ResponseListener, Volle
                 if (enterNumber.isChecked()){
                     othNumLayout.setVisibility(View.VISIBLE);
                     benSpinner.setVisibility(View.GONE);
+                    if (Objects.equals(am.getMerchantID(), "AIRTELUG")){
+                        validateAirtel.setVisibility(View.VISIBLE);
+                        validateMTN.setVisibility(View.GONE);
+                    }else if (Objects.equals(am.getMerchantID(), "MTNUGAIRTIME")){
+                        validateAirtel.setVisibility(View.GONE);
+                        validateMTN.setVisibility(View.VISIBLE);
+                    }
                 } else if (savedBen.isChecked()){
-                    validateAirtel.setVisibility(View.GONE);
-                    validateMTN.setVisibility(View.GONE);
+                    if (Objects.equals(am.getMerchantID(), "AIRTELUG")){
+                        validateAirtel.setVisibility(View.VISIBLE);
+                        validateMTN.setVisibility(View.GONE);
+                    }else if (Objects.equals(am.getMerchantID(), "MTNUGAIRTIME")){
+                        validateAirtel.setVisibility(View.GONE);
+                        validateMTN.setVisibility(View.VISIBLE);
+                    }
                     othNumLayout.setVisibility(View.GONE);
                     getBens();
                 }
@@ -176,25 +188,32 @@ public class Airtime_Services extends BaseAct implements ResponseListener, Volle
         validateMTN.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (RBTNOtherNumber.isChecked() && ETOtherNumber.getText().length() < 4) {
+                if (RBTNOtherNumber.isChecked() && enterNumber.isChecked() && ETOtherNumber.getText().length() < 4) {
                     am.myDialog(Airtime_Services.this, getString(R.string.alert), getString(R.string.enterValidPhoneAcc));
                     ETOtherNumber.setError(getString(R.string.enterValidPhoneAcc));
                 } else {
                     if (RBTNMyNumber.isChecked()) {
                         sendPhoneStr = am.getUserPhone();
                     } else {
-                        am.saveSendPhone(ETOtherNumber.getText().toString().trim());
-                        sendPhoneStr = am.getSendPhone();
+                        if (enterNumber.isChecked()){
+                            am.saveSendPhone(ETOtherNumber.getText().toString().trim());
+                            sendPhoneStr = am.getSendPhone();
+                        } else {
+                            sendPhoneStr = benAcc;
+                        }
+
                     }
                     quest = (
                             "FORMID:M-:" +
                                     "MERCHANTID:MMONEYUGMTN:" +
+                                    "INFOFIELD1:VALIDATE:" +
+                                    "INFOFIELD2:MTN:" +
                                     "ACCOUNTID:" + sendPhoneStr + ":" +
                                     "BANKID:" + am.getBankID() + ":" +
                                     "ACTION:GETNAME:"
                     );
                     //am.connectOldTwo(getString(R.string.validating),quest,this,"MTN");
-                    am.get(Airtime_Services.this, quest, getString(R.string.validating), "MTN");
+                    am.get_(Airtime_Services.this, quest, getString(R.string.validating), "MTN");
                 }
             }
         });
@@ -202,15 +221,21 @@ public class Airtime_Services extends BaseAct implements ResponseListener, Volle
         validateAirtel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (RBTNOtherNumber.isChecked() && ETOtherNumber.getText().length() < 4) {
+                if (RBTNOtherNumber.isChecked() && enterNumber.isChecked() && ETOtherNumber.getText().length() < 4) {
                     am.myDialog(Airtime_Services.this, getString(R.string.alert), getString(R.string.enterValidPhoneAcc));
                     ETOtherNumber.setError(getString(R.string.enterValidPhoneAcc));
                 } else {
                     if (RBTNMyNumber.isChecked()) {
                         sendPhoneStr = am.getUserPhone();
                     } else {
-                        am.saveSendPhone(ETOtherNumber.getText().toString().trim());
-                        sendPhoneStr = am.getSendPhone();
+                        if (enterNumber.isChecked()){
+                            am.saveSendPhone(ETOtherNumber.getText().toString().trim());
+                            sendPhoneStr = am.getSendPhone();
+                        } else {
+                            sendPhoneStr = benAcc;
+                        }
+//                        am.saveSendPhone(ETOtherNumber.getText().toString().trim());
+//                        sendPhoneStr = am.getSendPhone();
                     }
                     String noSpaceMobile = sendPhoneStr.replaceAll("\\s+", "");
                     String noSpecialXters = noSpaceMobile.replaceAll("[^a-zA-Z0-9]", " ");
@@ -226,13 +251,13 @@ public class Airtime_Services extends BaseAct implements ResponseListener, Volle
                                     "INFOFIELD1:VALIDATE:" +
                                     "INFOFIELD2:AIRTEL:" +
                                     "ACCOUNTID:" + cleanMobile + ":" +
-                                    "SERVICEACCOUNTID:" + cleanMobile + ":" +
+//                                    "SERVICEACCOUNTID:" + cleanMobile + ":" +
                                     "COUNTRY:" + am.getCountry() + ":" +
                                     "BANKNAME:HFB:" +
                                     "BANKID:" + am.getBankID() + ":" +
                                     "ACTION:GETNAME:"
                     );
-                    am.get(Airtime_Services.this, quest, getString(R.string.validating), "AIRTEL");
+                    am.get_(Airtime_Services.this, quest, getString(R.string.validating), "AIRTEL");
 
 
                     //am.connectOldTwo(getString(R.string.validating),quest,this,"MTN");
@@ -254,6 +279,26 @@ public class Airtime_Services extends BaseAct implements ResponseListener, Volle
                     validateAirtel.setVisibility(View.VISIBLE);
                     validateMTN.setVisibility(View.GONE);
                 }
+            }
+        });
+
+        ETOtherNumber.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                validateLayout.setVisibility(View.GONE);
+                airtelLayout.setVisibility(View.GONE);
+                after.setVisibility(View.GONE);
+                valRecycler.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
             }
         });
 
@@ -309,7 +354,7 @@ public class Airtime_Services extends BaseAct implements ResponseListener, Volle
                                             "ACTION:PAYBILL:"
                             );
                             //am.connectOldTwo(getString(R.string.processingTrx),quest,Airtime_Services.this,"TRX");
-                            am.get(Airtime_Services.this,quest,getString(R.string.processingTrx),"TRX");
+                            am.get_(Airtime_Services.this,quest,getString(R.string.processingTrx),"TRX");
 
 //                        startActivity(new Intent(Airtime_Services.this, OTP.class).putExtra("Merchant", am.getMerchantID()));
 
@@ -398,7 +443,7 @@ public class Airtime_Services extends BaseAct implements ResponseListener, Volle
                             "SERVICEID:" +  utilityID + ":"
             );
         }
-        am.get(this,quest,getString(R.string.fetchingBeneficiaries) + " " + getString(R.string.forWord) + " " + utilityID,"BEN_AIR");
+        am.get_(this,quest,getString(R.string.fetchingBeneficiaries) + " " + getString(R.string.forWord) + " " + utilityID,"BEN_AIR");
     }
 
 //    public void air(View a) {
@@ -422,7 +467,7 @@ public class Airtime_Services extends BaseAct implements ResponseListener, Volle
 //                                    "ACTION:GETNAME:"
 //                    );
 //                    //am.connectOldTwo(getString(R.string.validating),quest,this,"MTN");
-//                    am.get(this, quest, getString(R.string.validating), "MTN");
+//                    am.get_(this, quest, getString(R.string.validating), "MTN");
 //                }
 //                break;
 //
@@ -457,7 +502,7 @@ public class Airtime_Services extends BaseAct implements ResponseListener, Volle
 //                                    "BANKID:" + am.getBankID() + ":" +
 //                                    "ACTION:GETNAME:"
 //                    );
-//                    am.get(this, quest, getString(R.string.validating), "AIRTEL");
+//                    am.get_(this, quest, getString(R.string.validating), "AIRTEL");
 //
 //
 //                    //am.connectOldTwo(getString(R.string.validating),quest,this,"MTN");
@@ -527,7 +572,7 @@ public class Airtime_Services extends BaseAct implements ResponseListener, Volle
 //                                            "ACTION:PAYBILL:"
 //                            );
 //                            //am.connectOldTwo(getString(R.string.processingTrx),quest,Airtime_Services.this,"TRX");
-//                            am.get(Airtime_Services.this,quest,getString(R.string.processingTrx),"TRX");
+//                            am.get_(Airtime_Services.this,quest,getString(R.string.processingTrx),"TRX");
 //
 ////                        startActivity(new Intent(Airtime_Services.this, OTP.class).putExtra("Merchant", am.getMerchantID()));
 //
@@ -598,7 +643,7 @@ public class Airtime_Services extends BaseAct implements ResponseListener, Volle
                         "ACTION:PAYBILL:"
         );
         //am.connectOldTwo(getString(R.string.processingTrx),quest,Airtime_Services.this,"TRX");
-        am.get(Airtime_Services.this,quest,getString(R.string.processingTrx),"TRX");
+        am.get_(Airtime_Services.this,quest,getString(R.string.processingTrx),"TRX");
         eTPin.setText("");
         gDialog.cancel();
     }
@@ -665,19 +710,20 @@ public class Airtime_Services extends BaseAct implements ResponseListener, Volle
                 othNumLayout.setVisibility(View.GONE);
                 benSpinner.setVisibility(View.VISIBLE);
                 break;
+//            case "MTN":
+//                String[] howLong = response.split("\\|");
+//                String[] field_IDs = new String[howLong.length / 2];
+//                String[] field_Values = new String[howLong.length / 2];
+//                am.separate(response, "|", field_IDs, field_Values);
+//                valRecycler.setVisibility(View.VISIBLE);
+//                valRecycler.setAdapter(new AdapterKeyValue(field_IDs, field_Values));
+//                airtelLayout.setVisibility(View.GONE);
+//                validateMTN.setVisibility(View.GONE);
+//                validateLayout.setVisibility(View.VISIBLE);
+//                after.setVisibility(View.VISIBLE);
+//                airtelLayout.setVisibility(View.GONE);
+//                break;
             case "MTN":
-                String[] howLong = response.split("\\|");
-                String[] field_IDs = new String[howLong.length / 2];
-                String[] field_Values = new String[howLong.length / 2];
-                am.separate(response, "|", field_IDs, field_Values);
-                valRecycler.setVisibility(View.VISIBLE);
-                valRecycler.setAdapter(new AdapterKeyValue(field_IDs, field_Values));
-                airtelLayout.setVisibility(View.GONE);
-                validateMTN.setVisibility(View.GONE);
-                validateLayout.setVisibility(View.VISIBLE);
-                after.setVisibility(View.VISIBLE);
-                airtelLayout.setVisibility(View.GONE);
-                break;
             case "AIRTEL":
                 validateAirtel.setVisibility(View.GONE);
                 validateLayout.setVisibility(View.VISIBLE);

@@ -206,7 +206,7 @@ public class Mobile_Money extends BaseAct implements ResponseListener, VolleyRes
                                                     "ACTION:PAYBILL:"
                                     );
                                     //am.connectOldTwo(getString(R.string.processingTrx),quest,Mobile_Money.this,"TRX");
-                                    am.get(Mobile_Money.this, quest, getString(R.string.processingTrx), "TRX");
+                                    am.get_(Mobile_Money.this, quest, getString(R.string.processingTrx), "TRX");
                                     gDialog.cancel();
                                 }
 
@@ -298,7 +298,7 @@ public class Mobile_Money extends BaseAct implements ResponseListener, VolleyRes
 //                                            "ACTION:PAYBILL:"
 //                            );
 //                            //am.connectOldTwo(getString(R.string.processingTrx),quest,Mobile_Money.this,"TRX");
-//                            am.get(Mobile_Money.this, quest, getString(R.string.processingTrx), "TRX");
+//                            am.get_(Mobile_Money.this, quest, getString(R.string.processingTrx), "TRX");
 //                            gDialog.cancel();
 //                        }
 //

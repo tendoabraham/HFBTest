@@ -63,7 +63,7 @@ public class Bill_Pay_Options extends BaseAct implements ResponseListener, Volle
                 am.saveMerchantID("007001003");
                 String quest = ("FORMID:O-NWATERUGAREA:");
                 //am.connectOldTwo(getString(R.string.fetchingAreas),quest,this,"NWA");
-                am.get(Bill_Pay_Options.this,quest,getString(R.string.fetchingAreas),"NWA");
+                am.get_(Bill_Pay_Options.this,quest,getString(R.string.fetchingAreas),"NWA");
             }
         });
 
@@ -142,7 +142,7 @@ public class Bill_Pay_Options extends BaseAct implements ResponseListener, Volle
 //                am.saveMerchantID("007001003");
 //                String quest = ("FORMID:O-NWATERUGAREA:");
 //                //am.connectOldTwo(getString(R.string.fetchingAreas),quest,this,"NWA");
-//                am.get(this,quest,getString(R.string.fetchingAreas),"NWA");
+//                am.get_(this,quest,getString(R.string.fetchingAreas),"NWA");
 //                break;
 //            case R.id.e:
 //                am.saveMerchantID("007001012");

@@ -10,7 +10,10 @@ android {
 
     signingConfigs {
         release {
-            storeFile file('C:/Craft/Craft/AppDev/ElmaAndroidKeyStore')
+//            TODO: Update to windows path on windows
+//            storeFile file('C:/Craft/Craft/AppDev/ElmaAndroidKeyStore')
+
+            storeFile file('/Users/tendo/AppDev/ElmaAndroidKeyStore')
             storePassword 'priya143'
             keyPassword 'priya143'
             keyAlias 'elmaandroidkeystore'
@@ -49,14 +52,16 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
-    android {
-        applicationVariants.all { variant ->
-            variant.outputs.all { output ->
-                outputFileName = "" +
-                        "/test-app-HFB-v-${defaultConfig.versionName}.apk"
-            }
-        }
-    }
+//TODO: Uncomment on windows
+
+//    android {
+//        applicationVariants.all { variant ->
+//            variant.outputs.all { output ->
+//                outputFileName = "" +
+//                        "/test-app-HFB-v-${defaultConfig.versionName}.apk"
+//            }
+//        }
+//    }
     namespace 'com.elmahousingfinanceug_test'
 }
 

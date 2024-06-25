@@ -13,7 +13,7 @@
       "attributes": [],
       "versionCode": 147,
       "versionName": "147",
-      "outputFile": "test-app-HFB-v-147.apk"
+      "outputFile": "app-release.apk"
     }
   ],
   "elementType": "File"

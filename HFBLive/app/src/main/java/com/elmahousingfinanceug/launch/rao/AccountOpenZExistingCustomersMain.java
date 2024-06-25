@@ -1251,7 +1251,7 @@ public class AccountOpenZExistingCustomersMain extends AppCompatActivity impleme
     }
 
     private void getCustomParam(String paramName, String task) {
-        am.get(this, "FORMID:O-GETCUSTOMPARAMS:" +
+        am.get_(this, "FORMID:O-GETCUSTOMPARAMS:" +
                 "PARAMETERNAME:" + paramName + ":" +
                 "BANKID:" + am.getBankID() + ":", getString(R.string.loading), task);
 
@@ -1265,19 +1265,19 @@ public class AccountOpenZExistingCustomersMain extends AppCompatActivity impleme
         } else {
             currentTask = "ValidateBankStaff";
         }
-        am.get(this, "FORMID:O-CheckCustomerExists:" +
+        am.get_(this, "FORMID:O-CheckCustomerExists:" +
                 "CUSTOMERMOBILENUMBER:" + checkNum + ":" +
                 "PRODUCTID:" + selectedAccountID + ":" +
                 "BANKID:" + am.getBankID() + ":", getString(R.string.loading), currentTask);
     }
 
     private void getPersonalDetailsExisting(String task) {
-        am.get(this, "FORMID:O-GetCustomerPersonalDetails:" +
+        am.get_(this, "FORMID:O-GetCustomerPersonalDetails:" +
                 "BANKID:" + am.getBankID() + ":", getString(R.string.loading), task);
     }
 
     private void validateExisting(String existingAccount) {
-        am.get(this, "FORMID:M-:" +
+        am.get_(this, "FORMID:M-:" +
                 // TODO: 2/2/2022 on Live
                 //"MERCHANTID:VALIDATEACCOUNTBANK:" +
                 "MERCHANTID:VALIDATEACCOUNT:" +
@@ -1287,7 +1287,7 @@ public class AccountOpenZExistingCustomersMain extends AppCompatActivity impleme
 
     private void cardDetailsExisting(String accNum, String cardNum, String auth, String checkNum) {
         currentTask = "cardDetailsExisting";
-        am.get(this, "FORMID:B-:MERCHANTID:SELFREG:" +
+        am.get_(this, "FORMID:B-:MERCHANTID:SELFREG:" +
                 "BANKACCOUNTID:" + accNum + ":" +
                 "INFOFIELD1:" + cardNum.replaceAll("\\s+", "") + ":" +
                 "INFOFIELD2:" + auth + ":" +
@@ -1299,14 +1299,14 @@ public class AccountOpenZExistingCustomersMain extends AppCompatActivity impleme
 
     private void getPoliticalExposed() {
         currentTask = "FetchPolitics";
-        am.get(this, "FORMID:O-GetStaticData:" +
+        am.get_(this, "FORMID:O-GetStaticData:" +
                 "SYSTEMCODE:" + "CSPEP" + ":" +
                 "BANKID:" + am.getBankID() + ":", getString(R.string.loading), currentTask);
     }
 
     private void getAddressParam(String paramName, String task, String paramValue) {
         currentTask = task;
-        am.get(this, "FORMID:O-GETCUSTOMADDRESS:" +
+        am.get_(this, "FORMID:O-GETCUSTOMADDRESS:" +
                 "PARAMETERNAME:" + paramName + ":" +
                 "PARAMVALUE:" + paramValue + ":" +
                 "BANKID:" + am.getBankID() + ":", getString(R.string.loading), currentTask);
@@ -1341,7 +1341,7 @@ public class AccountOpenZExistingCustomersMain extends AppCompatActivity impleme
                         "CUSTOMERMOBILENUMBER:" + customerMobilenNumber + ":" +
                         "EMAILID:" + "test@test.com" + ":";
 
-                am.get(AccountOpenZExistingCustomersMain.this, new_request, getString(R.string.loading), currentTask);
+                am.get_(AccountOpenZExistingCustomersMain.this, new_request, getString(R.string.loading), currentTask);
                 /*if(PhoneNumber.getCountryCode().equals("256")){
                     otpPinView.setEnabled(false);
                 } else {
@@ -1372,7 +1372,7 @@ public class AccountOpenZExistingCustomersMain extends AppCompatActivity impleme
                 "CUSTOMERMOBILENUMBER:" + customerMobilenNumber + ":" +
                 "OTPKEY:" + raoOTP + ":" +
                 "EMAILID:" + "test@gmail.com" + ":";
-        am.get(AccountOpenZExistingCustomersMain.this, new_request, getString(R.string.loading), currentTask);
+        am.get_(AccountOpenZExistingCustomersMain.this, new_request, getString(R.string.loading), currentTask);
     }
 
     private void accountBranchChoice() {
@@ -1499,7 +1499,7 @@ public class AccountOpenZExistingCustomersMain extends AppCompatActivity impleme
             if (response.equals("SUCCESS|NAME|")) {
                 currentTask = "RAO";
                 new_request = RAO();
-                new Handler().postDelayed(() -> am.get(AccountOpenZExistingCustomersMain.this, new_request, getString(R.string.loading), currentTask), 400);
+                new Handler().postDelayed(() -> am.get_(AccountOpenZExistingCustomersMain.this, new_request, getString(R.string.loading), currentTask), 400);
 
 
             }
@@ -1917,7 +1917,7 @@ public class AccountOpenZExistingCustomersMain extends AppCompatActivity impleme
 //                        case "VerifyOTP": {
 //                            currentTask = "RAO";
 //                            new_request = RAO();
-//                            new Handler().postDelayed(() -> am.get(AccountOpenZExistingCustomersMain.this, new_request, getString(R.string.loading), currentTask), 400);
+//                            new Handler().postDelayed(() -> am.get_(AccountOpenZExistingCustomersMain.this, new_request, getString(R.string.loading), currentTask), 400);
 //                            break;
 //                        }
                         case "VerifyExisting":
