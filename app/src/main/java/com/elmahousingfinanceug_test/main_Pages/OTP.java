@@ -28,7 +28,7 @@ import java.util.concurrent.TimeUnit;
 
 public class OTP extends AppCompatActivity implements ResponseListener {
     private EditText edtOTP;
-    private TextView send, txtDidNot,resend;
+    private TextView txtDidNot,resend;
     private CountDownTimer countDownTimer;
     private AllMethods am;
     private String Merchant, quest;

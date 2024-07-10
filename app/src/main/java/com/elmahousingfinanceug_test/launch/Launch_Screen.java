@@ -111,7 +111,7 @@ public class Launch_Screen extends AppCompatActivity {
             if(am.getAppName().equals("")) am.saveAppName();
             if(am.getBankID().equals("")) am.saveBankID();
             // TEST 2021      01001216339        459483989
-//            am.saveCustomerID("4594839890");
+            am.saveCustomerID("4594839890");
 //            am.saveCustomerID("1604913740");
 //            am.saveUserPhone("256700146817");
 
